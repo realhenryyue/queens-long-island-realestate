@@ -1,14 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Phone, Mail, MapPin } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { LanguageToggle } from "@/components/LanguageToggle";
 import agentPhoto from "@/assets/agent-photo.jpg";
 import queensSkyline from "@/assets/queens-skyline.jpg";
 
 export const HeroSection = () => {
-  const { t } = useLanguage();
-  
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -19,22 +15,24 @@ export const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
       </div>
       
-      {/* Language Toggle */}
-      <div className="absolute top-6 right-6 z-20">
-        <LanguageToggle />
-      </div>
-      
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Text Content */}
           <div className="text-white space-y-6">
+            {/* Slogan */}
+            <div className="text-center lg:text-left mb-8">
+              <div className="text-lg lg:text-xl font-medium text-accent tracking-wide">
+                MOVE ON, CARRY ON. 換個地方, 續寫傳奇.
+              </div>
+            </div>
+            
             <div className="space-y-4">
               <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-                {t('hero.title')}
+                Your Trusted Real Estate Partner in Queens & Long Island
               </h1>
               <p className="text-xl lg:text-2xl text-white/90 leading-relaxed">
-                {t('hero.subtitle')}
+                Licensed New York Real Estate Agent specializing in helping you find your dream home or investment property with personalized service and local expertise.
               </p>
             </div>
             
@@ -54,7 +52,7 @@ export const HeroSection = () => {
                 className="text-lg px-8 py-6 bg-white/10 border-white/30 text-white hover:bg-white hover:text-primary"
                 onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                {t('hero.contact')}
+                Get Free Consultation
               </Button>
             </div>
           </div>
@@ -70,7 +68,7 @@ export const HeroSection = () => {
                     className="w-32 h-32 rounded-full mx-auto object-cover shadow-card"
                   />
                   <div className="absolute -bottom-2 -right-2 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
-                    {t('hero.agent')}
+                    Licensed Agent
                   </div>
                 </div>
                 

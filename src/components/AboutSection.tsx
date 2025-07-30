@@ -1,46 +1,45 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Award, Clock, Users, Building, Calendar } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 const workExperience = [
   {
-    title: 'experience.realEstate1',
+    title: 'Licensed Real Estate Salesperson at E Realty International Corp.',
     period: 'Jan 2025 - Present',
     location: 'New York, USA',
     type: 'Full time',
     description: 'Move on, Carry on. Focus on investment'
   },
   {
-    title: 'experience.businessAgent',
+    title: 'Business Relationship Agent at Ideal Automotive Sales & Service',
     period: 'Nov 2023 - Present',
     location: 'New York, USA',
     type: 'Part time',
     description: 'Customer relationship maintenance'
   },
   {
-    title: 'experience.realEstate2',
+    title: 'Licensed Real Estate Salesperson at J-HOME Realty',
     period: 'Jan 2024 - Jan 2025',
     location: 'New York, USA',
     type: 'Full time',
     description: 'It is my mission to find a satisfactory home for my clients.'
   },
   {
-    title: 'experience.ceo',
+    title: 'CEO at Tianjin Zlon Culture Media Co., Ltd.',
     period: 'Mar 2018 - Oct 2023',
     location: 'Tianjin, China',
     type: 'Full time',
     description: 'Visual Design Marketing Manager - Culture. Media. Finance'
   },
   {
-    title: 'experience.generalManager',
+    title: 'General Manager at Beijing Huayigaote Technology Co., Ltd.',
     period: 'Apr 2014 - May 2017',
     location: 'Beijing, China',
     type: 'Full time',
     description: 'NEC Movie Projector Manager - Integrating limited resources to accomplish the impossible.'
   },
   {
-    title: 'experience.productManager',
+    title: 'Product Manager at Shanghai WTi Information Technology Co., Ltd.',
     period: 'Jul 2009 - Apr 2014',
     location: 'Beijing/Hebei/Shandong, China',
     type: 'Full time',
@@ -49,32 +48,30 @@ const workExperience = [
 ];
 
 export const AboutSection = () => {
-  const { t } = useLanguage();
-  
   const stats = [
     {
       icon: MapPin,
-      value: t('stats.areas.value'),
-      label: t('stats.areas.label'),
-      description: t('stats.areas.description')
+      value: '3+',
+      label: 'Service Areas',
+      description: 'Queens, Long Island & NYC'
     },
     {
       icon: Award,
-      value: t('stats.licensed.value'),
-      label: t('stats.licensed.label'),
-      description: t('stats.licensed.description')
+      value: 'Licensed',
+      label: 'NY Agent',
+      description: 'Fully certified professional'
     },
     {
       icon: Clock,
-      value: t('stats.availability.value'),
-      label: t('stats.availability.label'),
-      description: t('stats.availability.description')
+      value: '24/7',
+      label: 'Availability',
+      description: 'Always here when you need me'
     },
     {
       icon: Users,
-      value: t('stats.clients.value'),
-      label: t('stats.clients.label'),
-      description: t('stats.clients.description')
+      value: '100+',
+      label: 'Happy Clients',
+      description: 'Satisfied homeowners'
     }
   ];
 
@@ -84,10 +81,10 @@ export const AboutSection = () => {
         {/* Header */}
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-primary">
-            {t('about.title')}
+            Why Choose Hongyu (Henry) Yue?
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-4xl mx-auto">
-            {t('about.subtitle')}
+            As a licensed New York real estate agent with deep roots in Queens and Long Island, I bring local expertise, cultural understanding, and bilingual communication to every transaction.
           </p>
         </div>
 
@@ -96,23 +93,23 @@ export const AboutSection = () => {
           <div className="space-y-8">
             <div className="space-y-6">
               <div className="space-y-4">
-                <h3 className="text-2xl font-semibold text-primary">{t('about.localExpert.title')}</h3>
+                <h3 className="text-2xl font-semibold text-primary">Local Market Expert</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  {t('about.localExpert.description')}
+                  Specializing in Queens and Long Island markets, I have intimate knowledge of neighborhoods, pricing trends, and investment opportunities. Whether you're looking in Flushing, Bayside, Nassau County, or anywhere in New York State, I'll guide you to the perfect property.
                 </p>
               </div>
               
               <div className="space-y-4">
-                <h3 className="text-2xl font-semibold text-primary">{t('about.bilingual.title')}</h3>
+                <h3 className="text-2xl font-semibold text-primary">Bilingual & Cultural Support</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  {t('about.bilingual.description')}
+                  I understand the unique needs of diverse communities and provide services in multiple languages. My cultural sensitivity and local connections help bridge communication gaps and ensure smooth transactions.
                 </p>
               </div>
 
               <div className="space-y-4">
-                <h3 className="text-2xl font-semibold text-primary">{t('about.experience.title')}</h3>
+                <h3 className="text-2xl font-semibold text-primary">Professional Experience</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  {t('about.experience.description')}
+                  With over 15 years of experience in sales, business development, and customer relationship management across technology and real estate sectors, I bring a comprehensive understanding of market dynamics and client needs.
                 </p>
               </div>
             </div>
@@ -124,7 +121,7 @@ export const AboutSection = () => {
                 className="text-lg px-8 py-6"
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                {t('about.cta')}
+                Schedule a Consultation
               </Button>
             </div>
           </div>
@@ -158,7 +155,7 @@ export const AboutSection = () => {
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                     <div className="flex-1">
                       <h4 className="text-lg font-semibold text-primary mb-2">
-                        {t(job.title)}
+                        {job.title}
                       </h4>
                       <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
