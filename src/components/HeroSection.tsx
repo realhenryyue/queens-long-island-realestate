@@ -60,7 +60,7 @@ export const HeroSection = () => {
                 <div className="relative">
                   <img 
                     src={agentPhoto} 
-                    alt="Henry Yue - Real Estate Agent"
+                    alt="Hongyu (Henry) Yue - Real Estate Agent"
                     className="w-32 h-32 rounded-full mx-auto object-cover shadow-card"
                   />
                   <div className="absolute -bottom-2 -right-2 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
@@ -69,7 +69,7 @@ export const HeroSection = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold text-primary">Henry Yue</h3>
+                  <h3 className="text-2xl font-bold text-primary">Hongyu (Henry) Yue</h3>
                   <p className="text-muted-foreground font-medium">Licensed Real Estate Agent</p>
                 </div>
                 

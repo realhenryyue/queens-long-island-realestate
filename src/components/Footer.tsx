@@ -7,7 +7,7 @@ export const Footer = () => {
         <div className="grid md:grid-cols-3 gap-8">
           {/* Contact Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold">Henry Yue</h3>
+            <h3 className="text-xl font-semibold">Hongyu (Henry) Yue</h3>
             <p className="text-primary-foreground/80">
               Licensed New York Real Estate Agent
             </p>
@@ -61,7 +61,7 @@ export const Footer = () => {
         <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-primary-foreground/60">
-              © 2024 Henry Yue Real Estate. Licensed New York Real Estate Agent.
+              © 2024 Hongyu (Henry) Yue Real Estate. Licensed New York Real Estate Agent.
             </p>
             <p className="text-primary-foreground/60">
               Equal Housing Opportunity

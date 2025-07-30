@@ -38,7 +38,7 @@ export const AboutSection = () => {
           <div className="space-y-8">
             <div className="space-y-4">
               <h2 className="text-4xl lg:text-5xl font-bold text-primary">
-                Why Choose Henry Yue?
+                Why Choose Hongyu (Henry) Yue?
               </h2>
               <p className="text-xl text-muted-foreground leading-relaxed">
                 As a licensed New York real estate agent with deep roots in Queens and Long Island, 
