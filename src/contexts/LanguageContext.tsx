@@ -19,11 +19,11 @@ const translations: Translations = {
   // Hero Section
   'hero.title': {
     en: 'Your Trusted Real Estate Partner in Queens & Long Island',
-    zh: '您在皇后区和长岛值得信赖的房地产合作伙伴'
+    zh: '纽约生活专家 - 您在皇后区和长岛值得信赖的房地产合作伙伴'
   },
   'hero.subtitle': {
-    en: 'Licensed New York Real Estate Agent specializing in helping you find your dream home or investment property with personalized service and local expertise.',
-    zh: '持牌纽约房地产经纪人，专门帮助您找到梦想的家园或投资物业，提供个性化服务和当地专业知识。'
+    en: 'Licensed New York Real Estate Agent specializing in helping you find your dream home or investment property with personalized service and local expertise. Serving Flushing, Manhattan, Nassau County and all of New York State.',
+    zh: 'Henry岳先生，持牌纽约房地产经纪人，专注海外买房、纽约买房服务。提供法拉盛商业楼、曼哈顿地产、纽约投资房等优质房源，为华人客户提供专业的纽约地产中介服务。'
   },
   'hero.cta': {
     en: 'Start Your Home Search',
@@ -44,8 +44,8 @@ const translations: Translations = {
     zh: '为什么选择岳宏宇(Henry)?'
   },
   'about.subtitle': {
-    en: 'As a licensed New York real estate agent with deep roots in Queens and Long Island, I bring local expertise, cultural understanding, and bilingual communication to every transaction.',
-    zh: '作为一名在皇后区和长岛深耕的持牌纽约房地产经纪人，我为每一笔交易带来当地专业知识、文化理解和双语沟通能力。'
+    en: 'As a licensed New York real estate agent with deep roots in Queens and Long Island, I bring local expertise, cultural understanding, and bilingual communication to every transaction. Specializing in New York real estate investment, luxury properties, and serving the diverse needs of international clients.',
+    zh: '作为纽约华人地产经纪，我在皇后区和长岛地区拥有丰富经验。专精纽约房产投资、纽约豪华楼盘、纽约住宅出售等业务，为客户提供专业的纽约房地产网服务，协助纽约投资移民和纽约卖房等需求。'
   },
   'about.localExpert.title': {
     en: 'Local Market Expert',
@@ -53,7 +53,7 @@ const translations: Translations = {
   },
   'about.localExpert.description': {
     en: 'Specializing in Queens and Long Island markets, I have intimate knowledge of neighborhoods, pricing trends, and investment opportunities. Whether you\'re looking in Flushing, Bayside, Nassau County, or anywhere in New York State, I\'ll guide you to the perfect property.',
-    zh: '专精于皇后区和长岛市场，我对社区、价格趋势和投资机会有深入了解。无论您是在法拉盛、贝赛、拿骚县还是纽约州的任何地方寻找房产，我都会引导您找到完美的物业。'
+    zh: '专精于皇后区和长岛市场，对纽约房源、纽约地产信息有深入了解。无论您寻找法拉盛商业楼、曼哈顿房产信息，还是需要纽约租房、纽约房产推荐服务，我都会为您提供最专业的纽约地产公司级别服务。'
   },
   'about.bilingual.title': {
     en: 'Bilingual & Cultural Support',
@@ -61,7 +61,7 @@ const translations: Translations = {
   },
   'about.bilingual.description': {
     en: 'I understand the unique needs of diverse communities and provide services in multiple languages. My cultural sensitivity and local connections help bridge communication gaps and ensure smooth transactions.',
-    zh: '我理解多元化社区的独特需求，并提供多语言服务。我的文化敏感性和当地人脉有助于弥合沟通差距，确保交易顺利进行。'
+    zh: '作为曼哈顿华人地产经纪，我深度理解多元化社区需求，提供双语服务。协助客户解决纽约生活适应、海外买房流程等问题，确保每一笔纽约房地产交易顺利完成。'
   },
   'about.experience.title': {
     en: 'Professional Experience',
@@ -69,7 +69,7 @@ const translations: Translations = {
   },
   'about.experience.description': {
     en: 'With over 15 years of experience in sales, business development, and customer relationship management across technology and real estate sectors, I bring a comprehensive understanding of market dynamics and client needs.',
-    zh: '凭借在技术和房地产领域超过15年的销售、业务发展和客户关系管理经验，我对市场动态和客户需求有全面的理解。'
+    zh: '拥有超过15年销售和客户关系管理经验，深谙纽约房地产网运营和曼哈顿房地产网络。从纽约房产经纪人到曼哈顿地产中介，致力于为每位客户提供最优质的纽约房产信息和投资建议。'
   },
   'about.cta': {
     en: 'Schedule a Consultation',
@@ -115,6 +115,16 @@ const translations: Translations = {
   'experience.productManager': {
     en: 'Product Manager at Shanghai WTi Information Technology Co., Ltd.',
     zh: '上海威梯信息技术有限公司 产品经理'
+  },
+  
+  // Contact & Footer
+  'footer.wechat': {
+    en: '📱 Scan QR code to add Henry on WeChat for more New York property information.',
+    zh: '📱 扫码添加 Henry 微信，了解更多纽约房源信息。'
+  },
+  'contact.form.email': {
+    en: 'Email sent successfully! I will get back to you soon.',
+    zh: '邮件发送成功！我会尽快回复您。'
   }
 };
 

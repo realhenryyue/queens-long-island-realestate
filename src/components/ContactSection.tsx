@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -14,14 +15,28 @@ export const ContactSection = () => {
     message: ''
   });
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to a backend
+    
+    // Create mailto URL with form data
+    const subject = `Contact from ${formData.name} - Real Estate Inquiry`;
+    const body = `Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone}
+
+Message: ${formData.message}`;
+    
+    const mailtoUrl = `mailto:forangh@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoUrl;
+    
     toast({
-      title: "Message Sent!",
-      description: "Thank you for your inquiry. I'll get back to you within 24 hours.",
+      title: t('contact.form.email'),
+      description: "Opening your email client...",
     });
+    
+    // Reset form
     setFormData({ name: '', email: '', phone: '', message: '' });
   };
 

@@ -3,8 +3,11 @@ import { Card } from "@/components/ui/card";
 import { Phone, Mail, MapPin } from "lucide-react";
 import agentPhoto from "@/assets/agent-photo.jpg";
 import queensSkyline from "@/assets/queens-skyline.jpg";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageToggle } from "@/components/LanguageToggle";
 
 export const HeroSection = () => {
+  const { t } = useLanguage();
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -13,6 +16,11 @@ export const HeroSection = () => {
         style={{ backgroundImage: `url(${queensSkyline})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
+      </div>
+      
+      {/* Language Toggle */}
+      <div className="absolute top-4 right-4 z-20">
+        <LanguageToggle />
       </div>
       
       {/* Content */}
@@ -29,10 +37,10 @@ export const HeroSection = () => {
             
             <div className="space-y-4">
               <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-                Your Trusted Real Estate Partner in Queens & Long Island
+                {t('hero.title')}
               </h1>
               <p className="text-xl lg:text-2xl text-white/90 leading-relaxed">
-                Licensed New York Real Estate Agent specializing in helping you find your dream home or investment property with personalized service and local expertise.
+                {t('hero.subtitle')}
               </p>
             </div>
             
@@ -52,7 +60,7 @@ export const HeroSection = () => {
                 className="text-lg px-8 py-6 bg-white/10 border-white/30 text-white hover:bg-white hover:text-primary"
                 onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                Get Free Consultation
+                {t('hero.contact')}
               </Button>
             </div>
           </div>
@@ -68,7 +76,7 @@ export const HeroSection = () => {
                     className="w-32 h-32 rounded-full mx-auto object-cover shadow-card"
                   />
                   <div className="absolute -bottom-2 -right-2 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
-                    Licensed Agent
+                    {t('hero.agent')}
                   </div>
                 </div>
                 

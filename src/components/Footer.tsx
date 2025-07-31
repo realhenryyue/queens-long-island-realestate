@@ -1,10 +1,12 @@
 import { Phone, Mail, MapPin } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Footer = () => {
+  const { t } = useLanguage();
   return (
     <footer className="bg-primary text-primary-foreground py-12">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-4 gap-8">
           {/* Contact Info */}
           <div className="space-y-4">
             <h3 className="text-xl font-semibold">Hongyu (Henry) Yue</h3>
@@ -55,6 +57,21 @@ export const Footer = () => {
               <li>Bronx</li>
               <li>Anywhere in New York State</li>
             </ul>
+          </div>
+          
+          {/* WeChat QR Code */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold">WeChat Contact</h3>
+            <div className="text-center space-y-3">
+              <img 
+                src="/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4.png" 
+                alt="Henry Yue WeChat QR Code"
+                className="w-24 h-24 mx-auto rounded-lg bg-white p-2"
+              />
+              <p className="text-sm text-primary-foreground/80 leading-relaxed">
+                {t('footer.wechat')}
+              </p>
+            </div>
           </div>
         </div>
         

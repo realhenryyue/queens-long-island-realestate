@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Award, Clock, Users, Building, Calendar } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const workExperience = [
   {
@@ -48,30 +49,32 @@ const workExperience = [
 ];
 
 export const AboutSection = () => {
+  const { t } = useLanguage();
+  
   const stats = [
     {
       icon: MapPin,
-      value: '3+',
-      label: 'Service Areas',
-      description: 'Queens, Long Island & NYC'
+      value: t('stats.areas.value'),
+      label: t('stats.areas.label'),
+      description: t('stats.areas.description')
     },
     {
       icon: Award,
-      value: 'Licensed',
-      label: 'NY Agent',
-      description: 'Fully certified professional'
+      value: t('stats.licensed.value'),
+      label: t('stats.licensed.label'),
+      description: t('stats.licensed.description')
     },
     {
       icon: Clock,
-      value: '24/7',
-      label: 'Availability',
-      description: 'Always here when you need me'
+      value: t('stats.availability.value'),
+      label: t('stats.availability.label'),
+      description: t('stats.availability.description')
     },
     {
       icon: Users,
-      value: '100+',
-      label: 'Happy Clients',
-      description: 'Satisfied homeowners'
+      value: t('stats.clients.value'),
+      label: t('stats.clients.label'),
+      description: t('stats.clients.description')
     }
   ];
 
@@ -81,10 +84,10 @@ export const AboutSection = () => {
         {/* Header */}
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-primary">
-            Why Choose Hongyu (Henry) Yue?
+            {t('about.title')}
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-4xl mx-auto">
-            As a licensed New York real estate agent with deep roots in Queens and Long Island, I bring local expertise, cultural understanding, and bilingual communication to every transaction.
+            {t('about.subtitle')}
           </p>
         </div>
 
@@ -93,23 +96,23 @@ export const AboutSection = () => {
           <div className="space-y-8">
             <div className="space-y-6">
               <div className="space-y-4">
-                <h3 className="text-2xl font-semibold text-primary">Local Market Expert</h3>
+                <h3 className="text-2xl font-semibold text-primary">{t('about.localExpert.title')}</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Specializing in Queens and Long Island markets, I have intimate knowledge of neighborhoods, pricing trends, and investment opportunities. Whether you're looking in Flushing, Bayside, Nassau County, or anywhere in New York State, I'll guide you to the perfect property.
+                  {t('about.localExpert.description')}
                 </p>
               </div>
               
               <div className="space-y-4">
-                <h3 className="text-2xl font-semibold text-primary">Bilingual & Cultural Support</h3>
+                <h3 className="text-2xl font-semibold text-primary">{t('about.bilingual.title')}</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  I understand the unique needs of diverse communities and provide services in multiple languages. My cultural sensitivity and local connections help bridge communication gaps and ensure smooth transactions.
+                  {t('about.bilingual.description')}
                 </p>
               </div>
 
               <div className="space-y-4">
-                <h3 className="text-2xl font-semibold text-primary">Professional Experience</h3>
+                <h3 className="text-2xl font-semibold text-primary">{t('about.experience.title')}</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  With over 15 years of experience in sales, business development, and customer relationship management across technology and real estate sectors, I bring a comprehensive understanding of market dynamics and client needs.
+                  {t('about.experience.description')}
                 </p>
               </div>
             </div>
@@ -121,7 +124,7 @@ export const AboutSection = () => {
                 className="text-lg px-8 py-6"
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                Schedule a Consultation
+                {t('about.cta')}
               </Button>
             </div>
           </div>
