@@ -438,7 +438,9 @@ export const RealEstateSection = () => {
 
   // Fast local filtering and sorting
   const filteredAndSortedProperties = useMemo(() => {
-    let filtered = optimizedMockProperties;
+    // Use actual properties data if available, otherwise fallback to mock data
+    const sourceData = properties.length > 0 ? properties : optimizedMockProperties;
+    let filtered = sourceData;
 
     // Apply filters
     if (filters.location) {
@@ -463,7 +465,7 @@ export const RealEstateSection = () => {
 
     // Sort and limit
     return sortProperties(filtered).slice(0, 9);
-  }, [filters, sortProperties]);
+  }, [filters, sortProperties, properties]);
 
   // Optimized API fetch function with caching
   const fetchPropertiesFromAPI = useCallback(async (isBackgroundUpdate = false) => {
@@ -512,29 +514,24 @@ export const RealEstateSection = () => {
     }
   }, [filters, sortProperties, toast]);
 
-  // Instant search with debouncing
+  // Instant search with API call
   const handleSearch = useCallback(() => {
-    // For local data, just update the displayed properties
-    setProperties(filteredAndSortedProperties);
-    
-    // Optionally fetch fresh data in background
-    setTimeout(() => {
-      fetchPropertiesFromAPI(true);
-    }, 500);
+    // Always fetch fresh data from API
+    fetchPropertiesFromAPI(false);
     
     toast({
-      title: "Search updated",
-      description: `Showing ${filteredAndSortedProperties.length} properties`,
+      title: "Searching properties",
+      description: "Fetching latest real estate data...",
     });
-  }, [filteredAndSortedProperties, fetchPropertiesFromAPI, toast]);
+  }, [fetchPropertiesFromAPI, toast]);
 
-  // Initialize with local data for instant display
+  // Initialize with API call on mount
   useEffect(() => {
-    setProperties(filteredAndSortedProperties);
-  }, [filteredAndSortedProperties]);
+    fetchPropertiesFromAPI(false);
+  }, []);
 
-  // Display properties or filtered results
-  const displayProperties = properties.length > 0 ? properties : filteredAndSortedProperties;
+  // Display filtered and sorted properties
+  const displayProperties = filteredAndSortedProperties;
 
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-background to-background/80">
