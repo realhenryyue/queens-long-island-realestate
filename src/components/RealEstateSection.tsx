@@ -285,7 +285,10 @@ const PropertyCard = React.memo(({ property }: { property: Property }) => {
   }, []);
 
   return (
-    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-0 shadow-md">
+    <Card 
+      className="overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-0 shadow-md cursor-pointer"
+      onClick={() => window.open(property.listing_url, '_blank')}
+    >
       {/* Property Image */}
       <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200">
         {property.image_urls?.[0] && !imageError ? (
@@ -382,17 +385,6 @@ const PropertyCard = React.memo(({ property }: { property: Property }) => {
           {property.description}
         </p>
 
-        <Separator />
-
-        {/* View Listing Button */}
-        <Button 
-          variant="outline" 
-          className="w-full group hover:bg-primary hover:text-white transition-colors"
-          onClick={() => window.open(property.listing_url, '_blank')}
-        >
-          <ExternalLink className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-          View Listing
-        </Button>
       </CardContent>
     </Card>
   );
