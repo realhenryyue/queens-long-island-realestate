@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { MapPin, Bed, Bath, Square, Star, ExternalLink, Search, Filter } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { FirecrawlService } from '@/utils/FirecrawlService';
+import { useToast } from '@/components/ui/use-toast';
 
 interface Property {
   id: string;
@@ -171,9 +173,12 @@ const mockProperties: Property[] = [
 
 export const RealEstateSection = () => {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
+  const [apiKey, setApiKey] = useState('');
   const [filters, setFilters] = useState<Filters>({
     location: '',
     minPrice: '',
@@ -297,7 +302,7 @@ export const RealEstateSection = () => {
           <div className="flex flex-col lg:flex-row gap-4 mb-4">
             <div className="flex-1">
               <Input
-                placeholder="搜索地区 (如: Queens, Brooklyn, Manhattan...)"
+                placeholder={t('realEstate.searchPlaceholder')}
                 value={filters.location}
                 onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
                 className="h-12"
@@ -305,7 +310,7 @@ export const RealEstateSection = () => {
             </div>
             <Button onClick={handleSearch} className="h-12 px-8" disabled={loading}>
               <Search className="w-4 h-4 mr-2" />
-              {loading ? '搜索中...' : '搜索'}
+              {loading ? t('realEstate.searching') : t('realEstate.search')}
             </Button>
             <Button 
               variant="outline" 
@@ -313,7 +318,7 @@ export const RealEstateSection = () => {
               className="h-12 px-6"
             >
               <Filter className="w-4 h-4 mr-2" />
-              筛选
+              {t('realEstate.filter')}
             </Button>
           </div>
 
@@ -322,7 +327,7 @@ export const RealEstateSection = () => {
             <Card className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
-                  <label className="text-sm font-medium mb-2 block">最低价格</label>
+                  <label className="text-sm font-medium mb-2 block">{t('realEstate.minPrice')}</label>
                   <Input
                     type="number"
                     placeholder="$0"
@@ -331,16 +336,16 @@ export const RealEstateSection = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-2 block">最高价格</label>
+                  <label className="text-sm font-medium mb-2 block">{t('realEstate.maxPrice')}</label>
                   <Input
                     type="number"
-                    placeholder="不限"
+                    placeholder={t('realEstate.noLimit')}
                     value={filters.maxPrice}
                     onChange={(e) => setFilters(prev => ({ ...prev, maxPrice: e.target.value }))}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-2 block">房屋类型</label>
+                  <label className="text-sm font-medium mb-2 block">{t('realEstate.propertyType')}</label>
                   <Select value={filters.propertyType} onValueChange={(value) => 
                     setFilters(prev => ({ ...prev, propertyType: value }))
                   }>
@@ -348,15 +353,15 @@ export const RealEstateSection = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">所有类型</SelectItem>
-                      <SelectItem value="house">独立屋</SelectItem>
-                      <SelectItem value="condo">公寓</SelectItem>
-                      <SelectItem value="townhouse">联排别墅</SelectItem>
+                      <SelectItem value="all">{t('realEstate.allTypes')}</SelectItem>
+                      <SelectItem value="house">{t('realEstate.house')}</SelectItem>
+                      <SelectItem value="condo">{t('realEstate.condo')}</SelectItem>
+                      <SelectItem value="townhouse">{t('realEstate.townhouse')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-2 block">排序方式</label>
+                  <label className="text-sm font-medium mb-2 block">{t('realEstate.sortBy')}</label>
                   <Select value={filters.sortBy} onValueChange={(value) => 
                     setFilters(prev => ({ ...prev, sortBy: value }))
                   }>
@@ -364,11 +369,11 @@ export const RealEstateSection = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="newest">最新发布</SelectItem>
-                      <SelectItem value="price_low">价格从低到高</SelectItem>
-                      <SelectItem value="price_high">价格从高到低</SelectItem>
-                      <SelectItem value="value_score">性价比评分</SelectItem>
-                      <SelectItem value="market_score">市场评分</SelectItem>
+                      <SelectItem value="newest">{t('realEstate.newest')}</SelectItem>
+                      <SelectItem value="price_low">{t('realEstate.priceLow')}</SelectItem>
+                      <SelectItem value="price_high">{t('realEstate.priceHigh')}</SelectItem>
+                      <SelectItem value="value_score">{t('realEstate.valueScore')}</SelectItem>
+                      <SelectItem value="market_score">{t('realEstate.marketScore')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -381,12 +386,12 @@ export const RealEstateSection = () => {
         {loading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-muted-foreground">正在加载房源信息...</p>
+            <p className="mt-4 text-muted-foreground">{t('realEstate.loading')}</p>
           </div>
         ) : properties.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-xl text-muted-foreground">暂无符合条件的房源</p>
-            <p className="text-sm text-muted-foreground mt-2">请尝试调整搜索条件</p>
+            <p className="text-xl text-muted-foreground">{t('realEstate.noResults')}</p>
+            <p className="text-sm text-muted-foreground mt-2">{t('realEstate.adjustSearch')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -414,7 +419,7 @@ export const RealEstateSection = () => {
                   {/* Scores */}
                   <div className="absolute top-3 right-3 flex gap-1">
                     <Badge className={`${getScoreColor(property.value_score)} text-white text-xs`}>
-                      性价比 {property.value_score}
+                      {t('realEstate.valueScore.label')} {property.value_score}
                     </Badge>
                   </div>
                 </div>
@@ -434,7 +439,7 @@ export const RealEstateSection = () => {
                       {formatPrice(property.price)}
                     </span>
                     <span className="text-sm text-muted-foreground">
-                      ${property.price_per_sqft}/平方英尺
+                      ${property.price_per_sqft}{t('realEstate.perSqft')}
                     </span>
                   </div>
 
@@ -442,15 +447,15 @@ export const RealEstateSection = () => {
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center">
                       <Bed className="w-4 h-4 mr-1" />
-                      {property.bedrooms}卧
+                      {property.bedrooms}{t('realEstate.bedrooms')}
                     </div>
                     <div className="flex items-center">
                       <Bath className="w-4 h-4 mr-1" />
-                      {property.bathrooms}卫
+                      {property.bathrooms}{t('realEstate.bathrooms')}
                     </div>
                     <div className="flex items-center">
                       <Square className="w-4 h-4 mr-1" />
-                      {property.square_feet?.toLocaleString()}平方英尺
+                      {property.square_feet?.toLocaleString()}{t('realEstate.sqft')}
                     </div>
                   </div>
 
@@ -458,10 +463,10 @@ export const RealEstateSection = () => {
                   <div className="flex gap-2">
                     <Badge variant="outline" className="text-xs">
                       <Star className="w-3 h-3 mr-1" />
-                      市场 {property.market_score}
+                      {t('realEstate.market')} {property.market_score}
                     </Badge>
                     <Badge variant="outline" className="text-xs">
-                      热度 {property.interest_score}
+                      {t('realEstate.interest')} {property.interest_score}
                     </Badge>
                   </div>
 
@@ -477,7 +482,7 @@ export const RealEstateSection = () => {
                     className="w-full" 
                     onClick={() => window.open(property.listing_url, '_blank')}
                   >
-                    查看详情
+                    {t('realEstate.viewDetails')}
                     <ExternalLink className="w-4 h-4 ml-2" />
                   </Button>
                 </CardContent>
