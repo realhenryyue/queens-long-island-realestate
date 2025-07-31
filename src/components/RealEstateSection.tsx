@@ -41,7 +41,7 @@ interface Filters {
   sortBy: string;
 }
 
-// Mock data for demonstration - will be replaced with real Supabase data
+// Mock data for demonstration - limit to 9 properties
 const mockProperties: Property[] = [
   {
     id: '1',
@@ -168,6 +168,69 @@ const mockProperties: Property[] = [
     value_score: 70,
     interest_score: 96,
     created_at: new Date().toISOString()
+  },
+  {
+    id: '7',
+    source: 'zillow',
+    title: 'Cozy 2BR Apartment in Forest Hills',
+    price: 720000,
+    address: '234 Metropolitan Ave',
+    city: 'Forest Hills',
+    state: 'NY',
+    bedrooms: 2,
+    bathrooms: 2,
+    square_feet: 1300,
+    property_type: 'condo',
+    description: 'Well-maintained apartment in quiet neighborhood.',
+    image_urls: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800'],
+    listing_url: 'https://zillow.com/sample3',
+    price_per_sqft: 553.85,
+    market_score: 80,
+    value_score: 85,
+    interest_score: 82,
+    created_at: new Date().toISOString()
+  },
+  {
+    id: '8',
+    source: 'redfin',
+    title: 'Elegant 3BR Brownstone in Park Slope',
+    price: 1350000,
+    address: '678 Prospect Ave',
+    city: 'Park Slope',
+    state: 'NY',
+    bedrooms: 3,
+    bathrooms: 2.5,
+    square_feet: 1900,
+    property_type: 'townhouse',
+    description: 'Historic brownstone with modern updates and garden.',
+    image_urls: ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'],
+    listing_url: 'https://redfin.com/sample3',
+    price_per_sqft: 710.53,
+    market_score: 92,
+    value_score: 88,
+    interest_score: 90,
+    created_at: new Date().toISOString()
+  },
+  {
+    id: '9',
+    source: 'streeteasy',
+    title: 'Modern 1BR Loft in DUMBO',
+    price: 850000,
+    address: '890 Water St',
+    city: 'DUMBO',
+    state: 'NY',
+    bedrooms: 1,
+    bathrooms: 1,
+    square_feet: 1000,
+    property_type: 'condo',
+    description: 'Industrial loft with exposed brick and city views.',
+    image_urls: ['https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800'],
+    listing_url: 'https://streeteasy.com/sample3',
+    price_per_sqft: 850,
+    market_score: 87,
+    value_score: 80,
+    interest_score: 94,
+    created_at: new Date().toISOString()
   }
 ];
 
@@ -253,6 +316,9 @@ export const RealEstateSection = () => {
               new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
             );
         }
+
+        // Limit to 9 properties
+        filteredData = filteredData.slice(0, 9);
 
         setProperties(filteredData);
         setLoading(false);
@@ -343,6 +409,9 @@ export const RealEstateSection = () => {
               new Date(b.created_at || b.listing_date).getTime() - new Date(a.created_at || a.listing_date).getTime()
             );
         }
+
+        // Limit to 9 properties
+        fetchedProperties = fetchedProperties.slice(0, 9);
 
         setProperties(fetchedProperties);
         
