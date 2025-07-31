@@ -42,67 +42,42 @@ serve(async (req) => {
       // Initialize Firecrawl
       const firecrawl = new FirecrawlApp({ apiKey: firecrawlApiKey })
       
-      // Generate search URLs for different platforms
-      const searchUrls = generateSearchUrls(location || 'New York', { minPrice, maxPrice })
+      // Performance testing for platform selection
+      const platformPerformance = await testPlatformPerformance(firecrawl, location || 'New York', { minPrice, maxPrice })
+      console.log('Platform performance results:', platformPerformance)
       
-      console.log('Generated search URLs:', searchUrls)
+      // Select the best performing platform
+      const bestPlatform = selectBestPlatform(platformPerformance)
+      console.log('Selected best platform:', bestPlatform)
       
-      // Ultra-fast parallel crawling with strict timeouts
-      const crawlPromises = searchUrls.map(async ({ url, source }) => {
+      if (bestPlatform) {
+        // Use only the best platform for faster response
         try {
-          console.log(`Starting fast crawl for ${source}`)
+          console.log(`Using optimized single platform: ${bestPlatform.source}`)
           
-          // Aggressive timeout for instant response
-          const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Fast timeout')), 5000)
-          )
-          
-          const crawlPromise = firecrawl.scrapeUrl(url, {
+          const crawlResult = await firecrawl.scrapeUrl(bestPlatform.url, {
             formats: ['markdown'],
-            timeout: 5000,
+            timeout: 4000,
             extractorOptions: {
               mode: 'llm-extraction-from-markdown'
             }
           })
           
-          const crawlResult = await Promise.race([crawlPromise, timeoutPromise])
-          
           if (crawlResult.success && crawlResult.data) {
-            const properties = extractPropertiesFromCrawlData(crawlResult.data, source, location || 'New York')
-            console.log(`Fast extracted ${properties.length} properties from ${source}`)
-            return properties
+            const properties = extractPropertiesFromCrawlData(crawlResult.data, bestPlatform.source, location || 'New York')
+            console.log(`Extracted ${properties.length} properties from ${bestPlatform.source}`)
+            allProperties.push(...properties)
           }
         } catch (error) {
-          console.log(`${source} fast crawl timed out, using optimized fallback`)
+          console.log(`Best platform ${bestPlatform.source} failed, using optimized fallback`)
+          allProperties.push(...getOptimizedFallbackData(bestPlatform.source, location || 'New York'))
         }
-        
-        // Return optimized fallback data immediately
-        return getOptimizedFallbackData(source, location || 'New York')
-      })
+      }
       
-      // Wait for all with overall 6-second timeout
-      const overallTimeout = new Promise((resolve) => 
-        setTimeout(() => resolve([]), 6000)
-      )
-      
-      const results = await Promise.race([
-        Promise.allSettled(crawlPromises),
-        overallTimeout
-      ])
-      
-      if (Array.isArray(results)) {
-        results.forEach((result, index) => {
-          if (result.status === 'fulfilled') {
-            allProperties.push(...result.value)
-          } else {
-            allProperties.push(...getOptimizedFallbackData(searchUrls[index].source, location || 'New York'))
-          }
-        })
-      } else {
-        // Timeout reached, use all fallback data
-        searchUrls.forEach(({ source }) => {
-          allProperties.push(...getOptimizedFallbackData(source, location || 'New York'))
-        })
+      // If no data from best platform, use optimized fallback
+      if (allProperties.length === 0) {
+        console.log('Using optimized fallback data for fast response')
+        allProperties = getOptimizedFallbackData('zillow', location || 'New York')
       }
       
     } catch (error) {
@@ -180,7 +155,94 @@ serve(async (req) => {
   }
 })
 
-// Helper function to generate search URLs for different platforms
+// Performance testing function to select the best platform
+async function testPlatformPerformance(firecrawl: FirecrawlApp, location: string, filters: any) {
+  const platforms = [
+    {
+      source: 'zillow',
+      url: `https://www.zillow.com/homes/${encodeURIComponent(location)}_rb/`,
+      priority: 1 // Higher priority for generally reliable platform
+    },
+    {
+      source: 'redfin', 
+      url: `https://www.redfin.com/city/${encodeURIComponent(location).replace(/\s+/g, '-').toLowerCase()}`,
+      priority: 2
+    },
+    {
+      source: 'realtor',
+      url: `https://www.realtor.com/realestateandhomes-search/${encodeURIComponent(location)}`,
+      priority: 3
+    }
+  ]
+
+  const performanceResults = []
+
+  for (const platform of platforms) {
+    const startTime = Date.now()
+    try {
+      console.log(`Testing performance for ${platform.source}`)
+      
+      // Quick lightweight test with minimal timeout
+      const testResult = await Promise.race([
+        firecrawl.scrapeUrl(platform.url, {
+          formats: ['markdown'],
+          timeout: 3000,
+          extractorOptions: {
+            mode: 'llm-extraction-from-markdown'
+          }
+        }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 3000))
+      ])
+
+      const responseTime = Date.now() - startTime
+      const dataQuality = testResult.success && testResult.data ? 1 : 0
+      
+      performanceResults.push({
+        source: platform.source,
+        url: platform.url,
+        responseTime,
+        dataQuality,
+        priority: platform.priority,
+        score: (dataQuality * 1000) - responseTime + (platform.priority * 100) // Higher score is better
+      })
+
+      console.log(`${platform.source}: ${responseTime}ms, quality: ${dataQuality}`)
+      
+    } catch (error) {
+      console.log(`${platform.source} failed: ${error.message}`)
+      performanceResults.push({
+        source: platform.source,
+        url: platform.url,
+        responseTime: 10000, // Penalty for failure
+        dataQuality: 0,
+        priority: platform.priority,
+        score: -1000 // Very low score for failed platforms
+      })
+    }
+  }
+
+  return performanceResults
+}
+
+// Select the best performing platform based on test results
+function selectBestPlatform(performanceResults: any[]) {
+  if (performanceResults.length === 0) {
+    return {
+      source: 'zillow',
+      url: 'https://www.zillow.com/homes/New-York_rb/'
+    }
+  }
+
+  // Sort by score (highest first)
+  const sortedResults = performanceResults.sort((a, b) => b.score - a.score)
+  const best = sortedResults[0]
+  
+  console.log('Performance ranking:', sortedResults.map(r => `${r.source}: ${r.score}`))
+  
+  return best.score > -500 ? best : null // Only use if score is reasonable
+}
+
+// Helper function to generate search URLs for different platforms (legacy support)
 function generateSearchUrls(location: string, filters: any) {
   const encodedLocation = encodeURIComponent(location)
   const urls = []
