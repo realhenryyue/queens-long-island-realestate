@@ -14,7 +14,87 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      properties: {
+        Row: {
+          address: string
+          bathrooms: number | null
+          bedrooms: number | null
+          city: string
+          created_at: string
+          description: string | null
+          external_id: string
+          id: string
+          image_urls: string[] | null
+          interest_score: number | null
+          is_active: boolean | null
+          listing_date: string | null
+          listing_url: string | null
+          market_score: number | null
+          price: number
+          price_per_sqft: number | null
+          property_type: string | null
+          source: string
+          square_feet: number | null
+          state: string
+          title: string
+          updated_at: string
+          value_score: number | null
+          zip_code: string | null
+        }
+        Insert: {
+          address: string
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city: string
+          created_at?: string
+          description?: string | null
+          external_id: string
+          id?: string
+          image_urls?: string[] | null
+          interest_score?: number | null
+          is_active?: boolean | null
+          listing_date?: string | null
+          listing_url?: string | null
+          market_score?: number | null
+          price: number
+          price_per_sqft?: number | null
+          property_type?: string | null
+          source: string
+          square_feet?: number | null
+          state: string
+          title: string
+          updated_at?: string
+          value_score?: number | null
+          zip_code?: string | null
+        }
+        Update: {
+          address?: string
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city?: string
+          created_at?: string
+          description?: string | null
+          external_id?: string
+          id?: string
+          image_urls?: string[] | null
+          interest_score?: number | null
+          is_active?: boolean | null
+          listing_date?: string | null
+          listing_url?: string | null
+          market_score?: number | null
+          price?: number
+          price_per_sqft?: number | null
+          property_type?: string | null
+          source?: string
+          square_feet?: number | null
+          state?: string
+          title?: string
+          updated_at?: string
+          value_score?: number | null
+          zip_code?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
