@@ -53,10 +53,10 @@ Message: ${formData.message}`;
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl lg:text-5xl font-bold text-primary">
-            联系Henry岳先生 - 开启您的纽约房产投资之旅
+            {t('contact.title')}
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            立即联系我获得免费咨询，专业的曼哈顿地产中介为您的海外买房、纽约房地产投资保驾护航
+            {t('contact.subtitle')}
           </p>
         </div>
         
@@ -67,7 +67,7 @@ Message: ${formData.message}`;
               <CardHeader>
                 <CardTitle className="text-2xl text-primary flex items-center gap-3">
                   <MessageCircle className="w-6 h-6" />
-                  Get In Touch
+                  {t('contact.getInTouch')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -77,7 +77,7 @@ Message: ${formData.message}`;
                       <Phone className="w-6 h-6 text-primary-foreground" />
                     </div>
                     <div>
-                      <div className="font-semibold text-primary">Call or Text</div>
+                      <div className="font-semibold text-primary">{t('contact.callText')}</div>
                       <a href="tel:7187175210" className="text-lg text-foreground hover:text-primary transition-smooth">
                         (718) 717-5210
                       </a>
@@ -89,7 +89,7 @@ Message: ${formData.message}`;
                       <Mail className="w-6 h-6 text-primary-foreground" />
                     </div>
                     <div>
-                      <div className="font-semibold text-primary">Email</div>
+                      <div className="font-semibold text-primary">{t('contact.email')}</div>
                        <a href="mailto:forangh@gmail.com" className="text-lg text-foreground hover:text-primary transition-smooth">
                          forangh(at)gmail.com
                        </a>
@@ -101,18 +101,18 @@ Message: ${formData.message}`;
                       <MapPin className="w-6 h-6 text-primary-foreground" />
                     </div>
                     <div>
-                      <div className="font-semibold text-primary">Service Areas</div>
+                      <div className="font-semibold text-primary">{t('contact.serviceAreas')}</div>
                       <div className="text-lg text-foreground">Queens • Long Island • New York State</div>
                     </div>
                   </div>
                 </div>
                 
                 <div className="pt-4">
-                  <h4 className="font-semibold text-primary mb-3">Best Times to Reach Me:</h4>
+                  <h4 className="font-semibold text-primary mb-3">{t('contact.bestTimes')}</h4>
                   <ul className="space-y-2 text-muted-foreground">
-                    <li>• Monday - Friday: 8:00 AM - 8:00 PM</li>
-                    <li>• Saturday - Sunday: 9:00 AM - 6:00 PM</li>
-                    <li>• Emergency inquiries: Available 24/7</li>
+                    <li>• {t('contact.weekdays')}</li>
+                    <li>• {t('contact.weekends')}</li>
+                    <li>• {t('contact.emergency')}</li>
                   </ul>
                 </div>
               </CardContent>
@@ -122,14 +122,14 @@ Message: ${formData.message}`;
           {/* Contact Form */}
           <Card className="shadow-card bg-card/80 backdrop-blur-sm">
             <CardHeader>
-              <CardTitle className="text-2xl text-primary">Send a Message</CardTitle>
+              <CardTitle className="text-2xl text-primary">{t('contact.sendMessage')}</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium text-foreground">
-                      Full Name *
+                      {t('contact.fullName')}
                     </label>
                     <Input
                       id="name"
@@ -142,7 +142,7 @@ Message: ${formData.message}`;
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="phone" className="text-sm font-medium text-foreground">
-                      Phone Number
+                      {t('contact.phoneNumber')}
                     </label>
                     <Input
                       id="phone"
@@ -157,7 +157,7 @@ Message: ${formData.message}`;
                 
                 <div className="space-y-2">
                   <label htmlFor="email" className="text-sm font-medium text-foreground">
-                    Email Address *
+                    {t('contact.emailAddress')}
                   </label>
                   <Input
                     id="email"
@@ -172,7 +172,7 @@ Message: ${formData.message}`;
                 
                 <div className="space-y-2">
                   <label htmlFor="message" className="text-sm font-medium text-foreground">
-                    How can I help you? *
+                    {t('contact.howCanHelp')}
                   </label>
                   <Textarea
                     id="message"
@@ -181,13 +181,13 @@ Message: ${formData.message}`;
                     onChange={handleChange}
                     required
                     rows={5}
-                    placeholder="Tell me about your real estate needs, preferred areas, timeline, or any questions you have..."
+                    placeholder={t('contact.placeholder')}
                     className="bg-background/50"
                   />
                 </div>
                 
                 <Button type="submit" variant="cta" size="lg" className="w-full text-lg py-6">
-                  Send Message
+                  {t('contact.sendButton')}
                 </Button>
                 
                 <div className="pt-4 border-t border-border">

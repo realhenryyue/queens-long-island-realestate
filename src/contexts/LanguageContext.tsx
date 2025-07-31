@@ -117,6 +117,148 @@ const translations: Translations = {
     zh: '上海威梯信息技术有限公司 产品经理'
   },
   
+  // Services Section
+  'services.title': {
+    en: 'Professional Real Estate Services',
+    zh: '纽约房地产服务 - 专业海外买房投资指导'
+  },
+  'services.subtitle': {
+    en: 'Comprehensive real estate services for home buyers, sellers, and investors across Queens, Long Island, and Manhattan',
+    zh: '为海外买房客户、纽约房产投资者提供专业服务，覆盖法拉盛商业楼、曼哈顿地产等优质房源推荐'
+  },
+  'services.buyingService.title': {
+    en: 'Home Buying Services',
+    zh: '纽约买房服务'
+  },
+  'services.buyingService.description': {
+    en: 'Expert guidance for international and domestic buyers in Queens, Long Island, and throughout New York State.',
+    zh: '专业指导海外买房客户在皇后区、长岛及纽约州各地区购买优质房产，提供全方位纽约房地产服务。'
+  },
+  'services.firstTime.title': {
+    en: 'First-Time Buyer Consultation',
+    zh: '首次购房咨询'
+  },
+  'services.firstTime.description': {
+    en: 'Professional support for first-time home buyers, making the process smooth and stress-free.',
+    zh: '为首次海外买房的客户提供专业支持，让纽约生活置业过程轻松无忧。'
+  },
+  'services.investment.title': {
+    en: 'Investment Property Analysis',
+    zh: '房产投资分析'
+  },
+  'services.investment.description': {
+    en: 'Comprehensive market analysis and property valuation to help you make informed investment decisions.',
+    zh: '提供全面的纽约房地产市场分析和房产估值，助您做出明智的投资决策。'
+  },
+  'services.licensed.title': {
+    en: 'Licensed Professional',
+    zh: '持牌专业经纪'
+  },
+  'services.licensed.description': {
+    en: 'New York State licensed real estate agent with deep local market knowledge and regulatory expertise.',
+    zh: '纽约州持牌房地产经纪人，深度了解当地市场和法规，为您的纽约房产投资保驾护航。'
+  },
+  'services.commercial.title': {
+    en: 'Commercial Property Services',
+    zh: '法拉盛商业楼推荐'
+  },
+  'services.commercial.description': {
+    en: 'Specialized commercial property investment opportunities and complete property management services.',
+    zh: '专注法拉盛商业楼投资机会，为投资者和租赁物业业主提供完整的房产管理服务。'
+  },
+  'services.bilingual.title': {
+    en: 'Bilingual Personalized Service',
+    zh: '双语贴心服务'
+  },
+  'services.bilingual.description': {
+    en: 'Dedicated bilingual service with deep understanding of diverse client needs for confident transactions.',
+    zh: '提供中英双语专属服务，深度理解华人客户需求，让您的纽约生活置业更加放心。'
+  },
+
+  // Contact Section
+  'contact.title': {
+    en: 'Contact Henry Yue - Start Your Real Estate Journey',
+    zh: '联系Henry岳先生 - 开启您的纽约房产投资之旅'
+  },
+  'contact.subtitle': {
+    en: 'Get in touch for a free consultation. Professional guidance for your property investment and home buying needs.',
+    zh: '立即联系我获得免费咨询，专业的曼哈顿地产中介为您的海外买房、纽约房地产投资保驾护航'
+  },
+  'contact.getInTouch': {
+    en: 'Get In Touch',
+    zh: '联系方式'
+  },
+  'contact.callText': {
+    en: 'Call or Text',
+    zh: '电话或短信'
+  },
+  'contact.email': {
+    en: 'Email',
+    zh: '邮箱'
+  },
+  'contact.serviceAreas': {
+    en: 'Service Areas',
+    zh: '服务区域'
+  },
+  'contact.bestTimes': {
+    en: 'Best Times to Reach Me:',
+    zh: '最佳联系时间：'
+  },
+  'contact.weekdays': {
+    en: 'Monday - Friday: 8:00 AM - 8:00 PM',
+    zh: '周一至周五：上午8点 - 晚上8点'
+  },
+  'contact.weekends': {
+    en: 'Saturday - Sunday: 9:00 AM - 6:00 PM',
+    zh: '周六至周日：上午9点 - 晚上6点'
+  },
+  'contact.emergency': {
+    en: 'Emergency inquiries: Available 24/7',
+    zh: '紧急咨询：24/7全天候服务'
+  },
+  'contact.sendMessage': {
+    en: 'Send a Message',
+    zh: '发送消息'
+  },
+  'contact.fullName': {
+    en: 'Full Name *',
+    zh: '姓名 *'
+  },
+  'contact.phoneNumber': {
+    en: 'Phone Number',
+    zh: '电话号码'
+  },
+  'contact.emailAddress': {
+    en: 'Email Address *',
+    zh: '邮箱地址 *'
+  },
+  'contact.howCanHelp': {
+    en: 'How can I help you? *',
+    zh: '我如何为您提供帮助？*'
+  },
+  'contact.placeholder': {
+    en: 'Tell me about your real estate needs, preferred areas, timeline, or any questions you have...',
+    zh: '请告诉我您的房地产需求、偏好区域、时间安排或任何问题...'
+  },
+  'contact.sendButton': {
+    en: 'Send Message',
+    zh: '发送消息'
+  },
+
+  // Social Share
+  'share.text': {
+    en: 'Share:',
+    zh: '分享:'
+  },
+  'share.wechatQR': {
+    en: 'Scan QR Code to Share on WeChat',
+    zh: '扫描二维码分享到微信'
+  },
+  'share.wechatScan': {
+    en: 'Scan with WeChat to share',
+    zh: '用微信扫描二维码分享'
+  },
+
   // Work Experience Section
   'experience.title': {
     en: 'Professional Journey',
@@ -145,6 +287,14 @@ const translations: Translations = {
   'seo.keywords': {
     en: 'New York real estate agent, Queens properties, Long Island homes, Manhattan real estate, licensed agent, property investment, home buying, real estate services',
     zh: '纽约华人地产经纪,皇后区房产,长岛房地产,曼哈顿地产投资,海外买房,纽约房产中介,地产经纪人,房地产投资'
+  },
+  'seo.shareTitle': {
+    en: 'Henry Yue - Licensed Real Estate Agent | Professional Property Services',
+    zh: 'Henry岳先生 | 纽约华人地产经纪 | 专业海外买房投资服务'
+  },
+  'seo.shareDescription': {
+    en: 'Professional New York real estate agent providing expert guidance for property investment, home buying, and commercial real estate services.',
+    zh: '专业纽约房地产经纪人，提供海外买房、纽约房产投资、法拉盛商业楼推荐等服务'
   }
 };
 

@@ -1,10 +1,13 @@
 import { Share2, Facebook, MessageCircle, Twitter, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const SocialShareButtons = () => {
+  const { t } = useLanguage();
+  
   const currentUrl = encodeURIComponent("https://www.realhenryyue.com");
-  const shareTitle = encodeURIComponent("Henry岳先生 | 纽约华人地产经纪 | 专业海外买房投资服务");
-  const shareDescription = encodeURIComponent("专业纽约房地产经纪人，提供海外买房、纽约房产投资、法拉盛商业楼推荐等服务");
+  const shareTitle = encodeURIComponent(t('seo.shareTitle'));
+  const shareDescription = encodeURIComponent(t('seo.shareDescription'));
 
   const shareLinks = [
     {
@@ -40,11 +43,11 @@ export const SocialShareButtons = () => {
       if (newWindow) {
         newWindow.document.write(`
           <html>
-            <head><title>微信分享</title></head>
+            <head><title>${t('share.wechatQR')}</title></head>
             <body style="text-align:center; padding:20px;">
-              <h3>扫描二维码分享到微信</h3>
+              <h3>${t('share.wechatQR')}</h3>
               <img src="${url}" alt="WeChat QR Code" />
-              <p>用微信扫描二维码分享</p>
+              <p>${t('share.wechatScan')}</p>
             </body>
           </html>
         `);
@@ -56,7 +59,7 @@ export const SocialShareButtons = () => {
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
-      <span className="text-sm text-muted-foreground mr-2">分享:</span>
+      <span className="text-sm text-muted-foreground mr-2">{t('share.text')}</span>
       {shareLinks.map((link) => (
         <Button
           key={link.name}
