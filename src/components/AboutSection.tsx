@@ -84,10 +84,10 @@ export const AboutSection = () => {
         {/* Header */}
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-primary">
-            关于Henry岳先生 - 您的纽约房地产专家
+            {t('about.title')}
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-4xl mx-auto">
-            专业的曼哈顿华人地产经纪，为您提供全方位的纽约房产投资和海外买房服务
+            {t('about.subtitle')}
           </p>
         </div>
 
@@ -150,7 +150,7 @@ export const AboutSection = () => {
 
         {/* Work Experience Section */}
         <div className="mt-20">
-          <h3 className="text-3xl font-bold text-primary text-center mb-12">Professional Journey</h3>
+          <h3 className="text-3xl font-bold text-primary text-center mb-12">{t('experience.title')}</h3>
           <div className="space-y-6">
             {workExperience.map((job, index) => (
               <Card key={index} className="p-6 hover:shadow-card transition-smooth">

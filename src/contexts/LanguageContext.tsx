@@ -19,11 +19,11 @@ const translations: Translations = {
   // Hero Section
   'hero.title': {
     en: 'Your Trusted Real Estate Partner in Queens & Long Island',
-    zh: '纽约生活专家 - 您在皇后区和长岛值得信赖的房地产合作伙伴'
+    zh: 'Henry岳先生 | 纽约华人地产经纪 | 专业海外买房投资服务'
   },
   'hero.subtitle': {
     en: 'Licensed New York Real Estate Agent specializing in helping you find your dream home or investment property with personalized service and local expertise. Serving Flushing, Manhattan, Nassau County and all of New York State.',
-    zh: 'Henry岳先生，持牌纽约房地产经纪人，专注海外买房、纽约买房服务。提供法拉盛商业楼、曼哈顿地产、纽约投资房等优质房源，为华人客户提供专业的纽约地产中介服务。'
+    zh: '专注纽约生活、曼哈顿房产投资、法拉盛商业楼推荐，为您提供专业的纽约房地产服务'
   },
   'hero.cta': {
     en: 'Start Your Home Search',
@@ -41,11 +41,11 @@ const translations: Translations = {
   // About Section
   'about.title': {
     en: 'Why Choose Hongyu (Henry) Yue?',
-    zh: '为什么选择岳宏宇(Henry)?'
+    zh: '关于Henry岳先生 - 您的纽约房地产专家'
   },
   'about.subtitle': {
     en: 'As a licensed New York real estate agent with deep roots in Queens and Long Island, I bring local expertise, cultural understanding, and bilingual communication to every transaction. Specializing in New York real estate investment, luxury properties, and serving the diverse needs of international clients.',
-    zh: '作为纽约华人地产经纪，我在皇后区和长岛地区拥有丰富经验。专精纽约房产投资、纽约豪华楼盘、纽约住宅出售等业务，为客户提供专业的纽约房地产网服务，协助纽约投资移民和纽约卖房等需求。'
+    zh: '专业的曼哈顿华人地产经纪，为您提供全方位的纽约房产投资和海外买房服务'
   },
   'about.localExpert.title': {
     en: 'Local Market Expert',
@@ -117,6 +117,12 @@ const translations: Translations = {
     zh: '上海威梯信息技术有限公司 产品经理'
   },
   
+  // Work Experience Section
+  'experience.title': {
+    en: 'Professional Journey',
+    zh: '职业历程'
+  },
+  
   // Contact & Footer
   'footer.wechat': {
     en: '📱 Scan QR code to add Henry on WeChat for more New York property information.',
@@ -125,6 +131,20 @@ const translations: Translations = {
   'contact.form.email': {
     en: 'Email sent successfully! I will get back to you soon.',
     zh: '邮件发送成功！我会尽快回复您。'
+  },
+  
+  // SEO Meta Tags
+  'seo.title': {
+    en: 'Henry Yue - Licensed Real Estate Agent | Queens & Long Island Properties',
+    zh: 'Henry岳先生 - 纽约华人地产经纪 | 皇后区长岛房地产专家'
+  },
+  'seo.description': {
+    en: 'Licensed NY real estate agent specializing in Queens, Long Island & Manhattan properties. Expert guidance for home buyers, sellers & investors. Bilingual service available.',
+    zh: '纽约持牌华人地产经纪，专注皇后区、长岛、曼哈顿房产投资。提供专业海外买房、纽约地产投资咨询服务。'
+  },
+  'seo.keywords': {
+    en: 'New York real estate agent, Queens properties, Long Island homes, Manhattan real estate, licensed agent, property investment, home buying, real estate services',
+    zh: '纽约华人地产经纪,皇后区房产,长岛房地产,曼哈顿地产投资,海外买房,纽约房产中介,地产经纪人,房地产投资'
   }
 };
 
