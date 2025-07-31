@@ -1,8 +1,14 @@
 User-agent: *
 Allow: /
+Disallow: /private/
+Disallow: /admin/
+Disallow: /*.json$
 
 # Sitemaps
 Sitemap: https://www.realhenryyue.com/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
 
 # Allow all major search engines
 User-agent: Googlebot
@@ -24,4 +30,7 @@ User-agent: DuckDuckBot
 Allow: /
 
 User-agent: Baiduspider
+Allow: /
+
+User-agent: LinkedInBot
 Allow: /

@@ -54,7 +54,7 @@ export const SocialShareButtons = () => {
           dialogTitle: t('share.text')
         });
       } catch (error) {
-        console.log('Native share failed, falling back to web share');
+        // Native share failed, falling back to web share
         handleWebShare(platform);
       }
     } else {

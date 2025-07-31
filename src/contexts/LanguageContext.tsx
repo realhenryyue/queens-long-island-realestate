@@ -19,11 +19,11 @@ const translations: Translations = {
   // Hero Section
   'hero.title': {
     en: 'Your Trusted Real Estate Partner in Queens & Long Island',
-    zh: 'Henry岳先生 | 纽约华人地产经纪 | 专业海外买房投资服务'
+    zh: 'Henry岳先生 | 纽约华人地产经纪 | 专业海外买房投资服务 | 纽约生活顾问'
   },
   'hero.subtitle': {
     en: 'Licensed New York Real Estate Agent specializing in helping you find your dream home or investment property with personalized service and local expertise. Serving Flushing, Manhattan, Nassau County and all of New York State.',
-    zh: '专注纽约生活、曼哈顿房产投资、法拉盛商业楼推荐，为您提供专业的纽约房地产服务'
+    zh: '专注纽约生活、曼哈顿房产投资、法拉盛商业楼推荐，为您提供专业的纽约房地产服务，助力海外买房投资'
   },
   'hero.cta': {
     en: 'Start Your Home Search',
@@ -285,8 +285,8 @@ const translations: Translations = {
     zh: '纽约房地产经纪人Henry岳先生 - 持牌专业经纪，专注皇后区、长岛、曼哈顿房产投资。提供专业海外买房、纽约地产投资咨询服务。'
   },
   'seo.keywords': {
-    en: 'New York Real Estate Agent, Henry Yue, Queens real estate, Long Island properties, Manhattan real estate, licensed agent, property investment, home buying, real estate services',
-    zh: '纽约房地产经纪人,Henry岳先生,皇后区房产,长岛房地产,曼哈顿地产投资,海外买房,纽约房产中介,地产经纪人,房地产投资'
+    en: 'New York Real Estate Agent, Henry Yue, Queens real estate, Long Island properties, Manhattan real estate, licensed agent, property investment, home buying, real estate services, NYC properties, residential sales, commercial real estate',
+    zh: '纽约生活,海外买房,纽约买房,房地产中介,纽约地产,纽约房地产,顺成房地产总裁杨雪莉,1031,纽约房产推荐,法拉盛商业楼,纽约房产,纽约投资房,Henry岳先生,RealHenryYue,纽约租房,纽约地产中介,纽约地产公司,纽约房产经纪人,纽约华人地产经纪,纽约房产信息,纽约房源,纽约房地产网,纽约房产投资,纽约投资移民,曼哈顿地产中介,曼哈顿地产公司,曼哈顿房产经纪人,曼哈顿华人地产经纪,曼哈顿房产信息,曼哈顿房源,曼哈顿房地产网,曼哈顿房产投资,曼哈顿投资移民,纽约卖房,纽约豪华楼盘,纽约住宅出售'
   },
   'seo.shareTitle': {
     en: 'Henry Yue - Licensed Real Estate Agent | Professional Property Services',
@@ -318,7 +318,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const t = (key: string): string => {
     const translation = translations[key];
     if (!translation) {
-      console.warn(`Missing translation for key: ${key}`);
+      // Missing translation for key: ${key}
       return key;
     }
     return translation[language] || translation.en || key;

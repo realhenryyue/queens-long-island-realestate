@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- SEO Optimization: Enhanced Title with Keywords -->
-    <title>Henry岳先生 | 纽约华人地产经纪 | 曼哈顿房产投资专家 | 法拉盛商业楼推荐 | RealHenryYue.com</title>
+    <title>Henry岳先生 | 纽约华人地产经纪 | 曼哈顿房产投资专家 | 法拉盛商业楼推荐 | 纽约生活海外买房顾问</title>
     
     <!-- SEO: Enhanced Meta Description with Keywords -->
-    <meta name="description" content="Henry岳先生，纽约持牌房地产经纪人，专注纽约生活、海外买房、纽约房地产投资。提供曼哈顿、法拉盛商业楼等优质房源推荐，华人地产中介服务专业可靠。">
+    <meta name="description" content="Henry岳先生，纽约持牌房地产经纪人，专注纽约生活、海外买房、纽约房地产投资。提供曼哈顿、法拉盛商业楼等优质房源推荐，华人地产中介服务专业可靠。纽约买房、纽约租房、纽约投资房首选经纪人。">
     
     <!-- SEO: Comprehensive Keywords -->
-    <meta name="keywords" content="纽约生活, 海外买房, 纽约买房, 房地产中介, 纽约地产, 纽约房地产, 纽约房产推荐, 法拉盛商业楼, Henry岳先生, RealHenryYue, 曼哈顿地产中介, 曼哈顿华人地产经纪, 顺成房地产, 1031交换">
+    <meta name="keywords" content="纽约生活,海外买房,纽约买房,房地产中介,纽约地产,纽约房地产,顺成房地产总裁杨雪莉,1031,纽约房产推荐,法拉盛商业楼,纽约房产,纽约投资房,Henry岳先生,RealHenryYue,纽约租房,纽约地产中介,纽约地产公司,纽约房产经纪人,纽约华人地产经纪,纽约房产信息,纽约房源,纽约房地产网,纽约房产投资,纽约投资移民,曼哈顿地产中介,曼哈顿地产公司,曼哈顿房产经纪人,曼哈顿华人地产经纪,曼哈顿房产信息,曼哈顿房源,曼哈顿房地产网,曼哈顿房产投资,曼哈顿投资移民,纽约卖房,纽约豪华楼盘,纽约住宅出售">
     
     <!-- SEO: Canonical URL -->
     <link rel="canonical" href="https://www.realhenryyue.com/" />
@@ -19,6 +19,16 @@
     <meta name="author" content="Henry Yue">
     <meta name="robots" content="index, follow">
     <meta name="googlebot" content="index, follow">
+    
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preload" href="/assets/agent-photo.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="/assets/queens-skyline.jpg" as="image" type="image/jpeg">
+    <link rel="dns-prefetch" href="//www.facebook.com">
+    <link rel="dns-prefetch" href="//www.instagram.com">
+    <link rel="dns-prefetch" href="//linkedin.com">
+    <link rel="dns-prefetch" href="//www.tiktok.com">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.png" sizes="32x32">
@@ -29,8 +39,8 @@
     <link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/" />
 
     <!-- Enhanced Open Graph Meta Tags -->
-    <meta property="og:title" content="Henry岳先生 | 纽约华人地产经纪 | 曼哈顿房产投资专家" />
-    <meta property="og:description" content="Henry岳先生，专业纽约房地产经纪人，提供海外买房、纽约生活咨询、法拉盛商业楼推荐等服务。曼哈顿华人地产中介首选。" />
+    <meta property="og:title" content="Henry岳先生 | 纽约华人地产经纪 | 曼哈顿房产投资专家 | 纽约生活顾问" />
+    <meta property="og:description" content="Henry岳先生，专业纽约房地产经纪人，提供海外买房、纽约生活咨询、法拉盛商业楼推荐等服务。曼哈顿华人地产中介首选，纽约买房、纽约租房专业顾问。" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.realhenryyue.com/" />
     <meta property="og:image" content="https://www.realhenryyue.com/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.png" />
@@ -151,6 +161,30 @@
 
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx" defer></script>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Performance optimization script -->
+    <script>
+      // Lazy load non-critical images
+      if ('loading' in HTMLImageElement.prototype) {
+        const images = document.querySelectorAll('img[loading="lazy"]');
+        images.forEach(img => {
+          img.src = img.dataset.src;
+        });
+      } else {
+        // Fallback for browsers that don't support lazy loading
+        const script = document.createElement('script');
+        script.src = 'https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver';
+        document.head.appendChild(script);
+      }
+      
+      // Preload critical fonts
+      const fontLink = document.createElement('link');
+      fontLink.rel = 'preload';
+      fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
+      fontLink.as = 'style';
+      fontLink.onload = function() { this.rel = 'stylesheet'; };
+      document.head.appendChild(fontLink);
+    </script>
   </body>
 </html>
