@@ -31,14 +31,14 @@
     <link rel="dns-prefetch" href="//www.tiktok.com">
     
     <!-- Favicon Configuration -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/henry-favicon.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/henry-favicon.png">
-    <link rel="shortcut icon" href="/henry-favicon.png" type="image/png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/henry-favicon.png">
-    <link rel="mask-icon" href="/henry-favicon.png" color="#1a365d">
+    <link rel="icon" type="image/png" sizes="32x32" href="/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.png">
+    <link rel="shortcut icon" href="/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.png">
+    <link rel="mask-icon" href="/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.png" color="#1a365d">
     <link rel="manifest" href="/site.webmanifest">
     <meta name="msapplication-TileColor" content="#1a365d">
-    <meta name="msapplication-TileImage" content="/henry-favicon.png">
+    <meta name="msapplication-TileImage" content="/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.png">
     <meta name="theme-color" content="#1a365d">
     
     <!-- Hreflang tags for bilingual support -->
@@ -177,29 +177,35 @@
       document.addEventListener('DOMContentLoaded', function() {
         const timestamp = new Date().getTime();
         
-        // Remove any existing favicon links to start fresh
-        const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
-        existingFavicons.forEach(link => {
-          if (link.href.includes('henry-favicon.png')) {
-            link.remove();
-          }
-        });
-        
-        // Create new favicon link with timestamp
+        // Create new favicon link with timestamp to bypass cache
         const head = document.getElementsByTagName('head')[0];
+        
+        // Remove old favicons
+        const oldFavicons = document.querySelectorAll('link[rel*="icon"]');
+        oldFavicons.forEach(link => link.remove());
+        
+        // Add new favicon with cache busting
         const link = document.createElement('link');
         link.type = 'image/png';
         link.rel = 'icon';
         link.sizes = '32x32';
-        link.href = '/henry-favicon.png?v=' + timestamp;
+        link.href = '/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.png?v=' + timestamp;
         head.appendChild(link);
         
-        // Create shortcut icon as well
+        // Add shortcut icon
         const shortcutLink = document.createElement('link');
         shortcutLink.type = 'image/png';
         shortcutLink.rel = 'shortcut icon';
-        shortcutLink.href = '/henry-favicon.png?v=' + timestamp;
+        shortcutLink.href = '/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.png?v=' + timestamp;
         head.appendChild(shortcutLink);
+        
+        // Force refresh favicon
+        setTimeout(() => {
+          const existingLink = document.querySelector('link[rel="icon"]');
+          if (existingLink) {
+            existingLink.href = existingLink.href.split('?')[0] + '?v=' + new Date().getTime();
+          }
+        }, 100);
       });
     </script>
     
