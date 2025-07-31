@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Linkedin, Video, MessageCircle } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Music, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const socialPlatforms = [
@@ -29,13 +29,13 @@ const socialPlatforms = [
   {
     name: "TikTok",
     url: "https://www.tiktok.com/@realhenryyue",
-    icon: Video,
+    icon: Music,
     color: "text-[#000000] hover:text-[#000000] hover:scale-110"
   },
   {
     name: "Douyin",
     url: "https://v.douyin.com/i5JLpoT9/",
-    icon: Video,
+    icon: Music,
     color: "text-[#25f4ee] hover:text-[#25f4ee] hover:scale-110"
   }
 ];
