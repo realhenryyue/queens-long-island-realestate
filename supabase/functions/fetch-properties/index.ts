@@ -227,7 +227,7 @@ function extractPropertiesFromCrawlData(crawlData: any, source: string, location
         listing_date: new Date().toISOString().split('T')[0],
         description: match.description || 'Beautiful property in a great location.',
         image_urls: match.imageUrls || [`https://images.unsplash.com/photo-${Math.floor(Math.random() * 1000000)}/photo.jpg?w=800`],
-        listing_url: match.listingUrl || generateRealisticListingUrl(source, location),
+        listing_url: match.listingUrl || generateSearchUrl(source, location, property.property_type, property.bedrooms, property.price),
         price_per_sqft: match.pricePerSqft || Math.floor(Math.random() * 500) + 300,
         market_score: Math.floor(Math.random() * 30) + 70,
         value_score: Math.floor(Math.random() * 30) + 70,
@@ -363,38 +363,61 @@ function getSampleProperties() {
 
 // Optimized fallback data with fast-loading images
 function getOptimizedFallbackData(source: string, location: string) {
-  const properties = [
-    {
-      title: `Premium ${Math.floor(Math.random() * 4) + 1}BR Property in ${location}`,
-      price: Math.floor(Math.random() * 1000000) + 500000,
+  const properties = []
+  
+  for (let i = 0; i < 2; i++) { // Generate 2 properties per source
+    const bedrooms = Math.floor(Math.random() * 4) + 1
+    const price = Math.floor(Math.random() * 1000000) + 500000
+    const propertyType = ['house', 'condo', 'townhouse'][Math.floor(Math.random() * 3)]
+    
+    const property = {
+      title: `Premium ${bedrooms}BR Property in ${location}`,
+      price: price,
       address: `${Math.floor(Math.random() * 999) + 1} Premium St`,
       city: location.split(',')[0] || location,
       state: 'NY',
       zip_code: String(Math.floor(Math.random() * 90000) + 10000),
-      bedrooms: Math.floor(Math.random() * 4) + 1,
+      bedrooms: bedrooms,
       bathrooms: Math.floor(Math.random() * 3) + 1 + (Math.random() > 0.5 ? 0.5 : 0),
       square_feet: Math.floor(Math.random() * 2000) + 800,
-      property_type: ['house', 'condo', 'townhouse'][Math.floor(Math.random() * 3)],
+      property_type: propertyType,
       listing_date: new Date().toISOString().split('T')[0],
       description: `Exceptional ${source} property featuring modern amenities in prime ${location} location.`,
       image_urls: [`https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070_1280.jpg`],
-      listing_url: generateRealisticListingUrl(source, location),
+      listing_url: generateSearchUrl(source, location, propertyType, bedrooms, price),
       price_per_sqft: Math.floor(Math.random() * 500) + 300,
       market_score: Math.floor(Math.random() * 30) + 70,
       value_score: Math.floor(Math.random() * 30) + 70,
       interest_score: Math.floor(Math.random() * 30) + 70,
-      is_active: true
+      is_active: true,
+      source: source,
+      external_id: `${source}_${Math.random().toString(36).substr(2, 9)}`
     }
-  ]
+    
+    properties.push(property)
+  }
   
-  return properties.map(prop => ({
-    ...prop,
-    source,
-    external_id: `${source}_${Math.random().toString(36).substr(2, 9)}`
-  }))
+  return properties
 }
 
-// Helper function to generate realistic listing URLs
+// Helper function to generate search URLs based on property criteria
+function generateSearchUrl(source: string, location: string, propertyType: string, bedrooms: number, price: number) {
+  const locationSlug = location.toLowerCase().replace(/\s+/g, '-')
+  const priceRange = price > 1000000 ? 'min-price=1M' : price > 500000 ? 'min-price=500k,max-price=1M' : 'max-price=500k'
+  
+  switch (source) {
+    case 'zillow':
+      return `https://www.zillow.com/${locationSlug}/${bedrooms}-bedrooms/`
+    case 'redfin':
+      return `https://www.redfin.com/city/30749/NY/${location}/filter/property-type=${propertyType},${priceRange}`
+    case 'streeteasy':
+      return `https://streeteasy.com/for-sale/${locationSlug}/beds%3E=${bedrooms}`
+    default:
+      return `https://${source}.com/search/${locationSlug}`
+  }
+}
+
+// Helper function to generate realistic listing URLs (deprecated, use generateSearchUrl instead)
 function generateRealisticListingUrl(source: string, location: string) {
   const locationSlug = location.toLowerCase().replace(/\s+/g, '-')
   const randomId = Math.floor(Math.random() * 9000000) + 1000000
