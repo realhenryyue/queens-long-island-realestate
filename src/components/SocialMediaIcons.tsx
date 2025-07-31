@@ -55,11 +55,8 @@ export const SocialMediaIcons = () => {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              console.log('Clicking social media:', platform.name, 'URL:', platform.url);
               if (platform.url && platform.url.trim() !== "" && platform.url.startsWith('http')) {
                 window.open(platform.url, '_blank', 'noopener,noreferrer');
-              } else {
-                console.error('Invalid social media URL:', platform.url);
               }
             }}
             title={platform.name}
