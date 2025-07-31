@@ -30,12 +30,34 @@
     <link rel="dns-prefetch" href="//linkedin.com">
     <link rel="dns-prefetch" href="//www.tiktok.com">
     
-    <!-- Favicon Configuration -->
+    <!-- Favicon Configuration - Complete Multi-Platform Support -->
+    <!-- Standard favicon -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    
+    <!-- PNG favicons for modern browsers -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    
+    <!-- Apple Touch Icon (iOS Safari) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Android Chrome Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+    
+    <!-- Safari Pinned Tab -->
+    <link rel="mask-icon" href="/favicon.ico" color="#1a365d">
+    
+    <!-- Web App Manifest -->
     <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Microsoft Tiles -->
     <meta name="msapplication-TileColor" content="#1a365d">
-    <meta name="msapplication-TileImage" content="/favicon.ico">
+    <meta name="msapplication-TileImage" content="/android-chrome-192x192.png">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <!-- Theme Color -->
     <meta name="theme-color" content="#1a365d">
     
     <!-- Hreflang tags for bilingual support -->
@@ -168,17 +190,24 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Favicon Refresh Script -->
+    <!-- Favicon Cache Refresh Script -->
     <script>
-      // Simple favicon cache busting on page load
+      // Advanced favicon cache busting for all icon formats
       document.addEventListener('DOMContentLoaded', function() {
         const timestamp = '?v=' + new Date().getTime();
-        const faviconLinks = document.querySelectorAll('link[rel*="icon"]:not([rel*="apple"])');
+        const faviconSelectors = [
+          'link[rel="icon"]',
+          'link[rel="shortcut icon"]',
+          'link[rel="apple-touch-icon"]',
+          'link[rel="mask-icon"]'
+        ];
         
-        faviconLinks.forEach(link => {
-          if (link.href.includes('favicon.ico')) {
-            link.href = link.href.split('?')[0] + timestamp;
-          }
+        faviconSelectors.forEach(selector => {
+          document.querySelectorAll(selector).forEach(link => {
+            if (link.href && !link.href.includes('?')) {
+              link.href = link.href + timestamp;
+            }
+          });
         });
       });
     </script>
