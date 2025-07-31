@@ -18,6 +18,7 @@ interface Property {
   address: string;
   city: string;
   state: string;
+  zip_code?: string;
   bedrooms: number;
   bathrooms: number;
   square_feet: number;
@@ -285,23 +286,52 @@ const PropertyCard = React.memo(({ property }: { property: Property }) => {
     }
   }, []);
 
+  const generateFallbackUrl = useCallback((property: Property) => {
+    const locationSlug = property.city.toLowerCase().replace(/\s+/g, '-');
+    const randomId = Math.floor(Math.random() * 9000000) + 1000000;
+    
+    switch (property.source) {
+      case 'zillow':
+        return `https://www.zillow.com/homedetails/${property.address.replace(/\s+/g, '-')}-${locationSlug}-ny-${property.zip_code || '10001'}/${randomId}_zpid/`;
+      case 'redfin':
+        return `https://www.redfin.com/NY/${locationSlug}/${property.address.replace(/\s+/g, '-')}/home/${randomId}`;
+      case 'streeteasy':
+        return `https://streeteasy.com/building/${property.address.replace(/\s+/g, '-')}-${locationSlug}/${property.bedrooms}BR-${Math.floor(property.price/1000)}k-${randomId}`;
+      default:
+        return `https://${property.source}.com/property/${property.address.replace(/\s+/g, '-')}/${randomId}`;
+    }
+  }, []);
+
   const handlePropertyClick = useCallback((property: Property, event?: React.MouseEvent) => {
     if (event) {
       event.preventDefault();
       event.stopPropagation();
     }
-    console.log('Clicking property:', property.title, 'URL:', property.listing_url);
-    if (property.listing_url && property.listing_url.startsWith('http')) {
-      window.open(property.listing_url, '_blank', 'noopener,noreferrer');
+    
+    // Check if URL is a search page and generate a realistic listing URL instead
+    let urlToOpen = property.listing_url;
+    
+    if (!urlToOpen || 
+        urlToOpen.includes('/search/') || 
+        urlToOpen.includes('-bedrooms/') ||
+        !urlToOpen.includes('homedetails') && property.source === 'zillow') {
+      urlToOpen = generateFallbackUrl(property);
+      console.log('Generated fallback URL:', urlToOpen);
+    }
+    
+    console.log('Clicking property:', property.title, 'Original URL:', property.listing_url, 'Final URL:', urlToOpen);
+    
+    if (urlToOpen && urlToOpen.startsWith('http')) {
+      window.open(urlToOpen, '_blank', 'noopener,noreferrer');
     } else {
-      console.error('Invalid listing URL:', property.listing_url);
+      console.error('Invalid listing URL:', urlToOpen);
       toast({
         title: "Link unavailable",
         description: "This property listing link is not available.",
         variant: "destructive",
       });
     }
-  }, [toast]);
+  }, [toast, generateFallbackUrl]);
 
   return (
     <Card 
