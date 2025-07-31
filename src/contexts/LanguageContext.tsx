@@ -295,6 +295,16 @@ const translations: Translations = {
   'seo.shareDescription': {
     en: 'Professional New York real estate agent providing expert guidance for property investment, home buying, and commercial real estate services.',
     zh: '专业纽约房地产经纪人，提供海外买房、纽约房产投资、法拉盛商业楼推荐等服务'
+  },
+
+  // Real Estate Section
+  'realEstate.title': {
+    en: 'Premium Real Estate Listings',
+    zh: '精选房地产列表'
+  },
+  'realEstate.subtitle': {
+    en: 'Intelligently curated properties based on market analysis and value optimization',
+    zh: '基于市场分析和性价比的智能筛选，为您推荐最优质的房源'
   }
 };
 
