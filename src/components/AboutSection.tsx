@@ -84,10 +84,10 @@ export const AboutSection = () => {
         {/* Header */}
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-primary">
-            {t('about.title')}
+            关于Henry岳先生 - 您的纽约房地产专家
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-4xl mx-auto">
-            {t('about.subtitle')}
+            专业的曼哈顿华人地产经纪，为您提供全方位的纽约房产投资和海外买房服务
           </p>
         </div>
 

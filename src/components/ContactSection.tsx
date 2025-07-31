@@ -6,6 +6,7 @@ import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { SocialShareButtons } from "@/components/SocialShareButtons";
 
 export const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -52,11 +53,10 @@ Message: ${formData.message}`;
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl lg:text-5xl font-bold text-primary">
-            Ready to Get Started?
+            联系Henry岳先生 - 开启您的纽约房产投资之旅
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Contact me today for a free consultation. I'm here to help you navigate 
-            the New York real estate market with confidence.
+            立即联系我获得免费咨询，专业的曼哈顿地产中介为您的海外买房、纽约房地产投资保驾护航
           </p>
         </div>
         
@@ -90,9 +90,9 @@ Message: ${formData.message}`;
                     </div>
                     <div>
                       <div className="font-semibold text-primary">Email</div>
-                      <a href="mailto:forangh@gmail.com" className="text-lg text-foreground hover:text-primary transition-smooth">
-                        forangh@gmail.com
-                      </a>
+                       <a href="mailto:forangh@gmail.com" className="text-lg text-foreground hover:text-primary transition-smooth">
+                         forangh(at)gmail.com
+                       </a>
                     </div>
                   </div>
                   
@@ -189,6 +189,10 @@ Message: ${formData.message}`;
                 <Button type="submit" variant="cta" size="lg" className="w-full text-lg py-6">
                   Send Message
                 </Button>
+                
+                <div className="pt-4 border-t border-border">
+                  <SocialShareButtons />
+                </div>
               </form>
             </CardContent>
           </Card>

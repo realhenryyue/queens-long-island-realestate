@@ -4,33 +4,33 @@ import { Home, Users, TrendingUp, Shield, Key, Heart } from "lucide-react";
 const services = [
   {
     icon: Home,
-    title: "Residential Sales",
-    description: "Expert guidance for buying and selling homes across Queens, Long Island, and all of New York State."
+    title: "纽约买房服务",
+    description: "专业指导海外买房客户在皇后区、长岛及纽约州各地区购买优质房产，提供全方位纽约房地产服务。"
   },
   {
     icon: Users,
-    title: "First-Time Buyers",
-    description: "Specialized support for first-time homebuyers, making the process smooth and stress-free."
+    title: "首次购房咨询",
+    description: "为首次海外买房的客户提供专业支持，让纽约生活置业过程轻松无忧。"
   },
   {
     icon: TrendingUp,
-    title: "Market Analysis",
-    description: "Comprehensive market insights and property valuations to help you make informed decisions."
+    title: "房产投资分析",
+    description: "提供全面的纽约房地产市场分析和房产估值，助您做出明智的投资决策。"
   },
   {
     icon: Shield,
-    title: "Licensed Professional",
-    description: "Fully licensed New York real estate agent with deep knowledge of local markets and regulations."
+    title: "持牌专业经纪",
+    description: "纽约州持牌房地产经纪人，深度了解当地市场和法规，为您的纽约房产投资保驾护航。"
   },
   {
     icon: Key,
-    title: "Property Management",
-    description: "Complete property management services for investors and rental property owners."
+    title: "法拉盛商业楼推荐",
+    description: "专注法拉盛商业楼投资机会，为投资者和租赁物业业主提供完整的房产管理服务。"
   },
   {
     icon: Heart,
-    title: "Personalized Service",
-    description: "Dedicated one-on-one attention with bilingual support and cultural understanding."
+    title: "双语贴心服务",
+    description: "提供中英双语专属服务，深度理解华人客户需求，让您的纽约生活置业更加放心。"
   }
 ];
 
@@ -40,11 +40,10 @@ export const ServicesSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl lg:text-5xl font-bold text-primary">
-            Complete Real Estate Services
+            纽约房地产服务 - 专业海外买房投资指导
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            From first-time buyers to seasoned investors, I provide comprehensive 
-            real estate services across Queens, Long Island, and all of New York State.
+            为海外买房客户、纽约房产投资者提供专业服务，覆盖法拉盛商业楼、曼哈顿地产等优质房源推荐
           </p>
         </div>
         

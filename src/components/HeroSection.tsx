@@ -37,10 +37,10 @@ export const HeroSection = () => {
             
             <div className="space-y-4">
               <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-                {t('hero.title')}
+                Henry岳先生 | 纽约华人地产经纪 | 专业海外买房投资服务
               </h1>
               <p className="text-xl lg:text-2xl text-white/90 leading-relaxed">
-                {t('hero.subtitle')}
+                专注纽约生活、曼哈顿房产投资、法拉盛商业楼推荐，为您提供专业的纽约房地产服务
               </p>
             </div>
             
@@ -94,10 +94,10 @@ export const HeroSection = () => {
                     <Phone className="w-4 h-4 text-accent" />
                     <span>(718) 717-5210</span>
                   </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Mail className="w-4 h-4 text-accent" />
-                    <span>forangh@gmail.com</span>
-                  </div>
+                   <div className="flex items-center gap-2 text-muted-foreground">
+                     <Mail className="w-4 h-4 text-accent" />
+                     <span>forangh(at)gmail.com</span>
+                   </div>
                 </div>
               </div>
             </Card>
