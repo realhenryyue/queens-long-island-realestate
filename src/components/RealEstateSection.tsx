@@ -41,7 +41,7 @@ interface Filters {
   sortBy: string;
 }
 
-// Mock data for demonstration - limit to 9 properties
+// Mock data for demonstration - limit to 9 properties with geographic diversity
 const mockProperties: Property[] = [
   {
     id: '1',
@@ -67,6 +67,48 @@ const mockProperties: Property[] = [
   {
     id: '2',
     source: 'redfin',
+    title: 'Luxury 2BR Apartment in Queens',
+    price: 680000,
+    address: '456 Queens Blvd',
+    city: 'Queens',
+    state: 'NY',
+    bedrooms: 2,
+    bathrooms: 2,
+    square_feet: 1200,
+    property_type: 'condo',
+    description: 'Modern apartment in heart of Queens.',
+    image_urls: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80'],
+    listing_url: 'https://redfin.com/sample',
+    price_per_sqft: 566.67,
+    market_score: 88,
+    value_score: 92,
+    interest_score: 85,
+    created_at: new Date().toISOString()
+  },
+  {
+    id: '3',
+    source: 'streeteasy',
+    title: 'Spacious 1BR Studio in Queens',
+    price: 580000,
+    address: '789 Northern Blvd',
+    city: 'Queens',
+    state: 'NY',
+    bedrooms: 1,
+    bathrooms: 1,
+    square_feet: 900,
+    property_type: 'condo',
+    description: 'Cozy studio in vibrant Queens neighborhood.',
+    image_urls: ['https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=800&q=80'],
+    listing_url: 'https://streeteasy.com/sample',
+    price_per_sqft: 644.44,
+    market_score: 80,
+    value_score: 95,
+    interest_score: 88,
+    created_at: new Date().toISOString()
+  },
+  {
+    id: '4',
+    source: 'zillow',
     title: 'Modern 2BR Condo in Manhattan',
     price: 1200000,
     address: '456 Park Ave',
@@ -78,7 +120,7 @@ const mockProperties: Property[] = [
     property_type: 'condo',
     description: 'Luxury condo with amazing city views.',
     image_urls: ['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80'],
-    listing_url: 'https://redfin.com/sample',
+    listing_url: 'https://zillow.com/sample2',
     price_per_sqft: 1000,
     market_score: 95,
     value_score: 75,
@@ -86,75 +128,12 @@ const mockProperties: Property[] = [
     created_at: new Date().toISOString()
   },
   {
-    id: '3',
-    source: 'streeteasy',
-    title: 'Spacious 4BR Townhouse in Brooklyn',
-    price: 950000,
-    address: '789 Brooklyn Ave',
-    city: 'Brooklyn',
-    state: 'NY',
-    bedrooms: 4,
-    bathrooms: 3,
-    square_feet: 2200,
-    property_type: 'townhouse',
-    description: 'Family-friendly townhouse with garden and parking.',
-    image_urls: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?auto=format&fit=crop&w=800&q=80'],
-    listing_url: 'https://streeteasy.com/sample',
-    price_per_sqft: 431.82,
-    market_score: 88,
-    value_score: 95,
-    interest_score: 85,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: '4',
-    source: 'zillow',
-    title: 'Luxury 1BR Studio in Long Island City',
-    price: 650000,
-    address: '321 Court Sq',
-    city: 'Long Island City',
-    state: 'NY',
-    bedrooms: 1,
-    bathrooms: 1,
-    square_feet: 900,
-    property_type: 'condo',
-    description: 'Modern studio with waterfront views and amenities.',
-    image_urls: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80'],
-    listing_url: 'https://zillow.com/sample2',
-    price_per_sqft: 722.22,
-    market_score: 82,
-    value_score: 88,
-    interest_score: 95,
-    created_at: new Date().toISOString()
-  },
-  {
     id: '5',
     source: 'redfin',
-    title: 'Charming 2BR House in Astoria',
-    price: 580000,
-    address: '567 Astoria Blvd',
-    city: 'Astoria',
-    state: 'NY',
-    bedrooms: 2,
-    bathrooms: 1.5,
-    square_feet: 1100,
-    property_type: 'house',
-    description: 'Cozy house with backyard in growing neighborhood.',
-    image_urls: ['https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=800&q=80'],
-    listing_url: 'https://redfin.com/sample2',
-    price_per_sqft: 527.27,
-    market_score: 78,
-    value_score: 92,
-    interest_score: 88,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: '6',
-    source: 'streeteasy',
-    title: 'Penthouse 3BR Condo in Williamsburg',
+    title: 'Penthouse 3BR Condo in Manhattan',
     price: 1850000,
-    address: '100 Berry St',
-    city: 'Williamsburg',
+    address: '100 West Side Ave',
+    city: 'Manhattan',
     state: 'NY',
     bedrooms: 3,
     bathrooms: 2.5,
@@ -162,7 +141,7 @@ const mockProperties: Property[] = [
     property_type: 'condo',
     description: 'Stunning penthouse with Manhattan views and rooftop access.',
     image_urls: ['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80'],
-    listing_url: 'https://streeteasy.com/sample2',
+    listing_url: 'https://redfin.com/sample2',
     price_per_sqft: 1156.25,
     market_score: 98,
     value_score: 70,
@@ -170,54 +149,12 @@ const mockProperties: Property[] = [
     created_at: new Date().toISOString()
   },
   {
-    id: '7',
-    source: 'zillow',
-    title: 'Cozy 2BR Apartment in Forest Hills',
-    price: 720000,
-    address: '234 Metropolitan Ave',
-    city: 'Forest Hills',
-    state: 'NY',
-    bedrooms: 2,
-    bathrooms: 2,
-    square_feet: 1300,
-    property_type: 'condo',
-    description: 'Well-maintained apartment in quiet neighborhood.',
-    image_urls: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80'],
-    listing_url: 'https://zillow.com/sample3',
-    price_per_sqft: 553.85,
-    market_score: 80,
-    value_score: 85,
-    interest_score: 82,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: '8',
-    source: 'redfin',
-    title: 'Elegant 3BR Brownstone in Park Slope',
-    price: 1350000,
-    address: '678 Prospect Ave',
-    city: 'Park Slope',
-    state: 'NY',
-    bedrooms: 3,
-    bathrooms: 2.5,
-    square_feet: 1900,
-    property_type: 'townhouse',
-    description: 'Historic brownstone with modern updates and garden.',
-    image_urls: ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80'],
-    listing_url: 'https://redfin.com/sample3',
-    price_per_sqft: 710.53,
-    market_score: 92,
-    value_score: 88,
-    interest_score: 90,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: '9',
+    id: '6',
     source: 'streeteasy',
-    title: 'Modern 1BR Loft in DUMBO',
-    price: 850000,
-    address: '890 Water St',
-    city: 'DUMBO',
+    title: 'Elegant 1BR Loft in Manhattan',
+    price: 950000,
+    address: '890 Broadway',
+    city: 'Manhattan',
     state: 'NY',
     bedrooms: 1,
     bathrooms: 1,
@@ -225,11 +162,74 @@ const mockProperties: Property[] = [
     property_type: 'condo',
     description: 'Industrial loft with exposed brick and city views.',
     image_urls: ['https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80'],
-    listing_url: 'https://streeteasy.com/sample3',
-    price_per_sqft: 850,
+    listing_url: 'https://streeteasy.com/sample2',
+    price_per_sqft: 950,
     market_score: 87,
     value_score: 80,
     interest_score: 94,
+    created_at: new Date().toISOString()
+  },
+  {
+    id: '7',
+    source: 'zillow',
+    title: 'Spacious 4BR House in Nassau County',
+    price: 850000,
+    address: '234 Nassau Ave',
+    city: 'Nassau County',
+    state: 'NY',
+    bedrooms: 4,
+    bathrooms: 3,
+    square_feet: 2200,
+    property_type: 'house',
+    description: 'Family home with large backyard in Nassau County.',
+    image_urls: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?auto=format&fit=crop&w=800&q=80'],
+    listing_url: 'https://zillow.com/sample3',
+    price_per_sqft: 386.36,
+    market_score: 82,
+    value_score: 88,
+    interest_score: 85,
+    created_at: new Date().toISOString()
+  },
+  {
+    id: '8',
+    source: 'redfin',
+    title: 'Cozy 3BR Townhouse in Nassau County',
+    price: 720000,
+    address: '678 Long Island Ave',
+    city: 'Nassau County',
+    state: 'NY',
+    bedrooms: 3,
+    bathrooms: 2.5,
+    square_feet: 1900,
+    property_type: 'townhouse',
+    description: 'Well-maintained townhouse with modern updates.',
+    image_urls: ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80'],
+    listing_url: 'https://redfin.com/sample3',
+    price_per_sqft: 378.95,
+    market_score: 78,
+    value_score: 90,
+    interest_score: 82,
+    created_at: new Date().toISOString()
+  },
+  {
+    id: '9',
+    source: 'streeteasy',
+    title: 'Modern 2BR Apartment in Nassau County',
+    price: 650000,
+    address: '345 County Road',
+    city: 'Nassau County',
+    state: 'NY',
+    bedrooms: 2,
+    bathrooms: 2,
+    square_feet: 1300,
+    property_type: 'condo',
+    description: 'Contemporary apartment with great amenities.',
+    image_urls: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80'],
+    listing_url: 'https://streeteasy.com/sample3',
+    price_per_sqft: 500,
+    market_score: 75,
+    value_score: 85,
+    interest_score: 80,
     created_at: new Date().toISOString()
   }
 ];
@@ -297,24 +297,47 @@ export const RealEstateSection = () => {
           filteredData = filteredData.filter(p => p.property_type === filters.propertyType);
         }
 
-        // Apply sorting
+        // Apply geographic priority sorting first: Queens > Manhattan > Nassau County
+        const getGeographicPriority = (city: string) => {
+          const cityLower = city.toLowerCase();
+          if (cityLower.includes('queens') || cityLower.includes('queen')) return 1;
+          if (cityLower.includes('manhattan')) return 2;
+          if (cityLower.includes('nassau')) return 3;
+          return 4; // Other areas get lower priority
+        };
+
+        // Apply sorting with geographic priority
         switch (filters.sortBy) {
           case 'price_low':
-            filteredData.sort((a, b) => a.price - b.price);
+            filteredData.sort((a, b) => {
+              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
+              return priorityDiff !== 0 ? priorityDiff : a.price - b.price;
+            });
             break;
           case 'price_high':
-            filteredData.sort((a, b) => b.price - a.price);
+            filteredData.sort((a, b) => {
+              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
+              return priorityDiff !== 0 ? priorityDiff : b.price - a.price;
+            });
             break;
           case 'value_score':
-            filteredData.sort((a, b) => b.value_score - a.value_score);
+            filteredData.sort((a, b) => {
+              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
+              return priorityDiff !== 0 ? priorityDiff : b.value_score - a.value_score;
+            });
             break;
           case 'market_score':
-            filteredData.sort((a, b) => b.market_score - a.market_score);
+            filteredData.sort((a, b) => {
+              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
+              return priorityDiff !== 0 ? priorityDiff : b.market_score - a.market_score;
+            });
             break;
           default:
-            filteredData.sort((a, b) => 
-              new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-            );
+            filteredData.sort((a, b) => {
+              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
+              if (priorityDiff !== 0) return priorityDiff;
+              return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+            });
         }
 
         // Limit to 9 properties
@@ -390,24 +413,47 @@ export const RealEstateSection = () => {
           );
         }
 
-        // Sort properties
+        // Apply geographic priority sorting first: Queens > Manhattan > Nassau County
+        const getGeographicPriority = (city: string) => {
+          const cityLower = city.toLowerCase();
+          if (cityLower.includes('queens') || cityLower.includes('queen')) return 1;
+          if (cityLower.includes('manhattan')) return 2;
+          if (cityLower.includes('nassau')) return 3;
+          return 4; // Other areas get lower priority
+        };
+
+        // Sort properties with geographic priority
         switch (filters.sortBy) {
           case 'price_low':
-            fetchedProperties.sort((a: Property, b: Property) => a.price - b.price);
+            fetchedProperties.sort((a: Property, b: Property) => {
+              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
+              return priorityDiff !== 0 ? priorityDiff : a.price - b.price;
+            });
             break;
           case 'price_high':
-            fetchedProperties.sort((a: Property, b: Property) => b.price - a.price);
+            fetchedProperties.sort((a: Property, b: Property) => {
+              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
+              return priorityDiff !== 0 ? priorityDiff : b.price - a.price;
+            });
             break;
           case 'value_score':
-            fetchedProperties.sort((a: Property, b: Property) => b.value_score - a.value_score);
+            fetchedProperties.sort((a: Property, b: Property) => {
+              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
+              return priorityDiff !== 0 ? priorityDiff : b.value_score - a.value_score;
+            });
             break;
           case 'market_score':
-            fetchedProperties.sort((a: Property, b: Property) => b.market_score - a.market_score);
+            fetchedProperties.sort((a: Property, b: Property) => {
+              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
+              return priorityDiff !== 0 ? priorityDiff : b.market_score - a.market_score;
+            });
             break;
           default:
-            fetchedProperties.sort((a: Property, b: Property) => 
-              new Date(b.created_at || b.listing_date).getTime() - new Date(a.created_at || a.listing_date).getTime()
-            );
+            fetchedProperties.sort((a: Property, b: Property) => {
+              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
+              if (priorityDiff !== 0) return priorityDiff;
+              return new Date(b.created_at || b.listing_date).getTime() - new Date(a.created_at || a.listing_date).getTime();
+            });
         }
 
         // Limit to 9 properties
