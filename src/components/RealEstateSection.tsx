@@ -188,12 +188,110 @@ export const RealEstateSection = () => {
     sortBy: 'newest'
   });
 
-  // Fetch properties from Supabase edge function
-  const fetchProperties = async () => {
-    setLoading(true);
+  // Fetch properties with optimized loading strategy
+  const fetchProperties = async (backgroundUpdate = false) => {
+    if (!backgroundUpdate) {
+      setLoading(true);
+    }
+    
     try {
       console.log('Fetching properties with filters:', filters);
       
+      // First, try to get existing data from database quickly
+      const { data: existingData, error: dbError } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+        .limit(20);
+
+      if (dbError) {
+        console.error('Database error:', dbError);
+      }
+
+      // If we have existing data, show it immediately
+      if (existingData && existingData.length > 0 && !backgroundUpdate) {
+        let filteredData = existingData;
+        
+        // Apply client-side filtering
+        if (filters.location) {
+          filteredData = filteredData.filter(prop => 
+            prop.city?.toLowerCase().includes(filters.location.toLowerCase()) ||
+            prop.state?.toLowerCase().includes(filters.location.toLowerCase()) ||
+            prop.address?.toLowerCase().includes(filters.location.toLowerCase())
+          );
+        }
+        
+        if (filters.minPrice) {
+          filteredData = filteredData.filter(prop => prop.price >= parseInt(filters.minPrice));
+        }
+        
+        if (filters.maxPrice) {
+          filteredData = filteredData.filter(prop => prop.price <= parseInt(filters.maxPrice));
+        }
+        
+        if (filters.propertyType !== 'all') {
+          filteredData = filteredData.filter(p => p.property_type === filters.propertyType);
+        }
+
+        // Apply sorting
+        switch (filters.sortBy) {
+          case 'price_low':
+            filteredData.sort((a, b) => a.price - b.price);
+            break;
+          case 'price_high':
+            filteredData.sort((a, b) => b.price - a.price);
+            break;
+          case 'value_score':
+            filteredData.sort((a, b) => b.value_score - a.value_score);
+            break;
+          case 'market_score':
+            filteredData.sort((a, b) => b.market_score - a.market_score);
+            break;
+          default:
+            filteredData.sort((a, b) => 
+              new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+            );
+        }
+
+        setProperties(filteredData);
+        setLoading(false);
+        
+        if (filteredData.length > 0) {
+          toast({
+            title: "Success",
+            description: `Found ${filteredData.length} properties`,
+          });
+        }
+        
+        // Start background update for fresh data
+        setTimeout(() => {
+          fetchPropertiesFromAPI(true);
+        }, 1000);
+        
+        return;
+      }
+      
+      // If no existing data or this is a background update, call the API
+      await fetchPropertiesFromAPI(backgroundUpdate);
+      
+    } catch (error) {
+      console.error('Error in fetchProperties:', error);
+      if (!backgroundUpdate) {
+        // Show fallback data for immediate user feedback
+        setProperties(mockProperties);
+        setLoading(false);
+        toast({
+          title: "Using sample data",
+          description: "Showing sample properties while we fetch the latest data",
+        });
+      }
+    }
+  };
+
+  // Separate function for API calls
+  const fetchPropertiesFromAPI = async (isBackgroundUpdate = false) => {
+    try {
       // Call the Supabase edge function
       const { data, error } = await supabase.functions.invoke('fetch-properties', {
         body: {
@@ -205,64 +303,70 @@ export const RealEstateSection = () => {
 
       if (error) {
         console.error('Error calling fetch-properties function:', error);
-        toast({
-          title: "Error",
-          description: "Failed to fetch properties. Please try again.",
-          variant: "destructive",
-        });
+        if (!isBackgroundUpdate) {
+          toast({
+            title: "Error",
+            description: "Failed to fetch latest properties. Showing cached data.",
+            variant: "destructive",
+          });
+        }
         return;
       }
 
       let fetchedProperties = data?.properties || [];
-      console.log('Fetched properties:', fetchedProperties.length);
+      console.log('Fetched properties from API:', fetchedProperties.length);
 
-      // Apply additional client-side filtering
-      if (filters.propertyType !== 'all') {
-        fetchedProperties = fetchedProperties.filter((p: Property) => 
-          p.property_type === filters.propertyType
-        );
-      }
-
-      // Sort properties
-      switch (filters.sortBy) {
-        case 'price_low':
-          fetchedProperties.sort((a: Property, b: Property) => a.price - b.price);
-          break;
-        case 'price_high':
-          fetchedProperties.sort((a: Property, b: Property) => b.price - a.price);
-          break;
-        case 'value_score':
-          fetchedProperties.sort((a: Property, b: Property) => b.value_score - a.value_score);
-          break;
-        case 'market_score':
-          fetchedProperties.sort((a: Property, b: Property) => b.market_score - a.market_score);
-          break;
-        default: // newest
-          fetchedProperties.sort((a: Property, b: Property) => 
-            new Date(b.created_at || b.listing_date).getTime() - new Date(a.created_at || a.listing_date).getTime()
-          );
-      }
-
-      setProperties(fetchedProperties);
-      
       if (fetchedProperties.length > 0) {
-        toast({
-          title: "Success",
-          description: `Found ${fetchedProperties.length} properties`,
-        });
+        // Apply additional client-side filtering
+        if (filters.propertyType !== 'all') {
+          fetchedProperties = fetchedProperties.filter((p: Property) => 
+            p.property_type === filters.propertyType
+          );
+        }
+
+        // Sort properties
+        switch (filters.sortBy) {
+          case 'price_low':
+            fetchedProperties.sort((a: Property, b: Property) => a.price - b.price);
+            break;
+          case 'price_high':
+            fetchedProperties.sort((a: Property, b: Property) => b.price - a.price);
+            break;
+          case 'value_score':
+            fetchedProperties.sort((a: Property, b: Property) => b.value_score - a.value_score);
+            break;
+          case 'market_score':
+            fetchedProperties.sort((a: Property, b: Property) => b.market_score - a.market_score);
+            break;
+          default:
+            fetchedProperties.sort((a: Property, b: Property) => 
+              new Date(b.created_at || b.listing_date).getTime() - new Date(a.created_at || a.listing_date).getTime()
+            );
+        }
+
+        setProperties(fetchedProperties);
+        
+        if (isBackgroundUpdate) {
+          toast({
+            title: "Data updated",
+            description: `Refreshed with ${fetchedProperties.length} latest properties`,
+          });
+        } else {
+          toast({
+            title: "Success",
+            description: `Found ${fetchedProperties.length} properties`,
+          });
+        }
       }
     } catch (error) {
-      console.error('Error fetching properties:', error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch properties. Please try again.",
-        variant: "destructive",
-      });
-      
-      // Fallback to mock data if API fails
-      setProperties(mockProperties);
+      console.error('Error in fetchPropertiesFromAPI:', error);
+      if (!isBackgroundUpdate) {
+        throw error; // Re-throw to be handled by parent function
+      }
     } finally {
-      setLoading(false);
+      if (!isBackgroundUpdate) {
+        setLoading(false);
+      }
     }
   };
 
@@ -327,6 +431,14 @@ export const RealEstateSection = () => {
             <Button onClick={handleSearch} className="h-12 px-8" disabled={loading}>
               <Search className="w-4 h-4 mr-2" />
               {loading ? t('realEstate.searching') : t('realEstate.search')}
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => fetchPropertiesFromAPI(false)}
+              className="h-12 px-6"
+              disabled={loading}
+            >
+              🔄 Refresh Data
             </Button>
             <Button 
               variant="outline" 
@@ -403,6 +515,7 @@ export const RealEstateSection = () => {
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
             <p className="mt-4 text-muted-foreground">{t('realEstate.loading')}</p>
+            <p className="text-sm text-muted-foreground mt-2">Fetching latest property data...</p>
           </div>
         ) : properties.length === 0 ? (
           <div className="text-center py-12">

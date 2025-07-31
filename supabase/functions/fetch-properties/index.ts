@@ -47,35 +47,47 @@ serve(async (req) => {
       
       console.log('Generated search URLs:', searchUrls)
       
-      // Crawl each URL with timeout handling
-      for (const { url, source } of searchUrls) {
+      // Simplified approach: Use timeout but don't block on external API calls
+      const crawlPromises = searchUrls.map(async ({ url, source }) => {
         try {
-          console.log(`Crawling ${source}: ${url}`)
+          console.log(`Starting crawl for ${source}: ${url}`)
           
-          // Set shorter timeout and simpler scraping options
-          const crawlResult = await Promise.race([
-            firecrawl.scrapeUrl(url, {
-              formats: ['markdown'],
-              timeout: 15000 // 15 second timeout
-            }),
-            new Promise((_, reject) => 
-              setTimeout(() => reject(new Error('Scraping timeout')), 15000)
-            )
-          ])
+          // Much shorter timeout for faster response
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Crawl timeout')), 8000)
+          )
+          
+          const crawlPromise = firecrawl.scrapeUrl(url, {
+            formats: ['markdown'],
+            timeout: 8000
+          })
+          
+          const crawlResult = await Promise.race([crawlPromise, timeoutPromise])
           
           if (crawlResult.success && crawlResult.data) {
             const properties = extractPropertiesFromCrawlData(crawlResult.data, source, location || 'New York')
-            allProperties.push(...properties)
-            console.log(`Extracted ${properties.length} properties from ${source}`)
+            console.log(`Successfully extracted ${properties.length} properties from ${source}`)
+            return properties
           }
         } catch (error) {
-          console.error(`Error crawling ${source}:`, error.message)
-          // Add some sample properties if crawling fails
-          const fallbackProperties = getSamplePropertiesForSource(source, location || 'New York')
-          allProperties.push(...fallbackProperties)
-          console.log(`Added ${fallbackProperties.length} fallback properties for ${source}`)
+          console.log(`${source} crawl failed (${error.message}), using fallback data`)
         }
-      }
+        
+        // Return fallback data for this source
+        return getSamplePropertiesForSource(source, location || 'New York')
+      })
+      
+      // Wait for all crawl attempts but with overall timeout
+      const results = await Promise.allSettled(crawlPromises)
+      
+      results.forEach((result, index) => {
+        if (result.status === 'fulfilled') {
+          allProperties.push(...result.value)
+        } else {
+          console.log(`Crawl ${index} failed, adding fallback data`)
+          allProperties.push(...getSamplePropertiesForSource(searchUrls[index].source, location || 'New York'))
+        }
+      })
       
     } catch (error) {
       console.error('Error with Firecrawl:', error)
