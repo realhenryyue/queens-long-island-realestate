@@ -277,16 +277,16 @@ const translations: Translations = {
   
   // SEO Meta Tags
   'seo.title': {
-    en: 'Henry Yue - Licensed Real Estate Agent | Queens & Long Island Properties',
-    zh: 'Henry岳先生 - 纽约华人地产经纪 | 皇后区长岛房地产专家'
+    en: 'New York Real Estate Agent - Henry Yue | Licensed Professional Queens & Long Island',
+    zh: '纽约房地产经纪人 - Henry岳先生 | 皇后区长岛持牌专业经纪'
   },
   'seo.description': {
-    en: 'Licensed NY real estate agent specializing in Queens, Long Island & Manhattan properties. Expert guidance for home buyers, sellers & investors. Bilingual service available.',
-    zh: '纽约持牌华人地产经纪，专注皇后区、长岛、曼哈顿房产投资。提供专业海外买房、纽约地产投资咨询服务。'
+    en: 'New York Real Estate Agent Henry Yue - Licensed professional specializing in Queens, Long Island & Manhattan properties. Expert guidance for home buyers, sellers & investors.',
+    zh: '纽约房地产经纪人Henry岳先生 - 持牌专业经纪，专注皇后区、长岛、曼哈顿房产投资。提供专业海外买房、纽约地产投资咨询服务。'
   },
   'seo.keywords': {
-    en: 'New York real estate agent, Queens properties, Long Island homes, Manhattan real estate, licensed agent, property investment, home buying, real estate services',
-    zh: '纽约华人地产经纪,皇后区房产,长岛房地产,曼哈顿地产投资,海外买房,纽约房产中介,地产经纪人,房地产投资'
+    en: 'New York Real Estate Agent, Henry Yue, Queens real estate, Long Island properties, Manhattan real estate, licensed agent, property investment, home buying, real estate services',
+    zh: '纽约房地产经纪人,Henry岳先生,皇后区房产,长岛房地产,曼哈顿地产投资,海外买房,纽约房产中介,地产经纪人,房地产投资'
   },
   'seo.shareTitle': {
     en: 'Henry Yue - Licensed Real Estate Agent | Professional Property Services',
