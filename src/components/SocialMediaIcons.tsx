@@ -1,5 +1,6 @@
-import { Facebook, Instagram, Linkedin, Music, MessageCircle } from "lucide-react";
+import { Facebook, Instagram, Linkedin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TikTokIcon, DouyinIcon } from "@/components/icons/TikTokIcon";
 
 const socialPlatforms = [
   {
@@ -29,13 +30,13 @@ const socialPlatforms = [
   {
     name: "TikTok",
     url: "https://www.tiktok.com/@realhenryyue",
-    icon: Music,
+    icon: TikTokIcon,
     color: "text-[#000000] hover:text-[#000000] hover:scale-110"
   },
   {
     name: "Douyin",
     url: "https://v.douyin.com/i5JLpoT9/",
-    icon: Music,
+    icon: DouyinIcon,
     color: "text-[#25f4ee] hover:text-[#25f4ee] hover:scale-110"
   }
 ];
