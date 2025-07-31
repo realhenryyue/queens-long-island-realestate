@@ -7,8 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { MapPin, Bed, Bath, Square, Star, ExternalLink, Search, Filter } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { FirecrawlService } from '@/utils/FirecrawlService';
 import { useToast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Property {
   id: string;
@@ -30,6 +30,7 @@ interface Property {
   value_score: number;
   interest_score: number;
   created_at: string;
+  listing_date?: string;
 }
 
 interface Filters {
@@ -187,37 +188,37 @@ export const RealEstateSection = () => {
     sortBy: 'newest'
   });
 
-  // Fetch properties (using mock data for now)
+  // Fetch properties from Supabase edge function
   const fetchProperties = async () => {
     setLoading(true);
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log('Fetching properties with filters:', filters);
+      
+      // Call the Supabase edge function
+      const { data, error } = await supabase.functions.invoke('fetch-properties', {
+        body: {
+          location: filters.location || 'New York',
+          minPrice: filters.minPrice ? parseInt(filters.minPrice) : null,
+          maxPrice: filters.maxPrice ? parseInt(filters.maxPrice) : null
+        }
+      });
 
-      let filteredProperties = [...mockProperties];
-
-      // Apply location filter
-      if (filters.location) {
-        filteredProperties = filteredProperties.filter(prop => 
-          prop.city.toLowerCase().includes(filters.location.toLowerCase()) ||
-          prop.state.toLowerCase().includes(filters.location.toLowerCase()) ||
-          prop.address.toLowerCase().includes(filters.location.toLowerCase())
-        );
+      if (error) {
+        console.error('Error calling fetch-properties function:', error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch properties. Please try again.",
+          variant: "destructive",
+        });
+        return;
       }
 
-      // Apply price filters
-      if (filters.minPrice) {
-        filteredProperties = filteredProperties.filter(prop => prop.price >= parseInt(filters.minPrice));
-      }
-      if (filters.maxPrice) {
-        filteredProperties = filteredProperties.filter(prop => prop.price <= parseInt(filters.maxPrice));
-      }
+      let fetchedProperties = data?.properties || [];
+      console.log('Fetched properties:', fetchedProperties.length);
 
-      let sortedProperties = filteredProperties;
-
-      // Apply additional filtering
+      // Apply additional client-side filtering
       if (filters.propertyType !== 'all') {
-        sortedProperties = sortedProperties.filter((p: Property) => 
+        fetchedProperties = fetchedProperties.filter((p: Property) => 
           p.property_type === filters.propertyType
         );
       }
@@ -225,26 +226,41 @@ export const RealEstateSection = () => {
       // Sort properties
       switch (filters.sortBy) {
         case 'price_low':
-          sortedProperties.sort((a: Property, b: Property) => a.price - b.price);
+          fetchedProperties.sort((a: Property, b: Property) => a.price - b.price);
           break;
         case 'price_high':
-          sortedProperties.sort((a: Property, b: Property) => b.price - a.price);
+          fetchedProperties.sort((a: Property, b: Property) => b.price - a.price);
           break;
         case 'value_score':
-          sortedProperties.sort((a: Property, b: Property) => b.value_score - a.value_score);
+          fetchedProperties.sort((a: Property, b: Property) => b.value_score - a.value_score);
           break;
         case 'market_score':
-          sortedProperties.sort((a: Property, b: Property) => b.market_score - a.market_score);
+          fetchedProperties.sort((a: Property, b: Property) => b.market_score - a.market_score);
           break;
         default: // newest
-          sortedProperties.sort((a: Property, b: Property) => 
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          fetchedProperties.sort((a: Property, b: Property) => 
+            new Date(b.created_at || b.listing_date).getTime() - new Date(a.created_at || a.listing_date).getTime()
           );
       }
 
-      setProperties(sortedProperties);
+      setProperties(fetchedProperties);
+      
+      if (fetchedProperties.length > 0) {
+        toast({
+          title: "Success",
+          description: `Found ${fetchedProperties.length} properties`,
+        });
+      }
     } catch (error) {
       console.error('Error fetching properties:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch properties. Please try again.",
+        variant: "destructive",
+      });
+      
+      // Fallback to mock data if API fails
+      setProperties(mockProperties);
     } finally {
       setLoading(false);
     }
