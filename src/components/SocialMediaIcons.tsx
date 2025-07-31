@@ -52,9 +52,14 @@ export const SocialMediaIcons = () => {
             variant="ghost"
             size="sm"
             className={`w-8 h-8 p-0 transition-all duration-200 ${platform.color}`}
-            onClick={() => {
-              if (platform.url && platform.url.trim() !== "") {
-                window.open(platform.url, '_blank');
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('Clicking social media:', platform.name, 'URL:', platform.url);
+              if (platform.url && platform.url.trim() !== "" && platform.url.startsWith('http')) {
+                window.open(platform.url, '_blank', 'noopener,noreferrer');
+              } else {
+                console.error('Invalid social media URL:', platform.url);
               }
             }}
             title={platform.name}

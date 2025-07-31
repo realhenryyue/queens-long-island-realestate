@@ -473,7 +473,7 @@ function getOptimizedFallbackData(source: string, location: string) {
   return properties
 }
 
-// Helper function to generate search URLs based on property criteria
+// Helper function to generate search URLs based on property criteria (kept for legacy support)
 function generateSearchUrl(source: string, location: string, propertyType: string, bedrooms: number, price: number) {
   const locationSlug = location.toLowerCase().replace(/\s+/g, '-')
   const priceRange = price > 1000000 ? 'min-price=1M' : price > 500000 ? 'min-price=500k,max-price=1M' : 'max-price=500k'

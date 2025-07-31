@@ -285,10 +285,14 @@ const PropertyCard = React.memo(({ property }: { property: Property }) => {
     }
   }, []);
 
-  const handlePropertyClick = useCallback((property: Property) => {
+  const handlePropertyClick = useCallback((property: Property, event?: React.MouseEvent) => {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     console.log('Clicking property:', property.title, 'URL:', property.listing_url);
     if (property.listing_url && property.listing_url.startsWith('http')) {
-      window.open(property.listing_url, '_blank');
+      window.open(property.listing_url, '_blank', 'noopener,noreferrer');
     } else {
       console.error('Invalid listing URL:', property.listing_url);
       toast({
@@ -302,7 +306,7 @@ const PropertyCard = React.memo(({ property }: { property: Property }) => {
   return (
     <Card 
       className="overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-0 shadow-md cursor-pointer"
-      onClick={() => handlePropertyClick(property)}
+      onClick={(e) => handlePropertyClick(property, e)}
     >
       {/* Property Image */}
       <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200">
