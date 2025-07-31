@@ -5,6 +5,7 @@ import agentPhoto from "@/assets/agent-photo.jpg";
 import queensSkyline from "@/assets/queens-skyline.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { SocialMediaIcons } from "@/components/SocialMediaIcons";
 
 export const HeroSection = () => {
   const { t } = useLanguage();
@@ -98,9 +99,11 @@ export const HeroSection = () => {
                      <Mail className="w-4 h-4 text-accent" />
                      <span>forangh(at)gmail.com</span>
                    </div>
-                </div>
-              </div>
-            </Card>
+                 </div>
+                 
+                 <SocialMediaIcons />
+               </div>
+             </Card>
           </div>
         </div>
       </div>
