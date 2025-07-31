@@ -91,7 +91,7 @@ Message: ${formData.message}`;
                     <div>
                       <div className="font-semibold text-primary">{t('contact.email')}</div>
                        <a href="mailto:forangh@gmail.com" className="text-lg text-foreground hover:text-primary transition-smooth">
-                         forangh(at)gmail.com
+                         forangh@gmail.com
                        </a>
                     </div>
                   </div>

@@ -97,7 +97,7 @@ export const HeroSection = () => {
                   </div>
                    <div className="flex items-center gap-2 text-muted-foreground">
                      <Mail className="w-4 h-4 text-accent" />
-                     <span>forangh(at)gmail.com</span>
+                     <span>forangh@gmail.com</span>
                    </div>
                  </div>
                  
