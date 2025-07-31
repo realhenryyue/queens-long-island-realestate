@@ -84,18 +84,27 @@ export const SocialShareButtons = () => {
         newWindow.document.close();
       }
     } else if (platform === "Facebook") {
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, '_blank');
+      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+      if (shareUrl && shareUrl.trim() !== "") {
+        window.open(shareUrl, '_blank');
+      }
     } else if (platform === "Twitter") {
-      window.open(`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`, '_blank');
+      const shareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
+      if (shareUrl && shareUrl.trim() !== "") {
+        window.open(shareUrl, '_blank');
+      }
     } else if (platform === "LinkedIn") {
-      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`, '_blank');
+      const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+      if (shareUrl && shareUrl.trim() !== "") {
+        window.open(shareUrl, '_blank');
+      }
     }
   };
 
   const handleShare = (url: string, name: string) => {
     if (name === "Native Share") {
       handleNativeShare();
-    } else {
+    } else if (url && url.trim() !== "") {
       handleWebShare(name);
     }
   };
