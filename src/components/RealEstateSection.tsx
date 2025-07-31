@@ -247,6 +247,7 @@ const preloadImage = (src: string): Promise<void> => {
 // Optimized Property Card Component
 const PropertyCard = React.memo(({ property }: { property: Property }) => {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -284,10 +285,24 @@ const PropertyCard = React.memo(({ property }: { property: Property }) => {
     }
   }, []);
 
+  const handlePropertyClick = useCallback((property: Property) => {
+    console.log('Clicking property:', property.title, 'URL:', property.listing_url);
+    if (property.listing_url && property.listing_url.startsWith('http')) {
+      window.open(property.listing_url, '_blank');
+    } else {
+      console.error('Invalid listing URL:', property.listing_url);
+      toast({
+        title: "Link unavailable",
+        description: "This property listing link is not available.",
+        variant: "destructive",
+      });
+    }
+  }, [toast]);
+
   return (
     <Card 
       className="overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-0 shadow-md cursor-pointer"
-      onClick={() => window.open(property.listing_url, '_blank')}
+      onClick={() => handlePropertyClick(property)}
     >
       {/* Property Image */}
       <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200">
@@ -493,12 +508,16 @@ export const RealEstateSection = () => {
 
       if (data?.properties?.length > 0) {
         const sortedProps = sortProperties(data.properties).slice(0, 9);
+        console.log('API返回的房源数据:', data.properties.length, '排序后:', sortedProps.length);
+        console.log('房源URL示例:', sortedProps.slice(0, 2).map(p => ({ title: p.title, url: p.listing_url })));
         setProperties(sortedProps);
         
         toast({
           title: isBackgroundUpdate ? "Data refreshed" : "Success",
           description: `Found ${sortedProps.length} properties`,
         });
+      } else {
+        console.log('API未返回房源数据，使用本地数据');
       }
     } catch (error) {
       console.error('Fetch error:', error);
