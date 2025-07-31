@@ -1,1 +1,231 @@
-<!-- Placeholder for Henry's avatar favicon -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$RefreshSig$ = () => (type) => type;</script>
+
+    <script type="module" src="/@vite/client"></script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Optimization: Enhanced Title with Keywords -->
+    <title>Henry岳先生 - 纽约房地产经纪人 | 曼哈顿、皇后区专业地产服务</title>
+    
+    <!-- SEO: Enhanced Meta Description with Keywords -->
+    <meta name="description" content="Henry岳先生，纽约州持牌房地产经纪人，专业服务皇后区、长岛、曼哈顿地区。提供双语房产咨询，协助海外买房、投资置业，拥有丰富的当地市场经验。">
+    
+    <!-- SEO: Comprehensive Keywords -->
+    <meta name="keywords" content="Henry岳先生, 纽约房地产经纪人, 曼哈顿地产, 皇后区房产, 海外买房, 法拉盛商业楼, 华人地产经纪, 房产投资咨询">
+    
+    <!-- SEO: Canonical URL -->
+    <link rel="canonical" href="https://www.realhenryyue.com/" />
+    
+    <meta name="author" content="Henry Yue">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preload" href="/assets/agent-photo.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="/assets/queens-skyline.jpg" as="image" type="image/jpeg">
+    <link rel="dns-prefetch" href="//www.facebook.com">
+    <link rel="dns-prefetch" href="//www.instagram.com">
+    <link rel="dns-prefetch" href="//linkedin.com">
+    <link rel="dns-prefetch" href="//www.tiktok.com">
+    
+    <!-- Favicon Configuration -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png">
+    <link rel="mask-icon" href="/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png" color="#1a365d">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#1a365d">
+    <meta name="msapplication-TileImage" content="/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png">
+    <meta name="theme-color" content="#1a365d">
+    
+    <!-- Hreflang tags for bilingual support -->
+    <link rel="alternate" hreflang="zh" href="https://www.realhenryyue.com/cn/" />
+    <link rel="alternate" hreflang="en" href="https://www.realhenryyue.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/" />
+
+    <!-- Enhanced Open Graph Meta Tags -->
+    <meta property="og:title" content="Henry岳先生 - 纽约专业房地产经纪人" />
+    <meta property="og:description" content="专业纽约房地产服务，提供曼哈顿、皇后区、长岛地区房产咨询，协助海外买房与投资置业。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.realhenryyue.com/" />
+    <meta property="og:image" content="https://www.realhenryyue.com/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.png" />
+    <meta property="og:site_name" content="RealHenryYue.com" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:locale:alternate" content="en_US" />
+
+    <!-- Enhanced Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Henry岳先生 | 纽约华人地产经纪" />
+    <meta name="twitter:description" content="专业纽约房地产经纪人，专注海外买房、纽约房产投资服务" />
+    <meta name="twitter:image" content="https://www.realhenryyue.com/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.png" />
+    <meta name="twitter:site" content="@RealHenryYue" />
+    
+    <!-- Google Analytics GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-35QWT9PLLD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-35QWT9PLLD');
+    </script>
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "RealEstateAgent",
+          "@id": "https://www.realhenryyue.com/#agent",
+          "name": "Hongyu (Henry) Yue",
+          "alternateName": "Henry岳先生",
+          "url": "https://www.realhenryyue.com",
+          "image": "https://www.realhenryyue.com/assets/agent-photo.jpg",
+          "telephone": "+1-718-717-5210",
+          "email": "forangh@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressRegion": "NY",
+            "addressCountry": "US"
+          },
+          "areaServed": [
+            {
+              "@type": "City",
+              "name": "Queens"
+            },
+            {
+              "@type": "State",
+              "name": "New York"
+            },
+            {
+              "@type": "Place",
+              "name": "Long Island"
+            },
+            {
+              "@type": "Place", 
+              "name": "Manhattan"
+            },
+            {
+              "@type": "Place",
+              "name": "Flushing"
+            }
+          ],
+          "knowsLanguage": ["Chinese", "English"],
+          "jobTitle": "Licensed Real Estate Salesperson",
+          "worksFor": {
+            "@type": "RealEstateAgent",
+            "name": "E Realty International Corp."
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.realhenryyue.com/#website",
+          "url": "https://www.realhenryyue.com",
+          "name": "RealHenryYue.com",
+          "description": "Henry岳先生专业纽约房地产服务，提供海外买房、纽约生活、投资咨询",
+          "publisher": {
+            "@id": "https://www.realhenryyue.com/#agent"
+          },
+          "inLanguage": ["zh-CN", "en-US"],
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.realhenryyue.com/?s={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "LocalBusiness",
+          "@id": "https://www.realhenryyue.com/#business",
+          "name": "Henry Yue Real Estate Services",
+          "alternateName": "Henry岳房地产服务",
+          "description": "专业纽约房地产经纪服务，专注海外买房、房产投资、法拉盛商业楼等",
+          "url": "https://www.realhenryyue.com",
+          "telephone": "+1-718-717-5210",
+          "email": "forangh@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressRegion": "NY",
+            "addressCountry": "US"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "40.7589",
+            "longitude": "-73.8365"
+          },
+          "areaServed": {
+            "@type": "State",
+            "name": "New York"
+          },
+          "serviceType": ["Real Estate Sales", "Property Investment", "Home Buying", "Commercial Real Estate"],
+          "priceRange": "$$"
+        }
+      ]
+    }
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx?t=1753992067975"></script>
+    
+    <!-- Performance optimization script -->
+    <script>
+      // Force favicon update by appending timestamp
+      document.addEventListener('DOMContentLoaded', function() {
+        const faviconLinks = document.querySelectorAll('link[rel*="icon"]');
+        const timestamp = new Date().getTime();
+        
+        faviconLinks.forEach(link => {
+          if (link.href.includes('lovable-uploads')) {
+            const newHref = link.href.includes('?') ? 
+              link.href + '&t=' + timestamp : 
+              link.href + '?t=' + timestamp;
+            link.href = newHref;
+          }
+        });
+        
+        // Alternative method: Create new favicon link
+        const head = document.getElementsByTagName('head')[0];
+        const link = document.createElement('link');
+        link.type = 'image/png';
+        link.rel = 'shortcut icon';
+        link.href = '/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png?v=' + timestamp;
+        head.appendChild(link);
+      });
+    </script>
+    
+    <!-- Performance optimization script -->
+    <script>
+      // Lazy load non-critical images
+      if ('loading' in HTMLImageElement.prototype) {
+        const images = document.querySelectorAll('img[loading="lazy"]');
+        images.forEach(img => {
+          img.src = img.dataset.src;
+        });
+      } else {
+        // Fallback for browsers that don't support lazy loading
+        const script = document.createElement('script');
+        script.src = 'https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver';
+        document.head.appendChild(script);
+      }
+      
+      // Preload critical fonts
+      const fontLink = document.createElement('link');
+      fontLink.rel = 'preload';
+      fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
+      fontLink.as = 'style';
+      fontLink.onload = function() { this.rel = 'stylesheet'; };
+      document.head.appendChild(fontLink);
+    </script>
+  </body>
+</html>
