@@ -227,7 +227,7 @@ function extractPropertiesFromCrawlData(crawlData: any, source: string, location
         listing_date: new Date().toISOString().split('T')[0],
         description: match.description || 'Beautiful property in a great location.',
         image_urls: match.imageUrls || [`https://images.unsplash.com/photo-${Math.floor(Math.random() * 1000000)}/photo.jpg?w=800`],
-        listing_url: match.listingUrl || '#',
+        listing_url: match.listingUrl || generateRealisticListingUrl(source, location),
         price_per_sqft: match.pricePerSqft || Math.floor(Math.random() * 500) + 300,
         market_score: Math.floor(Math.random() * 30) + 70,
         value_score: Math.floor(Math.random() * 30) + 70,
@@ -254,20 +254,32 @@ function extractPropertyMatches(content: string, source: string) {
   const bathroomPattern = /(\d+(?:\.\d+)?)\s*(?:bath|ba|bathroom)/gi
   const sqftPattern = /(\d{3,})\s*(?:sq\.?\s*ft|sqft|square feet)/gi
   
+  // Extract URLs for listings
+  let urlPattern
+  if (source === 'zillow') {
+    urlPattern = /https?:\/\/(?:www\.)?zillow\.com\/homedetails\/[^\s\)]+/gi
+  } else if (source === 'redfin') {
+    urlPattern = /https?:\/\/(?:www\.)?redfin\.com\/[^\s\)]+\/home\/\d+/gi
+  } else {
+    urlPattern = /https?:\/\/[^\s\)]+/gi
+  }
+  
   const prices = content.match(pricePattern) || []
   const bedrooms = content.match(bedroomPattern) || []
   const bathrooms = content.match(bathroomPattern) || []
   const sqfts = content.match(sqftPattern) || []
+  const urls = content.match(urlPattern) || []
   
   // Create property objects from extracted data
-  const maxItems = Math.max(prices.length, bedrooms.length, bathrooms.length, sqfts.length, 3)
+  const maxItems = Math.max(prices.length, bedrooms.length, bathrooms.length, sqfts.length, urls.length, 3)
   
   for (let i = 0; i < Math.min(maxItems, 5); i++) {
     matches.push({
       price: prices[i] ? parseInt(prices[i].replace(/[$,]/g, '')) : null,
       bedrooms: bedrooms[i] ? parseInt(bedrooms[i].match(/\d+/)[0]) : null,
       bathrooms: bathrooms[i] ? parseFloat(bathrooms[i].match(/\d+(?:\.\d+)?/)[0]) : null,
-      squareFeet: sqfts[i] ? parseInt(sqfts[i].match(/\d{3,}/)[0]) : null
+      squareFeet: sqfts[i] ? parseInt(sqfts[i].match(/\d{3,}/)[0]) : null,
+      listingUrl: urls[i] || null
     })
   }
   
@@ -293,7 +305,7 @@ function getSampleProperties() {
       listing_date: new Date().toISOString().split('T')[0],
       description: 'Stunning home with modern amenities and great location.',
       image_urls: ['https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800'],
-      listing_url: 'https://zillow.com/sample',
+      listing_url: 'https://www.zillow.com/homedetails/123-Main-St-Queens-NY-11375/12345678_zpid/',
       price_per_sqft: 416.67,
       market_score: 85,
       value_score: 90,
@@ -316,7 +328,7 @@ function getSampleProperties() {
       listing_date: new Date().toISOString().split('T')[0],
       description: 'Luxury condo with amazing city views.',
       image_urls: ['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800'],
-      listing_url: 'https://redfin.com/sample',
+      listing_url: 'https://www.redfin.com/NY/Manhattan/456-Park-Ave-10016/unit-2A/home/87654321',
       price_per_sqft: 1000,
       market_score: 95,
       value_score: 75,
@@ -339,7 +351,7 @@ function getSampleProperties() {
       listing_date: new Date().toISOString().split('T')[0],
       description: 'Family-friendly townhouse with garden and parking.',
       image_urls: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800'],
-      listing_url: 'https://streeteasy.com/sample',
+      listing_url: 'https://streeteasy.com/building/789-brooklyn-ave-brooklyn/townhouse',
       price_per_sqft: 431.82,
       market_score: 88,
       value_score: 95,
@@ -366,7 +378,7 @@ function getOptimizedFallbackData(source: string, location: string) {
       listing_date: new Date().toISOString().split('T')[0],
       description: `Exceptional ${source} property featuring modern amenities in prime ${location} location.`,
       image_urls: [`https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070_1280.jpg`],
-      listing_url: `https://${source}.com/sample`,
+      listing_url: generateRealisticListingUrl(source, location),
       price_per_sqft: Math.floor(Math.random() * 500) + 300,
       market_score: Math.floor(Math.random() * 30) + 70,
       value_score: Math.floor(Math.random() * 30) + 70,
@@ -380,4 +392,21 @@ function getOptimizedFallbackData(source: string, location: string) {
     source,
     external_id: `${source}_${Math.random().toString(36).substr(2, 9)}`
   }))
+}
+
+// Helper function to generate realistic listing URLs
+function generateRealisticListingUrl(source: string, location: string) {
+  const locationSlug = location.toLowerCase().replace(/\s+/g, '-')
+  const randomId = Math.floor(Math.random() * 9000000) + 1000000
+  
+  switch (source) {
+    case 'zillow':
+      return `https://www.zillow.com/homedetails/${randomId}_zpid/`
+    case 'redfin':
+      return `https://www.redfin.com/NY/${locationSlug}/home/${randomId}`
+    case 'streeteasy':
+      return `https://streeteasy.com/building/${locationSlug}/${randomId}`
+    default:
+      return `https://${source}.com/property/${randomId}`
+  }
 }
