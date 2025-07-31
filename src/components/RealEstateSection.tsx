@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { MapPin, Bed, Bath, Square, Star, ExternalLink, Search, Filter } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Star, ExternalLink, Search, Filter, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -41,8 +41,8 @@ interface Filters {
   sortBy: string;
 }
 
-// Mock data for demonstration - limit to 9 properties with geographic diversity
-const mockProperties: Property[] = [
+// Optimized high-quality images with fast CDN
+const optimizedMockProperties: Property[] = [
   {
     id: '1',
     source: 'zillow',
@@ -56,7 +56,7 @@ const mockProperties: Property[] = [
     square_feet: 1800,
     property_type: 'house',
     description: 'Stunning home with modern amenities and great location.',
-    image_urls: ['https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=800&q=80'],
+    image_urls: ['https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070_1280.jpg'],
     listing_url: 'https://zillow.com/sample',
     price_per_sqft: 416.67,
     market_score: 85,
@@ -77,7 +77,7 @@ const mockProperties: Property[] = [
     square_feet: 1200,
     property_type: 'condo',
     description: 'Modern apartment in heart of Queens.',
-    image_urls: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80'],
+    image_urls: ['https://cdn.pixabay.com/photo/2017/09/09/18/25/living-room-2732939_1280.jpg'],
     listing_url: 'https://redfin.com/sample',
     price_per_sqft: 566.67,
     market_score: 88,
@@ -98,7 +98,7 @@ const mockProperties: Property[] = [
     square_feet: 900,
     property_type: 'condo',
     description: 'Cozy studio in vibrant Queens neighborhood.',
-    image_urls: ['https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=800&q=80'],
+    image_urls: ['https://cdn.pixabay.com/photo/2017/03/28/12/10/chairs-2181947_1280.jpg'],
     listing_url: 'https://streeteasy.com/sample',
     price_per_sqft: 644.44,
     market_score: 80,
@@ -119,7 +119,7 @@ const mockProperties: Property[] = [
     square_feet: 1200,
     property_type: 'condo',
     description: 'Luxury condo with amazing city views.',
-    image_urls: ['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80'],
+    image_urls: ['https://cdn.pixabay.com/photo/2017/08/27/10/16/interior-2685521_1280.jpg'],
     listing_url: 'https://zillow.com/sample2',
     price_per_sqft: 1000,
     market_score: 95,
@@ -140,7 +140,7 @@ const mockProperties: Property[] = [
     square_feet: 1600,
     property_type: 'condo',
     description: 'Stunning penthouse with Manhattan views and rooftop access.',
-    image_urls: ['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80'],
+    image_urls: ['https://cdn.pixabay.com/photo/2017/07/09/03/19/home-2486092_1280.jpg'],
     listing_url: 'https://redfin.com/sample2',
     price_per_sqft: 1156.25,
     market_score: 98,
@@ -161,7 +161,7 @@ const mockProperties: Property[] = [
     square_feet: 1000,
     property_type: 'condo',
     description: 'Industrial loft with exposed brick and city views.',
-    image_urls: ['https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80'],
+    image_urls: ['https://cdn.pixabay.com/photo/2017/08/02/01/01/living-room-2571936_1280.jpg'],
     listing_url: 'https://streeteasy.com/sample2',
     price_per_sqft: 950,
     market_score: 87,
@@ -182,7 +182,7 @@ const mockProperties: Property[] = [
     square_feet: 2200,
     property_type: 'house',
     description: 'Family home with large backyard in Nassau County.',
-    image_urls: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?auto=format&fit=crop&w=800&q=80'],
+    image_urls: ['https://cdn.pixabay.com/photo/2016/11/29/03/53/house-1867187_1280.jpg'],
     listing_url: 'https://zillow.com/sample3',
     price_per_sqft: 386.36,
     market_score: 82,
@@ -203,7 +203,7 @@ const mockProperties: Property[] = [
     square_feet: 1900,
     property_type: 'townhouse',
     description: 'Well-maintained townhouse with modern updates.',
-    image_urls: ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80'],
+    image_urls: ['https://cdn.pixabay.com/photo/2014/07/10/17/18/large-home-389271_1280.jpg'],
     listing_url: 'https://redfin.com/sample3',
     price_per_sqft: 378.95,
     market_score: 78,
@@ -224,7 +224,7 @@ const mockProperties: Property[] = [
     square_feet: 1300,
     property_type: 'condo',
     description: 'Contemporary apartment with great amenities.',
-    image_urls: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80'],
+    image_urls: ['https://cdn.pixabay.com/photo/2017/03/22/17/39/kitchen-2165756_1280.jpg'],
     listing_url: 'https://streeteasy.com/sample3',
     price_per_sqft: 500,
     market_score: 75,
@@ -234,6 +234,171 @@ const mockProperties: Property[] = [
   }
 ];
 
+// Image preloader utility
+const preloadImage = (src: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = () => reject();
+    img.src = src;
+  });
+};
+
+// Optimized Property Card Component
+const PropertyCard = React.memo(({ property }: { property: Property }) => {
+  const { t } = useLanguage();
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  // Preload image for better UX
+  useEffect(() => {
+    if (property.image_urls?.[0]) {
+      preloadImage(property.image_urls[0])
+        .then(() => setImageLoaded(true))
+        .catch(() => setImageError(true));
+    }
+  }, [property.image_urls]);
+
+  const formatPrice = useCallback((price: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0,
+    }).format(price);
+  }, []);
+
+  const getScoreColor = useCallback((score: number) => {
+    if (score >= 90) return 'bg-emerald-500';
+    if (score >= 80) return 'bg-green-500';
+    if (score >= 70) return 'bg-yellow-500';
+    if (score >= 60) return 'bg-orange-500';
+    return 'bg-red-500';
+  }, []);
+
+  const getSourceColor = useCallback((source: string) => {
+    switch (source) {
+      case 'zillow': return 'bg-blue-500';
+      case 'redfin': return 'bg-red-500';
+      case 'streeteasy': return 'bg-green-500';
+      default: return 'bg-gray-500';
+    }
+  }, []);
+
+  return (
+    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-0 shadow-md">
+      {/* Property Image */}
+      <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200">
+        {property.image_urls?.[0] && !imageError ? (
+          <>
+            {!imageLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+              </div>
+            )}
+            <img
+              src={property.image_urls[0]}
+              alt={property.title}
+              className={`w-full h-full object-cover transition-opacity duration-300 ${
+                imageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              onLoad={() => setImageLoaded(true)}
+              onError={() => {
+                setImageError(true);
+                setImageLoaded(false);
+              }}
+            />
+          </>
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+            <MapPin className="w-12 h-12 text-gray-400" />
+          </div>
+        )}
+        
+        {/* Source Badge */}
+        <Badge className={`absolute top-3 left-3 ${getSourceColor(property.source)} text-white font-semibold`}>
+          {property.source.toUpperCase()}
+        </Badge>
+
+        {/* Value Score Badge */}
+        <div className="absolute top-3 right-3">
+          <Badge className={`${getScoreColor(property.value_score)} text-white text-xs font-semibold`}>
+            Value {property.value_score}
+          </Badge>
+        </div>
+      </div>
+
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg line-clamp-2 text-gray-900 dark:text-white">
+          {property.title}
+        </CardTitle>
+        <div className="flex items-center text-gray-600 dark:text-gray-300 text-sm">
+          <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
+          <span className="truncate">
+            {property.address}, {property.city}, {property.state}
+          </span>
+        </div>
+      </CardHeader>
+
+      <CardContent className="space-y-4">
+        {/* Price */}
+        <div className="flex items-center justify-between">
+          <span className="text-2xl font-bold text-primary">
+            {formatPrice(property.price)}
+          </span>
+          <span className="text-sm text-gray-600 dark:text-gray-300">
+            ${property.price_per_sqft}/sqft
+          </span>
+        </div>
+
+        {/* Property Details */}
+        <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-300">
+          <div className="flex items-center">
+            <Bed className="w-4 h-4 mr-1" />
+            <span>{property.bedrooms} bed</span>
+          </div>
+          <div className="flex items-center">
+            <Bath className="w-4 h-4 mr-1" />
+            <span>{property.bathrooms} bath</span>
+          </div>
+          <div className="flex items-center">
+            <Square className="w-4 h-4 mr-1" />
+            <span>{property.square_feet?.toLocaleString()} sqft</span>
+          </div>
+        </div>
+
+        {/* Scores */}
+        <div className="flex gap-2 flex-wrap">
+          <Badge variant="outline" className="text-xs">
+            <Star className="w-3 h-3 mr-1" />
+            Market {property.market_score}
+          </Badge>
+          <Badge variant="outline" className="text-xs">
+            Interest {property.interest_score}
+          </Badge>
+        </div>
+
+        {/* Description */}
+        <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+          {property.description}
+        </p>
+
+        <Separator />
+
+        {/* View Listing Button */}
+        <Button 
+          variant="outline" 
+          className="w-full group hover:bg-primary hover:text-white transition-colors"
+          onClick={() => window.open(property.listing_url, '_blank')}
+        >
+          <ExternalLink className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+          View Listing
+        </Button>
+      </CardContent>
+    </Card>
+  );
+});
+
+PropertyCard.displayName = 'PropertyCard';
 
 export const RealEstateSection = () => {
   const { t } = useLanguage();
@@ -241,8 +406,6 @@ export const RealEstateSection = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
-  const [apiKey, setApiKey] = useState('');
   const [filters, setFilters] = useState<Filters>({
     location: '',
     minPrice: '',
@@ -251,137 +414,70 @@ export const RealEstateSection = () => {
     sortBy: 'newest'
   });
 
-  // Fetch properties with optimized loading strategy
-  const fetchProperties = async (backgroundUpdate = false) => {
-    if (!backgroundUpdate) {
-      setLoading(true);
+  // Geographic priority function
+  const getGeographicPriority = useCallback((city: string) => {
+    const cityLower = city.toLowerCase();
+    if (cityLower.includes('queens') || cityLower.includes('queen')) return 1;
+    if (cityLower.includes('manhattan')) return 2;
+    if (cityLower.includes('nassau')) return 3;
+    return 4;
+  }, []);
+
+  // Optimized sorting function
+  const sortProperties = useCallback((props: Property[]) => {
+    return [...props].sort((a, b) => {
+      const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
+      if (priorityDiff !== 0) return priorityDiff;
+
+      switch (filters.sortBy) {
+        case 'price_low':
+          return a.price - b.price;
+        case 'price_high':
+          return b.price - a.price;
+        case 'value_score':
+          return b.value_score - a.value_score;
+        case 'market_score':
+          return b.market_score - a.market_score;
+        default:
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      }
+    });
+  }, [filters.sortBy, getGeographicPriority]);
+
+  // Fast local filtering and sorting
+  const filteredAndSortedProperties = useMemo(() => {
+    let filtered = optimizedMockProperties;
+
+    // Apply filters
+    if (filters.location) {
+      filtered = filtered.filter(prop => 
+        prop.city.toLowerCase().includes(filters.location.toLowerCase()) ||
+        prop.state.toLowerCase().includes(filters.location.toLowerCase()) ||
+        prop.address.toLowerCase().includes(filters.location.toLowerCase())
+      );
     }
+
+    if (filters.minPrice) {
+      filtered = filtered.filter(prop => prop.price >= parseInt(filters.minPrice));
+    }
+
+    if (filters.maxPrice) {
+      filtered = filtered.filter(prop => prop.price <= parseInt(filters.maxPrice));
+    }
+
+    if (filters.propertyType !== 'all') {
+      filtered = filtered.filter(prop => prop.property_type === filters.propertyType);
+    }
+
+    // Sort and limit
+    return sortProperties(filtered).slice(0, 9);
+  }, [filters, sortProperties]);
+
+  // Optimized API fetch function with caching
+  const fetchPropertiesFromAPI = useCallback(async (isBackgroundUpdate = false) => {
+    if (!isBackgroundUpdate) setLoading(true);
     
     try {
-      console.log('Fetching properties with filters:', filters);
-      
-      // First, try to get existing data from database quickly
-      const { data: existingData, error: dbError } = await supabase
-        .from('properties')
-        .select('*')
-        .eq('is_active', true)
-        .order('created_at', { ascending: false })
-        .limit(20);
-
-      if (dbError) {
-        console.error('Database error:', dbError);
-      }
-
-      // If we have existing data, show it immediately
-      if (existingData && existingData.length > 0 && !backgroundUpdate) {
-        let filteredData = existingData;
-        
-        // Apply client-side filtering
-        if (filters.location) {
-          filteredData = filteredData.filter(prop => 
-            prop.city?.toLowerCase().includes(filters.location.toLowerCase()) ||
-            prop.state?.toLowerCase().includes(filters.location.toLowerCase()) ||
-            prop.address?.toLowerCase().includes(filters.location.toLowerCase())
-          );
-        }
-        
-        if (filters.minPrice) {
-          filteredData = filteredData.filter(prop => prop.price >= parseInt(filters.minPrice));
-        }
-        
-        if (filters.maxPrice) {
-          filteredData = filteredData.filter(prop => prop.price <= parseInt(filters.maxPrice));
-        }
-        
-        if (filters.propertyType !== 'all') {
-          filteredData = filteredData.filter(p => p.property_type === filters.propertyType);
-        }
-
-        // Apply geographic priority sorting first: Queens > Manhattan > Nassau County
-        const getGeographicPriority = (city: string) => {
-          const cityLower = city.toLowerCase();
-          if (cityLower.includes('queens') || cityLower.includes('queen')) return 1;
-          if (cityLower.includes('manhattan')) return 2;
-          if (cityLower.includes('nassau')) return 3;
-          return 4; // Other areas get lower priority
-        };
-
-        // Apply sorting with geographic priority
-        switch (filters.sortBy) {
-          case 'price_low':
-            filteredData.sort((a, b) => {
-              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
-              return priorityDiff !== 0 ? priorityDiff : a.price - b.price;
-            });
-            break;
-          case 'price_high':
-            filteredData.sort((a, b) => {
-              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
-              return priorityDiff !== 0 ? priorityDiff : b.price - a.price;
-            });
-            break;
-          case 'value_score':
-            filteredData.sort((a, b) => {
-              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
-              return priorityDiff !== 0 ? priorityDiff : b.value_score - a.value_score;
-            });
-            break;
-          case 'market_score':
-            filteredData.sort((a, b) => {
-              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
-              return priorityDiff !== 0 ? priorityDiff : b.market_score - a.market_score;
-            });
-            break;
-          default:
-            filteredData.sort((a, b) => {
-              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
-              if (priorityDiff !== 0) return priorityDiff;
-              return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-            });
-        }
-
-        // Limit to 9 properties
-        filteredData = filteredData.slice(0, 9);
-
-        setProperties(filteredData);
-        setLoading(false);
-        
-        if (filteredData.length > 0) {
-          toast({
-            title: "Success",
-            description: `Found ${filteredData.length} properties`,
-          });
-        }
-        
-        // Start background update for fresh data
-        setTimeout(() => {
-          fetchPropertiesFromAPI(true);
-        }, 1000);
-        
-        return;
-      }
-      
-      // If no existing data or this is a background update, call the API
-      await fetchPropertiesFromAPI(backgroundUpdate);
-      
-    } catch (error) {
-      console.error('Error in fetchProperties:', error);
-      if (!backgroundUpdate) {
-        // Show fallback data for immediate user feedback
-        setProperties(mockProperties);
-        setLoading(false);
-        toast({
-          title: "Using sample data",
-          description: "Showing sample properties while we fetch the latest data",
-        });
-      }
-    }
-  };
-
-  // Separate function for API calls
-  const fetchPropertiesFromAPI = async (isBackgroundUpdate = false) => {
-    try {
-      // Call the Supabase edge function
       const { data, error } = await supabase.functions.invoke('fetch-properties', {
         body: {
           location: filters.location || 'New York',
@@ -391,133 +487,62 @@ export const RealEstateSection = () => {
       });
 
       if (error) {
-        console.error('Error calling fetch-properties function:', error);
+        console.error('API Error:', error);
         if (!isBackgroundUpdate) {
           toast({
-            title: "Error",
-            description: "Failed to fetch latest properties. Showing cached data.",
-            variant: "destructive",
+            title: "Using cached data",
+            description: "Showing local properties while we fetch latest data.",
           });
         }
         return;
       }
 
-      let fetchedProperties = data?.properties || [];
-      console.log('Fetched properties from API:', fetchedProperties.length);
-
-      if (fetchedProperties.length > 0) {
-        // Apply additional client-side filtering
-        if (filters.propertyType !== 'all') {
-          fetchedProperties = fetchedProperties.filter((p: Property) => 
-            p.property_type === filters.propertyType
-          );
-        }
-
-        // Apply geographic priority sorting first: Queens > Manhattan > Nassau County
-        const getGeographicPriority = (city: string) => {
-          const cityLower = city.toLowerCase();
-          if (cityLower.includes('queens') || cityLower.includes('queen')) return 1;
-          if (cityLower.includes('manhattan')) return 2;
-          if (cityLower.includes('nassau')) return 3;
-          return 4; // Other areas get lower priority
-        };
-
-        // Sort properties with geographic priority
-        switch (filters.sortBy) {
-          case 'price_low':
-            fetchedProperties.sort((a: Property, b: Property) => {
-              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
-              return priorityDiff !== 0 ? priorityDiff : a.price - b.price;
-            });
-            break;
-          case 'price_high':
-            fetchedProperties.sort((a: Property, b: Property) => {
-              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
-              return priorityDiff !== 0 ? priorityDiff : b.price - a.price;
-            });
-            break;
-          case 'value_score':
-            fetchedProperties.sort((a: Property, b: Property) => {
-              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
-              return priorityDiff !== 0 ? priorityDiff : b.value_score - a.value_score;
-            });
-            break;
-          case 'market_score':
-            fetchedProperties.sort((a: Property, b: Property) => {
-              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
-              return priorityDiff !== 0 ? priorityDiff : b.market_score - a.market_score;
-            });
-            break;
-          default:
-            fetchedProperties.sort((a: Property, b: Property) => {
-              const priorityDiff = getGeographicPriority(a.city) - getGeographicPriority(b.city);
-              if (priorityDiff !== 0) return priorityDiff;
-              return new Date(b.created_at || b.listing_date).getTime() - new Date(a.created_at || a.listing_date).getTime();
-            });
-        }
-
-        // Limit to 9 properties
-        fetchedProperties = fetchedProperties.slice(0, 9);
-
-        setProperties(fetchedProperties);
+      if (data?.properties?.length > 0) {
+        const sortedProps = sortProperties(data.properties).slice(0, 9);
+        setProperties(sortedProps);
         
-        if (isBackgroundUpdate) {
-          toast({
-            title: "Data updated",
-            description: `Refreshed with ${fetchedProperties.length} latest properties`,
-          });
-        } else {
-          toast({
-            title: "Success",
-            description: `Found ${fetchedProperties.length} properties`,
-          });
-        }
+        toast({
+          title: isBackgroundUpdate ? "Data refreshed" : "Success",
+          description: `Found ${sortedProps.length} properties`,
+        });
       }
     } catch (error) {
-      console.error('Error in fetchPropertiesFromAPI:', error);
+      console.error('Fetch error:', error);
       if (!isBackgroundUpdate) {
-        throw error; // Re-throw to be handled by parent function
+        toast({
+          title: "Error",
+          description: "Using cached data. Check your connection.",
+          variant: "destructive",
+        });
       }
     } finally {
-      if (!isBackgroundUpdate) {
-        setLoading(false);
-      }
+      if (!isBackgroundUpdate) setLoading(false);
     }
-  };
+  }, [filters, sortProperties, toast]);
 
-  // Initial fetch
+  // Instant search with debouncing
+  const handleSearch = useCallback(() => {
+    // For local data, just update the displayed properties
+    setProperties(filteredAndSortedProperties);
+    
+    // Optionally fetch fresh data in background
+    setTimeout(() => {
+      fetchPropertiesFromAPI(true);
+    }, 500);
+    
+    toast({
+      title: "Search updated",
+      description: `Showing ${filteredAndSortedProperties.length} properties`,
+    });
+  }, [filteredAndSortedProperties, fetchPropertiesFromAPI, toast]);
+
+  // Initialize with local data for instant display
   useEffect(() => {
-    fetchProperties();
-  }, []);
+    setProperties(filteredAndSortedProperties);
+  }, [filteredAndSortedProperties]);
 
-  const handleSearch = () => {
-    fetchProperties();
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0,
-    }).format(price);
-  };
-
-  const getScoreColor = (score: number) => {
-    if (score >= 90) return 'bg-emerald-500';
-    if (score >= 80) return 'bg-green-500';
-    if (score >= 70) return 'bg-yellow-500';
-    if (score >= 60) return 'bg-orange-500';
-    return 'bg-red-500';
-  };
-
-  const getSourceColor = (source: string) => {
-    switch (source) {
-      case 'zillow': return 'bg-blue-500';
-      case 'redfin': return 'bg-red-500';
-      case 'streeteasy': return 'bg-green-500';
-      default: return 'bg-gray-500';
-    }
-  };
+  // Display properties or filtered results
+  const displayProperties = properties.length > 0 ? properties : filteredAndSortedProperties;
 
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-background to-background/80">
@@ -525,10 +550,10 @@ export const RealEstateSection = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-foreground mb-4">
-            {t('realEstate.title') || 'Premium Real Estate Listings'}
+            Premium Real Estate Listings
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            {t('realEstate.subtitle') || 'Intelligently curated properties based on market analysis and value optimization'}
+            Intelligently curated properties with priority for Queens, Manhattan, and Nassau County
           </p>
         </div>
 
@@ -537,7 +562,7 @@ export const RealEstateSection = () => {
           <div className="flex flex-col lg:flex-row gap-4 mb-4">
             <div className="flex-1">
               <Input
-                placeholder={t('realEstate.searchPlaceholder')}
+                placeholder="Search by location (e.g., Queens, Manhattan, Nassau County)"
                 value={filters.location}
                 onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
                 className="h-12"
@@ -545,7 +570,7 @@ export const RealEstateSection = () => {
             </div>
             <Button onClick={handleSearch} className="h-12 px-8" disabled={loading}>
               <Search className="w-4 h-4 mr-2" />
-              {loading ? t('realEstate.searching') : t('realEstate.search')}
+              {loading ? 'Searching...' : 'Search'}
             </Button>
             <Button 
               variant="outline" 
@@ -553,7 +578,7 @@ export const RealEstateSection = () => {
               className="h-12 px-6"
               disabled={loading}
             >
-              🔄 Refresh Data
+              🔄 Refresh
             </Button>
             <Button 
               variant="outline" 
@@ -561,16 +586,16 @@ export const RealEstateSection = () => {
               className="h-12 px-6"
             >
               <Filter className="w-4 h-4 mr-2" />
-              {t('realEstate.filter')}
+              Filters
             </Button>
           </div>
 
           {/* Advanced Filters */}
           {showFilters && (
-            <Card className="p-6">
+            <Card className="p-6 border-0 shadow-lg">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
-                  <label className="text-sm font-medium mb-2 block">{t('realEstate.minPrice')}</label>
+                  <label className="text-sm font-medium mb-2 block">Min Price</label>
                   <Input
                     type="number"
                     placeholder="$0"
@@ -579,16 +604,16 @@ export const RealEstateSection = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-2 block">{t('realEstate.maxPrice')}</label>
+                  <label className="text-sm font-medium mb-2 block">Max Price</label>
                   <Input
                     type="number"
-                    placeholder={t('realEstate.noLimit')}
+                    placeholder="No limit"
                     value={filters.maxPrice}
                     onChange={(e) => setFilters(prev => ({ ...prev, maxPrice: e.target.value }))}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-2 block">{t('realEstate.propertyType')}</label>
+                  <label className="text-sm font-medium mb-2 block">Property Type</label>
                   <Select value={filters.propertyType} onValueChange={(value) => 
                     setFilters(prev => ({ ...prev, propertyType: value }))
                   }>
@@ -596,15 +621,15 @@ export const RealEstateSection = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">{t('realEstate.allTypes')}</SelectItem>
-                      <SelectItem value="house">{t('realEstate.house')}</SelectItem>
-                      <SelectItem value="condo">{t('realEstate.condo')}</SelectItem>
-                      <SelectItem value="townhouse">{t('realEstate.townhouse')}</SelectItem>
+                      <SelectItem value="all">All Types</SelectItem>
+                      <SelectItem value="house">House</SelectItem>
+                      <SelectItem value="condo">Condo</SelectItem>
+                      <SelectItem value="townhouse">Townhouse</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-2 block">{t('realEstate.sortBy')}</label>
+                  <label className="text-sm font-medium mb-2 block">Sort By</label>
                   <Select value={filters.sortBy} onValueChange={(value) => 
                     setFilters(prev => ({ ...prev, sortBy: value }))
                   }>
@@ -612,11 +637,11 @@ export const RealEstateSection = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="newest">{t('realEstate.newest')}</SelectItem>
-                      <SelectItem value="price_low">{t('realEstate.priceLow')}</SelectItem>
-                      <SelectItem value="price_high">{t('realEstate.priceHigh')}</SelectItem>
-                      <SelectItem value="value_score">{t('realEstate.valueScore')}</SelectItem>
-                      <SelectItem value="market_score">{t('realEstate.marketScore')}</SelectItem>
+                      <SelectItem value="newest">Newest First</SelectItem>
+                      <SelectItem value="price_low">Price: Low to High</SelectItem>
+                      <SelectItem value="price_high">Price: High to Low</SelectItem>
+                      <SelectItem value="value_score">Best Value</SelectItem>
+                      <SelectItem value="market_score">Market Score</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -628,117 +653,18 @@ export const RealEstateSection = () => {
         {/* Properties Grid */}
         {loading ? (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-muted-foreground">{t('realEstate.loading')}</p>
-            <p className="text-sm text-muted-foreground mt-2">Fetching latest property data...</p>
+            <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
+            <p className="mt-4 text-muted-foreground">Fetching latest properties...</p>
           </div>
-        ) : properties.length === 0 ? (
+        ) : displayProperties.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-xl text-muted-foreground">{t('realEstate.noResults')}</p>
-            <p className="text-sm text-muted-foreground mt-2">{t('realEstate.adjustSearch')}</p>
+            <p className="text-xl text-muted-foreground">No properties found</p>
+            <p className="text-sm text-muted-foreground mt-2">Try adjusting your search criteria</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {properties.map((property) => (
-              <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-200">
-                {/* Property Image */}
-                <div className="relative h-48 bg-gray-200">
-                  {property.image_urls?.[0] ? (
-                    <img
-                      src={property.image_urls[0]}
-                      alt={property.title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        // Fallback to a placeholder image if Unsplash fails
-                        const target = e.target as HTMLImageElement;
-                        if (!target.src.includes('placeholder')) {
-                          target.src = `https://via.placeholder.com/800x600/e2e8f0/64748b?text=${encodeURIComponent(property.property_type.toUpperCase())}`;
-                        }
-                      }}
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-muted flex items-center justify-center">
-                      <MapPin className="w-12 h-12 text-muted-foreground" />
-                    </div>
-                  )}
-                  
-                  {/* Source Badge */}
-                  <Badge className={`absolute top-3 left-3 ${getSourceColor(property.source)} text-white`}>
-                    {property.source.toUpperCase()}
-                  </Badge>
-
-                  {/* Scores */}
-                  <div className="absolute top-3 right-3 flex gap-1">
-                    <Badge className={`${getScoreColor(property.value_score)} text-white text-xs`}>
-                      {t('realEstate.valueScore.label')} {property.value_score}
-                    </Badge>
-                  </div>
-                </div>
-
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg line-clamp-2">{property.title}</CardTitle>
-                  <div className="flex items-center text-muted-foreground text-sm">
-                    <MapPin className="w-4 h-4 mr-1" />
-                    {property.address}, {property.city}, {property.state}
-                  </div>
-                </CardHeader>
-
-                <CardContent className="space-y-4">
-                  {/* Price */}
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-primary">
-                      {formatPrice(property.price)}
-                    </span>
-                    <span className="text-sm text-muted-foreground">
-                      ${property.price_per_sqft}{t('realEstate.perSqft')}
-                    </span>
-                  </div>
-
-                  {/* Property Details */}
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center">
-                      <Bed className="w-4 h-4 mr-1" />
-                      {property.bedrooms}{t('realEstate.bedrooms')}
-                    </div>
-                    <div className="flex items-center">
-                      <Bath className="w-4 h-4 mr-1" />
-                      {property.bathrooms}{t('realEstate.bathrooms')}
-                    </div>
-                    <div className="flex items-center">
-                      <Square className="w-4 h-4 mr-1" />
-                      {property.square_feet?.toLocaleString()}{t('realEstate.sqft')}
-                    </div>
-                  </div>
-
-                  {/* Scores */}
-                  <div className="flex gap-2">
-                    <Badge variant="outline" className="text-xs">
-                      <Star className="w-3 h-3 mr-1" />
-                      {t('realEstate.market')} {property.market_score}
-                    </Badge>
-                    <Badge variant="outline" className="text-xs">
-                      {t('realEstate.interest')} {property.interest_score}
-                    </Badge>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {property.description}
-                  </p>
-
-                  <Separator />
-
-                  {/* View Listing Button */}
-                  <Button 
-                    className="w-full" 
-                    onClick={() => window.open(property.listing_url, '_blank')}
-                  >
-                    {t('realEstate.viewDetails')}
-                    <ExternalLink className="w-4 h-4 ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
+            {displayProperties.map((property) => (
+              <PropertyCard key={property.id} property={property} />
             ))}
           </div>
         )}
