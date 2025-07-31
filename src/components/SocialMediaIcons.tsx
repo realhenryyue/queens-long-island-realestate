@@ -6,37 +6,37 @@ const socialPlatforms = [
     name: "Xiaohongshu",
     url: "https://www.xiaohongshu.com/user/profile/65d657c9000000000503202b",
     icon: MessageCircle,
-    color: "hover:text-red-500"
+    color: "text-[#fe2c55] hover:text-[#fe2c55] hover:scale-110"
   },
   {
     name: "Facebook", 
     url: "https://www.facebook.com/share/1EfZ9iTfqa/",
     icon: Facebook,
-    color: "hover:text-blue-600"
+    color: "text-[#1877f2] hover:text-[#1877f2] hover:scale-110"
   },
   {
     name: "Instagram",
     url: "https://www.instagram.com/realhenryyue",
     icon: Instagram,
-    color: "hover:text-pink-500"
+    color: "text-[#e4405f] hover:text-[#e4405f] hover:scale-110"
   },
   {
     name: "LinkedIn",
     url: "http://linkedin.com/in/hongyu-yue-85232191",
     icon: Linkedin,
-    color: "hover:text-blue-700"
+    color: "text-[#0077b5] hover:text-[#0077b5] hover:scale-110"
   },
   {
     name: "TikTok",
     url: "https://www.tiktok.com/@realhenryyue",
     icon: Video,
-    color: "hover:text-gray-800"
+    color: "text-[#000000] hover:text-[#000000] hover:scale-110"
   },
   {
     name: "Douyin",
     url: "https://v.douyin.com/i5JLpoT9/",
     icon: Video,
-    color: "hover:text-gray-700"
+    color: "text-[#25f4ee] hover:text-[#25f4ee] hover:scale-110"
   }
 ];
 
@@ -50,7 +50,7 @@ export const SocialMediaIcons = () => {
             key={index}
             variant="ghost"
             size="sm"
-            className={`w-8 h-8 p-0 text-muted-foreground transition-colors ${platform.color}`}
+            className={`w-8 h-8 p-0 transition-all duration-200 ${platform.color}`}
             onClick={() => window.open(platform.url, '_blank')}
             title={platform.name}
           >
