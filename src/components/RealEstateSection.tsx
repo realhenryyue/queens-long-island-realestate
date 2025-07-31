@@ -56,7 +56,7 @@ const mockProperties: Property[] = [
     square_feet: 1800,
     property_type: 'house',
     description: 'Stunning home with modern amenities and great location.',
-    image_urls: ['https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800'],
+    image_urls: ['https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=800&q=80'],
     listing_url: 'https://zillow.com/sample',
     price_per_sqft: 416.67,
     market_score: 85,
@@ -77,7 +77,7 @@ const mockProperties: Property[] = [
     square_feet: 1200,
     property_type: 'condo',
     description: 'Luxury condo with amazing city views.',
-    image_urls: ['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800'],
+    image_urls: ['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80'],
     listing_url: 'https://redfin.com/sample',
     price_per_sqft: 1000,
     market_score: 95,
@@ -98,7 +98,7 @@ const mockProperties: Property[] = [
     square_feet: 2200,
     property_type: 'townhouse',
     description: 'Family-friendly townhouse with garden and parking.',
-    image_urls: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800'],
+    image_urls: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?auto=format&fit=crop&w=800&q=80'],
     listing_url: 'https://streeteasy.com/sample',
     price_per_sqft: 431.82,
     market_score: 88,
@@ -119,7 +119,7 @@ const mockProperties: Property[] = [
     square_feet: 900,
     property_type: 'condo',
     description: 'Modern studio with waterfront views and amenities.',
-    image_urls: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800'],
+    image_urls: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80'],
     listing_url: 'https://zillow.com/sample2',
     price_per_sqft: 722.22,
     market_score: 82,
@@ -140,7 +140,7 @@ const mockProperties: Property[] = [
     square_feet: 1100,
     property_type: 'house',
     description: 'Cozy house with backyard in growing neighborhood.',
-    image_urls: ['https://images.unsplash.com/photo-1449844908441-8829872d2607?w=800'],
+    image_urls: ['https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=800&q=80'],
     listing_url: 'https://redfin.com/sample2',
     price_per_sqft: 527.27,
     market_score: 78,
@@ -161,7 +161,7 @@ const mockProperties: Property[] = [
     square_feet: 1600,
     property_type: 'condo',
     description: 'Stunning penthouse with Manhattan views and rooftop access.',
-    image_urls: ['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800'],
+    image_urls: ['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80'],
     listing_url: 'https://streeteasy.com/sample2',
     price_per_sqft: 1156.25,
     market_score: 98,
@@ -182,7 +182,7 @@ const mockProperties: Property[] = [
     square_feet: 1300,
     property_type: 'condo',
     description: 'Well-maintained apartment in quiet neighborhood.',
-    image_urls: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800'],
+    image_urls: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80'],
     listing_url: 'https://zillow.com/sample3',
     price_per_sqft: 553.85,
     market_score: 80,
@@ -203,7 +203,7 @@ const mockProperties: Property[] = [
     square_feet: 1900,
     property_type: 'townhouse',
     description: 'Historic brownstone with modern updates and garden.',
-    image_urls: ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'],
+    image_urls: ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80'],
     listing_url: 'https://redfin.com/sample3',
     price_per_sqft: 710.53,
     market_score: 92,
@@ -224,7 +224,7 @@ const mockProperties: Property[] = [
     square_feet: 1000,
     property_type: 'condo',
     description: 'Industrial loft with exposed brick and city views.',
-    image_urls: ['https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800'],
+    image_urls: ['https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80'],
     listing_url: 'https://streeteasy.com/sample3',
     price_per_sqft: 850,
     market_score: 87,
@@ -602,6 +602,14 @@ export const RealEstateSection = () => {
                       src={property.image_urls[0]}
                       alt={property.title}
                       className="w-full h-full object-cover"
+                      onError={(e) => {
+                        // Fallback to a placeholder image if Unsplash fails
+                        const target = e.target as HTMLImageElement;
+                        if (!target.src.includes('placeholder')) {
+                          target.src = `https://via.placeholder.com/800x600/e2e8f0/64748b?text=${encodeURIComponent(property.property_type.toUpperCase())}`;
+                        }
+                      }}
+                      loading="lazy"
                     />
                   ) : (
                     <div className="w-full h-full bg-muted flex items-center justify-center">

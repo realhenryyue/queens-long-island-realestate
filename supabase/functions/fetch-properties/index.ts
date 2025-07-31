@@ -349,7 +349,7 @@ function getSamplePropertiesForSource(source: string, location: string) {
       property_type: ['house', 'condo', 'townhouse'][Math.floor(Math.random() * 3)],
       listing_date: new Date().toISOString().split('T')[0],
       description: `Beautiful ${source} property in a great ${location} location.`,
-      image_urls: [`https://images.unsplash.com/photo-${Math.floor(Math.random() * 1000000)}/photo.jpg?w=800`],
+      image_urls: [`https://images.unsplash.com/photo-157${Math.floor(Math.random() * 999)}${Math.floor(Math.random() * 999)}${Math.floor(Math.random() * 999)}-${Math.floor(Math.random() * 999)}${Math.floor(Math.random() * 999)}${Math.floor(Math.random() * 999)}${Math.floor(Math.random() * 999)}${Math.floor(Math.random() * 999)}?auto=format&fit=crop&w=800&q=80`],
       listing_url: `https://${source}.com/sample`,
       price_per_sqft: Math.floor(Math.random() * 500) + 300,
       market_score: Math.floor(Math.random() * 30) + 70,
