@@ -57,10 +57,7 @@ serve(async (req) => {
           
           const crawlResult = await firecrawl.scrapeUrl(bestPlatform.url, {
             formats: ['markdown'],
-            timeout: 4000,
-            extractorOptions: {
-              mode: 'llm-extraction-from-markdown'
-            }
+            timeout: 8000
           })
           
           if (crawlResult.success && crawlResult.data) {
@@ -187,10 +184,7 @@ async function testPlatformPerformance(firecrawl: FirecrawlApp, location: string
       const testResult = await Promise.race([
         firecrawl.scrapeUrl(platform.url, {
           formats: ['markdown'],
-          timeout: 3000,
-          extractorOptions: {
-            mode: 'llm-extraction-from-markdown'
-          }
+          timeout: 3000
         }),
         new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 3000))
       ])
