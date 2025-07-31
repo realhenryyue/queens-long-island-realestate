@@ -52,7 +52,7 @@ export const SocialMediaIcons = () => {
             variant="ghost"
             size="sm"
             className={`w-8 h-8 p-0 transition-all duration-200 ${platform.color}`}
-            onClick={() => window.location.href = platform.url}
+            onClick={() => window.open(platform.url, '_blank')}
             title={platform.name}
           >
             <IconComponent className="w-4 h-4" />

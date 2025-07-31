@@ -67,41 +67,28 @@ export const SocialShareButtons = () => {
     const encodedTitle = encodeURIComponent(shareTitle);
     
     if (platform === "WeChat") {
-      // For WeChat, create QR code overlay in current page
+      // For WeChat, show QR code in a popup
       const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodedUrl}`;
-      
-      // Create overlay div
-      const overlay = document.createElement('div');
-      overlay.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.8);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        cursor: pointer;
-      `;
-      
-      overlay.innerHTML = `
-        <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; max-width: 300px;">
-          <h3 style="margin: 0 0 15px 0; color: #333;">${t('share.wechatQR')}</h3>
-          <img src="${qrCodeUrl}" alt="WeChat QR Code" style="display: block; margin: 0 auto 15px;" />
-          <p style="margin: 0; color: #666; font-size: 14px;">${t('share.wechatScan')}</p>
-        </div>
-      `;
-      
-      overlay.onclick = () => document.body.removeChild(overlay);
-      document.body.appendChild(overlay);
+      const newWindow = window.open('', '_blank', 'width=300,height=350');
+      if (newWindow) {
+        newWindow.document.write(`
+          <html>
+            <head><title>${t('share.wechatQR')}</title></head>
+            <body style="text-align:center; padding:20px;">
+              <h3>${t('share.wechatQR')}</h3>
+              <img src="${qrCodeUrl}" alt="WeChat QR Code" />
+              <p>${t('share.wechatScan')}</p>
+            </body>
+          </html>
+        `);
+        newWindow.document.close();
+      }
     } else if (platform === "Facebook") {
-      window.location.href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, '_blank');
     } else if (platform === "Twitter") {
-      window.location.href = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
+      window.open(`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`, '_blank');
     } else if (platform === "LinkedIn") {
-      window.location.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`, '_blank');
     }
   };
 
