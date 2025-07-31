@@ -308,30 +308,61 @@ const PropertyCard = React.memo(({ property }: { property: Property }) => {
       event.stopPropagation();
     }
     
-    // Check if URL is a search page and generate a realistic listing URL instead
+    // Use the original listing URL directly if it's valid
     let urlToOpen = property.listing_url;
     
+    // Only generate fallback if URL is clearly invalid or missing
     if (!urlToOpen || 
         urlToOpen.includes('/search/') || 
         urlToOpen.includes('-bedrooms/') ||
-        !urlToOpen.includes('homedetails') && property.source === 'zillow') {
-      urlToOpen = generateFallbackUrl(property);
-      console.log('Generated fallback URL:', urlToOpen);
+        urlToOpen.includes('/filter/') ||
+        (!urlToOpen.includes('homedetails') && property.source === 'zillow') ||
+        (!urlToOpen.includes('/home/') && property.source === 'redfin')) {
+      
+      // Create a more realistic search URL instead of fake listing
+      switch (property.source) {
+        case 'zillow':
+          urlToOpen = `https://www.zillow.com/homes/${property.city}-NY_rb/?searchQueryState=%7B%22pagination%22%3A%7B%7D%2C%22usersSearchTerm%22%3A%22${property.city}%2C%20NY%22%2C%22mapBounds%22%3A%7B%7D%2C%22regionSelection%22%3A%5B%7B%22regionId%22%3A6181%2C%22regionType%22%3A6%7D%5D%2C%22isMapVisible%22%3Atrue%2C%22filterState%22%3A%7B%22beds%22%3A%7B%22min%22%3A${property.bedrooms}%7D%2C%22price%22%3A%7B%22min%22%3A${Math.floor(property.price * 0.9)}%2C%22max%22%3A${Math.floor(property.price * 1.1)}%7D%7D%7D`;
+          break;
+        case 'redfin':
+          urlToOpen = `https://www.redfin.com/city/30749/NY/${property.city}/filter/property-type=house+condo+townhouse,min-price=${Math.floor(property.price * 0.9)},max-price=${Math.floor(property.price * 1.1)},min-beds=${property.bedrooms}`;
+          break;
+        case 'streeteasy':
+          urlToOpen = `https://streeteasy.com/for-sale/${property.city.toLowerCase()}/price:${Math.floor(property.price * 0.9)}-${Math.floor(property.price * 1.1)}?beds%3E=${property.bedrooms}`;
+          break;
+        default:
+          urlToOpen = `https://${property.source}.com/search?location=${property.city}&price=${property.price}`;
+      }
+      console.log('Generated search URL:', urlToOpen);
     }
     
-    console.log('Clicking property:', property.title, 'Original URL:', property.listing_url, 'Final URL:', urlToOpen);
+    console.log('Opening property:', property.title, 'URL:', urlToOpen);
     
     if (urlToOpen && urlToOpen.startsWith('http')) {
-      window.open(urlToOpen, '_blank', 'noopener,noreferrer');
+      // Use a more reliable way to open the link
+      try {
+        const newWindow = window.open(urlToOpen, '_blank');
+        if (!newWindow) {
+          // Fallback if popup blocked
+          window.location.href = urlToOpen;
+        }
+      } catch (error) {
+        console.error('Error opening URL:', error);
+        toast({
+          title: "无法打开链接",
+          description: "请检查浏览器的弹窗设置或手动访问房源网站。",
+          variant: "destructive",
+        });
+      }
     } else {
       console.error('Invalid listing URL:', urlToOpen);
       toast({
-        title: "Link unavailable",
-        description: "This property listing link is not available.",
+        title: "链接不可用",
+        description: "该房源链接暂时不可用。",
         variant: "destructive",
       });
     }
-  }, [toast, generateFallbackUrl]);
+  }, [toast]);
 
   return (
     <Card 
