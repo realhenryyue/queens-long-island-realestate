@@ -33,13 +33,9 @@
     <!-- Favicon Configuration -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-optimized.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-optimized.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-optimized.png">
-    <link rel="mask-icon" href="/favicon-optimized.png" color="#1a365d">
     <link rel="manifest" href="/site.webmanifest">
     <meta name="msapplication-TileColor" content="#1a365d">
-    <meta name="msapplication-TileImage" content="/favicon-optimized.png">
+    <meta name="msapplication-TileImage" content="/favicon.ico">
     <meta name="theme-color" content="#1a365d">
     
     <!-- Hreflang tags for bilingual support -->
@@ -180,7 +176,7 @@
         const faviconLinks = document.querySelectorAll('link[rel*="icon"]:not([rel*="apple"])');
         
         faviconLinks.forEach(link => {
-          if (link.href.includes('lovable-uploads')) {
+          if (link.href.includes('favicon.ico')) {
             link.href = link.href.split('?')[0] + timestamp;
           }
         });
