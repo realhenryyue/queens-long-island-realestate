@@ -30,11 +30,16 @@
     <link rel="dns-prefetch" href="//linkedin.com">
     <link rel="dns-prefetch" href="//www.tiktok.com">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/favicon.png" sizes="16x16">
-    <link rel="shortcut icon" href="/favicon.png" type="image/png">
-    <link rel="apple-touch-icon" href="/favicon.png">
+    <!-- Favicon Configuration -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png">
+    <link rel="mask-icon" href="/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png" color="#1a365d">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#1a365d">
+    <meta name="msapplication-TileImage" content="/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png">
+    <meta name="theme-color" content="#1a365d">
     
     <!-- Hreflang tags for bilingual support -->
     <link rel="alternate" hreflang="zh" href="https://www.realhenryyue.com/cn/" />
@@ -165,6 +170,32 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Performance optimization script -->
+    <script>
+      // Force favicon update by appending timestamp
+      document.addEventListener('DOMContentLoaded', function() {
+        const faviconLinks = document.querySelectorAll('link[rel*="icon"]');
+        const timestamp = new Date().getTime();
+        
+        faviconLinks.forEach(link => {
+          if (link.href.includes('lovable-uploads')) {
+            const newHref = link.href.includes('?') ? 
+              link.href + '&t=' + timestamp : 
+              link.href + '?t=' + timestamp;
+            link.href = newHref;
+          }
+        });
+        
+        // Alternative method: Create new favicon link
+        const head = document.getElementsByTagName('head')[0];
+        const link = document.createElement('link');
+        link.type = 'image/png';
+        link.rel = 'shortcut icon';
+        link.href = '/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png?v=' + timestamp;
+        head.appendChild(link);
+      });
+    </script>
     
     <!-- Performance optimization script -->
     <script>
