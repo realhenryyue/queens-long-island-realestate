@@ -546,10 +546,6 @@ export const RealEstateSection = () => {
         console.log('房源URL示例:', sortedProps.slice(0, 2).map(p => ({ title: p.title, url: p.listing_url })));
         setProperties(sortedProps);
         
-        toast({
-          title: isBackgroundUpdate ? "Data refreshed" : "Success",
-          description: `Found ${sortedProps.length} properties`,
-        });
       } else {
         console.log('API未返回房源数据，使用本地数据');
       }
