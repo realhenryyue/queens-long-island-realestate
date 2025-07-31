@@ -3,12 +3,12 @@
     "short_name": "Henry Yue",
     "icons": [
         {
-            "src": "/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.png",
+            "src": "/favicon-optimized.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.png",
+            "src": "/favicon-optimized.png",
             "sizes": "512x512",
             "type": "image/png"
         }
