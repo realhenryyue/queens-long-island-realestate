@@ -285,10 +285,10 @@ export const RealEstateSection = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-foreground mb-4">
-            精选房地产列表
+            {t('realEstate.title') || 'Premium Real Estate Listings'}
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            基于市场分析和性价比的智能筛选，为您推荐最优质的房源
+            {t('realEstate.subtitle') || 'Intelligently curated properties based on market analysis and value optimization'}
           </p>
         </div>
 
