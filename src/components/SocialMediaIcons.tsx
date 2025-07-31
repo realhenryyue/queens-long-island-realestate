@@ -4,10 +4,16 @@ import { TikTokIcon, DouyinIcon } from "@/components/icons/TikTokIcon";
 
 const socialPlatforms = [
   {
-    name: "Xiaohongshu",
-    url: "https://www.xiaohongshu.com/user/profile/65d657c9000000000503202b",
-    icon: MessageCircle,
-    color: "text-[#fe2c55] hover:text-[#fe2c55] hover:scale-110"
+    name: "LinkedIn",
+    url: "http://linkedin.com/in/hongyu-yue-85232191",
+    icon: Linkedin,
+    color: "text-[#0077b5] hover:text-[#0077b5] hover:scale-110"
+  },
+  {
+    name: "TikTok",
+    url: "https://www.tiktok.com/@realhenryyue",
+    icon: TikTokIcon,
+    color: "text-[#000000] hover:text-[#000000] hover:scale-110"
   },
   {
     name: "Facebook", 
@@ -22,16 +28,10 @@ const socialPlatforms = [
     color: "text-[#e4405f] hover:text-[#e4405f] hover:scale-110"
   },
   {
-    name: "LinkedIn",
-    url: "http://linkedin.com/in/hongyu-yue-85232191",
-    icon: Linkedin,
-    color: "text-[#0077b5] hover:text-[#0077b5] hover:scale-110"
-  },
-  {
-    name: "TikTok",
-    url: "https://www.tiktok.com/@realhenryyue",
-    icon: TikTokIcon,
-    color: "text-[#000000] hover:text-[#000000] hover:scale-110"
+    name: "Xiaohongshu",
+    url: "https://www.xiaohongshu.com/user/profile/65d657c9000000000503202b",
+    icon: MessageCircle,
+    color: "text-[#fe2c55] hover:text-[#fe2c55] hover:scale-110"
   },
   {
     name: "Douyin",
