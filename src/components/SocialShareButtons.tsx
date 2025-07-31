@@ -1,15 +1,23 @@
 import { Share2, Facebook, MessageCircle, Twitter, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Share } from '@capacitor/share';
+import { Capacitor } from '@capacitor/core';
 
 export const SocialShareButtons = () => {
   const { t } = useLanguage();
   
-  const currentUrl = encodeURIComponent("https://www.realhenryyue.com");
-  const shareTitle = encodeURIComponent(t('seo.shareTitle'));
-  const shareDescription = encodeURIComponent(t('seo.shareDescription'));
+  const currentUrl = "https://www.realhenryyue.com";
+  const shareTitle = t('seo.shareTitle');
+  const shareDescription = t('seo.shareDescription');
 
   const shareLinks = [
+    {
+      name: "Native Share",
+      icon: Share2,
+      url: "",
+      color: "hover:bg-primary"
+    },
     {
       name: "Facebook",
       icon: Facebook,
@@ -36,24 +44,59 @@ export const SocialShareButtons = () => {
     }
   ];
 
-  const handleShare = (url: string, name: string) => {
-    if (name === "WeChat") {
+  const handleNativeShare = async (platform?: string) => {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        await Share.share({
+          title: shareTitle,
+          text: shareDescription,
+          url: currentUrl,
+          dialogTitle: t('share.text')
+        });
+      } catch (error) {
+        console.log('Native share failed, falling back to web share');
+        handleWebShare(platform);
+      }
+    } else {
+      handleWebShare(platform);
+    }
+  };
+
+  const handleWebShare = (platform?: string) => {
+    const encodedUrl = encodeURIComponent(currentUrl);
+    const encodedTitle = encodeURIComponent(shareTitle);
+    
+    if (platform === "WeChat") {
       // For WeChat, show QR code in a popup
-      const newWindow = window.open("", "_blank", "width=300,height=300");
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodedUrl}`;
+      const newWindow = window.open('', '_blank', 'width=300,height=350');
       if (newWindow) {
         newWindow.document.write(`
           <html>
             <head><title>${t('share.wechatQR')}</title></head>
             <body style="text-align:center; padding:20px;">
               <h3>${t('share.wechatQR')}</h3>
-              <img src="${url}" alt="WeChat QR Code" />
+              <img src="${qrCodeUrl}" alt="WeChat QR Code" />
               <p>${t('share.wechatScan')}</p>
             </body>
           </html>
         `);
+        newWindow.document.close();
       }
+    } else if (platform === "Facebook") {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, '_blank');
+    } else if (platform === "Twitter") {
+      window.open(`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`, '_blank');
+    } else if (platform === "LinkedIn") {
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`, '_blank');
+    }
+  };
+
+  const handleShare = (url: string, name: string) => {
+    if (name === "Native Share") {
+      handleNativeShare();
     } else {
-      window.open(url, "_blank", "width=600,height=400");
+      handleWebShare(name);
     }
   };
 
