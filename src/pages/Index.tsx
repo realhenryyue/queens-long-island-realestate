@@ -6,6 +6,8 @@ import { Footer } from "@/components/Footer";
 import { SEOHead } from "@/components/SEOHead";
 import { PerformanceOptimizer } from "@/components/PerformanceOptimizer";
 import { SEOEnhancer } from "@/components/SEOEnhancer";
+import { SEOContentStrategy } from "@/components/SEOContentStrategy";
+import { TopAgentAnalysis } from "@/components/TopAgentAnalysis";
 
 const Index = () => {
   return (
@@ -17,6 +19,13 @@ const Index = () => {
       <ServicesSection />
       <AboutSection />
       <ContactSection />
+      
+      {/* SEO Strategy Components - for internal reference */}
+      <div className="hidden">
+        <SEOContentStrategy />
+        <TopAgentAnalysis />
+      </div>
+      
       <Footer />
     </div>
   );
