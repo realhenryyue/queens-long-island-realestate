@@ -46,17 +46,26 @@ export const Footer = () => {
             </ul>
           </div>
           
-          {/* Areas */}
+          {/* Office Locations */}
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold">Service Areas</h3>
-            <ul className="space-y-2 text-primary-foreground/80">
-              <li>Queens (All Neighborhoods)</li>
-              <li>Long Island (Nassau & Suffolk)</li>
-              <li>Manhattan</li>
-              <li>Brooklyn</li>
-              <li>Bronx</li>
-              <li>Anywhere in New York State</li>
-            </ul>
+            <h3 className="text-xl font-semibold">Office Locations</h3>
+            <div className="space-y-4 text-primary-foreground/80">
+              <div>
+                <h4 className="font-medium text-primary-foreground">Team Office</h4>
+                <p className="text-sm">41-25 Kissena Blvd Suite 126</p>
+                <p className="text-sm">Flushing, NY 11355</p>
+              </div>
+              <div>
+                <h4 className="font-medium text-primary-foreground">Flushing Office</h4>
+                <p className="text-sm">39-07 Prince St #4D</p>
+                <p className="text-sm">Flushing, NY 11354</p>
+              </div>
+              <div>
+                <h4 className="font-medium text-primary-foreground">Great Neck Office</h4>
+                <p className="text-sm">40 Cutter Mill Road Suite 400</p>
+                <p className="text-sm">Great Neck, NY 11021</p>
+              </div>
+            </div>
           </div>
           
           {/* WeChat QR Code */}
