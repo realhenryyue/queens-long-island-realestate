@@ -8,6 +8,10 @@ import { PerformanceOptimizer } from "@/components/PerformanceOptimizer";
 import { SEOEnhancer } from "@/components/SEOEnhancer";
 import { SEOContentStrategy } from "@/components/SEOContentStrategy";
 import { TopAgentAnalysis } from "@/components/TopAgentAnalysis";
+import { LocalMarketContent } from "@/components/content/LocalMarketContent";
+import { EducationalContent } from "@/components/content/EducationalContent";
+import { DataDrivenContent } from "@/components/content/DataDrivenContent";
+import { SearchComponent } from "@/components/SearchComponent";
 
 const Index = () => {
   return (
@@ -16,6 +20,10 @@ const Index = () => {
       <PerformanceOptimizer />
       <SEOEnhancer />
       <HeroSection />
+      <SearchComponent />
+      <LocalMarketContent />
+      <EducationalContent />
+      <DataDrivenContent />
       <ServicesSection />
       <AboutSection />
       <ContactSection />
