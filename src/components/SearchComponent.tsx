@@ -24,6 +24,17 @@ export const SearchComponent = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
+  const handleResultClick = (resultId: string) => {
+    // Scroll to the content hub and expand it
+    const contentHub = document.querySelector('[data-content-hub]');
+    if (contentHub) {
+      contentHub.scrollIntoView({ behavior: 'smooth' });
+      // Trigger expansion and selection of specific content
+      const event = new CustomEvent('selectContent', { detail: { contentId: resultId } });
+      window.dispatchEvent(event);
+    }
+  };
+
   // Mock search data - in a real implementation, this would come from a database or API
   const searchData: SearchResult[] = [
     // Local Market Content
@@ -311,18 +322,22 @@ export const SearchComponent = () => {
           )}
 
           {searchResults.map((result) => (
-            <Card key={result.id} className="hover:shadow-md transition-shadow">
+            <Card key={result.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleResultClick(result.id)}>
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <CardTitle className="text-lg">
+                    <CardTitle className="text-lg hover:text-primary transition-colors">
                       {highlightText(
                         language === 'zh' ? result.title : (result.titleEn || result.title),
                         searchQuery
                       )}
                     </CardTitle>
                     <Badge variant="outline" className="mt-2">
-                      {result.category}
+                      {language === 'zh' ? result.category :
+                        result.category === "本地市场专家内容" ? "Local Market Expert Content" :
+                        result.category === "教育型内容" ? "Educational Content" :
+                        "Data-Driven Content"
+                      }
                     </Badge>
                   </div>
                 </div>
@@ -343,15 +358,20 @@ export const SearchComponent = () => {
                       )}
                     </p>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {result.searchKeywords
-                      .filter(keyword => keyword.toLowerCase().includes(searchQuery.toLowerCase()))
-                      .slice(0, 4)
-                      .map((keyword, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
-                          {highlightText(keyword, searchQuery)}
-                        </Badge>
-                      ))}
+                  <div className="flex justify-between items-center">
+                    <div className="flex flex-wrap gap-2">
+                      {result.searchKeywords
+                        .filter(keyword => keyword.toLowerCase().includes(searchQuery.toLowerCase()))
+                        .slice(0, 4)
+                        .map((keyword, index) => (
+                          <Badge key={index} variant="secondary" className="text-xs">
+                            {highlightText(keyword, searchQuery)}
+                          </Badge>
+                        ))}
+                    </div>
+                    <Button variant="outline" size="sm" className="ml-4">
+                      {language === 'zh' ? "查看详情" : "View Details"}
+                    </Button>
                   </div>
                 </div>
               </CardContent>
