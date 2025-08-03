@@ -295,6 +295,126 @@ const translations: Translations = {
   'seo.shareDescription': {
     en: 'Professional New York real estate agent providing expert guidance for property investment, home buying, and commercial real estate services.',
     zh: '专业纽约房地产经纪人，提供海外买房、纽约房产投资、法拉盛商业楼推荐等服务'
+  },
+
+  // Market Analysis Hub
+  'marketAnalysis.title': {
+    en: 'New York Real Estate Market In-Depth Analysis',
+    zh: '纽约房地产市场深度分析'
+  },
+  'marketAnalysis.subtitle': {
+    en: 'A Decade of Expert Insights - Comprehensive market data, educational resources, and investment strategies for NYC real estate',
+    zh: '十年专业洞察 - 纽约房地产的全面市场数据、教育资源和投资策略'
+  },
+  'marketAnalysis.featuredTopics': {
+    en: 'Featured Topics & Keywords',
+    zh: '特色主题与关键词'
+  },
+  'marketAnalysis.localMarket': {
+    en: 'Local Market Expert',
+    zh: '本地市场专家'
+  },
+  'marketAnalysis.educational': {
+    en: 'Educational Content',
+    zh: '教育内容'
+  },
+  'marketAnalysis.insights': {
+    en: 'Market Insights',
+    zh: '市场洞察'
+  },
+
+  // Local Market Content
+  'localMarket.flushingTrend.title': {
+    en: 'Flushing Housing Price Trend Analysis',
+    zh: '法拉盛房价趋势分析'
+  },
+  'localMarket.flushingTrend.content': {
+    en: 'Flushing, a major hub for the Chinese community in Queens, has shown a stable and consistent increase in housing prices in recent years. According to 2024 data, the median home price in Flushing grew by 6.2% year-over-year, reaching $720,000, up from $678,000 in 2023.',
+    zh: '法拉盛作为皇后区华人社区的主要中心，近年来房价呈现稳定持续上涨趋势。根据2024年数据，法拉盛中位数房价同比增长6.2%，从2023年的$678,000上涨至$720,000。'
+  },
+  'localMarket.queensGuide.title': {
+    en: 'Detailed Guide to Queens Neighborhoods',
+    zh: '皇后区社区详细指南'
+  },
+  'localMarket.queensGuide.content': {
+    en: 'Queens is renowned for its diverse cultural communities, with each neighborhood offering unique attractions. Forest Hills attracts middle-to-upper-class families with large green spaces. Bayside is highly desirable for excellent school districts.',
+    zh: '皇后区以其多元文化社区而闻名，每个社区都有独特的吸引力。森林山以大片绿地吸引中高收入家庭。贝赛德因优秀的学区而备受青睐。'
+  },
+  'localMarket.schoolDistrict.title': {
+    en: 'School District Investment Report',
+    zh: '学区投资报告'
+  },
+  'localMarket.schoolDistrict.content': {
+    en: 'Investing in properties within top-rated school districts in NYC is a sound strategy for long-term value appreciation. Queens boasts \'yellow diamond\' school zones like Bayside and Fresh Meadows with schools receiving 8+ ratings.',
+    zh: '在纽约顶级学区内投资房产是长期增值的明智策略。皇后区拥有贝赛德和Fresh Meadows等"黄金学区"，学校评分达8+。'
+  },
+  'localMarket.rentalYield.title': {
+    en: 'Rental Yield Analysis Across NYC Boroughs',
+    zh: '纽约各区租金收益率分析'
+  },
+  'localMarket.rentalYield.content': {
+    en: 'According to 2024 data, the Bronx leads with the highest average gross rental yield at 6.1%. Queens\' rental yields vary by neighborhood, with an average of 4.7%. Jamaica achieves approximately 5.3% yield.',
+    zh: '根据2024年数据，布朗克斯以6.1%的平均毛租金收益率领先。皇后区租金收益率因社区而异，平均为4.7%。牙买加地区达到约5.3%的收益率。'
+  },
+
+  // Educational Content
+  'educational.foreignBuyer.title': {
+    en: 'Complete Guide to Buying Property as a Foreigner',
+    zh: '外国人购房完整指南'
+  },
+  'educational.foreignBuyer.content': {
+    en: 'Non-U.S. citizens can purchase property in the U.S., but there are specific requirements for loans, taxes, and ownership structures. The process involves eligibility assessment, financial preparation, and final transaction phases.',
+    zh: '非美国公民可以在美国购买房产，但在贷款、税务和所有权结构方面有特定要求。流程包括资格评估、财务准备和最终交易阶段。'
+  },
+  'educational.buyingProcess.title': {
+    en: 'Detailed NYC Home Buying Process',
+    zh: '纽约购房流程详解'
+  },
+  'educational.buyingProcess.content': {
+    en: 'The home buying process in New York State typically takes 6 to 10 weeks and requires both buyer\'s and seller\'s attorneys to handle contracts and title processes.',
+    zh: '纽约州购房流程通常需要6至10周，需要买卖双方律师处理合同和产权流程。'
+  },
+  'educational.loanGuide.title': {
+    en: 'Home Loan Application Guide',
+    zh: '房贷申请指南'
+  },
+  'educational.loanGuide.content': {
+    en: 'Multiple loan types available including Conventional Loans (3-5% down), FHA Loans (3.5% down), and Non-QM/Commercial Loans for asset-based documentation.',
+    zh: '多种贷款类型可选，包括传统贷款（3-5%首付）、FHA贷款（3.5%首付）和资产证明的Non-QM/商业贷款。'
+  },
+  'educational.taxOptimization.title': {
+    en: 'Tax Optimization Strategies',
+    zh: '税务优化策略'
+  },
+  'educational.taxOptimization.content': {
+    en: 'Legal methods can significantly reduce tax liabilities including LLC setup, 1031 Exchange for capital gains deferral, and STAR/SCHE tax exemptions for eligible homeowners.',
+    zh: '合法方法可显著减少税务负担，包括LLC设立、1031交换延迟资本利得税，以及符合条件房主的STAR/SCHE税务减免。'
+  },
+
+  // Market Insights
+  'insights.salesReport.title': {
+    en: 'Monthly Market Sales Report',
+    zh: '月度市场销售报告'
+  },
+  'insights.salesReport.content': {
+    en: 'July 2025 data shows Queens median home price at $685,000, representing 4.2% YoY growth. Flushing properties average 38 days on market, indicating strong demand and quick turnover.',
+    zh: '2025年7月数据显示皇后区中位数房价为$685,000，同比增长4.2%。法拉盛房产平均38天售出，显示强劲需求和快速周转。'
+  },
+  'insights.domAnalysis.title': {
+    en: 'Days on Market Analysis',
+    zh: '市场停留天数分析'
+  },
+  'insights.domAnalysis.content': {
+    en: 'Days on market varies significantly by borough and price range. Manhattan luxury properties have longer cycles due to complex financing, while Queens and Brooklyn mid-range homes sell faster with more cash buyers.',
+    zh: '市场停留天数因区域和价格范围差异显著。曼哈顿豪宅因复杂融资周期较长，而皇后区和布鲁克林中档房产因现金买家较多而销售更快。'
+  },
+  'insights.topNeighborhoods.title': {
+    en: 'Top Neighborhoods Ranking',
+    zh: '顶级社区排名'
+  },
+  'insights.topNeighborhoods.content': {
+    en: 'Based on H1 2025 data including price appreciation, rental yield, population growth, and infrastructure development, top five NYC investment neighborhoods identified.',
+    zh: '基于2025年上半年数据，包括房价增值、租金收益率、人口增长和基础设施发展，确定纽约前五大投资社区。'
   }
 };
 
