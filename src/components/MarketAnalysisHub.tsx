@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -149,6 +149,49 @@ const MarketAnalysisHub = () => {
 
   const uniqueTags = [...new Set(allTags)];
 
+  // Function to find content by tag and navigate to it
+  const handleTagClick = (tag: string) => {
+    // Find which content contains this tag
+    const localIndex = localMarketContent.findIndex(item => item.tags.includes(tag));
+    const educationalIndex = educationalContent.findIndex(item => item.tags.includes(tag));
+    const insightsIndex = marketInsights.findIndex(item => item.tags.includes(tag));
+
+    let targetTab = '';
+    let targetId = '';
+
+    if (localIndex !== -1) {
+      targetTab = 'local';
+      targetId = `local-content-${localIndex}`;
+    } else if (educationalIndex !== -1) {
+      targetTab = 'educational';
+      targetId = `educational-content-${educationalIndex}`;
+    } else if (insightsIndex !== -1) {
+      targetTab = 'insights';
+      targetId = `insights-content-${insightsIndex}`;
+    }
+
+    if (targetTab && targetId) {
+      // Switch to the correct tab
+      setActiveCategory(targetTab);
+      
+      // Scroll to the content after a brief delay to allow tab switching
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          // Add a brief highlight effect
+          element.style.background = 'hsl(var(--primary) / 0.1)';
+          setTimeout(() => {
+            element.style.background = '';
+          }, 2000);
+        }
+      }, 100);
+    }
+  };
+
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-background to-secondary/10">
       <div className="container mx-auto max-w-7xl">
@@ -166,7 +209,12 @@ const MarketAnalysisHub = () => {
           <h3 className="text-lg font-semibold mb-4">Featured Topics & Keywords</h3>
           <div className="flex flex-wrap gap-2">
             {uniqueTags.slice(0, 20).map((tag, index) => (
-              <Badge key={index} variant="secondary" className="text-xs">
+              <Badge 
+                key={index} 
+                variant="secondary" 
+                className="text-xs cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors" 
+                onClick={() => handleTagClick(tag)}
+              >
                 {tag}
               </Badge>
             ))}
@@ -192,7 +240,7 @@ const MarketAnalysisHub = () => {
           <TabsContent value="local" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {localMarketContent.map((item, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
+                <Card key={index} id={`local-content-${index}`} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       {item.icon}
@@ -225,7 +273,7 @@ const MarketAnalysisHub = () => {
           <TabsContent value="educational" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {educationalContent.map((item, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
+                <Card key={index} id={`educational-content-${index}`} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       {item.icon}
@@ -258,7 +306,7 @@ const MarketAnalysisHub = () => {
           <TabsContent value="insights" className="space-y-6">
             <div className="grid grid-cols-1 gap-6">
               {marketInsights.map((item, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
+                <Card key={index} id={`insights-content-${index}`} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       {item.icon}
