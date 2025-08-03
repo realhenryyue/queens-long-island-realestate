@@ -8,6 +8,8 @@ import { PerformanceOptimizer } from "@/components/PerformanceOptimizer";
 import { SEOEnhancer } from "@/components/SEOEnhancer";
 import { SEOContentStrategy } from "@/components/SEOContentStrategy";
 import { TopAgentAnalysis } from "@/components/TopAgentAnalysis";
+import MarketAnalysisHub from "@/components/MarketAnalysisHub";
+import ROICalculator from "@/components/ROICalculator";
 
 const Index = () => {
   return (
@@ -18,6 +20,8 @@ const Index = () => {
       <HeroSection />
       <ServicesSection />
       <AboutSection />
+      <MarketAnalysisHub />
+      <ROICalculator />
       <ContactSection />
       
       {/* SEO Strategy Components - for internal reference */}
