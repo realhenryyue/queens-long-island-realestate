@@ -275,7 +275,7 @@ const ROICalculator = () => {
                 <DialogContent className="sm:max-w-md">
                   <div className="text-center space-y-4">
                     <img 
-                      src="https://cdn.realhenryyue.com/images/wechat-qr.png" 
+                      src="/lovable-uploads/551665ae-4d12-46ac-a06f-b5c2e5ff4442.png" 
                       alt="WeChat QR Code"
                       className="w-48 h-48 mx-auto"
                     />
