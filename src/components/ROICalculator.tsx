@@ -4,7 +4,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calculator, DollarSign, TrendingUp, Home, Percent } from 'lucide-react';
+import { Calculator, DollarSign, TrendingUp, Home, Percent, Download } from 'lucide-react';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const ROICalculator = () => {
   const [inputs, setInputs] = useState({
@@ -55,8 +57,50 @@ const ROICalculator = () => {
   }, [inputs]);
 
   const handleInputChange = (field: string, value: string) => {
-    const numValue = parseFloat(value) || 0;
+    // Allow empty string and convert to number only when not empty
+    const numValue = value === '' ? 0 : parseFloat(value) || 0;
     setInputs(prev => ({ ...prev, [field]: numValue }));
+  };
+
+  const exportToPDF = async () => {
+    const element = document.getElementById('roi-calculator-content');
+    if (!element) return;
+
+    try {
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff'
+      });
+      
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+      
+      const imgWidth = 210;
+      const pageHeight = 295;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+      
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+      
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      
+      pdf.save('roi-calculator-report.pdf');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
   };
 
   const formatCurrency = (amount: number) => {
@@ -103,7 +147,16 @@ const ROICalculator = () => {
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Calculate your potential returns on NYC real estate investments with accurate market data
           </p>
+          <Button 
+            onClick={exportToPDF}
+            className="mt-4 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Export to PDF
+          </Button>
         </div>
+
+        <div id="roi-calculator-content">
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Input Panel */}
@@ -318,6 +371,7 @@ const ROICalculator = () => {
             </p>
           </CardContent>
         </Card>
+        </div>
       </div>
     </section>
   );
