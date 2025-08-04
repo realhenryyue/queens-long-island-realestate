@@ -1,321 +1,291 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Calculator, DollarSign, TrendingUp, Home, Percent } from 'lucide-react';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend
+} from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
+import jsPDF from 'jspdf';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const ROICalculator = () => {
   const [inputs, setInputs] = useState({
-    purchasePrice: 750000,
-    downPayment: 150000,
-    monthlyRent: 3200,
-    monthlyExpenses: 800,
-    closingCosts: 15000,
-    renovationCosts: 25000,
-    appreciationRate: 4.5
+    price: '',
+    rent: '',
+    tax: '',
+    fee: '',
+    rate: '6.5'
   });
+  
+  const [result, setResult] = useState<{ roi: number; annualRent: number; annualCost: number } | null>(null);
+  const [showQR, setShowQR] = useState(false);
 
-  const [results, setResults] = useState({
-    cashInvested: 0,
-    annualCashFlow: 0,
-    cashOnCashReturn: 0,
-    capRate: 0,
-    totalROI: 0,
-    monthlyProfit: 0,
-    annualAppreciation: 0
-  });
+  // Detect language
+  const lang = navigator.language.startsWith('zh') ? 'zh' : 'en';
 
-  const calculateROI = () => {
-    const cashInvested = inputs.downPayment + inputs.closingCosts + inputs.renovationCosts;
-    const annualRent = inputs.monthlyRent * 12;
-    const annualExpenses = inputs.monthlyExpenses * 12;
-    const annualCashFlow = annualRent - annualExpenses;
-    const monthlyProfit = annualCashFlow / 12;
-    
-    const cashOnCashReturn = cashInvested > 0 ? (annualCashFlow / cashInvested) * 100 : 0;
-    const capRate = inputs.purchasePrice > 0 ? (annualCashFlow / inputs.purchasePrice) * 100 : 0;
-    const annualAppreciation = inputs.purchasePrice * (inputs.appreciationRate / 100);
-    const totalROI = cashInvested > 0 ? ((annualCashFlow + annualAppreciation) / cashInvested) * 100 : 0;
+  const i18n = {
+    en: {
+      title: "Real Estate ROI Calculator",
+      price: "Purchase Price",
+      rent: "Monthly Rent",
+      tax: "Annual Property Tax",
+      fee: "Monthly HOA/Maintenance",
+      rate: "Loan Rate (%)",
+      calc: "Calculate",
+      roi: "Estimated ROI",
+      pdf: "Export PDF",
+      share: "WeChat Share",
+      close: "Close"
+    },
+    zh: {
+      title: "房地产投资回报计算器",
+      price: "购房总价",
+      rent: "月租金收入",
+      tax: "每年地税",
+      fee: "每月管理费/维修费",
+      rate: "贷款利率 (%)",
+      calc: "计算",
+      roi: "预计年投资回报率",
+      pdf: "导出 PDF",
+      share: "微信分享",
+      close: "关闭"
+    }
+  };
 
-    setResults({
-      cashInvested,
-      annualCashFlow,
-      cashOnCashReturn,
-      capRate,
-      totalROI,
-      monthlyProfit,
-      annualAppreciation
+  const t = i18n[lang];
+
+  const presets = {
+    "Flushing": { price: 700000, rent: 2600, tax: 6000, fee: 300 },
+    "Forest Hills": { price: 850000, rent: 3000, tax: 7000, fee: 450 },
+    "Great Neck": { price: 950000, rent: 3200, tax: 8800, fee: 380 },
+    "Hicksville": { price: 750000, rent: 2700, tax: 7400, fee: 250 },
+    "Manhattan Midtown": { price: 1300000, rent: 4800, tax: 13000, fee: 900 }
+  };
+
+  const fillPreset = (region: string) => {
+    const preset = presets[region as keyof typeof presets];
+    setInputs({
+      ...inputs,
+      price: preset.price.toString(),
+      rent: preset.rent.toString(),
+      tax: preset.tax.toString(),
+      fee: preset.fee.toString()
     });
   };
 
-  useEffect(() => {
-    calculateROI();
-  }, [inputs]);
-
   const handleInputChange = (field: string, value: string) => {
-    const numValue = parseFloat(value) || 0;
-    setInputs(prev => ({ ...prev, [field]: numValue }));
+    setInputs(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
+  const calculateROI = () => {
+    const price = parseFloat(inputs.price);
+    const rent = parseFloat(inputs.rent);
+    const tax = parseFloat(inputs.tax);
+    const fee = parseFloat(inputs.fee);
+    const rate = parseFloat(inputs.rate) / 100;
+
+    if (!price || !rent || !tax || !rate) return;
+
+    const downPayment = price * 0.3;
+    const loanAmount = price * 0.7;
+    const annualLoanInterest = loanAmount * rate;
+    const annualRent = rent * 12;
+    const annualCost = tax + (fee || 0) * 12 + annualLoanInterest;
+
+    const roi = ((annualRent - annualCost) / downPayment) * 100;
+
+    setResult({ roi, annualRent, annualCost });
   };
 
-  const formatPercent = (percent: number) => {
-    return `${percent.toFixed(2)}%`;
-  };
+  const chartData = result ? {
+    labels: ['Income', 'Cost'],
+    datasets: [{
+      data: [result.annualRent, result.annualCost],
+      backgroundColor: ['hsl(142 76% 36%)', 'hsl(0 84% 60%)'],
+      borderWidth: 0
+    }]
+  } : null;
 
-  const getROIColor = (roi: number) => {
-    if (roi >= 15) return 'text-green-600';
-    if (roi >= 8) return 'text-yellow-600';
-    return 'text-red-600';
-  };
-
-  const presetScenarios = [
-    {
-      name: "Flushing Condo",
-      values: { purchasePrice: 720000, downPayment: 144000, monthlyRent: 2800, monthlyExpenses: 650, closingCosts: 14400, renovationCosts: 15000, appreciationRate: 6.2 }
-    },
-    {
-      name: "Queens Family Home",
-      values: { purchasePrice: 950000, downPayment: 190000, monthlyRent: 3800, monthlyExpenses: 1100, closingCosts: 19000, renovationCosts: 35000, appreciationRate: 4.7 }
-    },
-    {
-      name: "Astoria Investment",
-      values: { purchasePrice: 860000, downPayment: 172000, monthlyRent: 3200, monthlyExpenses: 850, closingCosts: 17200, renovationCosts: 20000, appreciationRate: 4.2 }
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom' as const
+      }
     }
-  ];
+  };
+
+  const exportPDF = async () => {
+    const doc = new jsPDF();
+    
+    doc.setFontSize(16);
+    doc.text("Real Estate ROI Report", 10, 20);
+    doc.setFontSize(12);
+    doc.text("www.realhenryyue.com", 10, 30);
+    
+    doc.text(`Purchase Price: $${inputs.price}`, 10, 50);
+    doc.text(`Monthly Rent: $${inputs.rent}`, 10, 60);
+    doc.text(`Annual Tax: $${inputs.tax}`, 10, 70);
+    doc.text(`Monthly Fee: $${inputs.fee}`, 10, 80);
+    doc.text(`Loan Rate: ${inputs.rate}%`, 10, 90);
+    
+    if (result) {
+      doc.text(`${t.roi}: ${result.roi.toFixed(2)}%`, 10, 110);
+    }
+    
+    doc.save("roi-report.pdf");
+  };
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-br from-secondary/10 to-background">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            Real Estate Investment ROI Calculator
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Calculate your potential returns on NYC real estate investments with accurate market data
-          </p>
-        </div>
+    <section className="py-16 bg-background">
+      <div className="container mx-auto px-4">
+        <Card className="max-w-4xl mx-auto">
+          <CardHeader>
+            <CardTitle className="text-3xl font-bold text-center">
+              {t.title}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Region Preset Buttons */}
+            <div className="flex flex-wrap gap-2 justify-center">
+              {Object.keys(presets).map((region) => (
+                <Button
+                  key={region}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => fillPreset(region)}
+                  className="text-sm"
+                >
+                  {region}
+                </Button>
+              ))}
+            </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Input Panel */}
-          <Card className="h-fit">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calculator className="h-5 w-5" />
-                Investment Parameters
-              </CardTitle>
-              <CardDescription>
-                Enter your investment details to calculate potential returns
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Preset Scenarios */}
-              <div>
-                <Label className="text-sm font-medium mb-3 block">Quick Scenarios</Label>
-                <div className="flex flex-wrap gap-2">
-                  {presetScenarios.map((scenario, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setInputs(scenario.values)}
-                      className="text-xs"
-                    >
-                      {scenario.name}
+            {/* Input Fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="price">{t.price}</Label>
+                <Input
+                  id="price"
+                  type="number"
+                  value={inputs.price}
+                  onChange={(e) => handleInputChange('price', e.target.value)}
+                  placeholder="700000"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="rent">{t.rent}</Label>
+                <Input
+                  id="rent"
+                  type="number"
+                  value={inputs.rent}
+                  onChange={(e) => handleInputChange('rent', e.target.value)}
+                  placeholder="2600"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="tax">{t.tax}</Label>
+                <Input
+                  id="tax"
+                  type="number"
+                  value={inputs.tax}
+                  onChange={(e) => handleInputChange('tax', e.target.value)}
+                  placeholder="6000"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="fee">{t.fee}</Label>
+                <Input
+                  id="fee"
+                  type="number"
+                  value={inputs.fee}
+                  onChange={(e) => handleInputChange('fee', e.target.value)}
+                  placeholder="300"
+                />
+              </div>
+              
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="rate">{t.rate}</Label>
+                <Input
+                  id="rate"
+                  type="number"
+                  step="0.1"
+                  value={inputs.rate}
+                  onChange={(e) => handleInputChange('rate', e.target.value)}
+                  placeholder="6.5"
+                />
+              </div>
+            </div>
+
+            {/* Calculate Button */}
+            <div className="text-center">
+              <Button onClick={calculateROI} size="lg">
+                {t.calc}
+              </Button>
+            </div>
+
+            {/* Results */}
+            {result && (
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-primary">
+                      {t.roi}: {result.roi.toFixed(2)}%
+                    </p>
+                  </div>
+                  
+                  {/* Chart */}
+                  <div className="mt-6 max-w-md mx-auto">
+                    <div className="h-64">
+                      {chartData && (
+                        <Doughnut data={chartData} options={chartOptions} />
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Button onClick={exportPDF} variant="outline">
+                {t.pdf}
+              </Button>
+              
+              <Dialog open={showQR} onOpenChange={setShowQR}>
+                <DialogTrigger asChild>
+                  <Button variant="outline">
+                    {t.share}
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <div className="text-center space-y-4">
+                    <img 
+                      src="https://cdn.realhenryyue.com/images/wechat-qr.png" 
+                      alt="WeChat QR Code"
+                      className="w-48 h-48 mx-auto"
+                    />
+                    <Button onClick={() => setShowQR(false)}>
+                      {t.close}
                     </Button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="purchasePrice">Purchase Price</Label>
-                  <Input
-                    id="purchasePrice"
-                    type="number"
-                    value={inputs.purchasePrice}
-                    onChange={(e) => handleInputChange('purchasePrice', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="downPayment">Down Payment</Label>
-                  <Input
-                    id="downPayment"
-                    type="number"
-                    value={inputs.downPayment}
-                    onChange={(e) => handleInputChange('downPayment', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="monthlyRent">Monthly Rent</Label>
-                  <Input
-                    id="monthlyRent"
-                    type="number"
-                    value={inputs.monthlyRent}
-                    onChange={(e) => handleInputChange('monthlyRent', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="monthlyExpenses">Monthly Expenses</Label>
-                  <Input
-                    id="monthlyExpenses"
-                    type="number"
-                    value={inputs.monthlyExpenses}
-                    onChange={(e) => handleInputChange('monthlyExpenses', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="closingCosts">Closing Costs</Label>
-                  <Input
-                    id="closingCosts"
-                    type="number"
-                    value={inputs.closingCosts}
-                    onChange={(e) => handleInputChange('closingCosts', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="renovationCosts">Renovation Costs</Label>
-                  <Input
-                    id="renovationCosts"
-                    type="number"
-                    value={inputs.renovationCosts}
-                    onChange={(e) => handleInputChange('renovationCosts', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <Label htmlFor="appreciationRate">Annual Appreciation Rate (%)</Label>
-                  <Input
-                    id="appreciationRate"
-                    type="number"
-                    step="0.1"
-                    value={inputs.appreciationRate}
-                    onChange={(e) => handleInputChange('appreciationRate', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Results Panel */}
-          <div className="space-y-6">
-            {/* Key Metrics */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  Investment Returns
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg border">
-                    <DollarSign className="h-6 w-6 mx-auto mb-2 text-primary" />
-                    <div className="text-2xl font-bold text-primary">
-                      {formatPercent(results.totalROI)}
-                    </div>
-                    <div className="text-sm text-muted-foreground">Total ROI</div>
                   </div>
-                  <div className="text-center p-4 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-lg border">
-                    <Percent className="h-6 w-6 mx-auto mb-2 text-secondary-foreground" />
-                    <div className="text-2xl font-bold">
-                      {formatPercent(results.cashOnCashReturn)}
-                    </div>
-                    <div className="text-sm text-muted-foreground">Cash-on-Cash</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Detailed Metrics */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Home className="h-5 w-5" />
-                  Detailed Analysis
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">Cash Invested</span>
-                  <span className="font-bold">{formatCurrency(results.cashInvested)}</span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">Monthly Cash Flow</span>
-                  <span className={`font-bold ${results.monthlyProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {formatCurrency(results.monthlyProfit)}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">Annual Cash Flow</span>
-                  <span className={`font-bold ${results.annualCashFlow >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {formatCurrency(results.annualCashFlow)}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">Cap Rate</span>
-                  <span className="font-bold">{formatPercent(results.capRate)}</span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">Annual Appreciation</span>
-                  <span className="font-bold text-green-600">{formatCurrency(results.annualAppreciation)}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* ROI Interpretation */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Investment Quality</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span>Cash-on-Cash Return</span>
-                    <Badge variant={results.cashOnCashReturn >= 8 ? "default" : results.cashOnCashReturn >= 5 ? "secondary" : "destructive"}>
-                      {results.cashOnCashReturn >= 8 ? "Excellent" : results.cashOnCashReturn >= 5 ? "Good" : "Poor"}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Cap Rate</span>
-                    <Badge variant={results.capRate >= 5 ? "default" : results.capRate >= 3 ? "secondary" : "destructive"}>
-                      {results.capRate >= 5 ? "Strong" : results.capRate >= 3 ? "Moderate" : "Weak"}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Total ROI</span>
-                    <Badge variant={results.totalROI >= 15 ? "default" : results.totalROI >= 8 ? "secondary" : "destructive"}>
-                      {results.totalROI >= 15 ? "Outstanding" : results.totalROI >= 8 ? "Solid" : "Below Average"}
-                    </Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* Disclaimer */}
-        <Card className="mt-8">
-          <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground text-center">
-              <strong>Disclaimer:</strong> This calculator provides estimates based on the inputs provided. Actual returns may vary due to market conditions, 
-              vacancy rates, maintenance costs, and other factors. Consult with a real estate professional and financial advisor before making investment decisions.
-            </p>
+                </DialogContent>
+              </Dialog>
+            </div>
           </CardContent>
         </Card>
       </div>
