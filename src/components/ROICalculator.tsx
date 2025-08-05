@@ -11,7 +11,6 @@ import html2canvas from 'html2canvas';
 const ROICalculator = () => {
   const [inputs, setInputs] = useState({
     purchasePrice: '750000',
-    downPayment: '150000',
     monthlyRent: '3200',
     monthlyExpenses: '800',
     closingCosts: '15000',
@@ -32,7 +31,7 @@ const ROICalculator = () => {
   const calculateROI = () => {
     // Convert string inputs to numbers for calculations
     const purchasePrice = parseFloat(inputs.purchasePrice) || 0;
-    const downPayment = parseFloat(inputs.downPayment) || 0;
+    const downPayment = purchasePrice * 0.3; // 30% down payment
     const monthlyRent = parseFloat(inputs.monthlyRent) || 0;
     const monthlyExpenses = parseFloat(inputs.monthlyExpenses) || 0;
     const closingCosts = parseFloat(inputs.closingCosts) || 0;
@@ -133,15 +132,15 @@ const ROICalculator = () => {
   const presetScenarios = [
     {
       name: "Flushing Condo",
-      values: { purchasePrice: '720000', downPayment: '144000', monthlyRent: '2800', monthlyExpenses: '650', closingCosts: '14400', renovationCosts: '15000', appreciationRate: '6.2' }
+      values: { purchasePrice: '720000', monthlyRent: '2800', monthlyExpenses: '650', closingCosts: '14400', renovationCosts: '15000', appreciationRate: '6.2' }
     },
     {
       name: "Queens Family Home",
-      values: { purchasePrice: '950000', downPayment: '190000', monthlyRent: '3800', monthlyExpenses: '1100', closingCosts: '19000', renovationCosts: '35000', appreciationRate: '4.7' }
+      values: { purchasePrice: '950000', monthlyRent: '3800', monthlyExpenses: '1100', closingCosts: '19000', renovationCosts: '35000', appreciationRate: '4.7' }
     },
     {
       name: "Astoria Investment",
-      values: { purchasePrice: '860000', downPayment: '172000', monthlyRent: '3200', monthlyExpenses: '850', closingCosts: '17200', renovationCosts: '20000', appreciationRate: '4.2' }
+      values: { purchasePrice: '860000', monthlyRent: '3200', monthlyExpenses: '850', closingCosts: '17200', renovationCosts: '20000', appreciationRate: '4.2' }
     }
   ];
 
@@ -209,13 +208,13 @@ const ROICalculator = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="downPayment">Down Payment</Label>
+                  <Label htmlFor="downPayment">Down Payment (30%)</Label>
                   <Input
                     id="downPayment"
-                    type="number"
-                    value={inputs.downPayment}
-                    onChange={(e) => handleInputChange('downPayment', e.target.value)}
-                    className="mt-1"
+                    type="text"
+                    value={formatCurrency(parseFloat(inputs.purchasePrice) * 0.3 || 0)}
+                    readOnly
+                    className="mt-1 bg-muted cursor-not-allowed"
                   />
                 </div>
                 <div>
