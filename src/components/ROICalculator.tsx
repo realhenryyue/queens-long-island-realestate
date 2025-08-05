@@ -10,13 +10,13 @@ import html2canvas from 'html2canvas';
 
 const ROICalculator = () => {
   const [inputs, setInputs] = useState({
-    purchasePrice: 750000,
-    downPayment: 150000,
-    monthlyRent: 3200,
-    monthlyExpenses: 800,
-    closingCosts: 15000,
-    renovationCosts: 25000,
-    appreciationRate: 4.5
+    purchasePrice: '750000',
+    downPayment: '150000',
+    monthlyRent: '3200',
+    monthlyExpenses: '800',
+    closingCosts: '15000',
+    renovationCosts: '25000',
+    appreciationRate: '4.5'
   });
 
   const [results, setResults] = useState({
@@ -30,15 +30,24 @@ const ROICalculator = () => {
   });
 
   const calculateROI = () => {
-    const cashInvested = inputs.downPayment + inputs.closingCosts + inputs.renovationCosts;
-    const annualRent = inputs.monthlyRent * 12;
-    const annualExpenses = inputs.monthlyExpenses * 12;
+    // Convert string inputs to numbers for calculations
+    const purchasePrice = parseFloat(inputs.purchasePrice) || 0;
+    const downPayment = parseFloat(inputs.downPayment) || 0;
+    const monthlyRent = parseFloat(inputs.monthlyRent) || 0;
+    const monthlyExpenses = parseFloat(inputs.monthlyExpenses) || 0;
+    const closingCosts = parseFloat(inputs.closingCosts) || 0;
+    const renovationCosts = parseFloat(inputs.renovationCosts) || 0;
+    const appreciationRate = parseFloat(inputs.appreciationRate) || 0;
+
+    const cashInvested = downPayment + closingCosts + renovationCosts;
+    const annualRent = monthlyRent * 12;
+    const annualExpenses = monthlyExpenses * 12;
     const annualCashFlow = annualRent - annualExpenses;
     const monthlyProfit = annualCashFlow / 12;
     
     const cashOnCashReturn = cashInvested > 0 ? (annualCashFlow / cashInvested) * 100 : 0;
-    const capRate = inputs.purchasePrice > 0 ? (annualCashFlow / inputs.purchasePrice) * 100 : 0;
-    const annualAppreciation = inputs.purchasePrice * (inputs.appreciationRate / 100);
+    const capRate = purchasePrice > 0 ? (annualCashFlow / purchasePrice) * 100 : 0;
+    const annualAppreciation = purchasePrice * (appreciationRate / 100);
     const totalROI = cashInvested > 0 ? ((annualCashFlow + annualAppreciation) / cashInvested) * 100 : 0;
 
     setResults({
@@ -57,9 +66,8 @@ const ROICalculator = () => {
   }, [inputs]);
 
   const handleInputChange = (field: string, value: string) => {
-    // Allow empty string and convert to number only when not empty
-    const numValue = value === '' ? 0 : parseFloat(value) || 0;
-    setInputs(prev => ({ ...prev, [field]: numValue }));
+    // Store the raw string value to allow empty fields
+    setInputs(prev => ({ ...prev, [field]: value }));
   };
 
   const exportToPDF = async () => {
@@ -125,15 +133,15 @@ const ROICalculator = () => {
   const presetScenarios = [
     {
       name: "Flushing Condo",
-      values: { purchasePrice: 720000, downPayment: 144000, monthlyRent: 2800, monthlyExpenses: 650, closingCosts: 14400, renovationCosts: 15000, appreciationRate: 6.2 }
+      values: { purchasePrice: '720000', downPayment: '144000', monthlyRent: '2800', monthlyExpenses: '650', closingCosts: '14400', renovationCosts: '15000', appreciationRate: '6.2' }
     },
     {
       name: "Queens Family Home",
-      values: { purchasePrice: 950000, downPayment: 190000, monthlyRent: 3800, monthlyExpenses: 1100, closingCosts: 19000, renovationCosts: 35000, appreciationRate: 4.7 }
+      values: { purchasePrice: '950000', downPayment: '190000', monthlyRent: '3800', monthlyExpenses: '1100', closingCosts: '19000', renovationCosts: '35000', appreciationRate: '4.7' }
     },
     {
       name: "Astoria Investment",
-      values: { purchasePrice: 860000, downPayment: 172000, monthlyRent: 3200, monthlyExpenses: 850, closingCosts: 17200, renovationCosts: 20000, appreciationRate: 4.2 }
+      values: { purchasePrice: '860000', downPayment: '172000', monthlyRent: '3200', monthlyExpenses: '850', closingCosts: '17200', renovationCosts: '20000', appreciationRate: '4.2' }
     }
   ];
 
