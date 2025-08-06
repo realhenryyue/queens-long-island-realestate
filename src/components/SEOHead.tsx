@@ -46,10 +46,12 @@ export const SEOHead = () => {
     existingHreflang.forEach(link => link.remove());
 
     const baseUrl = window.location.origin;
+    const currentPath = window.location.pathname;
+    const canonicalUrl = `${baseUrl}${currentPath}`;
     const hreflangs = [
-      { lang: 'zh-CN', href: `${baseUrl}?lang=zh` },
-      { lang: 'en-US', href: `${baseUrl}?lang=en` },
-      { lang: 'x-default', href: baseUrl }
+      { lang: 'zh-CN', href: `${baseUrl}${currentPath}?lang=zh` },
+      { lang: 'en-US', href: `${baseUrl}${currentPath}?lang=en` },
+      { lang: 'x-default', href: `${baseUrl}${currentPath}` }
     ];
 
     hreflangs.forEach(({ lang, href }) => {
@@ -78,12 +80,22 @@ export const SEOHead = () => {
       (meta as HTMLMetaElement).content = content;
     });
 
+    // Add canonical URL to prevent duplicate content
+    const existingCanonical = document.querySelector('link[rel="canonical"]');
+    if (existingCanonical) {
+      existingCanonical.remove();
+    }
+    const canonical = document.createElement('link');
+    canonical.rel = 'canonical';
+    canonical.href = canonicalUrl;
+    document.head.appendChild(canonical);
+
     // Update Open Graph tags
     const ogMeta = [
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: window.location.href },
+      { property: 'og:url', content: canonicalUrl },
       { property: 'og:locale', content: language === 'zh' ? 'zh_CN' : 'en_US' },
       { property: 'og:site_name', content: 'RealHenryYue.com' }
     ];
