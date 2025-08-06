@@ -32,7 +32,7 @@ export const HeroSection = () => {
             {/* Slogan */}
             <div className="text-center lg:text-left mb-8">
               <div className="text-lg lg:text-xl font-medium text-accent tracking-wide">
-                MOVE ON, CARRY ON. 換個地方, 續寫傳奇.
+                {t('hero.slogan')}
               </div>
             </div>
             
@@ -53,7 +53,7 @@ export const HeroSection = () => {
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 <Phone className="w-5 h-5" />
-                Call Now: (718) 717-5210
+                {t('hero.callNow')}
               </Button>
               <Button 
                 variant="outline" 
@@ -73,7 +73,7 @@ export const HeroSection = () => {
                 <div className="relative">
                   <img 
                     src={agentPhoto} 
-                    alt="Hongyu (Henry) Yue - Real Estate Agent"
+                    alt={t('hero.agentAlt')}
                     className="w-32 h-32 rounded-full mx-auto object-cover shadow-card"
                   />
                   <div className="absolute -bottom-2 -right-2 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
@@ -82,14 +82,14 @@ export const HeroSection = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold text-primary">Hongyu (Henry) Yue</h3>
-                  <p className="text-muted-foreground font-medium">Licensed Real Estate Agent</p>
+                  <h3 className="text-2xl font-bold text-primary">{t('hero.agentName')}</h3>
+                  <p className="text-muted-foreground font-medium">{t('hero.agentTitle')}</p>
                 </div>
                 
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <MapPin className="w-4 h-4 text-accent" />
-                    <span>Queens • Long Island • New York</span>
+                    <span>{t('hero.locations')}</span>
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Phone className="w-4 h-4 text-accent" />

@@ -17,8 +17,8 @@ export const LocalBusinessSchema = () => {
         {
           "@type": "RealEstateAgent",
           "@id": "https://www.realhenryyue.com/#person",
-          "name": language === 'zh' ? "Henry岳先生 (Hongyu Yue)" : "Hongyu (Henry) Yue",
-          "alternateName": ["Henry Yue", "岳鸿宇", "Henry岳先生"],
+          "name": language === 'zh' ? "岳鸿宇" : "Hongyu (Henry) Yue",
+          "alternateName": language === 'zh' ? ["岳鸿宇", "Henry岳先生"] : ["Henry Yue", "Hongyu Yue"],
           "description": language === 'zh' 
             ? "纽约州持牌房地产经纪人，专业服务曼哈顿、皇后区、长岛地区，为华人客户提供双语房产咨询与投资建议"
             : "Licensed New York Real Estate Agent specializing in Manhattan, Queens, and Long Island properties, providing bilingual real estate consultation and investment advice",
@@ -28,7 +28,7 @@ export const LocalBusinessSchema = () => {
             "url": "https://www.realhenryyue.com/assets/agent-photo.jpg",
             "width": 400,
             "height": 400,
-            "caption": "Henry Yue - Professional Real Estate Agent"
+            "caption": language === 'zh' ? "岳鸿宇 - 专业房地产经纪人" : "Henry Yue - Professional Real Estate Agent"
           },
           "telephone": "+1-718-717-5210",
           "email": "forangh@gmail.com",
@@ -171,12 +171,12 @@ export const LocalBusinessSchema = () => {
             {
               "@type": "ImageObject",
               "url": "https://www.realhenryyue.com/assets/agent-photo.jpg",
-              "caption": "Henry Yue - Professional Real Estate Agent"
+              "caption": language === 'zh' ? "岳鸿宇 - 专业房地产经纪人" : "Henry Yue - Professional Real Estate Agent"
             },
             {
               "@type": "ImageObject",
               "url": "https://www.realhenryyue.com/assets/queens-skyline.jpg", 
-              "caption": "Queens Real Estate Market"
+              "caption": language === 'zh' ? "皇后区房地产市场" : "Queens Real Estate Market"
             }
           ],
           "telephone": "+1-718-717-5210",

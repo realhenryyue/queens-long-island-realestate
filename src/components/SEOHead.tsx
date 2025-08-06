@@ -119,7 +119,7 @@ export const SEOHead = () => {
     const structuredData = {
       "@context": "https://schema.org",
       "@type": "RealEstateAgent",
-      "name": language === 'zh' ? "Henry岳先生 (Hongyu Yue)" : "Hongyu (Henry) Yue",
+      "name": language === 'zh' ? "岳鸿宇" : "Hongyu (Henry) Yue",
       "alternateName": "Henry Yue",
       "url": window.location.origin,
       "description": description,

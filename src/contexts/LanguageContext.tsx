@@ -37,6 +37,30 @@ const translations: Translations = {
     en: 'Licensed Agent',
     zh: '持牌经纪人'
   },
+  'hero.slogan': {
+    en: 'MOVE ON, CARRY ON.',
+    zh: '換個地方, 續寫傳奇.'
+  },
+  'hero.agentAlt': {
+    en: 'Hongyu (Henry) Yue - Real Estate Agent',
+    zh: '岳鸿宇 - 房地产经纪人'
+  },
+  'hero.agentName': {
+    en: 'Hongyu (Henry) Yue',
+    zh: '岳鸿宇'
+  },
+  'hero.agentTitle': {
+    en: 'Licensed Real Estate Agent',
+    zh: '持牌房地产经纪人'
+  },
+  'hero.callNow': {
+    en: 'Call Now: (718) 717-5210',
+    zh: '立即致电: (718) 717-5210'
+  },
+  'hero.locations': {
+    en: 'Queens • Long Island • New York',
+    zh: '皇后区 • 长岛 • 纽约'
+  },
   
   // About Section
   'about.title': {
@@ -269,6 +293,74 @@ const translations: Translations = {
   'footer.wechat': {
     en: '📱 Scan QR code to add Henry on WeChat for more New York property information.',
     zh: '📱 扫码添加 Henry 微信，了解更多纽约房源信息。'
+  },
+  'footer.name': {
+    en: 'Hongyu (Henry) Yue',
+    zh: '岳鸿宇'
+  },
+  'footer.title': {
+    en: 'Licensed New York Real Estate Agent',
+    zh: '纽约州持牌房地产经纪人'
+  },
+  'footer.services': {
+    en: 'Services',
+    zh: '服务项目'
+  },
+  'footer.services.residential': {
+    en: 'Residential Sales',
+    zh: '住宅买卖'
+  },
+  'footer.services.firstTime': {
+    en: 'First-Time Buyer Support',
+    zh: '首次购房指导'
+  },
+  'footer.services.analysis': {
+    en: 'Market Analysis',
+    zh: '市场分析'
+  },
+  'footer.services.management': {
+    en: 'Property Management',
+    zh: '物业管理'
+  },
+  'footer.services.investment': {
+    en: 'Investment Properties',
+    zh: '投资房产'
+  },
+  'footer.services.bilingual': {
+    en: 'Bilingual Services',
+    zh: '双语服务'
+  },
+  'footer.offices': {
+    en: 'Office Locations',
+    zh: '办公地点'
+  },
+  'footer.offices.team': {
+    en: 'Team Office',
+    zh: '团队办公室'
+  },
+  'footer.offices.flushing': {
+    en: 'Flushing Office',
+    zh: '法拉盛办公室'
+  },
+  'footer.offices.greatNeck': {
+    en: 'Great Neck Office',
+    zh: '大颈办公室'
+  },
+  'footer.wechatTitle': {
+    en: 'WeChat Contact',
+    zh: '微信联系'
+  },
+  'footer.wechatAlt': {
+    en: 'Henry Yue WeChat QR Code',
+    zh: '岳鸿宇微信二维码'
+  },
+  'footer.copyright': {
+    en: '© 2024 Hongyu (Henry) Yue Real Estate. Licensed New York Real Estate Agent.',
+    zh: '© 2024 岳鸿宇房地产。纽约州持牌房地产经纪人。'
+  },
+  'footer.equalHousing': {
+    en: 'Equal Housing Opportunity',
+    zh: '平等住房机会'
   },
   'contact.form.email': {
     en: 'Email sent successfully! I will get back to you soon.',

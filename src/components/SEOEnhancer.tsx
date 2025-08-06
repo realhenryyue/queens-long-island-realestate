@@ -75,25 +75,25 @@ export const SEOEnhancer = () => {
           {
             "@type": "ListItem",
             "position": 1,
-            "name": "Home",
+            "name": language === 'zh' ? "首页" : "Home",
             "item": "https://www.realhenryyue.com/"
           },
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "About",
+            "name": language === 'zh' ? "关于我们" : "About",
             "item": "https://www.realhenryyue.com/#about"
           },
           {
             "@type": "ListItem",
             "position": 3,
-            "name": "Services",
+            "name": language === 'zh' ? "服务项目" : "Services",
             "item": "https://www.realhenryyue.com/#services"
           },
           {
             "@type": "ListItem",
             "position": 4,
-            "name": "Contact",
+            "name": language === 'zh' ? "联系我们" : "Contact",
             "item": "https://www.realhenryyue.com/#contact"
           }
         ]
@@ -119,34 +119,42 @@ export const SEOEnhancer = () => {
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "What areas does Henry Yue serve in New York?",
+            "name": language === 'zh' ? "岳鸿宇在纽约服务哪些地区？" : "What areas does Henry Yue serve in New York?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Henry Yue serves Queens, Long Island, Manhattan, Brooklyn, Bronx, and anywhere in New York State. He has specialized expertise in Flushing, Great Neck, and Nassau County areas."
+              "text": language === 'zh' 
+                ? "岳鸿宇服务皇后区、长岛、曼哈顿、布鲁克林、布朗克斯以及纽约州任何地方。他在法拉盛、大颈和拿骚县地区拥有专业经验。"
+                : "Henry Yue serves Queens, Long Island, Manhattan, Brooklyn, Bronx, and anywhere in New York State. He has specialized expertise in Flushing, Great Neck, and Nassau County areas."
             }
           },
           {
             "@type": "Question",
-            "name": "Is Henry Yue a licensed real estate agent?",
+            "name": language === 'zh' ? "岳鸿宇是持牌房地产经纪人吗？" : "Is Henry Yue a licensed real estate agent?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes, Henry Yue is a licensed New York State real estate salesperson with extensive experience in residential and commercial properties."
+              "text": language === 'zh'
+                ? "是的，岳鸿宇是纽约州持牌房地产经纪人，在住宅和商业房产方面拥有丰富经验。"
+                : "Yes, Henry Yue is a licensed New York State real estate salesperson with extensive experience in residential and commercial properties."
             }
           },
           {
             "@type": "Question",
-            "name": "Does Henry Yue provide bilingual services?",
+            "name": language === 'zh' ? "岳鸿宇提供双语服务吗？" : "Does Henry Yue provide bilingual services?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes, Henry Yue provides professional bilingual services in both English and Chinese, with deep understanding of diverse community needs."
+              "text": language === 'zh'
+                ? "是的，岳鸿宇提供专业的中英双语服务，深入了解多元化社区需求。"
+                : "Yes, Henry Yue provides professional bilingual services in both English and Chinese, with deep understanding of diverse community needs."
             }
           },
           {
             "@type": "Question",
-            "name": "What types of properties does Henry Yue specialize in?",
+            "name": language === 'zh' ? "岳鸿宇专门从事哪些类型的房产？" : "What types of properties does Henry Yue specialize in?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Henry specializes in residential sales, commercial properties, investment properties, first-time buyer support, and property management services."
+              "text": language === 'zh'
+                ? "岳鸿宇专门从事住宅销售、商业地产、投资房产、首次购房指导和物业管理服务。"
+                : "Henry specializes in residential sales, commercial properties, investment properties, first-time buyer support, and property management services."
             }
           }
         ]
@@ -171,7 +179,7 @@ export const SEOEnhancer = () => {
         "@type": "Review",
         "itemReviewed": {
           "@type": "LocalBusiness",
-          "name": "Henry Yue Real Estate Services"
+          "name": language === 'zh' ? "岳鸿宇房地产服务" : "Henry Yue Real Estate Services"
         },
         "reviewRating": {
           "@type": "Rating",
@@ -180,9 +188,11 @@ export const SEOEnhancer = () => {
         },
         "author": {
           "@type": "Person",
-          "name": "Satisfied Client"
+          "name": language === 'zh' ? "满意客户" : "Satisfied Client"
         },
-        "reviewBody": "Henry provided exceptional service throughout our home buying process. His bilingual expertise and local market knowledge made all the difference."
+        "reviewBody": language === 'zh' 
+          ? "岳鸿宇在我们的购房过程中提供了卓越的服务。他的双语专业知识和本地市场了解起到了关键作用。"
+          : "Henry provided exceptional service throughout our home buying process. His bilingual expertise and local market knowledge made all the difference."
       };
 
       const script = document.createElement('script');
