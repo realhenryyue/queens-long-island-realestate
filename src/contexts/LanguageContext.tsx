@@ -44,11 +44,11 @@ const translations: Translations = {
   },
   'hero.agentAlt': {
     en: 'Hongyu (Henry) Yue - Real Estate Agent',
-    zh: '岳鸿宇 - 房地产经纪人'
+    zh: '岳泓宇 - 房地产经纪人'
   },
   'hero.agentName': {
     en: 'Hongyu (Henry) Yue',
-    zh: '岳鸿宇'
+    zh: '岳泓宇'
   },
   'hero.agentTitle': {
     en: 'Licensed Real Estate Agent',
@@ -66,7 +66,7 @@ const translations: Translations = {
   // About Section
   'about.title': {
     en: 'Why Choose Hongyu (Henry) Yue?',
-    zh: '关于Henry岳先生 - 您的纽约房地产专家'
+    zh: '关于岳泓宇先生 - 您的纽约房地产专家'
   },
   'about.subtitle': {
     en: 'As a licensed New York real estate agent with deep roots in Queens and Long Island, I bring local expertise, cultural understanding, and bilingual communication to every transaction. Specializing in New York real estate investment, luxury properties, and serving the diverse needs of international clients.',
@@ -203,7 +203,7 @@ const translations: Translations = {
   // Contact Section
   'contact.title': {
     en: 'Contact Henry Yue - Start Your Real Estate Journey',
-    zh: '联系Henry岳先生 - 开启您的纽约房产投资之旅'
+    zh: '联系岳泓宇先生 - 开启您的纽约房产投资之旅'
   },
   'contact.subtitle': {
     en: 'Get in touch for a free consultation. Professional guidance for your property investment and home buying needs.',
@@ -293,11 +293,11 @@ const translations: Translations = {
   // Contact & Footer
   'footer.wechat': {
     en: '📱 Scan QR code to add Henry on WeChat for more New York property information.',
-    zh: '📱 扫码添加 Henry 微信，了解更多纽约房源信息。'
+    zh: '📱 扫码添加岳泓宇微信，了解更多纽约房源信息。'
   },
   'footer.name': {
     en: 'Hongyu (Henry) Yue',
-    zh: '岳鸿宇'
+    zh: '岳泓宇'
   },
   'footer.title': {
     en: 'Licensed New York Real Estate Agent',
@@ -353,11 +353,11 @@ const translations: Translations = {
   },
   'footer.wechatAlt': {
     en: 'Henry Yue WeChat QR Code',
-    zh: '岳鸿宇微信二维码'
+    zh: '岳泓宇微信二维码'
   },
   'footer.copyright': {
     en: '© 2024 Hongyu (Henry) Yue Real Estate. Licensed New York Real Estate Agent.',
-    zh: '© 2024 岳鸿宇房地产。纽约州持牌房地产经纪人。'
+    zh: '© 2024 岳泓宇房地产。纽约州持牌房地产经纪人。'
   },
   'footer.equalHousing': {
     en: 'Equal Housing Opportunity',
@@ -371,19 +371,19 @@ const translations: Translations = {
   // SEO Meta Tags
   'seo.title': {
     en: 'Henry Yue - Licensed New York Real Estate Agent | Queens & Long Island Properties',
-    zh: 'Henry岳先生 - 纽约房地产经纪人 | 曼哈顿、皇后区专业地产服务'
+    zh: '岳泓宇先生 - 纽约房地产经纪人 | 曼哈顿、皇后区专业地产服务'
   },
   'seo.description': {
     en: 'Licensed New York real estate agent Henry Yue provides professional property services in Queens, Long Island & Manhattan. Expert guidance for home buyers, sellers & investors.',
-    zh: 'Henry岳先生，纽约州持牌房地产经纪人，专业服务皇后区、长岛、曼哈顿地区。提供双语房产咨询，协助海外买房、投资置业，拥有丰富的当地市场经验。'
+    zh: '岳泓宇先生，纽约州持牌房地产经纪人，专业服务皇后区、长岛、曼哈顿地区。提供双语房产咨询，协助海外买房、投资置业，拥有丰富的当地市场经验。'
   },
   'seo.keywords': {
     en: 'Henry Yue, New York real estate agent, Queens properties, Long Island homes, Manhattan real estate, licensed agent, property investment, home buying services',
-    zh: 'Henry岳先生, 纽约房地产经纪人, 曼哈顿地产, 皇后区房产, 海外买房, 法拉盛商业楼, 华人地产经纪, 房产投资咨询'
+    zh: '岳泓宇先生, 纽约房地产经纪人, 曼哈顿地产, 皇后区房产, 海外买房, 法拉盛商业楼, 华人地产经纪, 房产投资咨询'
   },
   'seo.shareTitle': {
     en: 'Henry Yue - Licensed Real Estate Agent | Professional Property Services',
-    zh: 'Henry岳先生 | 纽约华人地产经纪 | 专业海外买房投资服务'
+    zh: '岳泓宇先生 | 纽约华人地产经纪 | 专业海外买房投资服务'
   },
   'seo.shareDescription': {
     en: 'Professional New York real estate agent providing expert guidance for property investment, home buying, and commercial real estate services.',
