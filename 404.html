@@ -1,9 +1,38 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="refresh" content="0; URL='/'" />
-  </head>
-  <body>
-    <p>Redirecting...</p>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="0; url=/" />
+  <title>Redirecting...</title>
+  <script>
+    (function() {
+      // Get the current full path excluding domain and protocol
+      var path = window.location.pathname || '/';
+      var search = window.location.search || '';
+      var hash = window.location.hash || '';
+
+      // Retain language prefix, assuming your language paths are /zh/ or /en/
+      // You can customize the regex if needed
+      var langMatch = path.match(/^\/(zh|en)(\/.*)?$/);
+      var langPrefix = '';
+      var restPath = '';
+
+      if (langMatch) {
+        langPrefix = '/' + langMatch[1];
+        restPath = langMatch[2] || '/';
+      } else {
+        restPath = path;
+      }
+
+      // Construct the redirect URL using index.html + hash routing format
+      var redirectUrl = langPrefix + '/index.html#' + restPath + search + hash;
+
+      // Redirect immediately
+      window.location.replace(redirectUrl);
+    })();
+  </script>
+</head>
+<body>
+  <p>Redirecting to the homepage...</p>
+</body>
 </html>
