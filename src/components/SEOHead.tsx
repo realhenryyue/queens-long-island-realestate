@@ -47,11 +47,27 @@ export const SEOHead = () => {
 
     const baseUrl = window.location.origin;
     const currentPath = window.location.pathname;
-    const canonicalUrl = `${baseUrl}${currentPath}`;
+    
+    // Determine the canonical URL and alternate language URLs
+    let canonicalUrl = `${baseUrl}${currentPath}`;
+    let alternateZh = `${baseUrl}/zh/`;
+    let alternateEn = `${baseUrl}/en/`;
+    
+    // If we're on a Chinese page, the alternate English is the en version
+    if (currentPath.startsWith('/zh')) {
+      alternateEn = currentPath.replace('/zh', '/en');
+      if (alternateEn === '/en') alternateEn = '/en/';
+    }
+    // If we're on an English page, the alternate Chinese is the zh version  
+    else if (currentPath.startsWith('/en')) {
+      alternateZh = currentPath.replace('/en', '/zh');
+      if (alternateZh === '/zh') alternateZh = '/zh/';
+    }
+    
     const hreflangs = [
-      { lang: 'zh-CN', href: `${baseUrl}${currentPath}?lang=zh` },
-      { lang: 'en-US', href: `${baseUrl}${currentPath}?lang=en` },
-      { lang: 'x-default', href: `${baseUrl}${currentPath}` }
+      { lang: 'zh-CN', href: `${baseUrl}${alternateZh}` },
+      { lang: 'en-US', href: `${baseUrl}${alternateEn}` },
+      { lang: 'x-default', href: `${baseUrl}/en/` }
     ];
 
     hreflangs.forEach(({ lang, href }) => {

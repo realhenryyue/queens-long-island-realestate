@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 type Language = 'en' | 'zh';
 
@@ -522,10 +523,34 @@ export const useLanguage = (): LanguageContextType => {
 
 interface LanguageProviderProps {
   children: ReactNode;
+  defaultLanguage: Language;
 }
 
-export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('en');
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children, defaultLanguage }) => {
+  const [language, setLanguage] = useState<Language>(defaultLanguage);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Update language based on URL path
+  useEffect(() => {
+    const currentPath = location.pathname;
+    const langFromPath = currentPath.startsWith('/zh') ? 'zh' : 'en';
+    if (langFromPath !== language) {
+      setLanguage(langFromPath);
+    }
+  }, [location.pathname, language]);
+
+  // Handle language switching with URL navigation
+  const handleSetLanguage = (newLang: Language) => {
+    const currentPath = location.pathname;
+    const newPath = currentPath.startsWith('/zh') 
+      ? currentPath.replace('/zh', `/${newLang}`)
+      : currentPath.startsWith('/en')
+      ? currentPath.replace('/en', `/${newLang}`)
+      : `/${newLang}`;
+    
+    navigate(newPath, { replace: true });
+  };
 
   const t = (key: string): string => {
     const translation = translations[key];
@@ -537,7 +562,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
