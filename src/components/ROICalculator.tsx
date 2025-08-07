@@ -7,8 +7,11 @@ import { Badge } from '@/components/ui/badge';
 import { Calculator, DollarSign, TrendingUp, Home, Percent, Download } from 'lucide-react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const ROICalculator = () => {
+  const { t } = useLanguage();
+  
   const [inputs, setInputs] = useState({
     purchasePrice: '750000',
     monthlyRent: '3200',
@@ -131,15 +134,15 @@ const ROICalculator = () => {
 
   const presetScenarios = [
     {
-      name: "Flushing Condo",
+      name: t('roi.flushingCondo'),
       values: { purchasePrice: '720000', monthlyRent: '2800', monthlyExpenses: '650', closingCosts: '14400', renovationCosts: '15000', appreciationRate: '6.2' }
     },
     {
-      name: "Queens Family Home",
+      name: t('roi.queensFamily'),
       values: { purchasePrice: '950000', monthlyRent: '3800', monthlyExpenses: '1100', closingCosts: '19000', renovationCosts: '35000', appreciationRate: '4.7' }
     },
     {
-      name: "Astoria Investment",
+      name: t('roi.astoriaInvestment'),
       values: { purchasePrice: '860000', monthlyRent: '3200', monthlyExpenses: '850', closingCosts: '17200', renovationCosts: '20000', appreciationRate: '4.2' }
     }
   ];
@@ -149,17 +152,17 @@ const ROICalculator = () => {
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            Real Estate Investment ROI Calculator
+            {t('roi.title')}
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Calculate your potential returns on NYC real estate investments with accurate market data
+            {t('roi.subtitle')}
           </p>
           <Button 
             onClick={exportToPDF}
             className="mt-4 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
           >
             <Download className="h-4 w-4 mr-2" />
-            Export to PDF
+            {t('roi.exportPDF')}
           </Button>
         </div>
 
@@ -171,16 +174,16 @@ const ROICalculator = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Calculator className="h-5 w-5" />
-                Investment Parameters
+                {t('roi.investmentParameters')}
               </CardTitle>
               <CardDescription>
-                Enter your investment details to calculate potential returns
+                {t('roi.parametersDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Preset Scenarios */}
               <div>
-                <Label className="text-sm font-medium mb-3 block">Quick Scenarios</Label>
+                <Label className="text-sm font-medium mb-3 block">{t('roi.quickScenarios')}</Label>
                 <div className="flex flex-wrap gap-2">
                   {presetScenarios.map((scenario, index) => (
                     <Button
@@ -198,7 +201,7 @@ const ROICalculator = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="purchasePrice">Purchase Price</Label>
+                  <Label htmlFor="purchasePrice">{t('roi.purchasePrice')}</Label>
                   <Input
                     id="purchasePrice"
                     type="number"
@@ -208,7 +211,7 @@ const ROICalculator = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="downPayment">Down Payment (30%)</Label>
+                  <Label htmlFor="downPayment">{t('roi.downPayment')}</Label>
                   <Input
                     id="downPayment"
                     type="text"
@@ -218,7 +221,7 @@ const ROICalculator = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="monthlyRent">Monthly Rent</Label>
+                  <Label htmlFor="monthlyRent">{t('roi.monthlyRent')}</Label>
                   <Input
                     id="monthlyRent"
                     type="number"
@@ -228,7 +231,7 @@ const ROICalculator = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="monthlyExpenses">Monthly Expenses</Label>
+                  <Label htmlFor="monthlyExpenses">{t('roi.monthlyExpenses')}</Label>
                   <Input
                     id="monthlyExpenses"
                     type="number"
@@ -238,7 +241,7 @@ const ROICalculator = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="closingCosts">Closing Costs</Label>
+                  <Label htmlFor="closingCosts">{t('roi.closingCosts')}</Label>
                   <Input
                     id="closingCosts"
                     type="number"
@@ -248,7 +251,7 @@ const ROICalculator = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="renovationCosts">Renovation Costs</Label>
+                  <Label htmlFor="renovationCosts">{t('roi.renovationCosts')}</Label>
                   <Input
                     id="renovationCosts"
                     type="number"
@@ -258,7 +261,7 @@ const ROICalculator = () => {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <Label htmlFor="appreciationRate">Annual Appreciation Rate (%)</Label>
+                  <Label htmlFor="appreciationRate">{t('roi.appreciationRate')}</Label>
                   <Input
                     id="appreciationRate"
                     type="number"
@@ -279,7 +282,7 @@ const ROICalculator = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5" />
-                  Investment Returns
+                  {t('roi.investmentReturns')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -289,14 +292,14 @@ const ROICalculator = () => {
                     <div className="text-2xl font-bold text-primary">
                       {formatPercent(results.totalROI)}
                     </div>
-                    <div className="text-sm text-muted-foreground">Total ROI</div>
+                    <div className="text-sm text-muted-foreground">{t('roi.totalROI')}</div>
                   </div>
                   <div className="text-center p-4 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-lg border">
                     <Percent className="h-6 w-6 mx-auto mb-2 text-secondary-foreground" />
                     <div className="text-2xl font-bold">
                       {formatPercent(results.cashOnCashReturn)}
                     </div>
-                    <div className="text-sm text-muted-foreground">Cash-on-Cash</div>
+                    <div className="text-sm text-muted-foreground">{t('roi.cashOnCash')}</div>
                   </div>
                 </div>
               </CardContent>
@@ -307,32 +310,32 @@ const ROICalculator = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Home className="h-5 w-5" />
-                  Detailed Analysis
+                  {t('roi.detailedAnalysis')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">Cash Invested</span>
+                  <span className="font-medium">{t('roi.cashInvested')}</span>
                   <span className="font-bold">{formatCurrency(results.cashInvested)}</span>
                 </div>
                 <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">Monthly Cash Flow</span>
+                  <span className="font-medium">{t('roi.monthlyCashFlow')}</span>
                   <span className={`font-bold ${results.monthlyProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {formatCurrency(results.monthlyProfit)}
                   </span>
                 </div>
                 <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">Annual Cash Flow</span>
+                  <span className="font-medium">{t('roi.annualCashFlow')}</span>
                   <span className={`font-bold ${results.annualCashFlow >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {formatCurrency(results.annualCashFlow)}
                   </span>
                 </div>
                 <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">Cap Rate</span>
+                  <span className="font-medium">{t('roi.capRate')}</span>
                   <span className="font-bold">{formatPercent(results.capRate)}</span>
                 </div>
                 <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">Annual Appreciation</span>
+                  <span className="font-medium">{t('roi.annualAppreciation')}</span>
                   <span className="font-bold text-green-600">{formatCurrency(results.annualAppreciation)}</span>
                 </div>
               </CardContent>
@@ -341,26 +344,26 @@ const ROICalculator = () => {
             {/* ROI Interpretation */}
             <Card>
               <CardHeader>
-                <CardTitle>Investment Quality</CardTitle>
+                <CardTitle>{t('roi.investmentQuality')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span>Cash-on-Cash Return</span>
+                    <span>{t('roi.cashOnCash')}</span>
                     <Badge variant={results.cashOnCashReturn >= 8 ? "default" : results.cashOnCashReturn >= 5 ? "secondary" : "destructive"}>
-                      {results.cashOnCashReturn >= 8 ? "Excellent" : results.cashOnCashReturn >= 5 ? "Good" : "Poor"}
+                      {results.cashOnCashReturn >= 8 ? t('roi.excellent') : results.cashOnCashReturn >= 5 ? t('roi.good') : t('roi.poor')}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span>Cap Rate</span>
+                    <span>{t('roi.capRate')}</span>
                     <Badge variant={results.capRate >= 5 ? "default" : results.capRate >= 3 ? "secondary" : "destructive"}>
-                      {results.capRate >= 5 ? "Strong" : results.capRate >= 3 ? "Moderate" : "Weak"}
+                      {results.capRate >= 5 ? t('roi.strong') : results.capRate >= 3 ? t('roi.moderate') : t('roi.weak')}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span>Total ROI</span>
+                    <span>{t('roi.totalROI')}</span>
                     <Badge variant={results.totalROI >= 15 ? "default" : results.totalROI >= 8 ? "secondary" : "destructive"}>
-                      {results.totalROI >= 15 ? "Outstanding" : results.totalROI >= 8 ? "Solid" : "Below Average"}
+                      {results.totalROI >= 15 ? t('roi.outstanding') : results.totalROI >= 8 ? t('roi.solid') : t('roi.belowAverage')}
                     </Badge>
                   </div>
                 </div>
@@ -373,8 +376,7 @@ const ROICalculator = () => {
         <Card className="mt-8">
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground text-center">
-              <strong>Disclaimer:</strong> This calculator provides estimates based on the inputs provided. Actual returns may vary due to market conditions, 
-              vacancy rates, maintenance costs, and other factors. Consult with a real estate professional and financial advisor before making investment decisions.
+              <strong>{t('roi.disclaimerTitle')}</strong> {t('roi.disclaimer')}
             </p>
           </CardContent>
         </Card>

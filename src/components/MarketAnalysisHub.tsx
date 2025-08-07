@@ -151,6 +151,92 @@ const MarketAnalysisHub = () => {
 
   const uniqueTags = [...new Set(allTags)];
 
+  // Function to translate tags - try tag translation first, fallback to original
+  const translateTag = (tag: string): string => {
+    // Create a mapping for common tags
+    const tagMap: { [key: string]: string } = {
+      'Flushing': 'tag.flushing',
+      'Queens': 'tag.queens',
+      'Chinese community': 'tag.chineseCommunity',
+      'housing prices': 'tag.housingPrices',
+      'real estate trends': 'tag.realEstateTrends',
+      'Main Street': 'tag.mainStreet',
+      'Kissena Boulevard': 'tag.kissena',
+      'Queens neighborhoods': 'tag.queensNeighborhoods',
+      'Forest Hills': 'tag.forestHills',
+      'Bayside': 'tag.bayside',
+      'Elmhurst': 'tag.elmhurst',
+      'Jackson Heights': 'tag.jacksonHeights',
+      'cultural diversity': 'tag.culturalDiversity',
+      'investment opportunities': 'tag.investmentOpportunities',
+      'school districts': 'tag.schoolDistricts',
+      'NYC DOE': 'tag.nycDoe',
+      'GreatSchools': 'tag.greatSchools',
+      'PS 203': 'tag.ps203',
+      'PS 173': 'tag.ps173',
+      'Fresh Meadows': 'tag.freshMeadows',
+      'education investment': 'tag.educationInvestment',
+      'rental yield': 'tag.rentalYield',
+      'cap rate': 'tag.capRate',
+      'investment returns': 'tag.investmentReturns',
+      'Bronx': 'tag.bronx',
+      'Jamaica': 'tag.jamaica',
+      'Rego Park': 'tag.regoPark',
+      'property investment': 'tag.propertyInvestment',
+      'foreign buyers': 'tag.foreignBuyers',
+      'non-US citizens': 'tag.nonUsCitizens',
+      'FIRPTA tax': 'tag.firptaTax',
+      'international investment': 'tag.internationalInvestment',
+      'currency exchange': 'tag.currencyExchange',
+      'property ownership': 'tag.propertyOwnership',
+      'NYC home buying': 'tag.nycHomeBuying',
+      'New York real estate': 'tag.newYorkRealEstate',
+      'attorney': 'tag.attorney',
+      'home inspection': 'tag.homeInspection',
+      'mortgage approval': 'tag.mortgageApproval',
+      'closing process': 'tag.closingProcess',
+      'home loans': 'tag.homeLoans',
+      'conventional loans': 'tag.conventionalLoans',
+      'FHA loans': 'tag.fhaLoans',
+      'Non-QM loans': 'tag.nonQmLoans',
+      'mortgage application': 'tag.mortgageApplication',
+      'down payment': 'tag.downPayment',
+      'credit score': 'tag.creditScore',
+      'tax optimization': 'tag.taxOptimization',
+      'LLC setup': 'tag.llcSetup',
+      '1031 exchange': 'tag.1031Exchange',
+      'STAR exemption': 'tag.starExemption',
+      'SCHE exemption': 'tag.scheExemption',
+      'capital gains': 'tag.capitalGains',
+      'CPA': 'tag.cpa',
+      'tax strategy': 'tag.taxStrategy',
+      'market report': 'tag.marketReport',
+      'July 2025': 'tag.july2025',
+      'Queens median price': 'tag.queensMedianPrice',
+      'days on market': 'tag.daysOnMarket',
+      'market trends': 'tag.marketTrends',
+      'sales data': 'tag.salesData',
+      'DOM analysis': 'tag.domAnalysis',
+      'Manhattan luxury': 'tag.manhattanLuxury',
+      'Queens Brooklyn': 'tag.queensBrooklyn',
+      'cash buyers': 'tag.cashBuyers',
+      'market timing': 'tag.marketTiming',
+      'neighborhood ranking': 'tag.neighborhoodRanking',
+      'investment neighborhoods': 'tag.investmentNeighborhoods',
+      'Long Island City': 'tag.longIslandCity',
+      'Astoria': 'tag.astoria',
+      'Sunset Park': 'tag.sunsetPark',
+      'Park Slope': 'tag.parkSlope'
+    };
+    
+    const tagKey = tagMap[tag];
+    if (tagKey) {
+      const translatedTag = t(tagKey);
+      return translatedTag !== tagKey ? translatedTag : tag;
+    }
+    return tag;
+  };
+
   // Function to find content by tag and navigate to it
   const handleTagClick = (tag: string) => {
     // Find which content contains this tag
@@ -217,7 +303,7 @@ const MarketAnalysisHub = () => {
                 className="text-xs cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors" 
                 onClick={() => handleTagClick(tag)}
               >
-                {tag}
+                {translateTag(tag)}
               </Badge>
             ))}
           </div>
@@ -262,7 +348,7 @@ const MarketAnalysisHub = () => {
                     <div className="flex flex-wrap gap-1">
                       {item.tags.slice(0, 4).map((tag, idx) => (
                         <Badge key={idx} variant="outline" className="text-xs">
-                          {tag}
+                          {translateTag(tag)}
                         </Badge>
                       ))}
                     </div>
@@ -295,7 +381,7 @@ const MarketAnalysisHub = () => {
                     <div className="flex flex-wrap gap-1">
                       {item.tags.slice(0, 4).map((tag, idx) => (
                         <Badge key={idx} variant="outline" className="text-xs">
-                          {tag}
+                          {translateTag(tag)}
                         </Badge>
                       ))}
                     </div>
@@ -352,7 +438,7 @@ const MarketAnalysisHub = () => {
                     <div className="flex flex-wrap gap-1">
                       {item.tags.slice(0, 6).map((tag, idx) => (
                         <Badge key={idx} variant="outline" className="text-xs">
-                          {tag}
+                          {translateTag(tag)}
                         </Badge>
                       ))}
                     </div>

@@ -508,7 +508,233 @@ const translations: Translations = {
   'insights.topNeighborhoods.content': {
     en: 'Based on H1 2025 data including price appreciation, rental yield, population growth, and infrastructure development, top five NYC investment neighborhoods identified.',
     zh: '基于2025年上半年数据，包括房价增值、租金收益率、人口增长和基础设施发展，确定纽约前五大投资社区。'
-  }
+  },
+
+  // ROI Calculator
+  'roi.title': {
+    en: 'Real Estate Investment ROI Calculator',
+    zh: '房地产投资回报率计算器'
+  },
+  'roi.subtitle': {
+    en: 'Calculate your potential returns on NYC real estate investments with accurate market data',
+    zh: '利用准确的市场数据计算您在纽约房地产投资的潜在回报'
+  },
+  'roi.exportPDF': {
+    en: 'Export to PDF',
+    zh: '导出为PDF'
+  },
+  'roi.investmentParameters': {
+    en: 'Investment Parameters',
+    zh: '投资参数'
+  },
+  'roi.parametersDescription': {
+    en: 'Enter your investment details to calculate potential returns',
+    zh: '输入您的投资详情以计算潜在回报'
+  },
+  'roi.quickScenarios': {
+    en: 'Quick Scenarios',
+    zh: '快速方案'
+  },
+  'roi.purchasePrice': {
+    en: 'Purchase Price',
+    zh: '购买价格'
+  },
+  'roi.downPayment': {
+    en: 'Down Payment (30%)',
+    zh: '首付款（30%）'
+  },
+  'roi.monthlyRent': {
+    en: 'Monthly Rent',
+    zh: '月租金'
+  },
+  'roi.monthlyExpenses': {
+    en: 'Monthly Expenses',
+    zh: '月支出'
+  },
+  'roi.closingCosts': {
+    en: 'Closing Costs',
+    zh: '过户费用'
+  },
+  'roi.renovationCosts': {
+    en: 'Renovation Costs',
+    zh: '装修费用'
+  },
+  'roi.appreciationRate': {
+    en: 'Annual Appreciation Rate (%)',
+    zh: '年增值率（%）'
+  },
+  'roi.investmentReturns': {
+    en: 'Investment Returns',
+    zh: '投资回报'
+  },
+  'roi.totalROI': {
+    en: 'Total ROI',
+    zh: '总投资回报率'
+  },
+  'roi.cashOnCash': {
+    en: 'Cash-on-Cash',
+    zh: '现金回报率'
+  },
+  'roi.detailedAnalysis': {
+    en: 'Detailed Analysis',
+    zh: '详细分析'
+  },
+  'roi.cashInvested': {
+    en: 'Cash Invested',
+    zh: '投入现金'
+  },
+  'roi.monthlyCashFlow': {
+    en: 'Monthly Cash Flow',
+    zh: '月现金流'
+  },
+  'roi.annualCashFlow': {
+    en: 'Annual Cash Flow',
+    zh: '年现金流'
+  },
+  'roi.capRate': {
+    en: 'Cap Rate',
+    zh: '资本化率'
+  },
+  'roi.annualAppreciation': {
+    en: 'Annual Appreciation',
+    zh: '年增值'
+  },
+  'roi.investmentQuality': {
+    en: 'Investment Quality',
+    zh: '投资质量'
+  },
+  'roi.excellent': {
+    en: 'Excellent',
+    zh: '优秀'
+  },
+  'roi.good': {
+    en: 'Good',
+    zh: '良好'
+  },
+  'roi.poor': {
+    en: 'Poor',
+    zh: '较差'
+  },
+  'roi.strong': {
+    en: 'Strong',
+    zh: '强劲'
+  },
+  'roi.moderate': {
+    en: 'Moderate',
+    zh: '中等'
+  },
+  'roi.weak': {
+    en: 'Weak',
+    zh: '疲弱'
+  },
+  'roi.outstanding': {
+    en: 'Outstanding',
+    zh: '杰出'
+  },
+  'roi.solid': {
+    en: 'Solid',
+    zh: '稳健'
+  },
+  'roi.belowAverage': {
+    en: 'Below Average',
+    zh: '低于平均'
+  },
+  'roi.disclaimer': {
+    en: 'This calculator provides estimates based on the inputs provided. Actual returns may vary due to market conditions, vacancy rates, maintenance costs, and other factors. Consult with a real estate professional and financial advisor before making investment decisions.',
+    zh: '此计算器基于提供的输入数据提供估算。实际回报可能因市场条件、空置率、维护成本和其他因素而有所不同。在做出投资决策之前，请咨询房地产专业人士和财务顾问。'
+  },
+  'roi.disclaimerTitle': {
+    en: 'Disclaimer:',
+    zh: '免责声明：'
+  },
+
+  // Preset Scenarios Chinese Names
+  'roi.flushingCondo': {
+    en: 'Flushing Condo',
+    zh: '法拉盛公寓'
+  },
+  'roi.queensFamily': {
+    en: 'Queens Family Home',
+    zh: '皇后区家庭住宅'
+  },
+  'roi.astoriaInvestment': {
+    en: 'Astoria Investment',
+    zh: '阿斯托利亚投资'
+  },
+
+  // Market Analysis Tags Translations
+  'tag.flushing': { en: 'Flushing', zh: '法拉盛' },
+  'tag.queens': { en: 'Queens', zh: '皇后区' },
+  'tag.chineseCommunity': { en: 'Chinese community', zh: '华人社区' },
+  'tag.housingPrices': { en: 'housing prices', zh: '房价' },
+  'tag.realEstateTrends': { en: 'real estate trends', zh: '房地产趋势' },
+  'tag.mainStreet': { en: 'Main Street', zh: '主街' },
+  'tag.kissena': { en: 'Kissena Boulevard', zh: '基西纳大道' },
+  'tag.queensNeighborhoods': { en: 'Queens neighborhoods', zh: '皇后区社区' },
+  'tag.forestHills': { en: 'Forest Hills', zh: '森林山' },
+  'tag.bayside': { en: 'Bayside', zh: '贝赛德' },
+  'tag.elmhurst': { en: 'Elmhurst', zh: '艾尔姆赫斯特' },
+  'tag.jacksonHeights': { en: 'Jackson Heights', zh: '杰克逊高地' },
+  'tag.culturalDiversity': { en: 'cultural diversity', zh: '文化多样性' },
+  'tag.investmentOpportunities': { en: 'investment opportunities', zh: '投资机会' },
+  'tag.schoolDistricts': { en: 'school districts', zh: '学区' },
+  'tag.nycDoe': { en: 'NYC DOE', zh: '纽约市教育局' },
+  'tag.greatSchools': { en: 'GreatSchools', zh: 'GreatSchools评级' },
+  'tag.ps203': { en: 'PS 203', zh: 'PS 203小学' },
+  'tag.ps173': { en: 'PS 173', zh: 'PS 173小学' },
+  'tag.freshMeadows': { en: 'Fresh Meadows', zh: '弗雷什草地' },
+  'tag.educationInvestment': { en: 'education investment', zh: '教育投资' },
+  'tag.rentalYield': { en: 'rental yield', zh: '租金收益率' },
+  'tag.capRate': { en: 'cap rate', zh: '资本化率' },
+  'tag.investmentReturns': { en: 'investment returns', zh: '投资回报' },
+  'tag.bronx': { en: 'Bronx', zh: '布朗克斯' },
+  'tag.jamaica': { en: 'Jamaica', zh: '牙买加地区' },
+  'tag.regoPark': { en: 'Rego Park', zh: '瑞格公园' },
+  'tag.propertyInvestment': { en: 'property investment', zh: '房产投资' },
+  'tag.foreignBuyers': { en: 'foreign buyers', zh: '外国买家' },
+  'tag.nonUsCitizens': { en: 'non-US citizens', zh: '非美国公民' },
+  'tag.firptaTax': { en: 'FIRPTA tax', zh: 'FIRPTA税' },
+  'tag.internationalInvestment': { en: 'international investment', zh: '国际投资' },
+  'tag.currencyExchange': { en: 'currency exchange', zh: '货币兑换' },
+  'tag.propertyOwnership': { en: 'property ownership', zh: '房产所有权' },
+  'tag.nycHomeBuying': { en: 'NYC home buying', zh: '纽约购房' },
+  'tag.newYorkRealEstate': { en: 'New York real estate', zh: '纽约房地产' },
+  'tag.attorney': { en: 'attorney', zh: '律师' },
+  'tag.homeInspection': { en: 'home inspection', zh: '房屋检查' },
+  'tag.mortgageApproval': { en: 'mortgage approval', zh: '贷款批准' },
+  'tag.closingProcess': { en: 'closing process', zh: '过户流程' },
+  'tag.homeLoans': { en: 'home loans', zh: '房屋贷款' },
+  'tag.conventionalLoans': { en: 'conventional loans', zh: '传统贷款' },
+  'tag.fhaLoans': { en: 'FHA loans', zh: 'FHA贷款' },
+  'tag.nonQmLoans': { en: 'Non-QM loans', zh: 'Non-QM贷款' },
+  'tag.mortgageApplication': { en: 'mortgage application', zh: '抵押贷款申请' },
+  'tag.downPayment': { en: 'down payment', zh: '首付款' },
+  'tag.creditScore': { en: 'credit score', zh: '信用评分' },
+  'tag.taxOptimization': { en: 'tax optimization', zh: '税务优化' },
+  'tag.llcSetup': { en: 'LLC setup', zh: 'LLC设立' },
+  'tag.1031Exchange': { en: '1031 exchange', zh: '1031交换' },
+  'tag.starExemption': { en: 'STAR exemption', zh: 'STAR减免' },
+  'tag.scheExemption': { en: 'SCHE exemption', zh: 'SCHE减免' },
+  'tag.capitalGains': { en: 'capital gains', zh: '资本利得' },
+  'tag.cpa': { en: 'CPA', zh: '注册会计师' },
+  'tag.taxStrategy': { en: 'tax strategy', zh: '税务策略' },
+  'tag.marketReport': { en: 'market report', zh: '市场报告' },
+  'tag.july2025': { en: 'July 2025', zh: '2025年7月' },
+  'tag.queensMedianPrice': { en: 'Queens median price', zh: '皇后区中位价格' },
+  'tag.daysOnMarket': { en: 'days on market', zh: '市场停留天数' },
+  'tag.marketTrends': { en: 'market trends', zh: '市场趋势' },
+  'tag.salesData': { en: 'sales data', zh: '销售数据' },
+  'tag.domAnalysis': { en: 'DOM analysis', zh: 'DOM分析' },
+  'tag.manhattanLuxury': { en: 'Manhattan luxury', zh: '曼哈顿豪宅' },
+  'tag.queensBrooklyn': { en: 'Queens Brooklyn', zh: '皇后区布鲁克林' },
+  'tag.cashBuyers': { en: 'cash buyers', zh: '现金买家' },
+  'tag.marketTiming': { en: 'market timing', zh: '市场时机' },
+  'tag.neighborhoodRanking': { en: 'neighborhood ranking', zh: '社区排名' },
+  'tag.investmentNeighborhoods': { en: 'investment neighborhoods', zh: '投资社区' },
+  'tag.longIslandCity': { en: 'Long Island City', zh: '长岛市' },
+  'tag.astoria': { en: 'Astoria', zh: '阿斯托利亚' },
+  'tag.sunsetPark': { en: 'Sunset Park', zh: '日落公园' },
+  'tag.parkSlope': { en: 'Park Slope', zh: '公园坡' }
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
