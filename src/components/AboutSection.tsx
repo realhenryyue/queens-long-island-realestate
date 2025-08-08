@@ -5,47 +5,47 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const workExperience = [
   {
-    title: 'Licensed Real Estate Salesperson at E Realty International Corp.',
-    period: 'Jan 2025 - Present',
-    location: 'New York, USA',
-    type: 'Full time',
-    description: 'Move on, Carry on. Focus on investment'
+    titleKey: 'experience.realEstate1',
+    periodKey: 'experience.realEstate1.period',
+    locationKey: 'experience.realEstate1.location',
+    typeKey: 'experience.realEstate1.type',
+    descriptionKey: 'experience.realEstate1.description',
   },
   {
-    title: 'Business Relationship Agent at Ideal Automotive Sales & Service',
-    period: 'Nov 2023 - Present',
-    location: 'New York, USA',
-    type: 'Part time',
-    description: 'Customer relationship maintenance'
+    titleKey: 'experience.businessAgent',
+    periodKey: 'experience.businessAgent.period',
+    locationKey: 'experience.businessAgent.location',
+    typeKey: 'experience.businessAgent.type',
+    descriptionKey: 'experience.businessAgent.description',
   },
   {
-    title: 'Licensed Real Estate Salesperson at J-HOME Realty',
-    period: 'Jan 2024 - Jan 2025',
-    location: 'New York, USA',
-    type: 'Full time',
-    description: 'It is my mission to find a satisfactory home for my clients.'
+    titleKey: 'experience.realEstate2',
+    periodKey: 'experience.realEstate2.period',
+    locationKey: 'experience.realEstate2.location',
+    typeKey: 'experience.realEstate2.type',
+    descriptionKey: 'experience.realEstate2.description',
   },
   {
-    title: 'CEO at Tianjin Zlon Culture Media Co., Ltd.',
-    period: 'Mar 2018 - Oct 2023',
-    location: 'Tianjin, China',
-    type: 'Full time',
-    description: 'Visual Design Marketing Manager - Culture. Media. Finance'
+    titleKey: 'experience.ceo',
+    periodKey: 'experience.ceo.period',
+    locationKey: 'experience.ceo.location',
+    typeKey: 'experience.ceo.type',
+    descriptionKey: 'experience.ceo.description',
   },
   {
-    title: 'General Manager at Beijing Huayigaote Technology Co., Ltd.',
-    period: 'Apr 2014 - May 2017',
-    location: 'Beijing, China',
-    type: 'Full time',
-    description: 'NEC Movie Projector Manager - Integrating limited resources to accomplish the impossible.'
+    titleKey: 'experience.generalManager',
+    periodKey: 'experience.generalManager.period',
+    locationKey: 'experience.generalManager.location',
+    typeKey: 'experience.generalManager.type',
+    descriptionKey: 'experience.generalManager.description',
   },
   {
-    title: 'Product Manager at Shanghai WTi Information Technology Co., Ltd.',
-    period: 'Jul 2009 - Apr 2014',
-    location: 'Beijing/Hebei/Shandong, China',
-    type: 'Full time',
-    description: 'EPSON Home Projection Product Manager - Product sales and inventory management, develop marketing plan for the year, New customer development, team building, customer relationship maintenance.'
-  }
+    titleKey: 'experience.productManager',
+    periodKey: 'experience.productManager.period',
+    locationKey: 'experience.productManager.location',
+    typeKey: 'experience.productManager.type',
+    descriptionKey: 'experience.productManager.description',
+  },
 ];
 
 export const AboutSection = () => {
@@ -158,26 +158,26 @@ export const AboutSection = () => {
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                     <div className="flex-1">
                       <h4 className="text-lg font-semibold text-primary mb-2">
-                        {job.title}
+                        {t(job.titleKey)}
                       </h4>
                       <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
-                          {job.period}
+                          {t(job.periodKey)}
                         </div>
                         <div className="flex items-center gap-1">
                           <MapPin className="w-4 h-4" />
-                          {job.location}
+                          {t(job.locationKey)}
                         </div>
                         <div className="flex items-center gap-1">
                           <Building className="w-4 h-4" />
-                          {job.type}
+                          {t(job.typeKey)}
                         </div>
                       </div>
                     </div>
                   </div>
                   <p className="text-muted-foreground leading-relaxed">
-                    {job.description}
+                    {t(job.descriptionKey)}
                   </p>
                 </CardContent>
               </Card>

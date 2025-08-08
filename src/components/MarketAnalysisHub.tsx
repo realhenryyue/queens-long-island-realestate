@@ -62,10 +62,10 @@ const MarketAnalysisHub = () => {
       contentKey: "educational.foreignBuyer.content",
       icon: <Users className="h-5 w-5" />,
       keyPoints: [
-        "Traceable source of funds required",
-        "International bank account setup",
-        "FIRPTA tax considerations",
-        "Currency exchange planning"
+        "educational.foreignBuyer.point1",
+        "educational.foreignBuyer.point2",
+        "educational.foreignBuyer.point3",
+        "educational.foreignBuyer.point4",
       ],
       tags: ["foreign buyers", "non-US citizens", "FIRPTA tax", "international investment", "currency exchange", "property ownership"]
     },
@@ -74,10 +74,10 @@ const MarketAnalysisHub = () => {
       contentKey: "educational.buyingProcess.content",
       icon: <Calendar className="h-5 w-5" />,
       keyPoints: [
-        "6-10 week timeline",
-        "Attorney representation required",
-        "Home inspection essential",
-        "Bank appraisal process"
+        "educational.buyingProcess.point1",
+        "educational.buyingProcess.point2",
+        "educational.buyingProcess.point3",
+        "educational.buyingProcess.point4",
       ],
       tags: ["NYC home buying", "New York real estate", "attorney", "home inspection", "mortgage approval", "closing process"]
     },
@@ -86,10 +86,10 @@ const MarketAnalysisHub = () => {
       contentKey: "educational.loanGuide.content",
       icon: <DollarSign className="h-5 w-5" />,
       keyPoints: [
-        "Conventional: 3-5% down payment",
-        "FHA: 3.5% down, first-time buyer friendly",
-        "Non-QM: Asset-based documentation",
-        "21-30 day approval process"
+        "educational.loanGuide.point1",
+        "educational.loanGuide.point2",
+        "educational.loanGuide.point3",
+        "educational.loanGuide.point4",
       ],
       tags: ["home loans", "conventional loans", "FHA loans", "Non-QM loans", "mortgage application", "down payment", "credit score"]
     },
@@ -98,10 +98,10 @@ const MarketAnalysisHub = () => {
       contentKey: "educational.taxOptimization.content",
       icon: <Award className="h-5 w-5" />,
       keyPoints: [
-        "LLC setup for capital gains protection",
-        "1031 Exchange for tax deferral",
-        "STAR/SCHE exemptions available",
-        "CPA consultation recommended"
+        "educational.taxOptimization.point1",
+        "educational.taxOptimization.point2",
+        "educational.taxOptimization.point3",
+        "educational.taxOptimization.point4",
       ],
       tags: ["tax optimization", "LLC setup", "1031 exchange", "STAR exemption", "SCHE exemption", "capital gains", "CPA", "tax strategy"]
     }
@@ -310,16 +310,16 @@ const MarketAnalysisHub = () => {
         </div>
 
         <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="local" className="flex items-center gap-2">
+          <TabsList className="grid grid-cols-1 sm:grid-cols-3 w-full gap-2 mb-8">
+            <TabsTrigger value="local" className="flex items-center gap-2 whitespace-normal text-center text-xs sm:text-sm py-2">
               <MapPin className="h-4 w-4" />
               {t('marketAnalysis.localMarket')}
             </TabsTrigger>
-            <TabsTrigger value="educational" className="flex items-center gap-2">
+            <TabsTrigger value="educational" className="flex items-center gap-2 whitespace-normal text-center text-xs sm:text-sm py-2">
               <GraduationCap className="h-4 w-4" />
               {t('marketAnalysis.educational')}
             </TabsTrigger>
-            <TabsTrigger value="insights" className="flex items-center gap-2">
+            <TabsTrigger value="insights" className="flex items-center gap-2 whitespace-normal text-center text-xs sm:text-sm py-2">
               <BarChart3 className="h-4 w-4" />
               {t('marketAnalysis.insights')}
             </TabsTrigger>
@@ -374,7 +374,7 @@ const MarketAnalysisHub = () => {
                       {item.keyPoints.map((point, idx) => (
                         <li key={idx} className="flex items-center gap-2 text-sm">
                           <div className="w-2 h-2 bg-primary rounded-full"></div>
-                          {point}
+                          {t(point)}
                         </li>
                       ))}
                     </ul>

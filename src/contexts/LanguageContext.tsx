@@ -142,6 +142,37 @@ const translations: Translations = {
     zh: '上海威梯信息技术有限公司 产品经理'
   },
   
+  // Work Experience Details
+  'experience.realEstate1.period': { en: 'Jan 2025 - Present', zh: '2025年1月 - 至今' },
+  'experience.realEstate1.location': { en: 'New York, USA', zh: '美国纽约' },
+  'experience.realEstate1.type': { en: 'Full time', zh: '全职' },
+  'experience.realEstate1.description': { en: 'Move on, Carry on. Focus on investment.', zh: '换个地方，续写传奇。专注投资。' },
+
+  'experience.businessAgent.period': { en: 'Nov 2023 - Present', zh: '2023年11月 - 至今' },
+  'experience.businessAgent.location': { en: 'New York, USA', zh: '美国纽约' },
+  'experience.businessAgent.type': { en: 'Part time', zh: '兼职' },
+  'experience.businessAgent.description': { en: 'Customer relationship maintenance', zh: '客户关系维护' },
+
+  'experience.realEstate2.period': { en: 'Jan 2024 - Jan 2025', zh: '2024年1月 - 2025年1月' },
+  'experience.realEstate2.location': { en: 'New York, USA', zh: '美国纽约' },
+  'experience.realEstate2.type': { en: 'Full time', zh: '全职' },
+  'experience.realEstate2.description': { en: 'It is my mission to find a satisfactory home for my clients.', zh: '为客户找到满意的家是我的使命。' },
+
+  'experience.ceo.period': { en: 'Mar 2018 - Oct 2023', zh: '2018年3月 - 2023年10月' },
+  'experience.ceo.location': { en: 'Tianjin, China', zh: '中国天津' },
+  'experience.ceo.type': { en: 'Full time', zh: '全职' },
+  'experience.ceo.description': { en: 'Visual Design Marketing Manager - Culture. Media. Finance', zh: '视觉设计与营销管理 - 文化、媒体、金融。' },
+
+  'experience.generalManager.period': { en: 'Apr 2014 - May 2017', zh: '2014年4月 - 2017年5月' },
+  'experience.generalManager.location': { en: 'Beijing, China', zh: '中国北京' },
+  'experience.generalManager.type': { en: 'Full time', zh: '全职' },
+  'experience.generalManager.description': { en: 'NEC Movie Projector Manager - Integrating limited resources to accomplish the impossible.', zh: 'NEC电影放映机项目负责人 - 整合有限资源，完成不可能的任务。' },
+
+  'experience.productManager.period': { en: 'Jul 2009 - Apr 2014', zh: '2009年7月 - 2014年4月' },
+  'experience.productManager.location': { en: 'Beijing/Hebei/Shandong, China', zh: '中国 北京/河北/山东' },
+  'experience.productManager.type': { en: 'Full time', zh: '全职' },
+  'experience.productManager.description': { en: 'EPSON Home Projection Product Manager - Product sales and inventory management, develop marketing plan for the year, New customer development, team building, customer relationship maintenance.', zh: '爱普生家用投影产品经理 - 产品销售与库存管理；年度营销规划；新客户开发；团队建设；客户关系维护。' },
+  
   // Services Section
   'services.title': {
     en: 'Professional Real Estate Services',
