@@ -1,5 +1,6 @@
 import { Phone, Mail, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import EmailObfuscator from "@/components/EmailObfuscator";
 
 export const Footer = () => {
   const { t } = useLanguage();
@@ -22,9 +23,7 @@ export const Footer = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <a href="mailto:forangh@gmail.com" className="hover:text-accent transition-smooth">
-                  forangh@gmail.com
-                </a>
+                <EmailObfuscator user="forangh" domain="gmail" tld="com" className="hover:text-accent transition-smooth" />
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
@@ -76,6 +75,10 @@ export const Footer = () => {
                 src="/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4.png" 
                 alt={t('footer.wechatAlt')}
                 className="w-24 h-24 mx-auto rounded-lg bg-white p-2"
+                width={96}
+                height={96}
+                loading="lazy"
+                decoding="async"
               />
               <p className="text-sm text-primary-foreground/80 leading-relaxed">
                 {t('footer.wechat')}

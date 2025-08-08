@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import skylineUrl from '@/assets/queens-skyline.jpg?url';
+import agentUrl from '@/assets/agent-photo.jpg?url';
 
 export const PerformanceOptimizer = () => {
   useEffect(() => {
@@ -6,10 +8,10 @@ export const PerformanceOptimizer = () => {
     const preloadCriticalResources = () => {
       // Preload hero images
       const heroImage = new Image();
-      heroImage.src = '/assets/queens-skyline.jpg';
+      heroImage.src = skylineUrl;
       
       const agentPhoto = new Image();
-      agentPhoto.src = '/assets/agent-photo.jpg';
+      agentPhoto.src = agentUrl;
       
       // Preload WeChat QR code
       const wechatQR = new Image();
@@ -56,7 +58,7 @@ export const PerformanceOptimizer = () => {
         const link = document.createElement('link');
         link.rel = 'preload';
         link.as = 'image';
-        link.href = '/assets/queens-skyline.jpg';
+        link.href = skylineUrl;
         document.head.appendChild(link);
       };
 
@@ -66,10 +68,13 @@ export const PerformanceOptimizer = () => {
         const deferNonCriticalJS = () => {
           setTimeout(() => {
             // Load non-critical scripts after initial page load
-            const script = document.createElement('script');
-            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-35QWT9PLLD';
-            script.async = true;
-            document.head.appendChild(script);
+            const hasGtag = document.querySelector('script[src*="googletagmanager.com/gtag/js"]');
+            if (!hasGtag) {
+              const script = document.createElement('script');
+              script.src = 'https://www.googletagmanager.com/gtag/js?id=G-35QWT9PLLD';
+              script.async = true;
+              document.head.appendChild(script);
+            }
           }, 3000);
         };
 

@@ -6,6 +6,7 @@ import queensSkyline from "@/assets/queens-skyline.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { SocialMediaIcons } from "@/components/SocialMediaIcons";
+import EmailObfuscator from "@/components/EmailObfuscator";
 
 export const HeroSection = () => {
   const { t } = useLanguage();
@@ -75,6 +76,10 @@ export const HeroSection = () => {
                     src={agentPhoto} 
                     alt={t('hero.agentAlt')}
                     className="w-32 h-32 rounded-full mx-auto object-cover shadow-card"
+                    width={128}
+                    height={128}
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="absolute -bottom-2 -right-2 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
                     {t('hero.agent')}
@@ -97,7 +102,7 @@ export const HeroSection = () => {
                   </div>
                    <div className="flex items-center gap-2 text-muted-foreground">
                      <Mail className="w-4 h-4 text-accent" />
-                     <span>forangh@gmail.com</span>
+                     <EmailObfuscator user="forangh" domain="gmail" tld="com" className="underline decoration-transparent hover:decoration-inherit transition-smooth" />
                    </div>
                  </div>
                  

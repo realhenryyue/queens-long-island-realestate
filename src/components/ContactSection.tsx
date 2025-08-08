@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SocialShareButtons } from "@/components/SocialShareButtons";
+import EmailObfuscator from "@/components/EmailObfuscator";
 
 export const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -29,7 +30,8 @@ Phone: ${formData.phone}
 
 Message: ${formData.message}`;
     
-    const mailtoUrl = `mailto:forangh@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const targetEmail = `${'forangh'}@${'gmail'}.${'com'}`;
+    const mailtoUrl = `mailto:${encodeURIComponent(targetEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailtoUrl;
     
     toast({
@@ -90,9 +92,7 @@ Message: ${formData.message}`;
                     </div>
                     <div>
                       <div className="font-semibold text-primary">{t('contact.email')}</div>
-                       <a href="mailto:forangh@gmail.com" className="text-lg text-foreground hover:text-primary transition-smooth">
-                         forangh@gmail.com
-                       </a>
+                       <EmailObfuscator user="forangh" domain="gmail" tld="com" className="text-lg text-foreground hover:text-primary transition-smooth" />
                     </div>
                   </div>
                   
