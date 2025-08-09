@@ -133,11 +133,11 @@ const MarketAnalysisHub = () => {
       contentKey: "insights.topNeighborhoods.content",
       icon: <Award className="h-5 w-5" />,
       rankings: [
-        { rank: 1, name: "Flushing", price: "$720,000", yield: "4.5%" },
-        { rank: 2, name: "Long Island City", price: "$1,050,000", yield: "3.9%" },
-        { rank: 3, name: "Astoria", price: "$860,000", yield: "4.2%" },
-        { rank: 4, name: "Sunset Park", price: "$760,000", yield: "4.8%" },
-        { rank: 5, name: "Park Slope", price: "$1,350,000", yield: "3.5%" }
+        { rank: 1, name: t('insights.topCommunities.flushing'), price: "$720,000", yield: "4.5%" },
+        { rank: 2, name: t('insights.topCommunities.longIslandCity'), price: "$1,050,000", yield: "3.9%" },
+        { rank: 3, name: t('insights.topCommunities.astoria'), price: "$860,000", yield: "4.2%" },
+        { rank: 4, name: t('insights.topCommunities.sunsetPark'), price: "$760,000", yield: "4.8%" },
+        { rank: 5, name: t('insights.topCommunities.parkSlope'), price: "$1,350,000", yield: "3.5%" }
       ],
       tags: ["neighborhood ranking", "investment neighborhoods", "Flushing", "Long Island City", "Astoria", "Sunset Park", "Park Slope", "cap rate"]
     }

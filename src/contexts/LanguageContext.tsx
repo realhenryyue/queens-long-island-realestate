@@ -506,6 +506,18 @@ const translations: Translations = {
     en: 'Foreign buyers must provide additional documentation including passport copies, visa status, and proof of funds from overseas bank accounts to qualify for property financing.',
     zh: '外国买家必须提供额外文件，包括护照复印件、签证状态和海外银行账户资金证明，以获得房产融资资格。'
   },
+  'educational.foreignBuyer.point2': {
+    en: 'FIRPTA (Foreign Investment in Real Property Tax Act) requires 15% withholding tax on property sales by foreign sellers, but buyers can request reduced rates with proper documentation.',
+    zh: 'FIRPTA（外国人房地产投资税法）要求外国卖家房产销售缴纳15%预扣税，但买家可通过适当文件申请降低税率。'
+  },
+  'educational.foreignBuyer.point3': {
+    en: 'Setting up an LLC or trust structure can provide tax benefits and privacy protection for foreign investors, but requires proper legal and accounting guidance.',
+    zh: '建立LLC或信托结构可为外国投资者提供税务优惠和隐私保护，但需要适当的法律和会计指导。'
+  },
+  'educational.foreignBuyer.point4': {
+    en: 'Currency exchange timing and hedging strategies can significantly impact investment returns - consider working with international banking specialists.',
+    zh: '外汇兑换时机和对冲策略会显著影响投资回报——建议与国际银行专家合作。'
+  },
   'educational.buyingProcess.title': {
     en: 'Detailed NYC Home Buying Process',
     zh: '纽约购房流程详解'
@@ -517,6 +529,18 @@ const translations: Translations = {
   'educational.buyingProcess.point1': {
     en: 'Pre-approval for mortgage financing is the critical first step, establishing your budget and demonstrating serious intent to sellers in competitive NYC markets.',
     zh: '房贷预批准是关键的第一步，确定您的预算并在竞争激烈的纽约市场中向卖方展示购买诚意。'
+  },
+  'educational.buyingProcess.point2': {
+    en: 'Property search and selection involves analyzing comparable sales, neighborhood trends, and future development plans that could affect property values.',
+    zh: '房产搜索和选择涉及分析可比销售、社区趋势和可能影响房产价值的未来发展计划。'
+  },
+  'educational.buyingProcess.point3': {
+    en: 'Due diligence includes professional home inspection, title search, and reviewing building financials for condos and co-ops to identify potential issues.',
+    zh: '尽职调查包括专业房屋检查、产权调查，以及审查公寓和合作社的建筑财务状况以识别潜在问题。'
+  },
+  'educational.buyingProcess.point4': {
+    en: 'Closing preparation requires coordinating with attorneys, lenders, and insurance providers while conducting final walkthrough before deed transfer.',
+    zh: '过户准备需要与律师、贷款机构和保险提供商协调，同时在产权转移前进行最终房屋检查。'
   },
   'educational.loanGuide.title': {
     en: 'Home Loan Application Guide',
@@ -530,6 +554,18 @@ const translations: Translations = {
     en: 'Interest rates vary significantly based on credit score, down payment amount, and loan type - shop multiple lenders to secure the best terms for your situation.',
     zh: '利率因信用评分、首付金额和贷款类型而显著不同——多家贷款机构比较以获得最适合您情况的最佳条件。'
   },
+  'educational.loanGuide.point2': {
+    en: 'Debt-to-income ratio requirements are typically 43% or lower for conventional loans, but specialty programs may allow higher ratios with compensating factors.',
+    zh: '传统贷款的债务收入比要求通常为43%或更低，但特殊项目可能允许更高比例的补偿因素。'
+  },
+  'educational.loanGuide.point3': {
+    en: 'Private mortgage insurance (PMI) is required for conventional loans with less than 20% down payment, adding $200-500 monthly to your housing costs.',
+    zh: '首付低于20%的传统贷款需要私人抵押贷款保险（PMI），每月增加$200-500的住房成本。'
+  },
+  'educational.loanGuide.point4': {
+    en: 'Asset-based loans and bank statement programs offer alternative documentation paths for self-employed borrowers and investors with complex income structures.',
+    zh: '资产基础贷款和银行对账单项目为自雇借款人和收入结构复杂的投资者提供替代文件路径。'
+  },
   'educational.taxOptimization.title': {
     en: 'Tax Optimization Strategies',
     zh: '税务优化策略'
@@ -537,6 +573,18 @@ const translations: Translations = {
   'educational.taxOptimization.content': {
     en: 'Legal methods can significantly reduce tax liabilities including LLC setup, 1031 Exchange for capital gains deferral, and STAR/SCHE tax exemptions for eligible homeowners.',
     zh: '合法方法可显著减少税务负担，包括LLC设立、1031交换延迟资本利得税，以及符合条件房主的STAR/SCHE税务减免。'
+  },
+  'educational.taxOptimization.point1': {
+    en: 'Homestead exemptions and STAR programs can reduce annual property tax burden by $1,000-3,000 for qualifying primary residence owners.',
+    zh: '宅地豁免和STAR项目可为符合条件的主要居住地业主减少$1,000-3,000的年度房产税负担。'
+  },
+  'educational.taxOptimization.point2': {
+    en: 'Cost segregation studies for rental properties can accelerate depreciation deductions, potentially saving thousands in current-year tax liability.',
+    zh: '租赁物业的成本分离研究可以加速折旧扣除，潜在节省当年数千美元的税务负担。'
+  },
+  'educational.taxOptimization.point3': {
+    en: 'Opportunity Zone investments offer capital gains deferral and potential tax-free growth for long-term property investments in designated areas.',
+    zh: '机会区域投资为指定区域的长期房产投资提供资本利得延期和潜在的免税增长。'
   },
   'educational.taxOptimization.point4': {
     en: 'Depreciation deductions on rental properties can offset taxable income, while strategic timing of property sales can minimize capital gains exposure.',
@@ -800,7 +848,12 @@ const translations: Translations = {
   'insights.topCommunities.astoria': { en: 'Astoria', zh: '阿斯托利亚' },
   'insights.topCommunities.sunsetPark': { en: 'Sunset Park', zh: '日落公园' },
   'insights.topCommunities.parkSlope': { en: 'Park Slope', zh: '公园坡' },
-  'insights.topCommunities.flushing': { en: 'Flushing', zh: '法拉盛' }
+  'insights.topCommunities.flushing': { en: 'Flushing', zh: '法拉盛' },
+  'insights.topCommunities.bayside': { en: 'Bayside', zh: '贝赛德' },
+  'insights.topCommunities.forestHills': { en: 'Forest Hills', zh: '森林山' },
+  'insights.topCommunities.regoPark': { en: 'Rego Park', zh: '瑞格公园' },
+  'insights.topCommunities.elmhurst': { en: 'Elmhurst', zh: '艾尔姆赫斯特' },
+  'insights.topCommunities.jacksonHeights': { en: 'Jackson Heights', zh: '杰克逊高地' }
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
