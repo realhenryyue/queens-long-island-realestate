@@ -130,16 +130,16 @@ const translations: Translations = {
     zh: 'Ideal Automotive Sales & Service 商业关系代理'
   },
   'experience.ceo': {
-    en: 'CEO at Tianjin Zlon Culture Media Co., Ltd.',
-    zh: '天津兹龙文化传媒有限公司 首席执行官'
+    en: 'CEO at Tianjin Zilong Culture Media Co., Ltd.',
+    zh: '天津紫龙文化传媒有限公司 首席执行官'
   },
   'experience.generalManager': {
-    en: 'General Manager at Beijing Huayigaote Technology Co., Ltd.',
-    zh: '北京华艺高特科技有限公司 总经理'
+    en: 'General Manager at Beijing Huayi Gaote Technology Co., Ltd.',
+    zh: '北京华亿高特技术有限公司 总经理'
   },
   'experience.productManager': {
-    en: 'Product Manager at Shanghai WTi Information Technology Co., Ltd.',
-    zh: '上海威梯信息技术有限公司 产品经理'
+    en: 'Product Manager at Shanghai Wangting Information Technology Co., Ltd.',
+    zh: '上海网庭信息科技有限公司 产品经理'
   },
   
   // Work Experience Details
@@ -320,6 +320,18 @@ const translations: Translations = {
     en: 'Professional Journey',
     zh: '职业历程'
   },
+  'experience.company1': {
+    en: 'Tianjin Zilong Cultural Media Co., Ltd.',
+    zh: '天津紫龙文化传媒有限公司'
+  },
+  'experience.company2': {
+    en: 'Beijing Huayi Gaote Technology Co., Ltd.',
+    zh: '北京华亿高特技术有限公司'
+  },
+  'experience.company3': {
+    en: 'Shanghai Weiti Information Technology Co., Ltd.',
+    zh: '上海网庭信息科技有限公司'
+  },
   
   // Contact & Footer
   'footer.wechat': {
@@ -490,6 +502,10 @@ const translations: Translations = {
     en: 'Non-U.S. citizens can purchase property in the U.S., but there are specific requirements for loans, taxes, and ownership structures. The process involves eligibility assessment, financial preparation, and final transaction phases.',
     zh: '非美国公民可以在美国购买房产，但在贷款、税务和所有权结构方面有特定要求。流程包括资格评估、财务准备和最终交易阶段。'
   },
+  'educational.foreignBuyer.point1': {
+    en: 'Foreign buyers must provide additional documentation including passport copies, visa status, and proof of funds from overseas bank accounts to qualify for property financing.',
+    zh: '外国买家必须提供额外文件，包括护照复印件、签证状态和海外银行账户资金证明，以获得房产融资资格。'
+  },
   'educational.buyingProcess.title': {
     en: 'Detailed NYC Home Buying Process',
     zh: '纽约购房流程详解'
@@ -497,6 +513,10 @@ const translations: Translations = {
   'educational.buyingProcess.content': {
     en: 'The home buying process in New York State typically takes 6 to 10 weeks and requires both buyer\'s and seller\'s attorneys to handle contracts and title processes.',
     zh: '纽约州购房流程通常需要6至10周，需要买卖双方律师处理合同和产权流程。'
+  },
+  'educational.buyingProcess.point1': {
+    en: 'Pre-approval for mortgage financing is the critical first step, establishing your budget and demonstrating serious intent to sellers in competitive NYC markets.',
+    zh: '房贷预批准是关键的第一步，确定您的预算并在竞争激烈的纽约市场中向卖方展示购买诚意。'
   },
   'educational.loanGuide.title': {
     en: 'Home Loan Application Guide',
@@ -506,6 +526,10 @@ const translations: Translations = {
     en: 'Multiple loan types available including Conventional Loans (3-5% down), FHA Loans (3.5% down), and Non-QM/Commercial Loans for asset-based documentation.',
     zh: '多种贷款类型可选，包括传统贷款（3-5%首付）、FHA贷款（3.5%首付）和资产证明的Non-QM/商业贷款。'
   },
+  'educational.loanGuide.point1': {
+    en: 'Interest rates vary significantly based on credit score, down payment amount, and loan type - shop multiple lenders to secure the best terms for your situation.',
+    zh: '利率因信用评分、首付金额和贷款类型而显著不同——多家贷款机构比较以获得最适合您情况的最佳条件。'
+  },
   'educational.taxOptimization.title': {
     en: 'Tax Optimization Strategies',
     zh: '税务优化策略'
@@ -513,6 +537,10 @@ const translations: Translations = {
   'educational.taxOptimization.content': {
     en: 'Legal methods can significantly reduce tax liabilities including LLC setup, 1031 Exchange for capital gains deferral, and STAR/SCHE tax exemptions for eligible homeowners.',
     zh: '合法方法可显著减少税务负担，包括LLC设立、1031交换延迟资本利得税，以及符合条件房主的STAR/SCHE税务减免。'
+  },
+  'educational.taxOptimization.point4': {
+    en: 'Depreciation deductions on rental properties can offset taxable income, while strategic timing of property sales can minimize capital gains exposure.',
+    zh: '租赁物业的折旧扣除可以抵消应税收入，而战略性安排房产销售时机可以最大限度减少资本利得税负担。'
   },
 
   // Market Insights
@@ -765,7 +793,14 @@ const translations: Translations = {
   'tag.longIslandCity': { en: 'Long Island City', zh: '长岛市' },
   'tag.astoria': { en: 'Astoria', zh: '阿斯托利亚' },
   'tag.sunsetPark': { en: 'Sunset Park', zh: '日落公园' },
-  'tag.parkSlope': { en: 'Park Slope', zh: '公园坡' }
+  'tag.parkSlope': { en: 'Park Slope', zh: '公园坡' },
+  
+  // Top neighborhoods ranking translations
+  'insights.topCommunities.longIslandCity': { en: 'Long Island City', zh: '长岛市' },
+  'insights.topCommunities.astoria': { en: 'Astoria', zh: '阿斯托利亚' },
+  'insights.topCommunities.sunsetPark': { en: 'Sunset Park', zh: '日落公园' },
+  'insights.topCommunities.parkSlope': { en: 'Park Slope', zh: '公园坡' },
+  'insights.topCommunities.flushing': { en: 'Flushing', zh: '法拉盛' }
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);

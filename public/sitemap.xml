@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <!-- English homepage -->
+  <!-- Main page -->
   <url>
-    <loc>https://www.realhenryyue.com/en/</loc>
-    <lastmod>2025-08-07</lastmod>
+    <loc>https://www.realhenryyue.com/</loc>
+    <lastmod>2025-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.realhenryyue.com/zh/" />
-    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.realhenryyue.com/en/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.realhenryyue.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.realhenryyue.com/zh" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/" />
+  </url>
+  
+  <!-- English homepage -->
+  <url>
+    <loc>https://www.realhenryyue.com/en</loc>
+    <lastmod>2025-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.realhenryyue.com/zh" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/" />
   </url>
   
   <!-- Chinese homepage -->
   <url>
-    <loc>https://www.realhenryyue.com/zh/</loc>
-    <lastmod>2025-08-07</lastmod>
+    <loc>https://www.realhenryyue.com/zh</loc>
+    <lastmod>2025-08-09</lastmod>
     <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.realhenryyue.com/zh/" />
-    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.realhenryyue.com/en/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en/" />
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.realhenryyue.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/" />
   </url>
 </urlset>
