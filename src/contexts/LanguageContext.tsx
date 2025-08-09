@@ -5,6 +5,7 @@ type Language = 'en' | 'zh';
 
 interface LanguageContextType {
   language: Language;
+  currentLanguage: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
 }
@@ -646,9 +647,9 @@ const translations: Translations = {
     en: 'Purchase Price',
     zh: '购买价格'
   },
-  'roi.downPayment': {
-    en: 'Down Payment (30%)',
-    zh: '首付款（30%）'
+  'roi.downPaymentPercent': {
+    en: 'Down Payment (%)',
+    zh: '首付比例（%）'
   },
   'roi.monthlyRent': {
     en: 'Monthly Rent',
@@ -907,7 +908,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children, de
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
+    <LanguageContext.Provider value={{ language, currentLanguage: language, setLanguage: handleSetLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
