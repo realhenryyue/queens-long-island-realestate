@@ -21,11 +21,11 @@ const translations: Translations = {
   // Hero Section
   'hero.title': {
     en: 'Your Trusted Real Estate Partner in Queens & Long Island',
-    zh: 'Henry岳先生 | 纽约专业房地产经纪人 | 双语地产服务专家'
+    zh: 'Real Henry Yue | 纽约房产投资分析权威 | 数据驱动地产投资专家'
   },
   'hero.subtitle': {
     en: 'Licensed New York Real Estate Agent specializing in helping you find your dream home or investment property with personalized service and local expertise. Serving Flushing, Manhattan, Nassau County and all of New York State.',
-    zh: '纽约州持牌房地产经纪人，专业服务曼哈顿、皇后区、长岛地区，为华人客户提供双语房产咨询与投资建议'
+    zh: '纽约州持牌房地产经纪人，专精纽约房产投资分析、现金回报率计算、投资风险模拟。为华人投资者提供数据驱动的纽约投资型物业评估服务，覆盖曼哈顿、皇后区、长岛及全纽约州投资机会分析'
   },
   'hero.cta': {
     en: 'Start Your Home Search',
@@ -66,36 +66,36 @@ const translations: Translations = {
   
   // About Section
   'about.title': {
-    en: 'Why Choose Hongyu (Henry) Yue?',
-    zh: '关于岳泓宇先生 - 您的纽约房地产专家'
+    en: 'Why Choose Real Henry Yue?',
+    zh: '为什么选择Real Henry Yue - 纽约房产投资分析专家'
   },
   'about.subtitle': {
-    en: 'As a licensed New York real estate agent with deep roots in Queens and Long Island, I bring local expertise, cultural understanding, and bilingual communication to every transaction. Specializing in New York real estate investment, luxury properties, and serving the diverse needs of international clients.',
-    zh: '专业的曼哈顿华人地产经纪，为您提供全方位的纽约房产投资和海外买房服务'
+    en: 'As a licensed New York real estate agent specializing in investment analysis, I combine deep market intelligence with advanced analytics to identify profitable opportunities. My expertise in NYC investment property valuation, cap rate analysis, and cash-on-cash returns helps clients make data-driven investment decisions across Queens, Manhattan, and Long Island markets.',
+    zh: '作为专精投资分析的纽约州持牌房地产经纪人，我运用深度市场洞察和先进分析技术，为客户识别盈利机会。专长于纽约投资房产估值、资本化率分析、现金回报率计算，帮助投资者在皇后区、曼哈顿、长岛市场做出数据驱动的投资决策'
   },
   'about.localExpert.title': {
-    en: 'Local Market Expert',
-    zh: '当地市场专家'
+    en: 'NYC Investment Analysis Expert',
+    zh: '纽约投资分析专家'
   },
   'about.localExpert.description': {
-    en: 'Specializing in Queens and Long Island markets, I have intimate knowledge of neighborhoods, pricing trends, and investment opportunities. Whether you\'re looking in Flushing, Bayside, Nassau County, or anywhere in New York State, I\'ll guide you to the perfect property.',
-    zh: '专精于皇后区和长岛市场，对纽约房源、纽约地产信息有深入了解。无论您寻找法拉盛商业楼、曼哈顿房产信息，还是需要纽约租房、纽约房产推荐服务，我都会为您提供最专业的纽约地产公司级别服务。'
+    en: 'Deep expertise in New York real estate investment analysis with comprehensive knowledge of NYC cap rates, rental yields, and market trends. I provide detailed investment property valuation, cash-on-cash return calculations, and risk assessment for multifamily investments, rental condos, and commercial properties across Manhattan, Queens, and Nassau County.',
+    zh: '深度掌握纽约房产投资分析，全面了解纽约资本化率、租金收益率、市场趋势。提供详细的投资型物业评估、现金回报率计算、风险评估服务，涵盖曼哈顿、皇后区、拿骚县的多户型投资、租赁公寓、商业地产投资机会'
   },
   'about.bilingual.title': {
-    en: 'Bilingual & Cultural Support',
-    zh: '双语和文化支持'
+    en: 'Data-Driven Investment Intelligence',
+    zh: '数据驱动投资智能分析'
   },
   'about.bilingual.description': {
-    en: 'I understand the unique needs of diverse communities and provide services in multiple languages. My cultural sensitivity and local connections help bridge communication gaps and ensure smooth transactions.',
-    zh: '作为曼哈顿华人地产经纪，我深度理解多元化社区需求，提供双语服务。协助客户解决纽约生活适应、海外买房流程等问题，确保每一笔纽约房地产交易顺利完成。'
+    en: 'Utilizing advanced analytics and market data to provide comprehensive NY investment ROI calculations, Monte Carlo risk simulations, and trend analysis. My investment reports include comparable sales analysis, break-even calculations, and maximum purchase price recommendations based on target returns for informed decision-making.',
+    zh: '运用先进分析技术和市场数据，提供全面的纽约投资回报率计算、蒙特卡洛风险模拟、趋势分析。投资报告包含可比销售分析、盈亏平衡计算、基于目标回报的最大购买价格建议，确保投资决策的科学性和准确性'
   },
   'about.experience.title': {
-    en: 'Professional Experience',
-    zh: '专业经验'
+    en: 'Proven Investment Track Record',
+    zh: '经验证的投资业绩记录'
   },
   'about.experience.description': {
-    en: 'With over 15 years of experience in sales, business development, and customer relationship management across technology and real estate sectors, I bring a comprehensive understanding of market dynamics and client needs.',
-    zh: '拥有超过15年销售和客户关系管理经验，深谙纽约房地产网运营和曼哈顿房地产网络。从纽约房产经纪人到曼哈顿地产中介，致力于为每位客户提供最优质的纽约房产信息和投资建议。'
+    en: 'Over 15 years of combined experience in financial analysis, technology, and real estate investment. Specialized in NYC real estate trends analysis, investment property screening, and portfolio optimization. My analytical background ensures precise investment calculations and risk assessment for every New York property opportunity.',
+    zh: '超过15年金融分析、科技和房地产投资综合经验。专精于纽约房地产趋势分析、投资物业筛选、投资组合优化。我的分析背景确保每个纽约房产投资机会都有精确的投资计算和风险评估'
   },
   'about.cta': {
     en: 'Schedule a Consultation',
@@ -176,28 +176,28 @@ const translations: Translations = {
   
   // Services Section
   'services.title': {
-    en: 'Professional Real Estate Services',
-    zh: '纽约房地产服务 - 专业海外买房投资指导'
+    en: 'New York Real Estate Investment Analysis Services',
+    zh: '纽约房产投资分析服务 - 专业投资决策支持'
   },
   'services.subtitle': {
-    en: 'Comprehensive real estate services for home buyers, sellers, and investors across Queens, Long Island, and Manhattan',
-    zh: '为海外买房客户、纽约房产投资者提供专业服务，覆盖法拉盛商业楼、曼哈顿地产等优质房源推荐'
+    en: 'Comprehensive investment analysis services including NYC investment property valuation, cap rate analysis, cash-on-cash return calculations, and risk assessment for investors across Queens, Manhattan, and Long Island',
+    zh: '全面的投资分析服务，包括纽约投资房产估值、资本化率分析、现金回报率计算、风险评估，为皇后区、曼哈顿、长岛的投资者提供专业投资决策支持'
   },
   'services.buyingService.title': {
-    en: 'Home Buying Services',
-    zh: '纽约买房服务'
+    en: 'Investment Property Analysis',
+    zh: '投资房产分析服务'
   },
   'services.buyingService.description': {
-    en: 'Expert guidance for international and domestic buyers in Queens, Long Island, and throughout New York State.',
-    zh: '专业指导海外买房客户在皇后区、长岛及纽约州各地区购买优质房产，提供全方位纽约房地产服务。'
+    en: 'Comprehensive NYC investment property valuation with detailed cap rate analysis, rental income projections, and ROI calculations. Expert analysis of multifamily investments and rental condo opportunities throughout New York State.',
+    zh: '全面的纽约投资房产估值服务，包括详细的资本化率分析、租金收入预测、投资回报率计算。专业分析纽约州内多户型投资和租赁公寓投资机会。'
   },
   'services.firstTime.title': {
-    en: 'First-Time Buyer Consultation',
-    zh: '首次购房咨询'
+    en: 'Advanced Investment Analytics',
+    zh: '高级投资分析技术'
   },
   'services.firstTime.description': {
-    en: 'Professional support for first-time home buyers, making the process smooth and stress-free.',
-    zh: '为首次海外买房的客户提供专业支持，让纽约生活置业过程轻松无忧。'
+    en: 'Sophisticated NY investment ROI calculator tools, Monte Carlo risk simulations, and New York real estate trends analysis to optimize your investment portfolio performance.',
+    zh: '先进的纽约投资回报率计算工具、蒙特卡洛风险模拟、纽约房地产趋势分析，优化您的投资组合表现。'
   },
   'services.investment.title': {
     en: 'Investment Property Analysis',
