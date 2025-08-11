@@ -26,10 +26,10 @@ export const SEOHead = () => {
       document.head.appendChild(newMetaDescription);
     }
     
-    // Enhanced keywords for better ranking
+    // Enhanced keywords for better ranking with investment analysis focus
     const keywords = language === 'zh'
-      ? 'Henry岳先生, NYC纽约房地产经纪人, 曼哈顿地产经纪, 皇后区房产专家, 法拉盛商业楼, 华人买房经纪, 海外房产投资, 长岛地产服务, 纽约持牌经纪人, 双语地产服务, 学区房投资, 商业地产投资, 新房销售, 二手房买卖, 房产估价'
-      : 'Henry Yue, NYC real estate agent, New York property expert, Queens real estate, Manhattan homes, Long Island properties, licensed NY agent, bilingual realtor, commercial real estate NYC, residential sales, property investment, first time home buyer, luxury homes NYC, condo sales, house hunting';
+      ? 'Henry岳先生, 纽约房产投资分析专家, NYC纽约房地产经纪人, 曼哈顿投资房产, 皇后区投资物业, 纽约投资型物业评估, 纽约买房现金回报率, 纽约多户型投资, 纽约房租盈利分析, 法拉盛商业楼投资, 华人买房投资经纪, 海外房产投资咨询, 长岛投资房产, 纽约持牌投资分析师, 双语房产投资服务, 学区房投资分析, 商业地产投资咨询, 纽约房产估值专家, 投资回报率计算, 房产现金流分析'
+      : 'Henry Yue NYC real estate investment analysis, New York property investment expert, NYC investment property valuation, New York cap rate analysis, NY investment ROI calculator, invest in NYC rental condo, New York multifamily investment, NYC real estate trends analysis, NY property cash-on-cash return, Queens investment properties, Manhattan investment analysis, Long Island rental property, licensed NY investment specialist, bilingual real estate investment, commercial real estate investment NYC, residential investment analysis, property cash flow analysis, New York real estate market trends, investment property evaluation, NYC property investment consultant';
     
     const metaKeywords = document.querySelector('meta[name="keywords"]');
     if (metaKeywords) {
@@ -50,24 +50,27 @@ export const SEOHead = () => {
     
     // Determine the canonical URL and alternate language URLs
     let canonicalUrl = `${baseUrl}${currentPath}`;
-    let alternateZh = `${baseUrl}/zh/`;
-    let alternateEn = `${baseUrl}/en/`;
+    let alternateZh = `${baseUrl}/zh`;
+    let alternateEn = `${baseUrl}/en`;
     
-    // If we're on a Chinese page, the alternate English is the en version
+    // Normalize paths and set proper canonical
     if (currentPath.startsWith('/zh')) {
-      alternateEn = currentPath.replace('/zh', '/en');
-      if (alternateEn === '/en') alternateEn = '/en/';
-    }
-    // If we're on an English page, the alternate Chinese is the zh version  
-    else if (currentPath.startsWith('/en')) {
-      alternateZh = currentPath.replace('/en', '/zh');
-      if (alternateZh === '/zh') alternateZh = '/zh/';
+      canonicalUrl = `${baseUrl}/zh`;
+      alternateEn = `${baseUrl}/en`;
+    } else if (currentPath.startsWith('/en')) {
+      canonicalUrl = `${baseUrl}/en`;
+      alternateZh = `${baseUrl}/zh`;
+    } else {
+      // Default redirect case
+      canonicalUrl = `${baseUrl}/en`;
+      alternateZh = `${baseUrl}/zh`;
+      alternateEn = `${baseUrl}/en`;
     }
     
     const hreflangs = [
-      { lang: 'zh-CN', href: `${baseUrl}${alternateZh}` },
-      { lang: 'en-US', href: `${baseUrl}${alternateEn}` },
-      { lang: 'x-default', href: `${baseUrl}/en/` }
+      { lang: 'zh-CN', href: alternateZh },
+      { lang: 'en-US', href: alternateEn },
+      { lang: 'x-default', href: `${baseUrl}/en` }
     ];
 
     hreflangs.forEach(({ lang, href }) => {

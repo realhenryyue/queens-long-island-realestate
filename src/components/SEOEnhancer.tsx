@@ -41,13 +41,26 @@ export const SEOEnhancer = () => {
         meta.setAttribute('content', content);
       });
 
-      // Update Open Graph tags dynamically
+      // Update Open Graph tags dynamically with investment focus
+      const shareTitle = language === 'zh' ? 
+        'Henry岳先生 - 纽约房产投资分析权威 | NYC投资型物业专家' :
+        'Henry Yue - NYC Real Estate Investment Analysis Expert | NY Property Investment Specialist';
+      const shareDescription = language === 'zh' ?
+        '专业纽约房产投资分析服务，提供详细ROI计算、现金流分析、市场趋势预测。15年经验，双语服务，助您做出明智投资决策。免费咨询: 718-717-5210' :
+        'Professional NYC real estate investment analysis services. Detailed ROI calculations, cash flow analysis, market trend forecasting. 15+ years experience, bilingual support. Free consultation: 718-717-5210';
+
       const ogTags = [
-        { property: 'og:title', content: t('seo.shareTitle') },
-        { property: 'og:description', content: t('seo.shareDescription') },
+        { property: 'og:title', content: shareTitle },
+        { property: 'og:description', content: shareDescription },
         { property: 'og:locale', content: language === 'zh' ? 'zh_CN' : 'en_US' },
         { property: 'og:updated_time', content: new Date().toISOString() },
-        { property: 'article:modified_time', content: new Date().toISOString() }
+        { property: 'article:modified_time', content: new Date().toISOString() },
+        { property: 'og:type', content: 'business.business' },
+        { property: 'business:contact_data:street_address', content: 'New York' },
+        { property: 'business:contact_data:locality', content: 'New York' },
+        { property: 'business:contact_data:region', content: 'NY' },
+        { property: 'business:contact_data:postal_code', content: '10001' },
+        { property: 'business:contact_data:country_name', content: 'United States' }
       ];
 
       ogTags.forEach(({ property, content }) => {

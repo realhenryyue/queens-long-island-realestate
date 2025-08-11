@@ -44,6 +44,18 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+# Language-specific redirects for SEO
+RewriteRule ^zh/?$ /zh [R=301,L]
+RewriteRule ^en/?$ /en [R=301,L]
+
+# Clean URLs for content pages
+RewriteRule ^investment-analysis/?$ /en/investment-analysis [R=301,L]
+RewriteRule ^queens-real-estate/?$ /en/queens-real-estate [R=301,L]
+RewriteRule ^manhattan-properties/?$ /en/manhattan-properties [R=301,L]
+RewriteRule ^nassau-county-homes/?$ /en/nassau-county-homes [R=301,L]
+RewriteRule ^roi-calculator/?$ /en/roi-calculator [R=301,L]
+RewriteRule ^contact/?$ /en/contact [R=301,L]
+
 # Security Headers
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options nosniff
