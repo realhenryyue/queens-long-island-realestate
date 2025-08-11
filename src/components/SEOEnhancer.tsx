@@ -41,13 +41,13 @@ export const SEOEnhancer = () => {
         meta.setAttribute('content', content);
       });
 
-      // Update Open Graph tags dynamically with investment focus
+      // Update Open Graph tags dynamically with investment focus and borough coverage
       const shareTitle = language === 'zh' ? 
-        'Henry岳先生 - 纽约房产投资分析权威 | NYC投资型物业专家' :
-        'Henry Yue - NYC Real Estate Investment Analysis Expert | NY Property Investment Specialist';
+        'Henry岳先生 - 纽约五大区房产投资分析权威 | NYC曼哈顿皇后区布鲁克林投资专家' :
+        'Henry Yue - NYC 5 Boroughs Real Estate Investment Expert | Manhattan Queens Brooklyn Bronx Nassau Investment Analysis';
       const shareDescription = language === 'zh' ?
-        '专业纽约房产投资分析服务，提供详细ROI计算、现金流分析、市场趋势预测。15年经验，双语服务，助您做出明智投资决策。免费咨询: 718-717-5210' :
-        'Professional NYC real estate investment analysis services. Detailed ROI calculations, cash flow analysis, market trend forecasting. 15+ years experience, bilingual support. Free consultation: 718-717-5210';
+        '专业纽约五大区房产投资分析服务，覆盖曼哈顿、皇后区、布鲁克林、布朗克斯、史泰登岛、拿骚县。提供详细ROI计算、现金流分析、市场趋势预测。15年经验，双语服务，助您做出明智投资决策。免费咨询: 718-717-5210' :
+        'Professional NYC 5 boroughs real estate investment analysis services covering Manhattan, Queens, Brooklyn, Bronx, Staten Island, Nassau County. Detailed ROI calculations, cash flow analysis, market trend forecasting for all NYC areas. 15+ years experience, bilingual support. Free consultation: 718-717-5210';
 
       const ogTags = [
         { property: 'og:title', content: shareTitle },

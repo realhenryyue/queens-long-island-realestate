@@ -26,10 +26,10 @@ export const SEOHead = () => {
       document.head.appendChild(newMetaDescription);
     }
     
-    // Enhanced keywords for better ranking with investment analysis focus
+    // Enhanced keywords for better ranking with investment analysis focus and boroughs
     const keywords = language === 'zh'
-      ? 'Henry岳先生, 纽约房产投资分析专家, NYC纽约房地产经纪人, 曼哈顿投资房产, 皇后区投资物业, 纽约投资型物业评估, 纽约买房现金回报率, 纽约多户型投资, 纽约房租盈利分析, 法拉盛商业楼投资, 华人买房投资经纪, 海外房产投资咨询, 长岛投资房产, 纽约持牌投资分析师, 双语房产投资服务, 学区房投资分析, 商业地产投资咨询, 纽约房产估值专家, 投资回报率计算, 房产现金流分析'
-      : 'Henry Yue NYC real estate investment analysis, New York property investment expert, NYC investment property valuation, New York cap rate analysis, NY investment ROI calculator, invest in NYC rental condo, New York multifamily investment, NYC real estate trends analysis, NY property cash-on-cash return, Queens investment properties, Manhattan investment analysis, Long Island rental property, licensed NY investment specialist, bilingual real estate investment, commercial real estate investment NYC, residential investment analysis, property cash flow analysis, New York real estate market trends, investment property evaluation, NYC property investment consultant';
+      ? 'Henry岳先生, 纽约五大区房产投资分析专家, NYC纽约房地产经纪人, 曼哈顿投资房产, 皇后区投资物业, 布鲁克林投资分析, 布朗克斯投资房产, 史泰登岛地产投资, 拿骚县投资物业, 纽约投资型物业评估, 纽约买房现金回报率, 纽约多户型投资, 纽约房租盈利分析, 法拉盛公寓投资, 阿斯托利亚投资物业, 皇后区家庭住宅投资, 华人买房投资经纪, 海外房产投资咨询, 长岛投资房产, 纽约持牌投资分析师, 双语房产投资服务, 学区房投资分析, 商业地产投资咨询, 纽约房产估值专家, 投资回报率计算, 房产现金流分析, ROI投资计算器'
+      : 'Henry Yue NYC 5 boroughs real estate investment analysis, New York property investment expert Manhattan Queens Brooklyn Bronx Staten Island Nassau, NYC investment property valuation, New York cap rate analysis, NY investment ROI calculator, invest in NYC rental condo, New York multifamily investment, NYC real estate trends analysis, NY property cash-on-cash return, Queens investment properties Flushing Astoria, Manhattan investment analysis, Brooklyn investment property, Bronx rental investment, Staten Island property investment, Nassau County real estate investment, Long Island rental property, licensed NY investment specialist, bilingual real estate investment, commercial real estate investment NYC, residential investment analysis, property cash flow analysis, New York real estate market trends, investment property evaluation, NYC property investment consultant, real estate ROI calculator New York';
     
     const metaKeywords = document.querySelector('meta[name="keywords"]');
     if (metaKeywords) {

@@ -52,12 +52,12 @@ const ROICalculator = () => {
   });
 
   const regions = [
-    { id: 'queens', name: currentLanguage === 'zh' ? '皇后区' : 'Queens', active: true },
-    { id: 'manhattan', name: currentLanguage === 'zh' ? '曼哈顿' : 'Manhattan', active: false },
-    { id: 'nassau', name: currentLanguage === 'zh' ? '拿骚县' : 'Nassau County', active: false },
-    { id: 'bronx', name: currentLanguage === 'zh' ? '布朗克斯' : 'Bronx', active: false },
-    { id: 'brooklyn', name: currentLanguage === 'zh' ? '布鲁克林' : 'Brooklyn', active: false },
-    { id: 'staten', name: currentLanguage === 'zh' ? '史泰登岛' : 'Staten Island', active: false }
+    { id: 'queens', name: currentLanguage === 'zh' ? '皇后区' : 'Queens', active: true, medianROI: 8.2, medianPrice: 720000, medianRent: 2850 },
+    { id: 'manhattan', name: currentLanguage === 'zh' ? '曼哈顿' : 'Manhattan', active: true, medianROI: 5.4, medianPrice: 1250000, medianRent: 4200 },
+    { id: 'nassau', name: currentLanguage === 'zh' ? '拿骚县' : 'Nassau County', active: true, medianROI: 6.8, medianPrice: 850000, medianRent: 3100 },
+    { id: 'bronx', name: currentLanguage === 'zh' ? '布朗克斯' : 'Bronx', active: true, medianROI: 9.1, medianPrice: 520000, medianRent: 2400 },
+    { id: 'brooklyn', name: currentLanguage === 'zh' ? '布鲁克林' : 'Brooklyn', active: true, medianROI: 7.3, medianPrice: 680000, medianRent: 2900 },
+    { id: 'staten', name: currentLanguage === 'zh' ? '史泰登岛' : 'Staten Island', active: true, medianROI: 7.8, medianPrice: 590000, medianRent: 2600 }
   ];
 
   const calculateAdvancedROI = () => {
@@ -175,13 +175,45 @@ const ROICalculator = () => {
     
     setAnalysisStage('analyzing');
     
-    // Simulate API analysis - replace with actual implementation
+    // Show contact prompt for Henry Yue as per specifications
+    const shouldContact = window.confirm(
+      currentLanguage === 'zh' ? 
+        '为获得最准确的投资分析，请联系专业房地产投资分析师 岳鸿宇 (Henry Yue)。\n\n电话: 718-717-5210\n邮箱: forangh@gmail.com\n\n点击"确定"继续基础分析，或"取消"先联系专家。' :
+        'For the most accurate investment analysis, please contact professional real estate investment analyst Hongyu (Henry) Yue.\n\nPhone: 718-717-5210\nEmail: forangh@gmail.com\n\nClick "OK" to continue with basic analysis, or "Cancel" to contact the expert first.'
+    );
+    
+    if (!shouldContact) {
+      setAnalysisStage('input');
+      return;
+    }
+    
+    // Simulate AI analysis with realistic delay
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    
+    // Extract region from address and apply region-specific data
+    const regionFromAddress = detectRegionFromAddress(addressInput);
+    setSelectedRegion(regionFromAddress);
+    
+    // Get mock data for the detected region
+    const mockData = getRegionMockData(regionFromAddress);
+    setInputs(prev => ({ ...prev, ...mockData }));
+    
+    setAnalysisStage('complete');
+    
     setTimeout(() => {
-      // Mock data based on region
-      const mockData = getRegionMockData(selectedRegion);
-      setInputs(prev => ({ ...prev, ...mockData }));
-      setAnalysisStage('complete');
-    }, 2000);
+      setAnalysisStage('input');
+    }, 5000);
+  };
+
+  const detectRegionFromAddress = (address: string): string => {
+    const lowerAddress = address.toLowerCase();
+    if (lowerAddress.includes('manhattan') || lowerAddress.includes('nyc') || lowerAddress.includes('new york, ny')) return 'manhattan';
+    if (lowerAddress.includes('brooklyn') || lowerAddress.includes('bk')) return 'brooklyn';
+    if (lowerAddress.includes('bronx')) return 'bronx';
+    if (lowerAddress.includes('staten island') || lowerAddress.includes('si')) return 'staten';
+    if (lowerAddress.includes('nassau') || lowerAddress.includes('long island') || lowerAddress.includes('li')) return 'nassau';
+    if (lowerAddress.includes('queens') || lowerAddress.includes('flushing') || lowerAddress.includes('astoria') || lowerAddress.includes('elmhurst')) return 'queens';
+    return 'queens'; // Default to Queens
   };
 
   const getRegionMockData = (region: string) => {
@@ -341,16 +373,22 @@ const ROICalculator = () => {
 
   const presetScenarios = [
     {
-      name: t('roi.flushingCondo'),
-      values: { purchasePrice: '720000', monthlyRent: '2800', monthlyExpenses: '650', closingCosts: '14400', renovationCosts: '15000', appreciationRate: '6.2', loanInterestRate: '6.63', downPaymentPercent: '30', vacancyRate: '5' }
+      name: currentLanguage === 'zh' ? '法拉盛公寓投资' : 'Flushing Condo Investment',
+      values: { purchasePrice: '720000', monthlyRent: '2850', monthlyExpenses: '680', closingCosts: '14400', renovationCosts: '18000', appreciationRate: '5.8', loanInterestRate: '6.63', downPaymentPercent: '30', vacancyRate: '4.5' },
+      region: 'queens',
+      roiEstimate: 8.4
     },
     {
-      name: t('roi.queensFamily'),
-      values: { purchasePrice: '950000', monthlyRent: '3800', monthlyExpenses: '1100', closingCosts: '19000', renovationCosts: '35000', appreciationRate: '4.7', loanInterestRate: '6.63', downPaymentPercent: '30', vacancyRate: '5' }
+      name: currentLanguage === 'zh' ? '皇后区家庭住宅' : 'Queens Family Home',
+      values: { purchasePrice: '920000', monthlyRent: '3750', monthlyExpenses: '1050', closingCosts: '18400', renovationCosts: '28000', appreciationRate: '4.9', loanInterestRate: '6.63', downPaymentPercent: '30', vacancyRate: '4.0' },
+      region: 'queens',
+      roiEstimate: 7.8
     },
     {
-      name: t('roi.astoriaInvestment'),
-      values: { purchasePrice: '860000', monthlyRent: '3200', monthlyExpenses: '850', closingCosts: '17200', renovationCosts: '20000', appreciationRate: '4.2', loanInterestRate: '6.63', downPaymentPercent: '30', vacancyRate: '5' }
+      name: currentLanguage === 'zh' ? '阿斯托利亚投资型物业' : 'Astoria Investment Property',
+      values: { purchasePrice: '840000', monthlyRent: '3150', monthlyExpenses: '820', closingCosts: '16800', renovationCosts: '22000', appreciationRate: '4.5', loanInterestRate: '6.63', downPaymentPercent: '30', vacancyRate: '4.2' },
+      region: 'queens',
+      roiEstimate: 7.6
     }
   ];
 
@@ -384,19 +422,38 @@ const ROICalculator = () => {
                       setInputs(prev => ({ ...prev, ...mockData }));
                     }
                   }}
-                  className={`${!region.active ? 'opacity-60' : ''}`}
-                  disabled={!region.active && region.id !== 'queens'}
+                  className="min-h-[3rem]"
+                  disabled={false}
                 >
-                  {region.name}
+                  <div className="flex flex-col items-center gap-1">
+                    <span>{region.name}</span>
+                    <div className="text-xs text-muted-foreground">
+                      {currentLanguage === 'zh' ? '中位ROI:' : 'Median ROI:'} {region.medianROI}%
+                    </div>
+                  </div>
                   {region.id === 'queens' && <Star className="h-3 w-3 ml-1" />}
                 </Button>
               ))}
             </div>
-            {selectedRegion !== 'queens' && (
-              <p className="text-sm text-muted-foreground mt-2">
-                {currentLanguage === 'zh' ? '显示演示数据' : 'Showing demo data'}
-              </p>
-            )}
+            <div className="mt-4 p-4 bg-secondary/10 rounded-lg">
+              <h4 className="font-semibold text-sm mb-2">
+                {currentLanguage === 'zh' ? '当前选择区域统计' : 'Selected Region Statistics'}
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div className="text-center">
+                  <div className="font-bold text-primary">{regions.find(r => r.id === selectedRegion)?.medianROI}%</div>
+                  <div className="text-muted-foreground">{currentLanguage === 'zh' ? '中位ROI' : 'Median ROI'}</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-bold text-primary">{formatCurrency(regions.find(r => r.id === selectedRegion)?.medianPrice || 0)}</div>
+                  <div className="text-muted-foreground">{currentLanguage === 'zh' ? '中位价格' : 'Median Price'}</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-bold text-primary">{formatCurrency(regions.find(r => r.id === selectedRegion)?.medianRent || 0)}</div>
+                  <div className="text-muted-foreground">{currentLanguage === 'zh' ? '中位租金' : 'Median Rent'}</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Address Analysis */}
@@ -474,19 +531,25 @@ const ROICalculator = () => {
               {/* Preset Scenarios */}
               <div>
                 <Label className="text-sm font-medium mb-3 block">{t('roi.quickScenarios')}</Label>
-                <div className="flex flex-wrap gap-2">
-                  {presetScenarios.map((scenario, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setInputs(scenario.values)}
-                      className="text-xs"
-                    >
-                      {scenario.name}
-                    </Button>
-                  ))}
-                </div>
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                   {presetScenarios.map((scenario, index) => (
+                     <Button
+                       key={index}
+                       variant={scenario.region === selectedRegion ? "default" : "outline"}
+                       size="sm"
+                       onClick={() => {
+                         setInputs(scenario.values);
+                         setSelectedRegion(scenario.region);
+                       }}
+                       className="flex flex-col p-3 h-auto space-y-1"
+                     >
+                       <span className="font-medium text-xs">{scenario.name}</span>
+                       <span className="text-xs text-muted-foreground">
+                         {currentLanguage === 'zh' ? '预期ROI:' : 'Est. ROI:'} {scenario.roiEstimate}%
+                       </span>
+                     </Button>
+                   ))}
+                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -809,26 +872,42 @@ const ROICalculator = () => {
                   <CardTitle>{currentLanguage === 'zh' ? '区域可比分析' : 'Regional Comparable Analysis'}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-sm text-muted-foreground mb-4">
-                    {currentLanguage === 'zh' ? 
-                      `基于${regions.find(r => r.id === selectedRegion)?.name}地区2025年8月市场数据` :
-                      `Based on ${regions.find(r => r.id === selectedRegion)?.name} August 2025 market data`
-                    }
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                      <span className="font-medium">{currentLanguage === 'zh' ? '地区中位价格' : 'Median Price'}</span>
-                      <span className="font-bold">{formatCurrency(parseFloat(inputs.purchasePrice))}</span>
-                    </div>
-                    <div className="flex justify-between items-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                      <span className="font-medium">{currentLanguage === 'zh' ? '地区租金收益率' : 'Regional Rental Yield'}</span>
-                      <span className="font-bold">{formatPercent((parseFloat(inputs.monthlyRent) * 12 / parseFloat(inputs.purchasePrice)) * 100)}</span>
-                    </div>
-                    <div className="flex justify-between items-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                      <span className="font-medium">{currentLanguage === 'zh' ? '年增值率' : 'Annual Appreciation'}</span>
-                      <span className="font-bold">{formatPercent(parseFloat(inputs.appreciationRate))}</span>
-                    </div>
-                  </div>
+                   <div className="text-sm text-muted-foreground mb-4">
+                     {currentLanguage === 'zh' ? 
+                       `基于${regions.find(r => r.id === selectedRegion)?.name}地区2025年8月市场数据` :
+                       `Based on ${regions.find(r => r.id === selectedRegion)?.name} August 2025 market data`
+                     }
+                   </div>
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                     <div className="space-y-3">
+                       <div className="flex justify-between items-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                         <span className="font-medium">{currentLanguage === 'zh' ? '您的投资价格' : 'Your Investment Price'}</span>
+                         <span className="font-bold">{formatCurrency(parseFloat(inputs.purchasePrice))}</span>
+                       </div>
+                       <div className="flex justify-between items-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                         <span className="font-medium">{currentLanguage === 'zh' ? '您的租金收益率' : 'Your Rental Yield'}</span>
+                         <span className="font-bold">{formatPercent((parseFloat(inputs.monthlyRent) * 12 / parseFloat(inputs.purchasePrice)) * 100)}</span>
+                       </div>
+                       <div className="flex justify-between items-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                         <span className="font-medium">{currentLanguage === 'zh' ? '您的现金回报率' : 'Your Cash-on-Cash ROI'}</span>
+                         <span className="font-bold">{formatPercent(results.cashOnCashReturn)}</span>
+                       </div>
+                     </div>
+                     <div className="space-y-3">
+                       <div className="flex justify-between items-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                         <span className="font-medium">{currentLanguage === 'zh' ? '地区中位价格' : 'Regional Median Price'}</span>
+                         <span className="font-bold">{formatCurrency(regions.find(r => r.id === selectedRegion)?.medianPrice || 0)}</span>
+                       </div>
+                       <div className="flex justify-between items-center p-3 bg-teal-50 dark:bg-teal-900/20 rounded-lg">
+                         <span className="font-medium">{currentLanguage === 'zh' ? '地区中位ROI' : 'Regional Median ROI'}</span>
+                         <span className="font-bold">{formatPercent(regions.find(r => r.id === selectedRegion)?.medianROI || 0)}</span>
+                       </div>
+                       <div className="flex justify-between items-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                         <span className="font-medium">{currentLanguage === 'zh' ? '年增值率' : 'Annual Appreciation'}</span>
+                         <span className="font-bold">{formatPercent(parseFloat(inputs.appreciationRate))}</span>
+                       </div>
+                     </div>
+                   </div>
                 </CardContent>
               </Card>
             </div>
