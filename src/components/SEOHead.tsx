@@ -7,14 +7,14 @@ export const SEOHead = () => {
   useEffect(() => {
     // Update document title with location-specific keywords
     const title = language === 'zh' 
-      ? 'Henry岳先生 - NYC五大区房地产AI投资分析专家 | 曼哈顿皇后区布鲁克林布朗克斯史泰登岛拿骚县智能投资分析'
-      : 'Henry Yue - NYC 5 Boroughs Real Estate AI Investment Analysis Expert | Manhattan Queens Brooklyn Bronx Staten Island Nassau County Smart Investment Analysis';
+      ? 'Henry岳先生 - NYC五大区房地产AI投资分析专家 | 曼哈顿皇后区布鲁克林布朗克斯史泰登岛拿骚县投资ROI计算器工具'
+      : 'Henry Yue - NYC 5 Boroughs Real Estate AI Investment Analysis Expert | Manhattan Queens Brooklyn Bronx Staten Island Nassau County Investment ROI Calculator Tools';
     document.title = title;
     
     // Update meta description with enhanced local SEO
     const description = language === 'zh'
-      ? '纽约五大区房地产AI智能投资分析系统，Henry岳先生15年经验。覆盖曼哈顿、皇后区、布鲁克林、布朗克斯、史泰登岛、拿骚县。专业分析法拉盛公寓、皇后区家庭住宅、阿斯托利亚投资房产。提供ROI计算、现金流分析、市场趋势预测。双语AI咨询服务，免费咨询: 718-717-5210'
-      : 'NYC 5 Boroughs Real Estate AI Smart Investment Analysis System, Henry Yue 15+ years experience. Covering Manhattan, Queens, Brooklyn, Bronx, Staten Island, Nassau County. Professional analysis for Flushing Condos, Queens Family Homes, Astoria Investment Properties. ROI calculations, cash flow analysis, market trend forecasting. Bilingual AI consultation services. Free consultation: 718-717-5210';
+      ? 'NYC纽约五大区房地产AI智能投资分析计算器，Henry岳先生15年经验。专业覆盖曼哈顿、皇后区、布鲁克林、布朗克斯、史泰登岛、拿骚县投资分析。精准分析法拉盛公寓投资、皇后区家庭住宅、阿斯托利亚投资房产。提供ROI计算器、现金流分析、蒙特卡洛风险模拟、市场趋势预测。双语AI投资咨询，免费评估: 718-717-5210'
+      : 'NYC 5 Boroughs Real Estate AI Investment Analysis Calculator, Henry Yue 15+ years expertise. Professional coverage Manhattan, Queens, Brooklyn, Bronx, Staten Island, Nassau County investment analysis. Precision analysis Flushing Condo Investment, Queens Family Homes, Astoria Investment Properties. ROI calculator tools, cash flow analysis, Monte Carlo risk simulation, market trend forecasting. Bilingual AI investment consulting. Free assessment: 718-717-5210';
     
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {

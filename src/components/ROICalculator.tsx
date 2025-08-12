@@ -178,7 +178,7 @@ const ROICalculator = () => {
     // Show contact prompt for Henry Yue as per specifications
     const shouldContact = window.confirm(
       currentLanguage === 'zh' ? 
-        '为获得最准确的投资分析，请联系专业房地产投资分析师 岳鸿宇 (Henry Yue)。\n\n电话: 718-717-5210\n邮箱: forangh@gmail.com\n\n点击"确定"继续基础分析，或"取消"先联系专家。' :
+        '为获得最准确的投资分析，请联系专业房地产投资分析师 岳泓宇 (Henry Yue)。\n\n电话: 718-717-5210\n邮箱: forangh@gmail.com\n\n点击"确定"继续基础分析，或"取消"先联系专家。' :
         'For the most accurate investment analysis, please contact professional real estate investment analyst Hongyu (Henry) Yue.\n\nPhone: 718-717-5210\nEmail: forangh@gmail.com\n\nClick "OK" to continue with basic analysis, or "Cancel" to contact the expert first.'
     );
     
@@ -281,17 +281,24 @@ const ROICalculator = () => {
         format: 'a4'
       });
 
-      // Add logo and header
-      pdf.setFontSize(20);
-      pdf.setTextColor(0, 0, 0);
-      pdf.text('www.realhenryyue.com', 20, 20);
+      // Enhanced header with better layout
+      pdf.setFontSize(22);
+      pdf.setTextColor(37, 99, 235); // Primary color
+      pdf.text('realhenryyue.com', 20, 20);
       
-      pdf.setFontSize(16);
-      pdf.text(currentLanguage === 'zh' ? '房地产投资分析报告' : 'Real Estate Investment Analysis Report', 20, 35);
+      pdf.setFontSize(18);
+      pdf.setTextColor(0, 0, 0);
+      pdf.text(currentLanguage === 'zh' ? 'NYC房地产投资AI分析报告' : 'NYC Real Estate AI Investment Analysis Report', 20, 35);
+      
+      // Add contact info
+      pdf.setFontSize(10);
+      pdf.setTextColor(100, 100, 100);
+      pdf.text('Henry Yue | 718-717-5210 | forangh@gmail.com', 20, 42);
 
-      // Add analysis summary
+      // Add analysis summary with better spacing
       pdf.setFontSize(12);
-      let yPos = 50;
+      pdf.setTextColor(0, 0, 0);
+      let yPos = 55;
       
       // Investment Summary
       pdf.setFont(undefined, 'bold');
@@ -376,19 +383,22 @@ const ROICalculator = () => {
       name: currentLanguage === 'zh' ? '法拉盛公寓投资' : 'Flushing Condo Investment',
       values: { purchasePrice: '720000', monthlyRent: '2850', monthlyExpenses: '680', closingCosts: '14400', renovationCosts: '18000', appreciationRate: '5.8', loanInterestRate: '6.63', downPaymentPercent: '30', vacancyRate: '4.5' },
       region: 'queens',
-      roiEstimate: 8.4
+      roiEstimate: 8.4,
+      priority: 1
     },
     {
       name: currentLanguage === 'zh' ? '皇后区家庭住宅' : 'Queens Family Home',
       values: { purchasePrice: '920000', monthlyRent: '3750', monthlyExpenses: '1050', closingCosts: '18400', renovationCosts: '28000', appreciationRate: '4.9', loanInterestRate: '6.63', downPaymentPercent: '30', vacancyRate: '4.0' },
       region: 'queens',
-      roiEstimate: 7.8
+      roiEstimate: 7.8,
+      priority: 2
     },
     {
       name: currentLanguage === 'zh' ? '阿斯托利亚投资型物业' : 'Astoria Investment Property',
       values: { purchasePrice: '840000', monthlyRent: '3150', monthlyExpenses: '820', closingCosts: '16800', renovationCosts: '22000', appreciationRate: '4.5', loanInterestRate: '6.63', downPaymentPercent: '30', vacancyRate: '4.2' },
       region: 'queens',
-      roiEstimate: 7.6
+      roiEstimate: 7.6,
+      priority: 3
     }
   ];
 
@@ -476,23 +486,6 @@ const ROICalculator = () => {
                   onChange={(e) => setAddressInput(e.target.value)}
                   className="flex-1"
                 />
-                <Button 
-                  onClick={analyzeProperty}
-                  disabled={analysisStage === 'analyzing' || !addressInput.trim()}
-                  className="bg-gradient-to-r from-primary to-primary/80"
-                >
-                  {analysisStage === 'analyzing' ? (
-                    <>
-                      <BarChart3 className="h-4 w-4 mr-2 animate-pulse" />
-                      {currentLanguage === 'zh' ? '分析中...' : 'Analyzing...'}
-                    </>
-                  ) : (
-                    <>
-                      <BarChart3 className="h-4 w-4 mr-2" />
-                      {currentLanguage === 'zh' ? 'AI分析' : 'AI Analyze'}
-                    </>
-                  )}
-                </Button>
               </div>
               {analysisStage === 'complete' && (
                 <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
@@ -507,13 +500,6 @@ const ROICalculator = () => {
             </CardContent>
           </Card>
 
-          <Button 
-            onClick={exportToPDF}
-            className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
-          >
-            <Download className="h-4 w-4 mr-2" />
-            {t('roi.exportPDF')}
-          </Button>
         </div>
 
         <div id="roi-calculator-content">
@@ -818,24 +804,41 @@ const ROICalculator = () => {
                   </div>
                   
                   {monteCarloResults.roi_distribution.length > 0 && (
-                    <div className="h-64">
+                    <div className="h-64 w-full bg-gradient-to-br from-background to-secondary/10 rounded-lg p-4">
                       <Plot
                         data={[{
                           x: monteCarloResults.roi_distribution,
                           type: 'histogram',
-                          marker: { color: 'rgba(99, 102, 241, 0.7)' },
-                          name: 'ROI Distribution'
+                          marker: { 
+                            color: 'rgba(37, 99, 235, 0.8)',
+                            line: { color: 'rgba(37, 99, 235, 1)', width: 1 }
+                          },
+                          name: 'ROI Distribution',
+                          hovertemplate: '<b>ROI Range:</b> %{x:.1f}%<br><b>Count:</b> %{y}<extra></extra>'
                         }]}
                         layout={{
-                          title: currentLanguage === 'zh' ? 'ROI分布直方图' : 'ROI Distribution Histogram',
-                          xaxis: { title: currentLanguage === 'zh' ? 'ROI (%)' : 'ROI (%)' },
-                          yaxis: { title: currentLanguage === 'zh' ? '频次' : 'Frequency' },
-                          margin: { t: 40, r: 20, b: 40, l: 60 },
+                          title: {
+                            text: currentLanguage === 'zh' ? 'ROI风险分布图表' : 'ROI Risk Distribution Chart',
+                            font: { size: 16, color: '#1f2937' }
+                          },
+                          xaxis: { 
+                            title: currentLanguage === 'zh' ? 'ROI (%)' : 'ROI (%)',
+                            gridcolor: 'rgba(0,0,0,0.1)',
+                            showgrid: true
+                          },
+                          yaxis: { 
+                            title: currentLanguage === 'zh' ? '频次' : 'Frequency',
+                            gridcolor: 'rgba(0,0,0,0.1)',
+                            showgrid: true
+                          },
+                          margin: { t: 50, r: 30, b: 50, l: 60 },
                           paper_bgcolor: 'rgba(0,0,0,0)',
-                          plot_bgcolor: 'rgba(0,0,0,0)'
+                          plot_bgcolor: 'rgba(255,255,255,0.9)',
+                          showlegend: false,
+                          font: { family: 'Inter, sans-serif', size: 12 }
                         }}
                         style={{ width: '100%', height: '100%' }}
-                        config={{ displayModeBar: false }}
+                        config={{ displayModeBar: false, responsive: true }}
                       />
                     </div>
                   )}
@@ -923,6 +926,35 @@ const ROICalculator = () => {
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* Action Buttons Below ROI Display */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8 mb-6">
+          <Button 
+            onClick={analyzeProperty}
+            disabled={analysisStage === 'analyzing' || !addressInput.trim()}
+            className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 min-w-[160px]"
+          >
+            {analysisStage === 'analyzing' ? (
+              <>
+                <BarChart3 className="h-4 w-4 mr-2 animate-pulse" />
+                {currentLanguage === 'zh' ? 'AI分析中...' : 'AI Analyzing...'}
+              </>
+            ) : (
+              <>
+                <BarChart3 className="h-4 w-4 mr-2" />
+                {currentLanguage === 'zh' ? 'AI分析' : 'AI Analyze'}
+              </>
+            )}
+          </Button>
+          <Button 
+            onClick={exportToPDF}
+            variant="outline"
+            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground min-w-[160px]"
+          >
+            <Download className="h-4 w-4 mr-2" />
+            {currentLanguage === 'zh' ? '导出PDF报告' : 'Export PDF Report'}
+          </Button>
+        </div>
 
         {/* Disclaimer */}
         <Card className="mt-8">
