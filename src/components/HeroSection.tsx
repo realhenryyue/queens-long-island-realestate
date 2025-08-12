@@ -9,7 +9,7 @@ import { SocialMediaIcons } from "@/components/SocialMediaIcons";
 import EmailObfuscator from "@/components/EmailObfuscator";
 
 export const HeroSection = () => {
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -44,6 +44,21 @@ export const HeroSection = () => {
               <p className="text-xl lg:text-2xl text-white/90 leading-relaxed">
                 {t('hero.subtitle')}
               </p>
+              {/* AI Investment Analysis Positioning */}
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 mt-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+                  <span className="text-accent font-semibold text-sm uppercase tracking-wide">
+                    {currentLanguage === 'zh' ? 'AI 智能分析' : 'AI Investment Analysis'}
+                  </span>
+                </div>
+                <p className="text-white/95 text-lg font-medium">
+                  {currentLanguage === 'zh' 
+                    ? '纽约五大区房产投资智能分析系统 • 曼哈顿 • 皇后区 • 布鲁克林 • 布朗克斯 • 史泰登岛 • 拿骚县'
+                    : 'NYC 5 Boroughs Real Estate AI Investment Analysis • Manhattan • Queens • Brooklyn • Bronx • Staten Island • Nassau County'
+                  }
+                </p>
+              </div>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 pt-4">

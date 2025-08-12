@@ -409,30 +409,40 @@ const ROICalculator = () => {
               <MapPin className="h-5 w-5" />
               {currentLanguage === 'zh' ? '选择分析区域' : 'Select Analysis Region'}
             </h3>
-            <div className="flex flex-wrap justify-center gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
               {regions.map((region) => (
-                <Button
+                <button
                   key={region.id}
-                  variant={selectedRegion === region.id ? "default" : "outline"}
-                  size="sm"
                   onClick={() => {
                     setSelectedRegion(region.id);
                     if (region.active) {
-                      const mockData = getRegionMockData(region.id);
-                      setInputs(prev => ({ ...prev, ...mockData }));
+                      // Auto-fill with regional medians when region is selected
+                      setInputs(prev => ({
+                        ...prev,
+                        purchasePrice: region.medianPrice.toString(),
+                        monthlyRent: region.medianRent.toString()
+                      }));
+                      calculateAdvancedROI();
                     }
                   }}
-                  className="min-h-[3rem]"
-                  disabled={false}
+                  className={`p-3 rounded-lg border-2 transition-all duration-300 hover:scale-105 ${
+                    selectedRegion === region.id
+                      ? 'border-primary bg-primary/10 shadow-glow ring-2 ring-primary/20'
+                      : 'border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:bg-primary/5'
+                  }`}
+                  disabled={!region.active}
                 >
-                  <div className="flex flex-col items-center gap-1">
-                    <span>{region.name}</span>
+                  <div className="text-center">
+                    <div className="text-sm font-medium mb-1 text-foreground">{region.name}</div>
+                    <div className="text-xs text-muted-foreground mb-1">
+                      {currentLanguage === 'zh' ? '中位ROI:' : 'Median ROI:'} 
+                      <span className="font-bold text-primary ml-1">{region.medianROI}%</span>
+                    </div>
                     <div className="text-xs text-muted-foreground">
-                      {currentLanguage === 'zh' ? '中位ROI:' : 'Median ROI:'} {region.medianROI}%
+                      {formatCurrency(region.medianPrice / 1000)}K
                     </div>
                   </div>
-                  {region.id === 'queens' && <Star className="h-3 w-3 ml-1" />}
-                </Button>
+                 </button>
               ))}
             </div>
             <div className="mt-4 p-4 bg-secondary/10 rounded-lg">

@@ -7,14 +7,14 @@ export const SEOHead = () => {
   useEffect(() => {
     // Update document title with location-specific keywords
     const title = language === 'zh' 
-      ? 'Henry岳先生 - NYC纽约房地产经纪人 | 曼哈顿皇后区地产专家 | 华人买房投资首选'
-      : 'Henry Yue - Top NYC Real Estate Agent | Queens Manhattan Long Island | Licensed NY Property Expert';
+      ? 'Henry岳先生 - NYC五大区房地产AI投资分析专家 | 曼哈顿皇后区布鲁克林布朗克斯史泰登岛拿骚县智能投资分析'
+      : 'Henry Yue - NYC 5 Boroughs Real Estate AI Investment Analysis Expert | Manhattan Queens Brooklyn Bronx Staten Island Nassau County Smart Investment Analysis';
     document.title = title;
     
     // Update meta description with enhanced local SEO
     const description = language === 'zh'
-      ? 'Henry岳先生，纽约州持牌房地产经纪人，专业服务曼哈顿、皇后区、长岛地区。提供华人买房、海外投资、法拉盛商业楼等服务。15年经验，双语专业，客户满意度98%以上。免费咨询热线: 718-717-5210'
-      : 'Henry Yue, Licensed NYC Real Estate Agent with 15+ years experience. Specializing in Queens, Manhattan, Long Island properties. Expert in residential sales, commercial investment, first-time buyer services. Bilingual Chinese-English support. Call 718-717-5210 for free consultation.';
+      ? '纽约五大区房地产AI智能投资分析系统，Henry岳先生15年经验。覆盖曼哈顿、皇后区、布鲁克林、布朗克斯、史泰登岛、拿骚县。专业分析法拉盛公寓、皇后区家庭住宅、阿斯托利亚投资房产。提供ROI计算、现金流分析、市场趋势预测。双语AI咨询服务，免费咨询: 718-717-5210'
+      : 'NYC 5 Boroughs Real Estate AI Smart Investment Analysis System, Henry Yue 15+ years experience. Covering Manhattan, Queens, Brooklyn, Bronx, Staten Island, Nassau County. Professional analysis for Flushing Condos, Queens Family Homes, Astoria Investment Properties. ROI calculations, cash flow analysis, market trend forecasting. Bilingual AI consultation services. Free consultation: 718-717-5210';
     
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {

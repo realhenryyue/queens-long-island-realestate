@@ -47,7 +47,16 @@ export const PerformanceOptimizer = () => {
       const reserveImageSpace = () => {
         document.querySelectorAll('img').forEach(img => {
           if (!img.hasAttribute('width') || !img.hasAttribute('height')) {
-            img.style.aspectRatio = '16 / 9'; // Default aspect ratio
+            // Set specific dimensions based on typical image usage
+            if (img.src.includes('agent-photo')) {
+              img.style.width = '128px';
+              img.style.height = '128px';
+              img.style.aspectRatio = '1 / 1';
+            } else if (img.src.includes('queens-skyline')) {
+              img.style.aspectRatio = '21 / 9'; // Panoramic aspect ratio
+            } else {
+              img.style.aspectRatio = '16 / 9'; // Default aspect ratio
+            }
           }
         });
       };
