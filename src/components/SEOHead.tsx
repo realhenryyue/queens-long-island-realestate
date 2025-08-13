@@ -7,14 +7,14 @@ export const SEOHead = () => {
   useEffect(() => {
     // Update document title with location-specific keywords
     const title = language === 'zh' 
-      ? 'Henry岳先生 - NYC五大区房地产AI投资分析专家 | 曼哈顿皇后区布鲁克林布朗克斯史泰登岛拿骚县投资ROI计算器工具'
-      : 'Henry Yue - NYC 5 Boroughs Real Estate AI Investment Analysis Expert | Manhattan Queens Brooklyn Bronx Staten Island Nassau County Investment ROI Calculator Tools';
+      ? 'Henry岳先生 - NYC房地产AI投资博客分析专家 | 曼哈顿皇后区布鲁克林布朗克斯史泰登岛拿骚县市场洞察'
+      : 'Henry Yue - NYC Real Estate AI Investment Blog & Analysis Expert | Manhattan Queens Brooklyn Bronx Staten Island Nassau County Market Insights';
     document.title = title;
     
     // Update meta description with enhanced local SEO
     const description = language === 'zh'
-      ? 'NYC纽约五大区房地产AI智能投资分析计算器，Henry岳先生15年经验。专业覆盖曼哈顿、皇后区、布鲁克林、布朗克斯、史泰登岛、拿骚县投资分析。精准分析法拉盛公寓投资、皇后区家庭住宅、阿斯托利亚投资房产。提供ROI计算器、现金流分析、蒙特卡洛风险模拟、市场趋势预测。双语AI投资咨询，免费评估: 718-717-5210'
-      : 'NYC 5 Boroughs Real Estate AI Investment Analysis Calculator, Henry Yue 15+ years expertise. Professional coverage Manhattan, Queens, Brooklyn, Bronx, Staten Island, Nassau County investment analysis. Precision analysis Flushing Condo Investment, Queens Family Homes, Astoria Investment Properties. ROI calculator tools, cash flow analysis, Monte Carlo risk simulation, market trend forecasting. Bilingual AI investment consulting. Free assessment: 718-717-5210';
+      ? 'NYC纽约房地产AI投资博客分析平台，Henry岳先生专业分享15年投资经验。涵盖曼哈顿、皇后区、布鲁克林、布朗克斯、史泰登岛、拿骚县投资策略。法拉盛公寓投资指南、皇后区家庭住宅分析、阿斯托利亚投资物业深度报告。提供ROI计算器、市场趋势博客、投资分析文章。双语AI投资咨询: 718-717-5210'
+      : 'NYC Real Estate AI Investment Blog & Analysis Platform, Henry Yue shares 15+ years professional investment expertise. Covers Manhattan, Queens, Brooklyn, Bronx, Staten Island, Nassau County investment strategies. Flushing condo investment guides, Queens family home analysis, Astoria investment property deep reports. ROI calculator tools, market trend blogs, investment analysis articles. Bilingual AI investment consulting: 718-717-5210';
     
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {

@@ -421,549 +421,380 @@ const ROICalculator = () => {
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
               {regions.map((region) => (
-                <button
+                <Button
                   key={region.id}
-                  onClick={() => {
-                    setSelectedRegion(region.id);
-                    if (region.active) {
-                      // Auto-fill with regional medians when region is selected
-                      setInputs(prev => ({
-                        ...prev,
-                        purchasePrice: region.medianPrice.toString(),
-                        monthlyRent: region.medianRent.toString()
-                      }));
-                      calculateAdvancedROI();
-                    }
-                  }}
-                  className={`p-3 rounded-lg border-2 transition-all duration-300 hover:scale-105 ${
-                    selectedRegion === region.id
-                      ? 'border-primary bg-primary/10 shadow-glow ring-2 ring-primary/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:bg-primary/5'
-                  }`}
-                  disabled={!region.active}
+                  variant={selectedRegion === region.id ? "default" : "outline"}
+                  size="sm"
+                  className="text-xs h-auto py-3 px-2 transition-all duration-200"
+                  onClick={() => setSelectedRegion(region.id)}
                 >
                   <div className="text-center">
-                    <div className="text-sm font-medium mb-1 text-foreground">{region.name}</div>
-                    <div className="text-xs text-muted-foreground mb-1">
-                      {currentLanguage === 'zh' ? '中位ROI:' : 'Median ROI:'} 
-                      <span className="font-bold text-primary ml-1">{region.medianROI}%</span>
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      {formatCurrency(region.medianPrice / 1000)}K
+                    <div className="font-medium text-xs leading-tight">{region.name}</div>
+                    <div className={`text-xs font-semibold mt-1 ${
+                      selectedRegion === region.id 
+                        ? 'text-primary-foreground/90' 
+                        : region.medianROI >= 8 
+                          ? 'text-green-600' 
+                          : region.medianROI >= 6 
+                            ? 'text-yellow-600' 
+                            : 'text-red-600'
+                    }`}>
+                      ROI: {region.medianROI}%
                     </div>
                   </div>
-                 </button>
+                </Button>
               ))}
-            </div>
-            <div className="mt-4 p-4 bg-secondary/10 rounded-lg">
-              <h4 className="font-semibold text-sm mb-2">
-                {currentLanguage === 'zh' ? '当前选择区域统计' : 'Selected Region Statistics'}
-              </h4>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                <div className="text-center">
-                  <div className="font-bold text-primary">{regions.find(r => r.id === selectedRegion)?.medianROI}%</div>
-                  <div className="text-muted-foreground">{currentLanguage === 'zh' ? '中位ROI' : 'Median ROI'}</div>
-                </div>
-                <div className="text-center">
-                  <div className="font-bold text-primary">{formatCurrency(regions.find(r => r.id === selectedRegion)?.medianPrice || 0)}</div>
-                  <div className="text-muted-foreground">{currentLanguage === 'zh' ? '中位价格' : 'Median Price'}</div>
-                </div>
-                <div className="text-center">
-                  <div className="font-bold text-primary">{formatCurrency(regions.find(r => r.id === selectedRegion)?.medianRent || 0)}</div>
-                  <div className="text-muted-foreground">{currentLanguage === 'zh' ? '中位租金' : 'Median Rent'}</div>
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Address Analysis */}
-          <Card className="max-w-2xl mx-auto mb-6">
-            <CardContent className="pt-6">
-              <div className="flex gap-4">
-                <Input
-                  placeholder={currentLanguage === 'zh' ? '输入具体地址进行AI分析 (例: 39-16 Prince St #8E, Flushing, NY 11354)' : 'Enter property address for AI analysis (e.g., 39-16 Prince St #8E, Flushing, NY 11354)'}
-                  value={addressInput}
-                  onChange={(e) => setAddressInput(e.target.value)}
-                  className="flex-1"
-                />
+          {/* Preset Scenarios */}
+          <div className="mt-8">
+            <h3 className="text-lg font-semibold mb-4 flex items-center justify-center gap-2">
+              <Star className="h-5 w-5" />
+              {currentLanguage === 'zh' ? '快速分析场景' : 'Quick Analysis Scenarios'}
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {presetScenarios.sort((a, b) => a.priority - b.priority).map((scenario, index) => (
+                <Card key={index} 
+                  className={`p-4 cursor-pointer hover:shadow-lg transition-all duration-300 border-2 ${
+                    inputs.purchasePrice === scenario.values.purchasePrice && inputs.monthlyRent === scenario.values.monthlyRent
+                      ? 'bg-gradient-to-br from-primary/20 to-primary/10 border-primary text-primary-foreground shadow-lg'
+                      : 'bg-gradient-to-br from-secondary/5 to-background border-secondary/30 hover:border-primary/50'
+                  }`}
+                >
+                  <div className="flex flex-col space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className={`font-bold text-sm leading-tight break-words ${
+                        inputs.purchasePrice === scenario.values.purchasePrice && inputs.monthlyRent === scenario.values.monthlyRent
+                          ? 'text-primary-foreground' 
+                          : 'text-primary'
+                      }`}>
+                        {scenario.name}
+                      </h4>
+                      <Badge variant="outline" className={`text-xs ml-2 flex-shrink-0 ${
+                        inputs.purchasePrice === scenario.values.purchasePrice && inputs.monthlyRent === scenario.values.monthlyRent
+                          ? 'bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30'
+                          : 'bg-green-50 text-green-700 border-green-200'
+                      }`}>
+                        ROI: {scenario.roiEstimate}%
+                      </Badge>
+                    </div>
+                    <Button 
+                      variant={inputs.purchasePrice === scenario.values.purchasePrice && inputs.monthlyRent === scenario.values.monthlyRent ? "secondary" : "outline"}
+                      size="sm" 
+                      className={`w-full transition-colors duration-200 ${
+                        inputs.purchasePrice === scenario.values.purchasePrice && inputs.monthlyRent === scenario.values.monthlyRent
+                          ? 'bg-primary-foreground text-primary hover:bg-primary-foreground/90'
+                          : 'hover:bg-primary hover:text-primary-foreground'
+                      }`}
+                      onClick={() => {
+                        setInputs(scenario.values);
+                        setSelectedRegion(scenario.region);
+                      }}
+                    >
+                      {currentLanguage === 'zh' ? '加载场景' : 'Load Scenario'}
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div id="roi-calculator-content" className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Input Section */}
+          <Card className="p-6 shadow-lg border-primary/20">
+            <CardHeader className="p-0 mb-6">
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <Calculator className="h-5 w-5" />
+                {currentLanguage === 'zh' ? '投资参数输入' : 'Investment Parameters'}
+              </CardTitle>
+              <CardDescription>
+                {currentLanguage === 'zh' ? '输入房产详情进行专业ROI分析' : 'Enter property details for professional ROI analysis'}
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent className="p-0 space-y-4">
+              <Tabs defaultValue="basic" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="basic">{currentLanguage === 'zh' ? '基础信息' : 'Basic Info'}</TabsTrigger>
+                  <TabsTrigger value="advanced">{currentLanguage === 'zh' ? '高级设置' : 'Advanced'}</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="basic" className="space-y-4 mt-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="purchase-price">{currentLanguage === 'zh' ? '购买价格' : 'Purchase Price'}</Label>
+                      <Input
+                        id="purchase-price"
+                        type="text"
+                        value={inputs.purchasePrice}
+                        onChange={(e) => handleInputChange('purchasePrice', e.target.value)}
+                        placeholder="750000"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="monthly-rent">{currentLanguage === 'zh' ? '月租金' : 'Monthly Rent'}</Label>
+                      <Input
+                        id="monthly-rent"
+                        type="text"
+                        value={inputs.monthlyRent}
+                        onChange={(e) => handleInputChange('monthlyRent', e.target.value)}
+                        placeholder="3200"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="monthly-expenses">{currentLanguage === 'zh' ? '月支出' : 'Monthly Expenses'}</Label>
+                      <Input
+                        id="monthly-expenses"
+                        type="text"
+                        value={inputs.monthlyExpenses}
+                        onChange={(e) => handleInputChange('monthlyExpenses', e.target.value)}
+                        placeholder="800"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="down-payment">{currentLanguage === 'zh' ? '首付比例 (%)' : 'Down Payment (%)'}</Label>
+                      <Input
+                        id="down-payment"
+                        type="text"
+                        value={inputs.downPaymentPercent}
+                        onChange={(e) => handleInputChange('downPaymentPercent', e.target.value)}
+                        placeholder="30"
+                      />
+                    </div>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="advanced" className="space-y-4 mt-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="closing-costs">{currentLanguage === 'zh' ? '过户费用' : 'Closing Costs'}</Label>
+                      <Input
+                        id="closing-costs"
+                        type="text"
+                        value={inputs.closingCosts}
+                        onChange={(e) => handleInputChange('closingCosts', e.target.value)}
+                        placeholder="15000"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="renovation-costs">{currentLanguage === 'zh' ? '装修费用' : 'Renovation Costs'}</Label>
+                      <Input
+                        id="renovation-costs"
+                        type="text"
+                        value={inputs.renovationCosts}
+                        onChange={(e) => handleInputChange('renovationCosts', e.target.value)}
+                        placeholder="25000"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="appreciation-rate">{currentLanguage === 'zh' ? '年升值率 (%)' : 'Appreciation Rate (%)'}</Label>
+                      <Input
+                        id="appreciation-rate"
+                        type="text"
+                        value={inputs.appreciationRate}
+                        onChange={(e) => handleInputChange('appreciationRate', e.target.value)}
+                        placeholder="4.5"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="interest-rate">{currentLanguage === 'zh' ? '贷款利率 (%)' : 'Interest Rate (%)'}</Label>
+                      <Input
+                        id="interest-rate"
+                        type="text"
+                        value={inputs.loanInterestRate}
+                        onChange={(e) => handleInputChange('loanInterestRate', e.target.value)}
+                        placeholder="6.63"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="vacancy-rate">{currentLanguage === 'zh' ? '空置率 (%)' : 'Vacancy Rate (%)'}</Label>
+                      <Input
+                        id="vacancy-rate"
+                        type="text"
+                        value={inputs.vacancyRate}
+                        onChange={(e) => handleInputChange('vacancyRate', e.target.value)}
+                        placeholder="5"
+                      />
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+
+          {/* Results Section */}
+          <Card className="p-6 shadow-lg border-primary/20">
+            <CardHeader className="p-0 mb-6">
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <TrendingUp className="h-5 w-5" />
+                {currentLanguage === 'zh' ? 'ROI 分析结果' : 'ROI Analysis Results'}
+              </CardTitle>
+              <CardDescription>
+                {currentLanguage === 'zh' ? '基于AI算法的专业投资回报分析' : 'Professional investment return analysis based on AI algorithms'}
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent className="p-0 space-y-6">
+              {/* Investment Rating */}
+              <div className="text-center p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <Star key={i} className={`h-6 w-6 ${i < results.investmentRating ? 'text-yellow-500 fill-current' : 'text-gray-300'}`} />
+                  ))}
+                </div>
+                <p className="text-lg font-semibold">
+                  {currentLanguage === 'zh' ? '投资评级' : 'Investment Rating'}: {results.investmentRating}/5
+                </p>
+                <Badge 
+                  variant={results.investmentSignal === 'BUY' ? 'default' : results.investmentSignal === 'WAIT' ? 'secondary' : 'destructive'}
+                  className="mt-2"
+                >
+                  {results.investmentSignal}
+                </Badge>
               </div>
-              {analysisStage === 'complete' && (
-                <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
-                  <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
-                    <BarChart3 className="h-4 w-4" />
-                    <span className="text-sm font-medium">
-                      {currentLanguage === 'zh' ? '分析完成 - 数据已更新' : 'Analysis Complete - Data Updated'}
-                    </span>
+
+              {/* Key Metrics */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-3 bg-background rounded border">
+                  <div className="text-2xl font-bold text-primary">
+                    {formatPercent(results.cashOnCashReturn)}
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash ROI'}
+                  </p>
+                </div>
+                <div className="text-center p-3 bg-background rounded border">
+                  <div className="text-2xl font-bold text-secondary">
+                    {formatPercent(results.capRate)}
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {currentLanguage === 'zh' ? '资本化率' : 'Cap Rate'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Detailed Results */}
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span>{currentLanguage === 'zh' ? '现金投入' : 'Cash Invested'}:</span>
+                  <span className="font-medium">{formatCurrency(results.cashInvested)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>{currentLanguage === 'zh' ? '年现金流' : 'Annual Cash Flow'}:</span>
+                  <span className={`font-medium ${results.annualCashFlow >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {formatCurrency(results.annualCashFlow)}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>{currentLanguage === 'zh' ? '月利润' : 'Monthly Profit'}:</span>
+                  <span className={`font-medium ${results.monthlyProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {formatCurrency(results.monthlyProfit)}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>{currentLanguage === 'zh' ? '总ROI' : 'Total ROI'}:</span>
+                  <span className={`font-medium ${getROIColor(results.totalROI)}`}>
+                    {formatPercent(results.totalROI)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Monte Carlo Results */}
+              {monteCarloResults.roi_distribution.length > 0 && (
+                <div className="mt-4 p-4 bg-muted/50 rounded-lg">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4" />
+                    {currentLanguage === 'zh' ? '风险分析 (90% 置信区间)' : 'Risk Analysis (90% Confidence Interval)'}
+                  </h4>
+                  <div className="text-sm space-y-1">
+                    <div>
+                      {currentLanguage === 'zh' ? '预期ROI' : 'Expected ROI'}: <span className="font-medium">{formatPercent(monteCarloResults.mean_roi)}</span>
+                    </div>
+                    <div>
+                      {currentLanguage === 'zh' ? '范围' : 'Range'}: <span className="font-medium">
+                        {formatPercent(monteCarloResults.confidence_interval.lower)} - {formatPercent(monteCarloResults.confidence_interval.upper)}
+                      </span>
+                    </div>
                   </div>
                 </div>
               )}
             </CardContent>
           </Card>
-
         </div>
 
-        <div id="roi-calculator-content">
-        <Tabs defaultValue="analysis" className="w-full">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-3">
-            <TabsTrigger value="analysis">{currentLanguage === 'zh' ? '投资分析' : 'Analysis'}</TabsTrigger>
-            <TabsTrigger value="risk">{currentLanguage === 'zh' ? '风险评估' : 'Risk'}</TabsTrigger>
-            <TabsTrigger value="advanced">{currentLanguage === 'zh' ? '高级指标' : 'Advanced'}</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="analysis">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
-          {/* Input Panel */}
-          <Card className="h-fit">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calculator className="h-5 w-5" />
-                {t('roi.investmentParameters')}
-              </CardTitle>
-              <CardDescription>
-                {t('roi.parametersDescription')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Preset Scenarios */}
-              <div>
-                <Label className="text-sm font-medium mb-3 block">{t('roi.quickScenarios')}</Label>
-                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                   {presetScenarios.map((scenario, index) => (
-                     <Button
-                       key={index}
-                       variant={scenario.region === selectedRegion ? "default" : "outline"}
-                       size="sm"
-                       onClick={() => {
-                         setInputs(scenario.values);
-                         setSelectedRegion(scenario.region);
-                       }}
-                       className="flex flex-col p-3 h-auto space-y-1"
-                     >
-                       <span className="font-medium text-xs">{scenario.name}</span>
-                       <span className="text-xs text-muted-foreground">
-                         {currentLanguage === 'zh' ? '预期ROI:' : 'Est. ROI:'} {scenario.roiEstimate}%
-                       </span>
-                     </Button>
-                   ))}
-                 </div>
+        {/* Property Analysis Form and Export - Moved to bottom */}
+        <div className="mt-12 space-y-6">
+          {/* Property Analysis Section */}
+          <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg p-6 border border-primary/20">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <BarChart3 className="h-5 w-5" />
+              {currentLanguage === 'zh' ? 'AI物业分析' : 'AI Property Analysis'}
+            </h3>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1">
+                <Label htmlFor="address-input" className="text-sm font-medium mb-2 block">
+                  {currentLanguage === 'zh' ? '输入物业地址进行AI分析' : 'Enter Property Address for AI Analysis'}
+                </Label>
+                <Input
+                  id="address-input"
+                  placeholder={currentLanguage === 'zh' ? '例如: 123 Main St, Flushing, NY 11354' : 'e.g., 123 Main St, Flushing, NY 11354'}
+                  value={addressInput}
+                  onChange={(e) => setAddressInput(e.target.value)}
+                  className="w-full"
+                />
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="purchasePrice">{t('roi.purchasePrice')}</Label>
-                  <Input
-                    id="purchasePrice"
-                    type="number"
-                    value={inputs.purchasePrice}
-                    onChange={(e) => handleInputChange('purchasePrice', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="downPaymentPercent">{t('roi.downPaymentPercent')}</Label>
-                  <Input
-                    id="downPaymentPercent"
-                    type="number"
-                    value={inputs.downPaymentPercent}
-                    onChange={(e) => handleInputChange('downPaymentPercent', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="monthlyRent">{t('roi.monthlyRent')}</Label>
-                  <Input
-                    id="monthlyRent"
-                    type="number"
-                    value={inputs.monthlyRent}
-                    onChange={(e) => handleInputChange('monthlyRent', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="monthlyExpenses">{t('roi.monthlyExpenses')}</Label>
-                  <Input
-                    id="monthlyExpenses"
-                    type="number"
-                    value={inputs.monthlyExpenses}
-                    onChange={(e) => handleInputChange('monthlyExpenses', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="closingCosts">{t('roi.closingCosts')}</Label>
-                  <Input
-                    id="closingCosts"
-                    type="number"
-                    value={inputs.closingCosts}
-                    onChange={(e) => handleInputChange('closingCosts', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="renovationCosts">{t('roi.renovationCosts')}</Label>
-                  <Input
-                    id="renovationCosts"
-                    type="number"
-                    value={inputs.renovationCosts}
-                    onChange={(e) => handleInputChange('renovationCosts', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="loanInterestRate">{currentLanguage === 'zh' ? '贷款利率 (%)' : 'Loan Interest Rate (%)'}</Label>
-                  <Input
-                    id="loanInterestRate"
-                    type="number"
-                    step="0.01"
-                    value={inputs.loanInterestRate}
-                    onChange={(e) => handleInputChange('loanInterestRate', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="vacancyRate">{currentLanguage === 'zh' ? '空置率 (%)' : 'Vacancy Rate (%)'}</Label>
-                  <Input
-                    id="vacancyRate"
-                    type="number"
-                    step="0.1"
-                    value={inputs.vacancyRate}
-                    onChange={(e) => handleInputChange('vacancyRate', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <Label htmlFor="appreciationRate">{t('roi.appreciationRate')}</Label>
-                  <Input
-                    id="appreciationRate"
-                    type="number"
-                    step="0.1"
-                    value={inputs.appreciationRate}
-                    onChange={(e) => handleInputChange('appreciationRate', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Results Panel */}
-          <div className="space-y-6">
-            {/* Key Metrics */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  {t('roi.investmentReturns')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div className="text-center p-4 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg border">
-                    <DollarSign className="h-6 w-6 mx-auto mb-2 text-primary" />
-                    <div className="text-2xl font-bold text-primary">
-                      {formatPercent(results.totalROI)}
+              <div className="flex flex-col justify-end">
+                <Button 
+                  onClick={analyzeProperty}
+                  disabled={!addressInput.trim() || analysisStage === 'analyzing'}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-2 h-10"
+                >
+                  {analysisStage === 'analyzing' ? (
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      {currentLanguage === 'zh' ? 'AI分析中...' : 'AI Analyzing...'}
                     </div>
-                    <div className="text-sm text-muted-foreground">{t('roi.totalROI')}</div>
-                  </div>
-                  <div className="text-center p-4 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-lg border">
-                    <Percent className="h-6 w-6 mx-auto mb-2 text-secondary-foreground" />
-                    <div className="text-2xl font-bold">
-                      {formatPercent(results.cashOnCashReturn)}
-                    </div>
-                    <div className="text-sm text-muted-foreground">{t('roi.cashOnCash')}</div>
-                  </div>
-                </div>
-                
-                {/* Investment Rating */}
-                <div className="text-center p-4 bg-gradient-to-br from-accent/10 to-accent/5 rounded-lg border">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    {Array(5).fill(0).map((_, i) => (
-                      <Star 
-                        key={i} 
-                        className={`h-5 w-5 ${i < results.investmentRating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}`} 
-                      />
-                    ))}
-                  </div>
-                  <div className="text-lg font-bold mb-1">
-                    <Badge variant={results.investmentSignal === 'BUY' ? 'default' : results.investmentSignal === 'WAIT' ? 'secondary' : 'destructive'}>
-                      {results.investmentSignal}
-                    </Badge>
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {currentLanguage === 'zh' ? '投资建议' : 'Investment Recommendation'}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Detailed Metrics */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Home className="h-5 w-5" />
-                  {t('roi.detailedAnalysis')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">{t('roi.cashInvested')}</span>
-                  <span className="font-bold">{formatCurrency(results.cashInvested)}</span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">{t('roi.monthlyCashFlow')}</span>
-                  <span className={`font-bold ${results.monthlyProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {formatCurrency(results.monthlyProfit)}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">{t('roi.annualCashFlow')}</span>
-                  <span className={`font-bold ${results.annualCashFlow >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {formatCurrency(results.annualCashFlow)}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">{t('roi.capRate')}</span>
-                  <span className="font-bold">{formatPercent(results.capRate)}</span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">{t('roi.annualAppreciation')}</span>
-                  <span className="font-bold text-green-600">{formatCurrency(results.annualAppreciation)}</span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                  <span className="font-medium">{currentLanguage === 'zh' ? '月抵押贷款' : 'Monthly Mortgage'}</span>
-                  <span className="font-bold text-red-600">{formatCurrency(results.monthlyMortgage)}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* ROI Interpretation */}
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('roi.investmentQuality')}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span>{t('roi.cashOnCash')}</span>
-                    <Badge variant={results.cashOnCashReturn >= 8 ? "default" : results.cashOnCashReturn >= 5 ? "secondary" : "destructive"}>
-                      {results.cashOnCashReturn >= 8 ? t('roi.excellent') : results.cashOnCashReturn >= 5 ? t('roi.good') : t('roi.poor')}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>{t('roi.capRate')}</span>
-                    <Badge variant={results.capRate >= 5 ? "default" : results.capRate >= 3 ? "secondary" : "destructive"}>
-                      {results.capRate >= 5 ? t('roi.strong') : results.capRate >= 3 ? t('roi.moderate') : t('roi.weak')}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>{t('roi.totalROI')}</span>
-                    <Badge variant={results.totalROI >= 15 ? "default" : results.totalROI >= 8 ? "secondary" : "destructive"}>
-                      {results.totalROI >= 15 ? t('roi.outstanding') : results.totalROI >= 8 ? t('roi.solid') : t('roi.belowAverage')}
-                    </Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-          </TabsContent>
-
-          <TabsContent value="risk">
-            <div className="mt-6 space-y-6">
-              {/* Monte Carlo Results */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <AlertTriangle className="h-5 w-5" />
-                    {currentLanguage === 'zh' ? '蒙特卡洛风险分析' : 'Monte Carlo Risk Analysis'}
-                  </CardTitle>
-                  <CardDescription>
-                    {currentLanguage === 'zh' ? '基于1000次模拟的ROI分布分析' : 'ROI distribution analysis based on 1,000 simulations'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                      <div className="text-2xl font-bold text-blue-600">
-                        {formatPercent(monteCarloResults.mean_roi)}
-                      </div>
-                      <div className="text-sm text-blue-600">{currentLanguage === 'zh' ? '平均ROI' : 'Average ROI'}</div>
-                    </div>
-                    <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                      <div className="text-2xl font-bold text-green-600">
-                        {formatPercent(monteCarloResults.confidence_interval.upper)}
-                      </div>
-                      <div className="text-sm text-green-600">{currentLanguage === 'zh' ? '95%上限' : '95% Upper'}</div>
-                    </div>
-                    <div className="text-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                      <div className="text-2xl font-bold text-red-600">
-                        {formatPercent(monteCarloResults.confidence_interval.lower)}
-                      </div>
-                      <div className="text-sm text-red-600">{currentLanguage === 'zh' ? '5%下限' : '5% Lower'}</div>
-                    </div>
-                  </div>
-                  
-                  {monteCarloResults.roi_distribution.length > 0 && (
-                    <div className="h-64 w-full bg-gradient-to-br from-background to-secondary/10 rounded-lg p-4">
-                      <Plot
-                        data={[{
-                          x: monteCarloResults.roi_distribution,
-                          type: 'histogram',
-                          marker: { 
-                            color: 'rgba(37, 99, 235, 0.8)',
-                            line: { color: 'rgba(37, 99, 235, 1)', width: 1 }
-                          },
-                          name: 'ROI Distribution',
-                          hovertemplate: '<b>ROI Range:</b> %{x:.1f}%<br><b>Count:</b> %{y}<extra></extra>'
-                        }]}
-                        layout={{
-                          title: {
-                            text: currentLanguage === 'zh' ? 'ROI风险分布图表' : 'ROI Risk Distribution Chart',
-                            font: { size: 16, color: '#1f2937' }
-                          },
-                          xaxis: { 
-                            title: currentLanguage === 'zh' ? 'ROI (%)' : 'ROI (%)',
-                            gridcolor: 'rgba(0,0,0,0.1)',
-                            showgrid: true
-                          },
-                          yaxis: { 
-                            title: currentLanguage === 'zh' ? '频次' : 'Frequency',
-                            gridcolor: 'rgba(0,0,0,0.1)',
-                            showgrid: true
-                          },
-                          margin: { t: 50, r: 30, b: 50, l: 60 },
-                          paper_bgcolor: 'rgba(0,0,0,0)',
-                          plot_bgcolor: 'rgba(255,255,255,0.9)',
-                          showlegend: false,
-                          font: { family: 'Inter, sans-serif', size: 12 }
-                        }}
-                        style={{ width: '100%', height: '100%' }}
-                        config={{ displayModeBar: false, responsive: true }}
-                      />
-                    </div>
+                  ) : (
+                    <>
+                      <BarChart3 className="w-4 h-4 mr-2" />
+                      {currentLanguage === 'zh' ? 'AI分析' : 'AI Analyze'}
+                    </>
                   )}
-                </CardContent>
-              </Card>
+                </Button>
+              </div>
             </div>
-          </TabsContent>
 
-          <TabsContent value="advanced">
-            <div className="mt-6 space-y-6">
-              {/* Advanced Metrics */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5" />
-                    {currentLanguage === 'zh' ? '高级投资指标' : 'Advanced Investment Metrics'}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                    <span className="font-medium">{currentLanguage === 'zh' ? '保本首付比例' : 'Break-Even Down Payment'}</span>
-                    <span className="font-bold">{formatCurrency(results.breakEvenDownPayment)}</span>
+            {analysisStage === 'complete' && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
+                <div className="flex items-center gap-2 text-green-800">
+                  <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs">✓</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                    <span className="font-medium">{currentLanguage === 'zh' ? '目标ROI最大购买价' : 'Max Purchase Price (8% ROI)'}</span>
-                    <span className="font-bold">{formatCurrency(results.maxPurchasePrice)}</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                    <span className="font-medium">{currentLanguage === 'zh' ? '贷款金额' : 'Loan Amount'}</span>
-                    <span className="font-bold">
-                      {formatCurrency(parseFloat(inputs.purchasePrice) * (1 - parseFloat(inputs.downPaymentPercent) / 100))}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-secondary/20 rounded-lg">
-                    <span className="font-medium">{currentLanguage === 'zh' ? '贷款价值比' : 'Loan-to-Value Ratio'}</span>
-                    <span className="font-bold">{formatPercent(100 - parseFloat(inputs.downPaymentPercent))}</span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Comparable Analysis */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>{currentLanguage === 'zh' ? '区域可比分析' : 'Regional Comparable Analysis'}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                   <div className="text-sm text-muted-foreground mb-4">
-                     {currentLanguage === 'zh' ? 
-                       `基于${regions.find(r => r.id === selectedRegion)?.name}地区2025年8月市场数据` :
-                       `Based on ${regions.find(r => r.id === selectedRegion)?.name} August 2025 market data`
-                     }
-                   </div>
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                     <div className="space-y-3">
-                       <div className="flex justify-between items-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                         <span className="font-medium">{currentLanguage === 'zh' ? '您的投资价格' : 'Your Investment Price'}</span>
-                         <span className="font-bold">{formatCurrency(parseFloat(inputs.purchasePrice))}</span>
-                       </div>
-                       <div className="flex justify-between items-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                         <span className="font-medium">{currentLanguage === 'zh' ? '您的租金收益率' : 'Your Rental Yield'}</span>
-                         <span className="font-bold">{formatPercent((parseFloat(inputs.monthlyRent) * 12 / parseFloat(inputs.purchasePrice)) * 100)}</span>
-                       </div>
-                       <div className="flex justify-between items-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                         <span className="font-medium">{currentLanguage === 'zh' ? '您的现金回报率' : 'Your Cash-on-Cash ROI'}</span>
-                         <span className="font-bold">{formatPercent(results.cashOnCashReturn)}</span>
-                       </div>
-                     </div>
-                     <div className="space-y-3">
-                       <div className="flex justify-between items-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                         <span className="font-medium">{currentLanguage === 'zh' ? '地区中位价格' : 'Regional Median Price'}</span>
-                         <span className="font-bold">{formatCurrency(regions.find(r => r.id === selectedRegion)?.medianPrice || 0)}</span>
-                       </div>
-                       <div className="flex justify-between items-center p-3 bg-teal-50 dark:bg-teal-900/20 rounded-lg">
-                         <span className="font-medium">{currentLanguage === 'zh' ? '地区中位ROI' : 'Regional Median ROI'}</span>
-                         <span className="font-bold">{formatPercent(regions.find(r => r.id === selectedRegion)?.medianROI || 0)}</span>
-                       </div>
-                       <div className="flex justify-between items-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                         <span className="font-medium">{currentLanguage === 'zh' ? '年增值率' : 'Annual Appreciation'}</span>
-                         <span className="font-bold">{formatPercent(parseFloat(inputs.appreciationRate))}</span>
-                       </div>
-                     </div>
-                   </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-        </Tabs>
-
-        {/* Action Buttons Below ROI Display */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8 mb-6">
-          <Button 
-            onClick={analyzeProperty}
-            disabled={analysisStage === 'analyzing' || !addressInput.trim()}
-            className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 min-w-[160px]"
-          >
-            {analysisStage === 'analyzing' ? (
-              <>
-                <BarChart3 className="h-4 w-4 mr-2 animate-pulse" />
-                {currentLanguage === 'zh' ? 'AI分析中...' : 'AI Analyzing...'}
-              </>
-            ) : (
-              <>
-                <BarChart3 className="h-4 w-4 mr-2" />
-                {currentLanguage === 'zh' ? 'AI分析' : 'AI Analyze'}
-              </>
+                  <span className="font-medium">
+                    {currentLanguage === 'zh' ? 'AI分析完成' : 'AI Analysis Complete'}
+                  </span>
+                </div>
+                <p className="text-green-700 text-sm mt-2">
+                  {currentLanguage === 'zh' ? 
+                    '已基于地址和市场数据更新投资参数。' : 
+                    'Investment parameters updated based on address and market data.'}
+                </p>
+              </div>
             )}
-          </Button>
-          <Button 
-            onClick={exportToPDF}
-            variant="outline"
-            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground min-w-[160px]"
-          >
-            <Download className="h-4 w-4 mr-2" />
-            {currentLanguage === 'zh' ? '导出PDF报告' : 'Export PDF Report'}
-          </Button>
-        </div>
+          </div>
 
-        {/* Disclaimer */}
-        <Card className="mt-8">
-          <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground text-center">
-              <strong>{t('roi.disclaimerTitle')}</strong> {t('roi.disclaimer')}
-            </p>
-          </CardContent>
-        </Card>
+          {/* Export to PDF Button */}
+          <div className="flex justify-center">
+            <Button 
+              onClick={exportToPDF}
+              className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-3"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              {currentLanguage === 'zh' ? '导出PDF报告' : 'Export PDF Report'}
+            </Button>
+          </div>
         </div>
       </div>
     </section>

@@ -142,4 +142,95 @@
     <xhtml:link rel="alternate" hreflang="en-US" href="https://www.realhenryyue.com/en/contact" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en/contact" />
   </url>
+
+  <!-- Blog Pages -->
+  <url>
+    <loc>https://www.realhenryyue.com/en/blog</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.realhenryyue.com/zh/blog" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en/blog" />
+  </url>
+  
+  <url>
+    <loc>https://www.realhenryyue.com/zh/blog</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.realhenryyue.com/en/blog" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en/blog" />
+  </url>
+  
+  <url>
+    <loc>https://www.realhenryyue.com/en/blog/nyc-ai-investment-trends-2024</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.realhenryyue.com/zh/blog/nyc-ai-investment-trends-2024" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en/blog/nyc-ai-investment-trends-2024" />
+  </url>
+  
+  <url>
+    <loc>https://www.realhenryyue.com/zh/blog/nyc-ai-investment-trends-2024</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.realhenryyue.com/en/blog/nyc-ai-investment-trends-2024" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en/blog/nyc-ai-investment-trends-2024" />
+  </url>
+  
+  <url>
+    <loc>https://www.realhenryyue.com/en/blog/flushing-condo-investment-guide</loc>
+    <lastmod>2024-01-10T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.realhenryyue.com/zh/blog/flushing-condo-investment-guide" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en/blog/flushing-condo-investment-guide" />
+  </url>
+  
+  <url>
+    <loc>https://www.realhenryyue.com/zh/blog/flushing-condo-investment-guide</loc>
+    <lastmod>2024-01-10T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.realhenryyue.com/en/blog/flushing-condo-investment-guide" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en/blog/flushing-condo-investment-guide" />
+  </url>
+  
+  <url>
+    <loc>https://www.realhenryyue.com/en/blog/astoria-investment-property-report</loc>
+    <lastmod>2024-01-05T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.realhenryyue.com/zh/blog/astoria-investment-property-report" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en/blog/astoria-investment-property-report" />
+  </url>
+  
+  <url>
+    <loc>https://www.realhenryyue.com/zh/blog/astoria-investment-property-report</loc>
+    <lastmod>2024-01-05T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.realhenryyue.com/en/blog/astoria-investment-property-report" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en/blog/astoria-investment-property-report" />
+  </url>
+  
+  <url>
+    <loc>https://www.realhenryyue.com/en/blog/queens-family-home-investment-strategy</loc>
+    <lastmod>2023-12-28T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.realhenryyue.com/zh/blog/queens-family-home-investment-strategy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en/blog/queens-family-home-investment-strategy" />
+  </url>
+  
+  <url>
+    <loc>https://www.realhenryyue.com/zh/blog/queens-family-home-investment-strategy</loc>
+    <lastmod>2023-12-28T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.realhenryyue.com/en/blog/queens-family-home-investment-strategy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en/blog/queens-family-home-investment-strategy" />
+  </url>
 </urlset>

@@ -10,6 +10,7 @@ import { SEOContentStrategy } from "@/components/SEOContentStrategy";
 import { TopAgentAnalysis } from "@/components/TopAgentAnalysis";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
+import BlogSection from "@/components/BlogSection";
 
 const Index = () => {
   return (
@@ -22,6 +23,7 @@ const Index = () => {
       <AboutSection />
       <MarketAnalysisHub />
       <ROICalculator />
+      <BlogSection />
       <ContactSection />
       
       {/* SEO Strategy Components - for internal reference */}
