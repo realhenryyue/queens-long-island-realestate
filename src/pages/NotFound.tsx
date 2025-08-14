@@ -1,18 +1,43 @@
 import { useLocation } from "react-router-dom";
+import { SEOHead } from "@/components/SEOHead";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const NotFound = () => {
   const location = useLocation();
+  const { t } = useLanguage();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">404</h1>
-        <p className="text-xl text-gray-600 mb-4">Oops! Page not found</p>
-        <a href="/" className="text-blue-500 hover:text-blue-700 underline">
-          Return to Home
-        </a>
+    <>
+      <SEOHead />
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center max-w-lg mx-auto px-4">
+          <h1 className="text-6xl font-bold mb-6 text-primary">404</h1>
+          <h2 className="text-2xl font-semibold mb-4 text-foreground">Page Not Found</h2>
+          <p className="text-lg text-muted-foreground mb-8">
+            The page you're looking for doesn't exist or has been moved.
+          </p>
+          
+          <div className="space-y-4">
+            <a 
+              href="/en" 
+              className="inline-block bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium"
+            >
+              Return to Home
+            </a>
+            
+            <div className="mt-6">
+              <p className="text-sm text-muted-foreground mb-4">Quick Links:</p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <a href="/en/investment-analysis" className="text-primary hover:underline">Investment Analysis</a>
+                <a href="/en/queens-real-estate" className="text-primary hover:underline">Queens Real Estate</a>
+                <a href="/en/roi-calculator" className="text-primary hover:underline">ROI Calculator</a>
+                <a href="/en/contact" className="text-primary hover:underline">Contact</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

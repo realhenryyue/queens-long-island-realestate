@@ -109,6 +109,32 @@ All colors MUST be HSL.
   overflow: hidden;
 }
 
+/* Background images moved from inline styles for SEO optimization */
+.hero-bg {
+  background-image: url('./assets/queens-skyline.jpg');
+}
+
+.roi-hero-bg {
+  background-image: url('./assets/queens-skyline.jpg');
+}
+
+/* Image optimization classes */
+.optimized-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  loading: lazy;
+}
+
+/* Prevent layout shift for images */
+.img-placeholder {
+  background-color: hsl(var(--muted));
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @layer base {
   * {
     @apply border-border;

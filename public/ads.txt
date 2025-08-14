@@ -1,0 +1,9 @@
+# ads.txt file for realhenryyue.com
+# This file lists authorized sellers for programmatic advertising
+# Contact: forangh@gmail.com
+
+# Google AdSense
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+
+# Direct advertisers placeholder
+# Add actual advertiser relationships here when available

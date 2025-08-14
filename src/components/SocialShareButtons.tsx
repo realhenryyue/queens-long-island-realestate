@@ -73,8 +73,16 @@ export const SocialShareButtons = () => {
       if (newWindow) {
         newWindow.document.write(`
           <html>
-            <head><title>${t('share.wechatQR')}</title></head>
-            <body style="text-align:center; padding:20px;">
+            <head>
+              <title>${t('share.wechatQR')}</title>
+              <style>
+                body { text-align: center; padding: 20px; font-family: Arial, sans-serif; }
+                h3 { color: #333; margin-bottom: 20px; }
+                img { border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                p { color: #666; margin-top: 15px; }
+              </style>
+            </head>
+            <body>
               <h3>${t('share.wechatQR')}</h3>
               <img src="${qrCodeUrl}" alt="WeChat QR Code" />
               <p>${t('share.wechatScan')}</p>
