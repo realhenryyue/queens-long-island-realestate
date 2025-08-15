@@ -278,17 +278,34 @@ const ROICalculator = () => {
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: 'a4'
+        format: 'a4',
+        putOnlyUsedFonts: true,
+        compress: true
       });
 
-      // Enhanced header with better layout
-      pdf.setFontSize(22);
-      pdf.setTextColor(37, 99, 235); // Primary color
-      pdf.text('realhenryyue.com', 20, 20);
-      
-      pdf.setFontSize(18);
-      pdf.setTextColor(0, 0, 0);
-      pdf.text(currentLanguage === 'zh' ? 'NYC房地产投资AI分析报告' : 'NYC Real Estate AI Investment Analysis Report', 20, 35);
+      // For Chinese text support, we need to handle encoding properly
+      if (currentLanguage === 'zh') {
+        // Convert Chinese text to Unicode properly
+        const chineseTitle = '\u004E\u0059\u0043\u623F\u5730\u4EA7\u6295\u8D44\u0041\u0049\u5206\u6790\u62A5\u544A';
+        
+        // Enhanced header with better layout
+        pdf.setFontSize(22);
+        pdf.setTextColor(37, 99, 235); // Primary color
+        pdf.text('realhenryyue.com', 20, 20);
+        
+        pdf.setFontSize(18);
+        pdf.setTextColor(0, 0, 0);
+        pdf.text(chineseTitle, 20, 35);
+      } else {
+        // Enhanced header with better layout
+        pdf.setFontSize(22);
+        pdf.setTextColor(37, 99, 235); // Primary color
+        pdf.text('realhenryyue.com', 20, 20);
+        
+        pdf.setFontSize(18);
+        pdf.setTextColor(0, 0, 0);
+        pdf.text('NYC Real Estate AI Investment Analysis Report', 20, 35);
+      }
       
       // Add contact info
       pdf.setFontSize(10);
@@ -302,52 +319,109 @@ const ROICalculator = () => {
       
       // Investment Summary
       pdf.setFont(undefined, 'bold');
-      pdf.text(currentLanguage === 'zh' ? '投资总结' : 'Investment Summary', 20, yPos);
+      if (currentLanguage === 'zh') {
+        // Convert Chinese text to Unicode properly
+        const investmentSummary = '\u6295\u8D44\u603B\u7ED3';
+        pdf.text(investmentSummary, 20, yPos);
+      } else {
+        pdf.text('Investment Summary', 20, yPos);
+      }
       yPos += 10;
       
       pdf.setFont(undefined, 'normal');
-      pdf.text(`${currentLanguage === 'zh' ? '投资评级' : 'Investment Rating'}: ${results.investmentRating}/5 ${Array(results.investmentRating).fill('★').join('')}`, 20, yPos);
-      yPos += 7;
-      pdf.text(`${currentLanguage === 'zh' ? '投资信号' : 'Investment Signal'}: ${results.investmentSignal}`, 20, yPos);
-      yPos += 7;
-      pdf.text(`${currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash ROI'}: ${formatPercent(results.cashOnCashReturn)}`, 20, yPos);
-      yPos += 7;
-      pdf.text(`${currentLanguage === 'zh' ? '资本化率' : 'Cap Rate'}: ${formatPercent(results.capRate)}`, 20, yPos);
+      if (currentLanguage === 'zh') {
+        const investmentRating = '\u6295\u8D44\u8BC4\u7EA7';
+        pdf.text(`${investmentRating}: ${results.investmentRating}/5 ${Array(results.investmentRating).fill('★').join('')}`, 20, yPos);
+        yPos += 7;
+        const investmentSignal = '\u6295\u8D44\u4FE1\u53F7';
+        pdf.text(`${investmentSignal}: ${results.investmentSignal}`, 20, yPos);
+        yPos += 7;
+        const cashOnCashROI = '\u73B0\u91D1\u56DE\u62A5\u7387';
+        pdf.text(`${cashOnCashROI}: ${formatPercent(results.cashOnCashReturn)}`, 20, yPos);
+        yPos += 7;
+        const capRate = '\u8D44\u672C\u5316\u7387';
+        pdf.text(`${capRate}: ${formatPercent(results.capRate)}`, 20, yPos);
+      } else {
+        pdf.text(`Investment Rating: ${results.investmentRating}/5 ${Array(results.investmentRating).fill('★').join('')}`, 20, yPos);
+        yPos += 7;
+        pdf.text(`Investment Signal: ${results.investmentSignal}`, 20, yPos);
+        yPos += 7;
+        pdf.text(`Cash-on-Cash ROI: ${formatPercent(results.cashOnCashReturn)}`, 20, yPos);
+        yPos += 7;
+        pdf.text(`Cap Rate: ${formatPercent(results.capRate)}`, 20, yPos);
+      }
       yPos += 15;
 
       // Key Metrics
       pdf.setFont(undefined, 'bold');
-      pdf.text(currentLanguage === 'zh' ? '关键指标' : 'Key Metrics', 20, yPos);
+      if (currentLanguage === 'zh') {
+        const keyMetrics = '\u5173\u952E\u6307\u6807';
+        pdf.text(keyMetrics, 20, yPos);
+      } else {
+        pdf.text('Key Metrics', 20, yPos);
+      }
       yPos += 10;
       
       pdf.setFont(undefined, 'normal');
-      pdf.text(`${currentLanguage === 'zh' ? '购买价格' : 'Purchase Price'}: ${formatCurrency(parseFloat(inputs.purchasePrice))}`, 20, yPos);
-      yPos += 7;
-      pdf.text(`${currentLanguage === 'zh' ? '现金投入' : 'Cash Invested'}: ${formatCurrency(results.cashInvested)}`, 20, yPos);
-      yPos += 7;
-      pdf.text(`${currentLanguage === 'zh' ? '年现金流' : 'Annual Cash Flow'}: ${formatCurrency(results.annualCashFlow)}`, 20, yPos);
-      yPos += 7;
-      pdf.text(`${currentLanguage === 'zh' ? '总投资回报率' : 'Total ROI'}: ${formatPercent(results.totalROI)}`, 20, yPos);
+      if (currentLanguage === 'zh') {
+        const purchasePrice = '\u8D2D\u4E70\u4EF7\u683C';
+        pdf.text(`${purchasePrice}: ${formatCurrency(parseFloat(inputs.purchasePrice))}`, 20, yPos);
+        yPos += 7;
+        const cashInvested = '\u73B0\u91D1\u6295\u5165';
+        pdf.text(`${cashInvested}: ${formatCurrency(results.cashInvested)}`, 20, yPos);
+        yPos += 7;
+        const annualCashFlow = '\u5E74\u73B0\u91D1\u6D41';
+        pdf.text(`${annualCashFlow}: ${formatCurrency(results.annualCashFlow)}`, 20, yPos);
+        yPos += 7;
+        const totalROI = '\u603B\u6295\u8D44\u56DE\u62A5\u7387';
+        pdf.text(`${totalROI}: ${formatPercent(results.totalROI)}`, 20, yPos);
+      } else {
+        pdf.text(`Purchase Price: ${formatCurrency(parseFloat(inputs.purchasePrice))}`, 20, yPos);
+        yPos += 7;
+        pdf.text(`Cash Invested: ${formatCurrency(results.cashInvested)}`, 20, yPos);
+        yPos += 7;
+        pdf.text(`Annual Cash Flow: ${formatCurrency(results.annualCashFlow)}`, 20, yPos);
+        yPos += 7;
+        pdf.text(`Total ROI: ${formatPercent(results.totalROI)}`, 20, yPos);
+      }
       yPos += 15;
 
       // Risk Analysis
       pdf.setFont(undefined, 'bold');
-      pdf.text(currentLanguage === 'zh' ? '风险分析 (90% 置信区间)' : 'Risk Analysis (90% Confidence Interval)', 20, yPos);
+      if (currentLanguage === 'zh') {
+        const riskAnalysis = '\u98CE\u9669\u5206\u6790 (90% \u7F6E\u4FE1\u533A\u95F4)';
+        pdf.text(riskAnalysis, 20, yPos);
+      } else {
+        pdf.text('Risk Analysis (90% Confidence Interval)', 20, yPos);
+      }
       yPos += 10;
       
       pdf.setFont(undefined, 'normal');
-      pdf.text(`${currentLanguage === 'zh' ? '预期回报率' : 'Expected ROI'}: ${formatPercent(monteCarloResults.mean_roi)}`, 20, yPos);
-      yPos += 7;
-      pdf.text(`${currentLanguage === 'zh' ? '回报区间' : 'ROI Range'}: ${formatPercent(monteCarloResults.confidence_interval.lower)} - ${formatPercent(monteCarloResults.confidence_interval.upper)}`, 20, yPos);
+      if (currentLanguage === 'zh') {
+        const expectedROI = '\u9884\u671F\u56DE\u62A5\u7387';
+        pdf.text(`${expectedROI}: ${formatPercent(monteCarloResults.mean_roi)}`, 20, yPos);
+        yPos += 7;
+        const roiRange = '\u56DE\u62A5\u533A\u95F4';
+        pdf.text(`${roiRange}: ${formatPercent(monteCarloResults.confidence_interval.lower)} - ${formatPercent(monteCarloResults.confidence_interval.upper)}`, 20, yPos);
+      } else {
+        pdf.text(`Expected ROI: ${formatPercent(monteCarloResults.mean_roi)}`, 20, yPos);
+        yPos += 7;
+        pdf.text(`ROI Range: ${formatPercent(monteCarloResults.confidence_interval.lower)} - ${formatPercent(monteCarloResults.confidence_interval.upper)}`, 20, yPos);
+      }
 
       // Add disclaimer
       yPos += 20;
       pdf.setFont(undefined, 'bold');
-      pdf.text(currentLanguage === 'zh' ? '免责声明' : 'Disclaimer', 20, yPos);
+      if (currentLanguage === 'zh') {
+        const disclaimer = '\u514D\u8D23\u58F0\u660E';
+        pdf.text(disclaimer, 20, yPos);
+      } else {
+        pdf.text('Disclaimer', 20, yPos);
+      }
       yPos += 7;
       pdf.setFont(undefined, 'normal');
       const disclaimerText = currentLanguage === 'zh' ? 
-        '此分析基于提供的数据和市场假设。实际结果可能因市场条件、空置率等因素而有所不同。' :
+        '\u6B64\u5206\u6790\u57FA\u4E8E\u63D0\u4F9B\u7684\u6570\u636E\u548C\u5E02\u573A\u5047\u8BBE\u3002\u5B9E\u9645\u7ED3\u679C\u53EF\u80FD\u56E0\u5E02\u573A\u6761\u4EF6\u3001\u7A7A\u7F6E\u7387\u7B49\u56E0\u7D20\u800C\u6709\u6240\u4E0D\u540C\u3002' :
         'This analysis is based on provided data and market assumptions. Actual results may vary due to market conditions, vacancy rates, and other factors.';
       
       const splitText = pdf.splitTextToSize(disclaimerText, 170);
