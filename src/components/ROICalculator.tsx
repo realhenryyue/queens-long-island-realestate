@@ -275,159 +275,93 @@ const ROICalculator = () => {
     if (!element) return;
 
     try {
+      // Create a temporary element with all the content for PDF
+      const tempElement = document.createElement('div');
+      tempElement.style.padding = '40px';
+      tempElement.style.backgroundColor = 'white';
+      tempElement.style.fontFamily = 'Arial, sans-serif';
+      tempElement.style.width = '210mm';
+      tempElement.style.minHeight = '297mm';
+      
+      tempElement.innerHTML = `
+        <div style="border-bottom: 2px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px;">
+          <h1 style="color: #2563eb; font-size: 24px; margin: 0 0 10px 0;">realhenryyue.com</h1>
+          <h2 style="font-size: 20px; margin: 0 0 10px 0;">${currentLanguage === 'zh' ? 'NYC房地产投资AI分析报告' : 'NYC Real Estate AI Investment Analysis Report'}</h2>
+          <p style="color: #666; font-size: 12px; margin: 0;">Henry Yue | 718-717-5210 | forangh@gmail.com</p>
+        </div>
+        
+        <div style="margin-bottom: 30px;">
+          <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; border-left: 4px solid #2563eb; padding-left: 10px;">${currentLanguage === 'zh' ? '投资总结' : 'Investment Summary'}</h3>
+          <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '投资评级' : 'Investment Rating'}:</strong> ${results.investmentRating}/5 ${Array(results.investmentRating).fill('★').join('')}</p>
+            <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '投资信号' : 'Investment Signal'}:</strong> ${results.investmentSignal}</p>
+            <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash ROI'}:</strong> ${formatPercent(results.cashOnCashReturn)}</p>
+            <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '资本化率' : 'Cap Rate'}:</strong> ${formatPercent(results.capRate)}</p>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 30px;">
+          <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; border-left: 4px solid #2563eb; padding-left: 10px;">${currentLanguage === 'zh' ? '关键指标' : 'Key Metrics'}</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px;">
+              <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '购买价格' : 'Purchase Price'}:</strong> ${formatCurrency(parseFloat(inputs.purchasePrice))}</p>
+              <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '现金投入' : 'Cash Invested'}:</strong> ${formatCurrency(results.cashInvested)}</p>
+            </div>
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px;">
+              <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '年现金流' : 'Annual Cash Flow'}:</strong> ${formatCurrency(results.annualCashFlow)}</p>
+              <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '总投资回报率' : 'Total ROI'}:</strong> ${formatPercent(results.totalROI)}</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 30px;">
+          <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; border-left: 4px solid #2563eb; padding-left: 10px;">${currentLanguage === 'zh' ? '风险分析 (90% 置信区间)' : 'Risk Analysis (90% Confidence Interval)'}</h3>
+          <div style="background: #fef3c7; padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+            <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '预期回报率' : 'Expected ROI'}:</strong> ${formatPercent(monteCarloResults.mean_roi)}</p>
+            <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '回报区间' : 'ROI Range'}:</strong> ${formatPercent(monteCarloResults.confidence_interval.lower)} - ${formatPercent(monteCarloResults.confidence_interval.upper)}</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+          <h3 style="color: #dc2626; font-size: 14px; margin: 0 0 10px 0;">${currentLanguage === 'zh' ? '免责声明' : 'Disclaimer'}</h3>
+          <p style="font-size: 12px; color: #666; line-height: 1.5; margin: 0;">
+            ${currentLanguage === 'zh' ? 
+              '此分析基于提供的数据和市场假设。实际结果可能因市场条件、空置率等因素而有所不同。投资有风险，请谨慎决策。' :
+              'This analysis is based on provided data and market assumptions. Actual results may vary due to market conditions, vacancy rates, and other factors. Investment involves risks, please make decisions carefully.'}
+          </p>
+        </div>
+      `;
+      
+      // Temporarily add to DOM
+      document.body.appendChild(tempElement);
+      
+      // Generate canvas from the element
+      const canvas = await html2canvas(tempElement, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        width: 794, // A4 width in pixels at 96 DPI
+        height: 1123 // A4 height in pixels at 96 DPI
+      });
+      
+      // Remove temporary element
+      document.body.removeChild(tempElement);
+      
+      // Create PDF with the canvas image
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: 'a4',
-        putOnlyUsedFonts: true,
-        compress: true
+        format: 'a4'
       });
-
-      // For Chinese text support, we need to handle encoding properly
-      if (currentLanguage === 'zh') {
-        // Convert Chinese text to Unicode properly
-        const chineseTitle = '\u004E\u0059\u0043\u623F\u5730\u4EA7\u6295\u8D44\u0041\u0049\u5206\u6790\u62A5\u544A';
-        
-        // Enhanced header with better layout
-        pdf.setFontSize(22);
-        pdf.setTextColor(37, 99, 235); // Primary color
-        pdf.text('realhenryyue.com', 20, 20);
-        
-        pdf.setFontSize(18);
-        pdf.setTextColor(0, 0, 0);
-        pdf.text(chineseTitle, 20, 35);
-      } else {
-        // Enhanced header with better layout
-        pdf.setFontSize(22);
-        pdf.setTextColor(37, 99, 235); // Primary color
-        pdf.text('realhenryyue.com', 20, 20);
-        
-        pdf.setFontSize(18);
-        pdf.setTextColor(0, 0, 0);
-        pdf.text('NYC Real Estate AI Investment Analysis Report', 20, 35);
-      }
       
-      // Add contact info
-      pdf.setFontSize(10);
-      pdf.setTextColor(100, 100, 100);
-      pdf.text('Henry Yue | 718-717-5210 | forangh@gmail.com', 20, 42);
-
-      // Add analysis summary with better spacing
-      pdf.setFontSize(12);
-      pdf.setTextColor(0, 0, 0);
-      let yPos = 55;
+      const imgData = canvas.toDataURL('image/png');
+      const imgWidth = 210; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
       
-      // Investment Summary
-      pdf.setFont(undefined, 'bold');
-      if (currentLanguage === 'zh') {
-        // Convert Chinese text to Unicode properly
-        const investmentSummary = '\u6295\u8D44\u603B\u7ED3';
-        pdf.text(investmentSummary, 20, yPos);
-      } else {
-        pdf.text('Investment Summary', 20, yPos);
-      }
-      yPos += 10;
-      
-      pdf.setFont(undefined, 'normal');
-      if (currentLanguage === 'zh') {
-        const investmentRating = '\u6295\u8D44\u8BC4\u7EA7';
-        pdf.text(`${investmentRating}: ${results.investmentRating}/5 ${Array(results.investmentRating).fill('★').join('')}`, 20, yPos);
-        yPos += 7;
-        const investmentSignal = '\u6295\u8D44\u4FE1\u53F7';
-        pdf.text(`${investmentSignal}: ${results.investmentSignal}`, 20, yPos);
-        yPos += 7;
-        const cashOnCashROI = '\u73B0\u91D1\u56DE\u62A5\u7387';
-        pdf.text(`${cashOnCashROI}: ${formatPercent(results.cashOnCashReturn)}`, 20, yPos);
-        yPos += 7;
-        const capRate = '\u8D44\u672C\u5316\u7387';
-        pdf.text(`${capRate}: ${formatPercent(results.capRate)}`, 20, yPos);
-      } else {
-        pdf.text(`Investment Rating: ${results.investmentRating}/5 ${Array(results.investmentRating).fill('★').join('')}`, 20, yPos);
-        yPos += 7;
-        pdf.text(`Investment Signal: ${results.investmentSignal}`, 20, yPos);
-        yPos += 7;
-        pdf.text(`Cash-on-Cash ROI: ${formatPercent(results.cashOnCashReturn)}`, 20, yPos);
-        yPos += 7;
-        pdf.text(`Cap Rate: ${formatPercent(results.capRate)}`, 20, yPos);
-      }
-      yPos += 15;
-
-      // Key Metrics
-      pdf.setFont(undefined, 'bold');
-      if (currentLanguage === 'zh') {
-        const keyMetrics = '\u5173\u952E\u6307\u6807';
-        pdf.text(keyMetrics, 20, yPos);
-      } else {
-        pdf.text('Key Metrics', 20, yPos);
-      }
-      yPos += 10;
-      
-      pdf.setFont(undefined, 'normal');
-      if (currentLanguage === 'zh') {
-        const purchasePrice = '\u8D2D\u4E70\u4EF7\u683C';
-        pdf.text(`${purchasePrice}: ${formatCurrency(parseFloat(inputs.purchasePrice))}`, 20, yPos);
-        yPos += 7;
-        const cashInvested = '\u73B0\u91D1\u6295\u5165';
-        pdf.text(`${cashInvested}: ${formatCurrency(results.cashInvested)}`, 20, yPos);
-        yPos += 7;
-        const annualCashFlow = '\u5E74\u73B0\u91D1\u6D41';
-        pdf.text(`${annualCashFlow}: ${formatCurrency(results.annualCashFlow)}`, 20, yPos);
-        yPos += 7;
-        const totalROI = '\u603B\u6295\u8D44\u56DE\u62A5\u7387';
-        pdf.text(`${totalROI}: ${formatPercent(results.totalROI)}`, 20, yPos);
-      } else {
-        pdf.text(`Purchase Price: ${formatCurrency(parseFloat(inputs.purchasePrice))}`, 20, yPos);
-        yPos += 7;
-        pdf.text(`Cash Invested: ${formatCurrency(results.cashInvested)}`, 20, yPos);
-        yPos += 7;
-        pdf.text(`Annual Cash Flow: ${formatCurrency(results.annualCashFlow)}`, 20, yPos);
-        yPos += 7;
-        pdf.text(`Total ROI: ${formatPercent(results.totalROI)}`, 20, yPos);
-      }
-      yPos += 15;
-
-      // Risk Analysis
-      pdf.setFont(undefined, 'bold');
-      if (currentLanguage === 'zh') {
-        const riskAnalysis = '\u98CE\u9669\u5206\u6790 (90% \u7F6E\u4FE1\u533A\u95F4)';
-        pdf.text(riskAnalysis, 20, yPos);
-      } else {
-        pdf.text('Risk Analysis (90% Confidence Interval)', 20, yPos);
-      }
-      yPos += 10;
-      
-      pdf.setFont(undefined, 'normal');
-      if (currentLanguage === 'zh') {
-        const expectedROI = '\u9884\u671F\u56DE\u62A5\u7387';
-        pdf.text(`${expectedROI}: ${formatPercent(monteCarloResults.mean_roi)}`, 20, yPos);
-        yPos += 7;
-        const roiRange = '\u56DE\u62A5\u533A\u95F4';
-        pdf.text(`${roiRange}: ${formatPercent(monteCarloResults.confidence_interval.lower)} - ${formatPercent(monteCarloResults.confidence_interval.upper)}`, 20, yPos);
-      } else {
-        pdf.text(`Expected ROI: ${formatPercent(monteCarloResults.mean_roi)}`, 20, yPos);
-        yPos += 7;
-        pdf.text(`ROI Range: ${formatPercent(monteCarloResults.confidence_interval.lower)} - ${formatPercent(monteCarloResults.confidence_interval.upper)}`, 20, yPos);
-      }
-
-      // Add disclaimer
-      yPos += 20;
-      pdf.setFont(undefined, 'bold');
-      if (currentLanguage === 'zh') {
-        const disclaimer = '\u514D\u8D23\u58F0\u660E';
-        pdf.text(disclaimer, 20, yPos);
-      } else {
-        pdf.text('Disclaimer', 20, yPos);
-      }
-      yPos += 7;
-      pdf.setFont(undefined, 'normal');
-      const disclaimerText = currentLanguage === 'zh' ? 
-        '\u6B64\u5206\u6790\u57FA\u4E8E\u63D0\u4F9B\u7684\u6570\u636E\u548C\u5E02\u573A\u5047\u8BBE\u3002\u5B9E\u9645\u7ED3\u679C\u53EF\u80FD\u56E0\u5E02\u573A\u6761\u4EF6\u3001\u7A7A\u7F6E\u7387\u7B49\u56E0\u7D20\u800C\u6709\u6240\u4E0D\u540C\u3002' :
-        'This analysis is based on provided data and market assumptions. Actual results may vary due to market conditions, vacancy rates, and other factors.';
-      
-      const splitText = pdf.splitTextToSize(disclaimerText, 170);
-      pdf.text(splitText, 20, yPos);
-
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
       pdf.save(`roi-analysis-${selectedRegion}-${Date.now()}.pdf`);
+      
     } catch (error) {
       console.error('Error generating PDF:', error);
     }
