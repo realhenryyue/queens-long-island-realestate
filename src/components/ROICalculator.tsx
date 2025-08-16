@@ -275,70 +275,104 @@ const ROICalculator = () => {
     if (!element) return;
 
     try {
-      // Load Chinese font if needed
+      // Preload Chinese fonts specifically for PDF generation
       if (currentLanguage === 'zh') {
-        const chineseFont = document.createElement('link');
-        chineseFont.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap';
-        chineseFont.rel = 'stylesheet';
-        document.head.appendChild(chineseFont);
+        // Create multiple Chinese font links for better compatibility
+        const fontUrls = [
+          'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap',
+          'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap',
+        ];
         
-        // Wait for font to load
-        await new Promise(resolve => {
-          chineseFont.onload = resolve;
-          setTimeout(resolve, 2000); // Fallback timeout
+        // Load all fonts
+        const fontPromises = fontUrls.map(url => {
+          return new Promise<void>((resolve) => {
+            const link = document.createElement('link');
+            link.href = url;
+            link.rel = 'stylesheet';
+            link.onload = () => resolve();
+            link.onerror = () => resolve(); // Continue even if one font fails
+            document.head.appendChild(link);
+          });
         });
+        
+        await Promise.all(fontPromises);
+        
+        // Wait additional time for fonts to be fully loaded
+        await new Promise(resolve => setTimeout(resolve, 2000));
       }
 
-      // Create a temporary element with all the content for PDF
+      // Create a comprehensive temporary element for PDF with embedded font styles
       const tempElement = document.createElement('div');
-      tempElement.style.padding = '40px';
-      tempElement.style.backgroundColor = 'white';
-      tempElement.style.fontFamily = currentLanguage === 'zh' ? '"Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif' : 'Arial, sans-serif';
-      tempElement.style.width = '210mm';
-      tempElement.style.minHeight = '297mm';
+      tempElement.style.cssText = `
+        padding: 40px;
+        background-color: white;
+        font-family: ${currentLanguage === 'zh' ? 
+          '"Noto Sans SC", "Noto Serif SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimSun", "Source Han Sans", "WenQuanYi Micro Hei", Arial, sans-serif' : 
+          'Arial, Helvetica, sans-serif'};
+        width: 210mm;
+        min-height: 297mm;
+        color: #000;
+        font-size: 14px;
+        line-height: 1.5;
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+        z-index: -1;
+      `;
       
       tempElement.innerHTML = `
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
+          * { 
+            font-family: ${currentLanguage === 'zh' ? 
+              '"Noto Sans SC", "Noto Serif SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimSun", "Source Han Sans", "WenQuanYi Micro Hei", Arial, sans-serif' : 
+              'Arial, Helvetica, sans-serif'} !important;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+          }
+        </style>
         <div style="border-bottom: 2px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px;">
-          <h1 style="color: #2563eb; font-size: 24px; margin: 0 0 10px 0;">realhenryyue.com</h1>
-          <h2 style="font-size: 20px; margin: 0 0 10px 0;">${currentLanguage === 'zh' ? 'NYC房地产投资AI分析报告' : 'NYC Real Estate AI Investment Analysis Report'}</h2>
+          <h1 style="color: #2563eb; font-size: 24px; margin: 0 0 10px 0; font-weight: 700;">realhenryyue.com</h1>
+          <h2 style="font-size: 20px; margin: 0 0 10px 0; font-weight: 500;">${currentLanguage === 'zh' ? 'NYC房地产投资AI分析报告' : 'NYC Real Estate AI Investment Analysis Report'}</h2>
           <p style="color: #666; font-size: 12px; margin: 0;">Henry Yue | 718-717-5210 | forangh@gmail.com</p>
         </div>
         
         <div style="margin-bottom: 30px;">
-          <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; border-left: 4px solid #2563eb; padding-left: 10px;">${currentLanguage === 'zh' ? '投资总结' : 'Investment Summary'}</h3>
+          <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; border-left: 4px solid #2563eb; padding-left: 10px; font-weight: 600;">${currentLanguage === 'zh' ? '投资总结' : 'Investment Summary'}</h3>
           <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '投资评级' : 'Investment Rating'}:</strong> ${results.investmentRating}/5 ${Array(results.investmentRating).fill('★').join('')}</p>
-            <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '投资信号' : 'Investment Signal'}:</strong> ${results.investmentSignal}</p>
-            <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash ROI'}:</strong> ${formatPercent(results.cashOnCashReturn)}</p>
-            <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '资本化率' : 'Cap Rate'}:</strong> ${formatPercent(results.capRate)}</p>
+            <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '投资评级' : 'Investment Rating'}:</strong> ${results.investmentRating}/5 ${Array(results.investmentRating).fill('★').join('')}</p>
+            <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '投资信号' : 'Investment Signal'}:</strong> ${results.investmentSignal}</p>
+            <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash ROI'}:</strong> ${formatPercent(results.cashOnCashReturn)}</p>
+            <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '资本化率' : 'Cap Rate'}:</strong> ${formatPercent(results.capRate)}</p>
           </div>
         </div>
 
         <div style="margin-bottom: 30px;">
-          <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; border-left: 4px solid #2563eb; padding-left: 10px;">${currentLanguage === 'zh' ? '关键指标' : 'Key Metrics'}</h3>
+          <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; border-left: 4px solid #2563eb; padding-left: 10px; font-weight: 600;">${currentLanguage === 'zh' ? '关键指标' : 'Key Metrics'}</h3>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
             <div style="background: #f8fafc; padding: 15px; border-radius: 8px;">
-              <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '购买价格' : 'Purchase Price'}:</strong> ${formatCurrency(parseFloat(inputs.purchasePrice))}</p>
-              <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '现金投入' : 'Cash Invested'}:</strong> ${formatCurrency(results.cashInvested)}</p>
+              <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '购买价格' : 'Purchase Price'}:</strong> ${formatCurrency(parseFloat(inputs.purchasePrice))}</p>
+              <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '现金投入' : 'Cash Invested'}:</strong> ${formatCurrency(results.cashInvested)}</p>
             </div>
             <div style="background: #f8fafc; padding: 15px; border-radius: 8px;">
-              <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '年现金流' : 'Annual Cash Flow'}:</strong> ${formatCurrency(results.annualCashFlow)}</p>
-              <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '总投资回报率' : 'Total ROI'}:</strong> ${formatPercent(results.totalROI)}</p>
+              <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '年现金流' : 'Annual Cash Flow'}:</strong> ${formatCurrency(results.annualCashFlow)}</p>
+              <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '总投资回报率' : 'Total ROI'}:</strong> ${formatPercent(results.totalROI)}</p>
             </div>
           </div>
         </div>
 
         <div style="margin-bottom: 30px;">
-          <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; border-left: 4px solid #2563eb; padding-left: 10px;">${currentLanguage === 'zh' ? '风险分析 (90% 置信区间)' : 'Risk Analysis (90% Confidence Interval)'}</h3>
+          <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; border-left: 4px solid #2563eb; padding-left: 10px; font-weight: 600;">${currentLanguage === 'zh' ? '风险分析 (90% 置信区间)' : 'Risk Analysis (90% Confidence Interval)'}</h3>
           <div style="background: #fef3c7; padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;">
-            <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '预期回报率' : 'Expected ROI'}:</strong> ${formatPercent(monteCarloResults.mean_roi)}</p>
-            <p style="margin: 5px 0;"><strong>${currentLanguage === 'zh' ? '回报区间' : 'ROI Range'}:</strong> ${formatPercent(monteCarloResults.confidence_interval.lower)} - ${formatPercent(monteCarloResults.confidence_interval.upper)}</p>
+            <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '预期回报率' : 'Expected ROI'}:</strong> ${formatPercent(monteCarloResults.mean_roi)}</p>
+            <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '回报区间' : 'ROI Range'}:</strong> ${formatPercent(monteCarloResults.confidence_interval.lower)} - ${formatPercent(monteCarloResults.confidence_interval.upper)}</p>
           </div>
         </div>
 
         <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-          <h3 style="color: #dc2626; font-size: 14px; margin: 0 0 10px 0;">${currentLanguage === 'zh' ? '免责声明' : 'Disclaimer'}</h3>
-          <p style="font-size: 12px; color: #666; line-height: 1.5; margin: 0;">
+          <h3 style="color: #dc2626; font-size: 14px; margin: 0 0 10px 0; font-weight: 600;">${currentLanguage === 'zh' ? '免责声明' : 'Disclaimer'}</h3>
+          <p style="font-size: 12px; color: #666; line-height: 1.5; margin: 0; font-weight: 400;">
             ${currentLanguage === 'zh' ? 
               '此分析基于提供的数据和市场假设。实际结果可能因市场条件、空置率等因素而有所不同。投资有风险，请谨慎决策。' :
               'This analysis is based on provided data and market assumptions. Actual results may vary due to market conditions, vacancy rates, and other factors. Investment involves risks, please make decisions carefully.'}
@@ -346,26 +380,37 @@ const ROICalculator = () => {
         </div>
       `;
       
-      // Temporarily add to DOM
+      // Add to DOM temporarily
       document.body.appendChild(tempElement);
       
-      // Generate canvas from the element with Chinese font support
+      // Wait for layout to stabilize
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Generate canvas with optimized settings for Chinese text
       const canvas = await html2canvas(tempElement, {
-        scale: 3, // Increased scale for better text rendering
+        scale: 4, // Higher scale for better Chinese character rendering
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
         width: 794, // A4 width in pixels at 96 DPI
         height: 1123, // A4 height in pixels at 96 DPI
-        foreignObjectRendering: true, // Better text rendering
+        foreignObjectRendering: true,
         logging: false,
-        imageTimeout: 5000,
+        imageTimeout: 10000, // Longer timeout for font loading
         onclone: (clonedDoc) => {
-          // Ensure fonts are applied in cloned document
+          // Inject font styles directly into cloned document
           const style = clonedDoc.createElement('style');
           style.textContent = `
             @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
-            * { font-family: ${currentLanguage === 'zh' ? '"Noto Sans SC", "PingFang SC", "SimSun", "Microsoft YaHei"' : '"Arial"'}, sans-serif !important; }
+            @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
+            * { 
+              font-family: ${currentLanguage === 'zh' ? 
+                '"Noto Sans SC", "Noto Serif SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimSun", "Source Han Sans", "WenQuanYi Micro Hei"' : 
+                '"Arial", "Helvetica"'}, sans-serif !important;
+              -webkit-font-smoothing: antialiased !important;
+              -moz-osx-font-smoothing: grayscale !important;
+              text-rendering: optimizeLegibility !important;
+            }
           `;
           clonedDoc.head.appendChild(style);
         }
@@ -374,22 +419,24 @@ const ROICalculator = () => {
       // Remove temporary element
       document.body.removeChild(tempElement);
       
-      // Create PDF with the canvas image
+      // Create PDF with high quality settings
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: 'a4'
+        format: 'a4',
+        compress: false // Better quality for text
       });
       
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL('image/png', 1.0); // Max quality
       const imgWidth = 210; // A4 width in mm
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'MEDIUM');
       pdf.save(`roi-analysis-${selectedRegion}-${Date.now()}.pdf`);
       
     } catch (error) {
       console.error('Error generating PDF:', error);
+      alert(currentLanguage === 'zh' ? 'PDF生成失败，请重试' : 'PDF generation failed, please try again');
     }
   };
 

@@ -1,121 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  
-  <!-- Main homepage images -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://www.realhenryyue.com/</loc>
     <image:image>
       <image:loc>https://www.realhenryyue.com/assets/agent-photo.jpg</image:loc>
-      <image:caption>Henry Yue - Professional NYC Real Estate Investment Analysis Expert</image:caption>
-      <image:title>Henry岳先生 - 纽约房地产AI投资分析专家</image:title>
-      <image:geo_location>New York, NY, USA</image:geo_location>
+      <image:caption>Henry岳先生 - 纽约房地产专家</image:caption>
+      <image:title>Henry Yue Real Estate Expert</image:title>
     </image:image>
     <image:image>
       <image:loc>https://www.realhenryyue.com/assets/queens-skyline.jpg</image:loc>
-      <image:caption>Queens NYC Skyline - Real Estate Investment Opportunities</image:caption>
-      <image:title>皇后区天际线 - 房地产投资机会</image:title>
-      <image:geo_location>Queens, NY, USA</image:geo_location>
+      <image:caption>纽约皇后区天际线</image:caption>
+      <image:title>Queens NYC Skyline</image:title>
     </image:image>
     <image:image>
       <image:loc>https://www.realhenryyue.com/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.png</image:loc>
-      <image:caption>NYC Real Estate AI Investment Analysis Dashboard</image:caption>
-      <image:title>纽约房地产AI投资分析仪表板</image:title>
-      <image:geo_location>New York City, NY, USA</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.realhenryyue.com/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png</image:loc>
-      <image:caption>Manhattan Real Estate Investment Analysis Chart</image:caption>
-      <image:title>曼哈顿房地产投资分析图表</image:title>
-      <image:geo_location>Manhattan, NY, USA</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.realhenryyue.com/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4.png</image:loc>
-      <image:caption>Queens Brooklyn Investment Property ROI Calculator</image:caption>
-      <image:title>皇后区布鲁克林投资房产ROI计算器</image:title>
-      <image:geo_location>Queens, Brooklyn, NY, USA</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.realhenryyue.com/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.png</image:loc>
-      <image:caption>Nassau County Long Island Real Estate Market Analysis</image:caption>
-      <image:title>拿骚县长岛房地产市场分析</image:title>
-      <image:geo_location>Nassau County, Long Island, NY, USA</image:geo_location>
+      <image:caption>NYC房地产AI投资分析系统</image:caption>
+      <image:title>NYC Real Estate AI Analysis System</image:title>
     </image:image>
   </url>
-
-  <!-- English homepage -->
-  <url>
-    <loc>https://www.realhenryyue.com/en</loc>
-    <image:image>
-      <image:loc>https://www.realhenryyue.com/assets/agent-photo.jpg</image:loc>
-      <image:caption>Henry Yue - NYC Real Estate Investment Analysis Expert</image:caption>
-      <image:title>Henry Yue - Professional Real Estate Agent NYC</image:title>
-      <image:geo_location>New York, NY, USA</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.realhenryyue.com/assets/queens-skyline.jpg</image:loc>
-      <image:caption>Queens NYC Skyline - Premium Investment Properties</image:caption>
-      <image:title>Queens NYC Real Estate Investment Opportunities</image:title>
-      <image:geo_location>Queens, NY, USA</image:geo_location>
-    </image:image>
-  </url>
-
-  <!-- Chinese homepage -->
-  <url>
-    <loc>https://www.realhenryyue.com/zh</loc>
-    <image:image>
-      <image:loc>https://www.realhenryyue.com/assets/agent-photo.jpg</image:loc>
-      <image:caption>Henry岳先生 - 纽约房地产AI投资分析专家</image:caption>
-      <image:title>Henry岳先生 - 专业纽约华人房地产经纪</image:title>
-      <image:geo_location>纽约, NY, 美国</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.realhenryyue.com/assets/queens-skyline.jpg</image:loc>
-      <image:caption>皇后区纽约天际线 - 优质投资房产</image:caption>
-      <image:title>皇后区纽约房地产投资机会</image:title>
-      <image:geo_location>皇后区, NY, 美国</image:geo_location>
-    </image:image>
-  </url>
-
-  <!-- Investment Analysis Pages -->
-  <url>
-    <loc>https://www.realhenryyue.com/en/investment-analysis</loc>
-    <image:image>
-      <image:loc>https://www.realhenryyue.com/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.png</image:loc>
-      <image:caption>NYC Real Estate AI Investment Analysis Tools and ROI Calculator</image:caption>
-      <image:title>NYC Investment Analysis Dashboard - Henry Yue</image:title>
-      <image:geo_location>New York City, NY, USA</image:geo_location>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://www.realhenryyue.com/zh/investment-analysis</loc>
-    <image:image>
-      <image:loc>https://www.realhenryyue.com/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.png</image:loc>
-      <image:caption>纽约房地产AI投资分析工具和ROI计算器</image:caption>
-      <image:title>纽约投资分析仪表板 - Henry岳先生</image:title>
-      <image:geo_location>纽约市, NY, 美国</image:geo_location>
-    </image:image>
-  </url>
-
-  <!-- ROI Calculator Pages -->
-  <url>
-    <loc>https://www.realhenryyue.com/en/roi-calculator</loc>
-    <image:image>
-      <image:loc>https://www.realhenryyue.com/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4.png</image:loc>
-      <image:caption>NYC Real Estate ROI Calculator - Investment Property Analysis</image:caption>
-      <image:title>NYC ROI Calculator Tool - Henry Yue Real Estate</image:title>
-      <image:geo_location>New York City, NY, USA</image:geo_location>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://www.realhenryyue.com/zh/roi-calculator</loc>
-    <image:image>
-      <image:loc>https://www.realhenryyue.com/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4.png</image:loc>
-      <image:caption>纽约房地产ROI计算器 - 投资房产分析</image:caption>
-      <image:title>纽约ROI计算器工具 - Henry岳房地产</image:title>
-      <image:geo_location>纽约市, NY, 美国</image:geo_location>
-    </image:image>
-  </url>
-
 </urlset>
