@@ -275,11 +275,25 @@ const ROICalculator = () => {
     if (!element) return;
 
     try {
+      // Load Chinese font if needed
+      if (currentLanguage === 'zh') {
+        const chineseFont = document.createElement('link');
+        chineseFont.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap';
+        chineseFont.rel = 'stylesheet';
+        document.head.appendChild(chineseFont);
+        
+        // Wait for font to load
+        await new Promise(resolve => {
+          chineseFont.onload = resolve;
+          setTimeout(resolve, 2000); // Fallback timeout
+        });
+      }
+
       // Create a temporary element with all the content for PDF
       const tempElement = document.createElement('div');
       tempElement.style.padding = '40px';
       tempElement.style.backgroundColor = 'white';
-      tempElement.style.fontFamily = 'Arial, sans-serif';
+      tempElement.style.fontFamily = currentLanguage === 'zh' ? '"Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif' : 'Arial, sans-serif';
       tempElement.style.width = '210mm';
       tempElement.style.minHeight = '297mm';
       
@@ -335,14 +349,26 @@ const ROICalculator = () => {
       // Temporarily add to DOM
       document.body.appendChild(tempElement);
       
-      // Generate canvas from the element
+      // Generate canvas from the element with Chinese font support
       const canvas = await html2canvas(tempElement, {
-        scale: 2,
+        scale: 3, // Increased scale for better text rendering
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
         width: 794, // A4 width in pixels at 96 DPI
-        height: 1123 // A4 height in pixels at 96 DPI
+        height: 1123, // A4 height in pixels at 96 DPI
+        foreignObjectRendering: true, // Better text rendering
+        logging: false,
+        imageTimeout: 5000,
+        onclone: (clonedDoc) => {
+          // Ensure fonts are applied in cloned document
+          const style = clonedDoc.createElement('style');
+          style.textContent = `
+            @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+            * { font-family: ${currentLanguage === 'zh' ? '"Noto Sans SC", "PingFang SC", "SimSun", "Microsoft YaHei"' : '"Arial"'}, sans-serif !important; }
+          `;
+          clonedDoc.head.appendChild(style);
+        }
       });
       
       // Remove temporary element
