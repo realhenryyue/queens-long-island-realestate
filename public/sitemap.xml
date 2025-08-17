@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <!-- Main homepage (redirects to /en) -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  
+  <!-- Main homepage (primary Chinese version) -->
   <url>
     <loc>https://www.realhenryyue.com/</loc>
-    <lastmod>2025-01-16</lastmod>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en-US" href="https://www.realhenryyue.com/en" />
-    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.realhenryyue.com/zh" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.realhenryyue.com/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.realhenryyue.com/" />
+    <image:image>
+      <image:loc>https://www.realhenryyue.com/assets/agent-photo.jpg</image:loc>
+      <image:title>Henry Yue - NYC Real Estate Investment Analyst</image:title>
+      <image:caption>Professional NYC real estate agent specializing in AI-powered investment analysis</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.realhenryyue.com/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.png</image:loc>
+      <image:title>NYC Real Estate Investment Analysis Platform</image:title>
+      <image:caption>Advanced AI-powered investment analysis tools for NYC real estate</image:caption>
+    </image:image>
   </url>
   
   <!-- English homepage -->

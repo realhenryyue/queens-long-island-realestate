@@ -1,9 +1,15 @@
-# ads.txt file for realhenryyue.com
-# This file lists authorized sellers for programmatic advertising
-# Contact: forangh@gmail.com
+# ads.txt for realhenryyue.com - Enterprise SEO Configuration
+# NYC Real Estate AI Investment Analysis Expert
+# Contact: forangh@gmail.com | Phone: 718-717-5210
 
-# Google AdSense
-google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+# Currently no authorized programmatic advertising relationships
+# All advertising on this domain must be pre-approved for compliance
+# Real estate advertising requires regulatory compliance verification
 
-# Direct advertisers placeholder
-# Add actual advertiser relationships here when available
+# For advertising partnerships, contact:
+# Email: forangh@gmail.com
+# Phone: 718-717-5210
+# Subject: Real Estate Advertising Partnership Inquiry
+
+# Unauthorized advertising may violate real estate regulations
+# This file helps prevent ad fraud and maintains site integrity

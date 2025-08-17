@@ -1,0 +1,15 @@
+# Security Policy for realhenryyue.com
+# NYC Real Estate AI Investment Analysis Expert
+
+Contact: mailto:forangh@gmail.com
+Contact: tel:+1-718-717-5210
+Expires: 2025-12-31T23:59:59.000Z
+Encryption: https://keybase.io/henryyue/pgp_keys.asc
+Preferred-Languages: en, zh-CN
+Canonical: https://www.realhenryyue.com/.well-known/security.txt
+Policy: https://www.realhenryyue.com/security-policy
+
+# Please report security vulnerabilities responsibly
+# We appreciate responsible disclosure and will acknowledge valid reports
+# Expected response time: 72 hours for initial response
+# Bounty program: Contact us for details on qualifying vulnerabilities

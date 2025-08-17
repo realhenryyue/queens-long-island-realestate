@@ -271,172 +271,259 @@ const ROICalculator = () => {
   };
 
   const exportToPDF = async () => {
-    const element = document.getElementById('roi-calculator-content');
-    if (!element) return;
-
     try {
-      // Preload Chinese fonts specifically for PDF generation
-      if (currentLanguage === 'zh') {
-        // Create multiple Chinese font links for better compatibility
-        const fontUrls = [
-          'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap',
-          'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap',
-        ];
-        
-        // Load all fonts
-        const fontPromises = fontUrls.map(url => {
-          return new Promise<void>((resolve) => {
-            const link = document.createElement('link');
-            link.href = url;
-            link.rel = 'stylesheet';
-            link.onload = () => resolve();
-            link.onerror = () => resolve(); // Continue even if one font fails
-            document.head.appendChild(link);
-          });
-        });
-        
-        await Promise.all(fontPromises);
-        
-        // Wait additional time for fonts to be fully loaded
-        await new Promise(resolve => setTimeout(resolve, 2000));
-      }
+      // Create comprehensive PDF content based on language
+      const createPDFContent = () => {
+        return `
+          <div style="font-family: ${currentLanguage === 'zh' ? 
+            'PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimHei, sans-serif' : 
+            'Arial, Helvetica, sans-serif'}; 
+            padding: 40px; background: white; color: #000; line-height: 1.6; font-size: 14px;">
+            
+            <!-- Header Section -->
+            <div style="border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px;">
+              <h1 style="color: #2563eb; font-size: 28px; margin: 0 0 8px 0; font-weight: bold;">
+                realhenryyue.com
+              </h1>
+              <h2 style="font-size: 22px; margin: 0 0 8px 0; font-weight: 600; color: #1f2937;">
+                ${currentLanguage === 'zh' ? 'NYC房地产投资AI分析报告' : 'NYC Real Estate AI Investment Analysis Report'}
+              </h2>
+              <p style="color: #6b7280; font-size: 14px; margin: 0; font-weight: 500;">
+                Henry Yue | 718-717-5210 | forangh@gmail.com
+              </p>
+            </div>
+            
+            <!-- Investment Summary Section -->
+            <div style="margin-bottom: 35px;">
+              <h3 style="color: #1f2937; font-size: 18px; margin: 0 0 15px 0; border-left: 5px solid #2563eb; padding-left: 12px; font-weight: 700;">
+                ${currentLanguage === 'zh' ? '投资总结' : 'Investment Summary'}
+              </h3>
+              <div style="background: #f8fafc; padding: 25px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                <div style="margin-bottom: 12px;">
+                  <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '投资评级' : 'Investment Rating'}:</span>
+                  <span style="font-size: 16px; color: #dc2626; font-weight: 600;"> ${results.investmentRating}/5 ${Array(results.investmentRating).fill('★').join('')}</span>
+                </div>
+                <div style="margin-bottom: 12px;">
+                  <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '投资信号' : 'Investment Signal'}:</span>
+                  <span style="font-size: 16px; color: ${results.investmentSignal === 'BUY' ? '#059669' : results.investmentSignal === 'WAIT' ? '#d97706' : '#dc2626'}; font-weight: 700;"> ${results.investmentSignal}</span>
+                </div>
+                <div style="margin-bottom: 12px;">
+                  <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash ROI'}:</span>
+                  <span style="font-size: 16px; color: #059669; font-weight: 600;"> ${formatPercent(results.cashOnCashReturn)}</span>
+                </div>
+                <div style="margin-bottom: 0;">
+                  <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '资本化率' : 'Cap Rate'}:</span>
+                  <span style="font-size: 16px; color: #059669; font-weight: 600;"> ${formatPercent(results.capRate)}</span>
+                </div>
+              </div>
+            </div>
 
-      // Create a comprehensive temporary element for PDF with embedded font styles
-      const tempElement = document.createElement('div');
-      tempElement.style.cssText = `
-        padding: 40px;
-        background-color: white;
-        font-family: ${currentLanguage === 'zh' ? 
-          '"Noto Sans SC", "Noto Serif SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimSun", "Source Han Sans", "WenQuanYi Micro Hei", Arial, sans-serif' : 
-          'Arial, Helvetica, sans-serif'};
-        width: 210mm;
-        min-height: 297mm;
-        color: #000;
-        font-size: 14px;
-        line-height: 1.5;
+            <!-- Key Metrics Section -->
+            <div style="margin-bottom: 35px;">
+              <h3 style="color: #1f2937; font-size: 18px; margin: 0 0 15px 0; border-left: 5px solid #2563eb; padding-left: 12px; font-weight: 700;">
+                ${currentLanguage === 'zh' ? '关键财务指标' : 'Key Financial Metrics'}
+              </h3>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div style="background: #fefefe; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                  <div style="margin-bottom: 15px;">
+                    <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '购买价格' : 'Purchase Price'}</div>
+                    <div style="font-size: 18px; color: #059669; font-weight: 600;">${formatCurrency(parseFloat(inputs.purchasePrice))}</div>
+                  </div>
+                  <div style="margin-bottom: 15px;">
+                    <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '现金投入' : 'Cash Invested'}</div>
+                    <div style="font-size: 18px; color: #059669; font-weight: 600;">${formatCurrency(results.cashInvested)}</div>
+                  </div>
+                  <div style="margin-bottom: 0;">
+                    <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '月租金' : 'Monthly Rent'}</div>
+                    <div style="font-size: 18px; color: #059669; font-weight: 600;">${formatCurrency(parseFloat(inputs.monthlyRent))}</div>
+                  </div>
+                </div>
+                <div style="background: #fefefe; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                  <div style="margin-bottom: 15px;">
+                    <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '年现金流' : 'Annual Cash Flow'}</div>
+                    <div style="font-size: 18px; color: ${results.annualCashFlow >= 0 ? '#059669' : '#dc2626'}; font-weight: 600;">${formatCurrency(results.annualCashFlow)}</div>
+                  </div>
+                  <div style="margin-bottom: 15px;">
+                    <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '月净利润' : 'Monthly Profit'}</div>
+                    <div style="font-size: 18px; color: ${results.monthlyProfit >= 0 ? '#059669' : '#dc2626'}; font-weight: 600;">${formatCurrency(results.monthlyProfit)}</div>
+                  </div>
+                  <div style="margin-bottom: 0;">
+                    <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '总投资回报率' : 'Total ROI'}</div>
+                    <div style="font-size: 18px; color: #059669; font-weight: 600;">${formatPercent(results.totalROI)}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Risk Analysis Section -->
+            <div style="margin-bottom: 35px;">
+              <h3 style="color: #1f2937; font-size: 18px; margin: 0 0 15px 0; border-left: 5px solid #2563eb; padding-left: 12px; font-weight: 700;">
+                ${currentLanguage === 'zh' ? '风险分析与预测 (90% 置信区间)' : 'Risk Analysis & Forecast (90% Confidence Interval)'}
+              </h3>
+              <div style="background: #fef3c7; padding: 25px; border-radius: 10px; border-left: 5px solid #f59e0b;">
+                <div style="margin-bottom: 15px;">
+                  <span style="font-weight: 700; color: #92400e;">${currentLanguage === 'zh' ? '预期平均回报率' : 'Expected Average ROI'}:</span>
+                  <span style="font-size: 16px; color: #92400e; font-weight: 600;"> ${formatPercent(monteCarloResults.mean_roi)}</span>
+                </div>
+                <div style="margin-bottom: 15px;">
+                  <span style="font-weight: 700; color: #92400e;">${currentLanguage === 'zh' ? '回报率区间范围' : 'ROI Range'}:</span>
+                  <span style="font-size: 16px; color: #92400e; font-weight: 600;"> ${formatPercent(monteCarloResults.confidence_interval.lower)} - ${formatPercent(monteCarloResults.confidence_interval.upper)}</span>
+                </div>
+                <div style="margin-bottom: 0;">
+                  <span style="font-weight: 700; color: #92400e;">${currentLanguage === 'zh' ? '投资建议' : 'Investment Recommendation'}:</span>
+                  <span style="font-size: 16px; color: #92400e; font-weight: 600;"> ${currentLanguage === 'zh' ? 
+                    (results.investmentSignal === 'BUY' ? '建议购买' : results.investmentSignal === 'WAIT' ? '建议观望' : '不建议购买') :
+                    results.investmentSignal}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Property Details Section -->
+            <div style="margin-bottom: 35px;">
+              <h3 style="color: #1f2937; font-size: 18px; margin: 0 0 15px 0; border-left: 5px solid #2563eb; padding-left: 12px; font-weight: 700;">
+                ${currentLanguage === 'zh' ? '房产详细信息' : 'Property Details'}
+              </h3>
+              <div style="background: #f1f5f9; padding: 25px; border-radius: 10px; border: 1px solid #cbd5e1;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                  <div>
+                    <div style="margin-bottom: 12px;">
+                      <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '地区' : 'Region'}:</span>
+                      <span style="color: #1f2937; font-weight: 500;"> ${regions.find(r => r.id === selectedRegion)?.name || 'Queens'}</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                      <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '首付比例' : 'Down Payment'}:</span>
+                      <span style="color: #1f2937; font-weight: 500;"> ${inputs.downPaymentPercent}%</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                      <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '贷款利率' : 'Interest Rate'}:</span>
+                      <span style="color: #1f2937; font-weight: 500;"> ${inputs.loanInterestRate}%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="margin-bottom: 12px;">
+                      <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '月费用' : 'Monthly Expenses'}:</span>
+                      <span style="color: #1f2937; font-weight: 500;"> ${formatCurrency(parseFloat(inputs.monthlyExpenses))}</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                      <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '空置率' : 'Vacancy Rate'}:</span>
+                      <span style="color: #1f2937; font-weight: 500;"> ${inputs.vacancyRate}%</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                      <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '升值率' : 'Appreciation Rate'}:</span>
+                      <span style="color: #1f2937; font-weight: 500;"> ${inputs.appreciationRate}%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer/Disclaimer Section -->
+            <div style="margin-top: 50px; padding-top: 25px; border-top: 2px solid #e5e7eb;">
+              <h3 style="color: #dc2626; font-size: 16px; margin: 0 0 15px 0; font-weight: 700;">
+                ${currentLanguage === 'zh' ? '重要免责声明' : 'Important Disclaimer'}
+              </h3>
+              <div style="background: #fef2f2; padding: 20px; border-radius: 8px; border-left: 4px solid #dc2626;">
+                <p style="font-size: 13px; color: #374151; line-height: 1.7; margin: 0; font-weight: 500;">
+                  ${currentLanguage === 'zh' ? 
+                    '本分析报告基于提供的数据和当前市场假设进行计算。实际投资结果可能因市场波动、政策变化、空置率变动、维修费用、管理成本等多种因素而有所不同。过往业绩不代表未来回报。房地产投资存在风险，包括但不限于市场价值下跌、流动性风险、利率变化等。投资者应根据自身财务状况和风险承受能力谨慎决策，建议在投资前咨询专业财务顾问。' :
+                    'This analysis report is based on provided data and current market assumptions. Actual investment results may vary due to market volatility, policy changes, vacancy rate fluctuations, repair costs, management expenses, and other factors. Past performance does not guarantee future returns. Real estate investment involves risks including but not limited to market value decline, liquidity risks, and interest rate changes. Investors should make decisions based on their financial situation and risk tolerance, and are advised to consult professional financial advisors before investing.'}
+                </p>
+              </div>
+              <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #d1d5db;">
+                <p style="font-size: 12px; color: #6b7280; margin: 0; font-weight: 500;">
+                  ${currentLanguage === 'zh' ? 
+                    '报告生成时间: ' + new Date().toLocaleDateString('zh-CN') + ' | 专业房地产投资分析师: Henry Yue' :
+                    'Report Generated: ' + new Date().toLocaleDateString('en-US') + ' | Professional Real Estate Investment Analyst: Henry Yue'}
+                </p>
+              </div>
+            </div>
+          </div>
+        `;
+      };
+
+      // Create a temporary container for PDF generation
+      const tempContainer = document.createElement('div');
+      tempContainer.style.cssText = `
         position: absolute;
-        top: -9999px;
-        left: -9999px;
+        top: -10000px;
+        left: -10000px;
+        width: 794px;
+        background: white;
         z-index: -1;
       `;
-      
-      tempElement.innerHTML = `
-        <style>
-          @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
-          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
-          * { 
-            font-family: ${currentLanguage === 'zh' ? 
-              '"Noto Sans SC", "Noto Serif SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimSun", "Source Han Sans", "WenQuanYi Micro Hei", Arial, sans-serif' : 
-              'Arial, Helvetica, sans-serif'} !important;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-          }
-        </style>
-        <div style="border-bottom: 2px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px;">
-          <h1 style="color: #2563eb; font-size: 24px; margin: 0 0 10px 0; font-weight: 700;">realhenryyue.com</h1>
-          <h2 style="font-size: 20px; margin: 0 0 10px 0; font-weight: 500;">${currentLanguage === 'zh' ? 'NYC房地产投资AI分析报告' : 'NYC Real Estate AI Investment Analysis Report'}</h2>
-          <p style="color: #666; font-size: 12px; margin: 0;">Henry Yue | 718-717-5210 | forangh@gmail.com</p>
-        </div>
-        
-        <div style="margin-bottom: 30px;">
-          <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; border-left: 4px solid #2563eb; padding-left: 10px; font-weight: 600;">${currentLanguage === 'zh' ? '投资总结' : 'Investment Summary'}</h3>
-          <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '投资评级' : 'Investment Rating'}:</strong> ${results.investmentRating}/5 ${Array(results.investmentRating).fill('★').join('')}</p>
-            <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '投资信号' : 'Investment Signal'}:</strong> ${results.investmentSignal}</p>
-            <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash ROI'}:</strong> ${formatPercent(results.cashOnCashReturn)}</p>
-            <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '资本化率' : 'Cap Rate'}:</strong> ${formatPercent(results.capRate)}</p>
-          </div>
-        </div>
+      tempContainer.innerHTML = createPDFContent();
+      document.body.appendChild(tempContainer);
 
-        <div style="margin-bottom: 30px;">
-          <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; border-left: 4px solid #2563eb; padding-left: 10px; font-weight: 600;">${currentLanguage === 'zh' ? '关键指标' : 'Key Metrics'}</h3>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div style="background: #f8fafc; padding: 15px; border-radius: 8px;">
-              <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '购买价格' : 'Purchase Price'}:</strong> ${formatCurrency(parseFloat(inputs.purchasePrice))}</p>
-              <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '现金投入' : 'Cash Invested'}:</strong> ${formatCurrency(results.cashInvested)}</p>
-            </div>
-            <div style="background: #f8fafc; padding: 15px; border-radius: 8px;">
-              <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '年现金流' : 'Annual Cash Flow'}:</strong> ${formatCurrency(results.annualCashFlow)}</p>
-              <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '总投资回报率' : 'Total ROI'}:</strong> ${formatPercent(results.totalROI)}</p>
-            </div>
-          </div>
-        </div>
+      // Wait for content to render
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-        <div style="margin-bottom: 30px;">
-          <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; border-left: 4px solid #2563eb; padding-left: 10px; font-weight: 600;">${currentLanguage === 'zh' ? '风险分析 (90% 置信区间)' : 'Risk Analysis (90% Confidence Interval)'}</h3>
-          <div style="background: #fef3c7; padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;">
-            <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '预期回报率' : 'Expected ROI'}:</strong> ${formatPercent(monteCarloResults.mean_roi)}</p>
-            <p style="margin: 5px 0; font-weight: 500;"><strong>${currentLanguage === 'zh' ? '回报区间' : 'ROI Range'}:</strong> ${formatPercent(monteCarloResults.confidence_interval.lower)} - ${formatPercent(monteCarloResults.confidence_interval.upper)}</p>
-          </div>
-        </div>
-
-        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-          <h3 style="color: #dc2626; font-size: 14px; margin: 0 0 10px 0; font-weight: 600;">${currentLanguage === 'zh' ? '免责声明' : 'Disclaimer'}</h3>
-          <p style="font-size: 12px; color: #666; line-height: 1.5; margin: 0; font-weight: 400;">
-            ${currentLanguage === 'zh' ? 
-              '此分析基于提供的数据和市场假设。实际结果可能因市场条件、空置率等因素而有所不同。投资有风险，请谨慎决策。' :
-              'This analysis is based on provided data and market assumptions. Actual results may vary due to market conditions, vacancy rates, and other factors. Investment involves risks, please make decisions carefully.'}
-          </p>
-        </div>
-      `;
-      
-      // Add to DOM temporarily
-      document.body.appendChild(tempElement);
-      
-      // Wait for layout to stabilize
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Generate canvas with optimized settings for Chinese text
-      const canvas = await html2canvas(tempElement, {
-        scale: 4, // Higher scale for better Chinese character rendering
+      // Generate canvas from the content
+      const canvas = await html2canvas(tempContainer, {
+        scale: 3,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
-        width: 794, // A4 width in pixels at 96 DPI
-        height: 1123, // A4 height in pixels at 96 DPI
+        width: 794,
+        height: tempContainer.scrollHeight,
         foreignObjectRendering: true,
-        logging: false,
-        imageTimeout: 10000, // Longer timeout for font loading
-        onclone: (clonedDoc) => {
-          // Inject font styles directly into cloned document
-          const style = clonedDoc.createElement('style');
-          style.textContent = `
-            @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
-            @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
-            * { 
-              font-family: ${currentLanguage === 'zh' ? 
-                '"Noto Sans SC", "Noto Serif SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimSun", "Source Han Sans", "WenQuanYi Micro Hei"' : 
-                '"Arial", "Helvetica"'}, sans-serif !important;
-              -webkit-font-smoothing: antialiased !important;
-              -moz-osx-font-smoothing: grayscale !important;
-              text-rendering: optimizeLegibility !important;
-            }
-          `;
-          clonedDoc.head.appendChild(style);
-        }
+        logging: false
       });
-      
-      // Remove temporary element
-      document.body.removeChild(tempElement);
-      
-      // Create PDF with high quality settings
+
+      // Remove temporary container
+      document.body.removeChild(tempContainer);
+
+      // Create and save PDF
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4',
-        compress: false // Better quality for text
+        compress: true
       });
-      
-      const imgData = canvas.toDataURL('image/png', 1.0); // Max quality
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
       const imgWidth = 210; // A4 width in mm
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'MEDIUM');
-      pdf.save(`roi-analysis-${selectedRegion}-${Date.now()}.pdf`);
-      
+
+      // Handle multi-page PDF if content is long
+      if (imgHeight > 297) { // A4 height in mm
+        let position = 0;
+        const pageHeight = 297;
+        
+        while (position < imgHeight) {
+          if (position > 0) {
+            pdf.addPage();
+          }
+          
+          pdf.addImage(
+            imgData,
+            'JPEG',
+            0,
+            -position,
+            imgWidth,
+            imgHeight,
+            undefined,
+            'FAST'
+          );
+          
+          position += pageHeight;
+        }
+      } else {
+        pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
+      }
+
+      // Generate filename based on language and region
+      const filename = currentLanguage === 'zh' ? 
+        `NYC房产投资分析报告-${regions.find(r => r.id === selectedRegion)?.name || '皇后区'}-${Date.now()}.pdf` :
+        `NYC-Real-Estate-Investment-Analysis-${selectedRegion}-${Date.now()}.pdf`;
+
+      pdf.save(filename);
+
     } catch (error) {
-      console.error('Error generating PDF:', error);
-      alert(currentLanguage === 'zh' ? 'PDF生成失败，请重试' : 'PDF generation failed, please try again');
+      console.error('PDF export error:', error);
+      alert(currentLanguage === 'zh' ? 
+        'PDF生成失败，请重试。如问题持续，请联系技术支持。' : 
+        'PDF generation failed. Please try again. If the problem persists, contact technical support.'
+      );
     }
   };
 
