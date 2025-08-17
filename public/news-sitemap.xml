@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  
+  <!-- NYC Real Estate Investment Analysis Updates -->
+  <url>
+    <loc>https://www.realhenryyue.com/en/blog/nyc-ai-investment-trends-2024</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Henry Yue Real Estate Investment Analysis</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2024-01-15</news:publication_date>
+      <news:title>NYC AI-Powered Real Estate Investment Trends 2024</news:title>
+      <news:keywords>NYC real estate, AI investment analysis, property trends, ROI calculator, Manhattan Queens Brooklyn</news:keywords>
+    </news:news>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.realhenryyue.com/zh/blog/nyc-ai-investment-trends-2024</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Henry岳先生房地产投资分析</news:name>
+        <news:language>zh-CN</news:language>
+      </news:publication>
+      <news:publication_date>2024-01-15</news:publication_date>
+      <news:title>2024年纽约AI驱动房地产投资趋势分析</news:title>
+      <news:keywords>纽约房地产, AI投资分析, 房产趋势, ROI计算器, 曼哈顿皇后区布鲁克林</news:keywords>
+    </news:news>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Flushing Investment Analysis -->
+  <url>
+    <loc>https://www.realhenryyue.com/en/blog/flushing-condo-investment-guide</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Henry Yue Real Estate Investment Analysis</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2024-01-10</news:publication_date>
+      <news:title>Flushing Condo Investment Guide: AI-Powered Market Analysis</news:title>
+      <news:keywords>Flushing condo investment, Queens real estate, NYC property analysis, ROI calculation</news:keywords>
+    </news:news>
+    <lastmod>2024-01-10T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.realhenryyue.com/zh/blog/flushing-condo-investment-guide</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Henry岳先生房地产投资分析</news:name>
+        <news:language>zh-CN</news:language>
+      </news:publication>
+      <news:publication_date>2024-01-10</news:publication_date>
+      <news:title>法拉盛公寓投资指南：AI智能市场分析</news:title>
+      <news:keywords>法拉盛公寓投资, 皇后区房地产, 纽约房产分析, ROI计算</news:keywords>
+    </news:news>
+    <lastmod>2024-01-10T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>
