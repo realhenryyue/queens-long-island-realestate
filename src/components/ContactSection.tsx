@@ -51,36 +51,47 @@ Message: ${formData.message}`;
   };
 
   return (
-    <section id="contact" className="py-20 bg-gradient-to-br from-primary/5 to-accent/5">
+    <section 
+      id="contact" 
+      className="py-20 bg-gradient-to-br from-primary/5 to-accent/5"
+      aria-labelledby="contact-heading"
+      itemScope 
+      itemType="https://schema.org/ContactPage"
+    >
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 space-y-4">
-          <h2 className="text-4xl lg:text-5xl font-bold text-primary">
+        <header className="text-center mb-16 space-y-4">
+          <h2 id="contact-heading" className="text-4xl lg:text-5xl font-bold text-primary">
             {t('contact.title')}
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             {t('contact.subtitle')}
           </p>
-        </div>
+        </header>
         
         <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {/* Contact Information */}
-          <div className="space-y-8">
+          <aside className="space-y-8" itemScope itemType="https://schema.org/ContactPoint">
             <Card className="shadow-card bg-card/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-2xl text-primary flex items-center gap-3">
-                  <MessageCircle className="w-6 h-6" />
+                  <MessageCircle className="w-6 h-6" aria-hidden="true" />
                   {t('contact.getInTouch')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="space-y-4">
+                <address className="space-y-4 not-italic">
                   <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg">
                     <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center">
-                      <Phone className="w-6 h-6 text-primary-foreground" />
+                      <Phone className="w-6 h-6 text-primary-foreground" aria-hidden="true" />
                     </div>
                     <div>
                       <div className="font-semibold text-primary">{t('contact.callText')}</div>
-                      <a href="tel:7187175210" className="text-lg text-foreground hover:text-primary transition-smooth">
+                      <a 
+                        href="tel:7187175210" 
+                        className="text-lg text-foreground hover:text-primary transition-smooth"
+                        itemProp="telephone"
+                        aria-label="Call Henry Yue at (718) 717-5210"
+                      >
                         (718) 717-5210
                       </a>
                     </div>
@@ -88,24 +99,29 @@ Message: ${formData.message}`;
                   
                   <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg">
                     <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center">
-                      <Mail className="w-6 h-6 text-primary-foreground" />
+                      <Mail className="w-6 h-6 text-primary-foreground" aria-hidden="true" />
                     </div>
                     <div>
                       <div className="font-semibold text-primary">{t('contact.email')}</div>
-                       <EmailObfuscator user="forangh" domain="gmail" tld="com" className="text-lg text-foreground hover:text-primary transition-smooth" />
+                       <EmailObfuscator 
+                        user="forangh" 
+                        domain="gmail" 
+                        tld="com" 
+                        className="text-lg text-foreground hover:text-primary transition-smooth" 
+                      />
                     </div>
                   </div>
                   
                   <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg">
                     <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center">
-                      <MapPin className="w-6 h-6 text-primary-foreground" />
+                      <MapPin className="w-6 h-6 text-primary-foreground" aria-hidden="true" />
                     </div>
                     <div>
                       <div className="font-semibold text-primary">{t('contact.serviceAreas')}</div>
-                      <div className="text-lg text-foreground">Queens • Long Island • New York State</div>
+                      <div className="text-lg text-foreground" itemProp="areaServed">Queens • Long Island • New York State</div>
                     </div>
                   </div>
-                </div>
+                </address>
                 
                 <div className="pt-4">
                   <h4 className="font-semibold text-primary mb-3">{t('contact.bestTimes')}</h4>
@@ -117,7 +133,7 @@ Message: ${formData.message}`;
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </aside>
           
           {/* Contact Form */}
           <Card className="shadow-card bg-card/80 backdrop-blur-sm">
@@ -125,11 +141,16 @@ Message: ${formData.message}`;
               <CardTitle className="text-2xl text-primary">{t('contact.sendMessage')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form 
+                onSubmit={handleSubmit} 
+                className="space-y-6"
+                noValidate
+                aria-label="Contact Henry Yue Real Estate Form"
+              >
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium text-foreground">
-                      {t('contact.fullName')}
+                      {t('contact.fullName')} <span className="text-destructive" aria-label="required">*</span>
                     </label>
                     <Input
                       id="name"
@@ -138,6 +159,8 @@ Message: ${formData.message}`;
                       onChange={handleChange}
                       required
                       className="bg-background/50"
+                      aria-describedby="name-error"
+                      autoComplete="name"
                     />
                   </div>
                   <div className="space-y-2">
@@ -151,13 +174,15 @@ Message: ${formData.message}`;
                       value={formData.phone}
                       onChange={handleChange}
                       className="bg-background/50"
+                      autoComplete="tel"
+                      aria-describedby="phone-helper"
                     />
                   </div>
                 </div>
                 
                 <div className="space-y-2">
                   <label htmlFor="email" className="text-sm font-medium text-foreground">
-                    {t('contact.emailAddress')}
+                    {t('contact.emailAddress')} <span className="text-destructive" aria-label="required">*</span>
                   </label>
                   <Input
                     id="email"
@@ -167,12 +192,14 @@ Message: ${formData.message}`;
                     onChange={handleChange}
                     required
                     className="bg-background/50"
+                    aria-describedby="email-error"
+                    autoComplete="email"
                   />
                 </div>
                 
                 <div className="space-y-2">
                   <label htmlFor="message" className="text-sm font-medium text-foreground">
-                    {t('contact.howCanHelp')}
+                    {t('contact.howCanHelp')} <span className="text-destructive" aria-label="required">*</span>
                   </label>
                   <Textarea
                     id="message"
@@ -183,10 +210,17 @@ Message: ${formData.message}`;
                     rows={5}
                     placeholder={t('contact.placeholder')}
                     className="bg-background/50"
+                    aria-describedby="message-error"
                   />
                 </div>
                 
-                <Button type="submit" variant="cta" size="lg" className="w-full text-lg py-6">
+                <Button 
+                  type="submit" 
+                  variant="cta" 
+                  size="lg" 
+                  className="w-full text-lg py-6"
+                  aria-describedby="submit-helper"
+                >
                   {t('contact.sendButton')}
                 </Button>
                 

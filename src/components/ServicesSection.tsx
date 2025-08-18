@@ -39,31 +39,40 @@ export const ServicesSection = () => {
   ];
 
   return (
-    <section id="services" className="py-20 bg-secondary/30">
+    <section 
+      id="services" 
+      className="py-20 bg-secondary/30"
+      aria-labelledby="services-heading"
+      itemScope 
+      itemType="https://schema.org/Service"
+    >
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 space-y-4">
-          <h2 className="text-4xl lg:text-5xl font-bold text-primary">
+        <header className="text-center mb-16 space-y-4">
+          <h2 id="services-heading" className="text-4xl lg:text-5xl font-bold text-primary">
             {t('services.title')}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto" itemProp="description">
             {t('services.subtitle')}
           </p>
-        </div>
+        </header>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" role="list" aria-label="Real Estate Services">
           {services.map((service, index) => (
             <Card 
               key={index} 
               className="group hover:shadow-elegant transition-smooth hover:-translate-y-1 bg-card/80 backdrop-blur-sm"
+              itemScope 
+              itemType="https://schema.org/Service"
+              role="listitem"
             >
               <CardHeader className="text-center pb-4">
                 <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-smooth">
-                  <service.icon className="w-8 h-8 text-primary-foreground" />
+                  <service.icon className="w-8 h-8 text-primary-foreground" aria-hidden="true" />
                 </div>
-                <CardTitle className="text-xl text-primary">{t(service.titleKey)}</CardTitle>
+                <CardTitle className="text-xl text-primary" itemProp="name">{t(service.titleKey)}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground text-center leading-relaxed">
+                <p className="text-muted-foreground text-center leading-relaxed" itemProp="description">
                   {t(service.descriptionKey)}
                 </p>
               </CardContent>

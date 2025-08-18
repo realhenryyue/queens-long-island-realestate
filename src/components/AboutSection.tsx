@@ -79,42 +79,48 @@ export const AboutSection = () => {
   ];
 
   return (
-    <section id="about" className="py-20 bg-background">
+    <section 
+      id="about" 
+      className="py-20 bg-background"
+      aria-labelledby="about-heading"
+      itemScope 
+      itemType="https://schema.org/Person"
+    >
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-primary">
+        <header className="text-center space-y-4 mb-16">
+          <h2 id="about-heading" className="text-4xl lg:text-5xl font-bold text-primary" itemProp="jobTitle">
             {t('about.title')}
           </h2>
-          <p className="text-xl text-muted-foreground leading-relaxed max-w-4xl mx-auto">
+          <p className="text-xl text-muted-foreground leading-relaxed max-w-4xl mx-auto" itemProp="description">
             {t('about.subtitle')}
           </p>
-        </div>
+        </header>
 
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left Column - Content */}
-          <div className="space-y-8">
+          <article className="space-y-8" itemProp="knowsAbout">
             <div className="space-y-6">
-              <div className="space-y-4">
+              <section className="space-y-4">
                 <h3 className="text-2xl font-semibold text-primary">{t('about.localExpert.title')}</h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed" itemProp="areaServed">
                   {t('about.localExpert.description')}
                 </p>
-              </div>
+              </section>
               
-              <div className="space-y-4">
+              <section className="space-y-4">
                 <h3 className="text-2xl font-semibold text-primary">{t('about.bilingual.title')}</h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed" itemProp="knowsLanguage">
                   {t('about.bilingual.description')}
                 </p>
-              </div>
+              </section>
 
-              <div className="space-y-4">
+              <section className="space-y-4">
                 <h3 className="text-2xl font-semibold text-primary">{t('about.experience.title')}</h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed" itemProp="workLocation">
                   {t('about.experience.description')}
                 </p>
-              </div>
+              </section>
             </div>
             
             <div className="pt-4">
@@ -127,63 +133,74 @@ export const AboutSection = () => {
                 {t('about.cta')}
               </Button>
             </div>
-          </div>
+          </article>
           
           {/* Right Column - Stats */}
-          <div className="grid grid-cols-2 gap-6 mb-8">
+          <aside className="grid grid-cols-2 gap-6 mb-8" role="complementary" aria-label="Professional Statistics">
             {stats.map((stat, index) => (
-              <Card key={index} className="text-center p-6 hover:shadow-card transition-smooth bg-gradient-to-br from-card to-secondary/30">
+              <Card 
+                key={index} 
+                className="text-center p-6 hover:shadow-card transition-smooth bg-gradient-to-br from-card to-secondary/30"
+                itemScope 
+                itemType="https://schema.org/QuantitativeValue"
+              >
                 <CardContent className="space-y-4 p-0">
                   <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center mx-auto">
-                    <stat.icon className="w-6 h-6 text-primary-foreground" />
+                    <stat.icon className="w-6 h-6 text-primary-foreground" aria-hidden="true" />
                   </div>
                   <div className="space-y-2">
-                    <div className="text-3xl font-bold text-primary">{stat.value}</div>
-                    <div className="text-lg font-semibold text-foreground">{stat.label}</div>
-                    <div className="text-sm text-muted-foreground">{stat.description}</div>
+                    <div className="text-3xl font-bold text-primary" itemProp="value">{stat.value}</div>
+                    <div className="text-lg font-semibold text-foreground" itemProp="name">{stat.label}</div>
+                    <div className="text-sm text-muted-foreground" itemProp="description">{stat.description}</div>
                   </div>
                 </CardContent>
               </Card>
             ))}
-          </div>
+          </aside>
         </div>
 
         {/* Work Experience Section */}
-        <div className="mt-20">
+        <section className="mt-20" itemScope itemType="https://schema.org/EmploymentHistory">
           <h3 className="text-3xl font-bold text-primary text-center mb-12">{t('experience.title')}</h3>
-          <div className="space-y-6">
+          <div className="space-y-6" role="list" aria-label="Work Experience">
             {workExperience.map((job, index) => (
-              <Card key={index} className="p-6 hover:shadow-card transition-smooth">
+              <Card 
+                key={index} 
+                className="p-6 hover:shadow-card transition-smooth"
+                itemScope 
+                itemType="https://schema.org/WorkExperience"
+                role="listitem"
+              >
                 <CardContent className="p-0">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                     <div className="flex-1">
-                      <h4 className="text-lg font-semibold text-primary mb-2">
+                      <h4 className="text-lg font-semibold text-primary mb-2" itemProp="jobTitle">
                         {t(job.titleKey)}
                       </h4>
                       <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {t(job.periodKey)}
+                          <Calendar className="w-4 h-4" aria-hidden="true" />
+                          <time itemProp="datePosted">{t(job.periodKey)}</time>
                         </div>
                         <div className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          {t(job.locationKey)}
+                          <MapPin className="w-4 h-4" aria-hidden="true" />
+                          <span itemProp="jobLocation">{t(job.locationKey)}</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Building className="w-4 h-4" />
-                          {t(job.typeKey)}
+                          <Building className="w-4 h-4" aria-hidden="true" />
+                          <span itemProp="hiringOrganization">{t(job.typeKey)}</span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed" itemProp="description">
                     {t(job.descriptionKey)}
                   </p>
                 </CardContent>
               </Card>
             ))}
           </div>
-        </div>
+        </section>
       </div>
     </section>
   );
