@@ -159,7 +159,7 @@ Message: ${formData.message}`;
                       onChange={handleChange}
                       required
                       className="bg-background/50"
-                      aria-describedby="name-error"
+                      aria-describedby={formData.name ? undefined : "name-error"}
                       autoComplete="name"
                     />
                   </div>
@@ -192,7 +192,7 @@ Message: ${formData.message}`;
                     onChange={handleChange}
                     required
                     className="bg-background/50"
-                    aria-describedby="email-error"
+                    aria-describedby={formData.email ? undefined : "email-error"}
                     autoComplete="email"
                   />
                 </div>
@@ -210,7 +210,7 @@ Message: ${formData.message}`;
                     rows={5}
                     placeholder={t('contact.placeholder')}
                     className="bg-background/50"
-                    aria-describedby="message-error"
+                    aria-describedby={formData.message ? undefined : "message-error"}
                   />
                 </div>
                 

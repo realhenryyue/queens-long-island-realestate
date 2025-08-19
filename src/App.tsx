@@ -5,34 +5,37 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 const App = () => (
-  <TooltipProvider>
-    <Toaster />
-    <Sonner />
-    <BrowserRouter>
-      <Routes>
-        {/* Default redirect to English */}
-        <Route path="/" element={<Navigate to="/en" replace />} />
-        
-        {/* Language-specific routes */}
-        <Route path="/en/*" element={
-          <LanguageProvider defaultLanguage="en">
-            <Index />
-          </LanguageProvider>
-        } />
-        
-        <Route path="/zh/*" element={
-          <LanguageProvider defaultLanguage="zh">
-            <Index />
-          </LanguageProvider>
-        } />
-        
-        {/* Catch-all for 404 */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
-  </TooltipProvider>
+  <ErrorBoundary>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          {/* Default redirect to English */}
+          <Route path="/" element={<Navigate to="/en" replace />} />
+          
+          {/* Language-specific routes */}
+          <Route path="/en/*" element={
+            <LanguageProvider defaultLanguage="en">
+              <Index />
+            </LanguageProvider>
+          } />
+          
+          <Route path="/zh/*" element={
+            <LanguageProvider defaultLanguage="zh">
+              <Index />
+            </LanguageProvider>
+          } />
+          
+          {/* Catch-all for 404 */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </ErrorBoundary>
 );
 
 export default App;

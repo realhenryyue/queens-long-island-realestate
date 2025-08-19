@@ -520,10 +520,17 @@ const ROICalculator = () => {
 
     } catch (error) {
       console.error('PDF export error:', error);
-      alert(currentLanguage === 'zh' ? 
+      // Show user-friendly error message
+      const errorMessage = currentLanguage === 'zh' ? 
         'PDF生成失败，请重试。如问题持续，请联系技术支持。' : 
-        'PDF generation failed. Please try again. If the problem persists, contact technical support.'
-      );
+        'PDF generation failed. Please try again. If the problem persists, contact technical support.';
+      
+      // Create toast notification instead of alert
+      if (typeof window !== 'undefined' && 'toastr' in window) {
+        (window as any).toastr.error(errorMessage);
+      } else {
+        alert(errorMessage);
+      }
     }
   };
 
