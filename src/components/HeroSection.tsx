@@ -37,6 +37,23 @@ export const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
       </div>
       
+      {/* Logo */}
+      <div className="absolute top-4 left-4 z-20">
+        <div className="flex items-center">
+          <img 
+            src="/lovable-uploads/5ace8523-a3cd-4aab-a48e-4cc11f6b3a35.png"
+            alt={currentLanguage === 'zh' ? 'RealHenryYue - NYC房产投资专家' : 'RealHenryYue - NYC Real Estate Investment Expert'}
+            className="h-8 w-auto lg:h-10 object-contain drop-shadow-lg"
+            width="200"
+            height="40"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            itemProp="logo"
+          />
+        </div>
+      </div>
+
       {/* Language Toggle */}
       <div className="absolute top-4 right-4 z-20">
         <LanguageToggle />
