@@ -960,26 +960,6 @@ const ROICalculator = () => {
             )}
           </div>
 
-          {/* Disclaimer Section */}
-          <div className="bg-gradient-to-r from-amber-50 to-amber-100 border border-amber-200 rounded-lg p-4 shadow-sm">
-            <div className="flex items-start gap-2">
-              <div className="w-5 h-5 bg-amber-200 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span className="text-amber-700 text-xs font-bold">!</span>
-              </div>
-              <div className="flex-1">
-                <h4 className="text-base font-semibold text-amber-800 mb-2">
-                  {currentLanguage === 'zh' ? '免责声明' : 'Disclaimer'}
-                </h4>
-                <p className="text-amber-700 text-xs leading-relaxed">
-                  {currentLanguage === 'zh' ? 
-                    '此AI工具仅供参考，不构成投资建议。实际收益因市场变化而异。投资前请咨询专业人士。Henry Yue及E REALTY INTERNATIONAL CORP.不保证信息准确性。' :
-                    'This AI tool is for reference only and does not constitute investment advice. Actual returns vary with market conditions. Consult professionals before investing. Henry Yue and E REALTY INTERNATIONAL CORP. do not guarantee information accuracy.'
-                  }
-                </p>
-              </div>
-            </div>
-          </div>
-
           {/* Export to PDF Button */}
           <div className="flex justify-center">
             <Button 

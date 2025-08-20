@@ -37,6 +37,23 @@ export const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
       </div>
       
+      {/* Logo */}
+      <div className="absolute top-4 left-4 z-20">
+        <div className="flex items-center">
+          <img 
+            src="/lovable-uploads/5ace8523-a3cd-4aab-a48e-4cc11f6b3a35.png"
+            alt={currentLanguage === 'zh' ? 'RealHenryYue - NYC房产投资专家' : 'RealHenryYue - NYC Real Estate Investment Expert'}
+            className="h-8 w-auto lg:h-10 object-contain drop-shadow-lg"
+            width="200"
+            height="40"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            itemProp="logo"
+          />
+        </div>
+      </div>
+
       {/* Language Toggle */}
       <div className="absolute top-4 right-4 z-20">
         <LanguageToggle />
@@ -162,28 +179,14 @@ export const HeroSection = () => {
                     {t('hero.agentTitle')}
                   </p>
                   
-                  {/* Google Business Profile Link */}
-                  <div className="flex justify-center">
-                    <a 
-                      href="https://www.google.com/maps/place/Hongyu(Henry)+Yue/@40.8193196,-73.0576455,8z/data=!4m6!3m5!1s0x8a8315272881ebe9:0x7c39536f08d6a820!8m2!3d40.8193196!4d-73.0576455!16s%2Fg%2F11xsfg045t" 
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 active:scale-95 w-full max-w-[280px]"
-                      aria-label={currentLanguage === 'zh' ? '查看我们的Google商业档案' : 'View Our Google Business Profile'}
-                    >
-                      <img 
-                        src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" 
-                        alt="Google" 
-                        className="w-5 h-5 mr-2 flex-shrink-0"
-                        width={20}
-                        height={20}
-                        loading="lazy"
-                      />
-                      <Star className="h-4 w-4 mr-1 text-yellow-400" aria-hidden="true" />
-                      <span className="text-sm">
-                        {currentLanguage === 'zh' ? '查看Google档案' : 'View Google Profile'}
-                      </span>
-                    </a>
+                  {/* Rating display for trustworthiness */}
+                  <div className="flex justify-center items-center gap-2 text-accent">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-current" aria-hidden="true" />
+                    ))}
+                    <span className="text-primary/80 ml-2 text-sm font-medium">
+                      {currentLanguage === 'zh' ? '5.0 星评级' : '5.0 Star Rating'}
+                    </span>
                   </div>
                 </div>
                 
