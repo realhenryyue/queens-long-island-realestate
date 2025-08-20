@@ -960,6 +960,28 @@ const ROICalculator = () => {
             )}
           </div>
 
+          {/* Disclaimer Section */}
+          <div className="bg-gradient-to-r from-slate-50 to-slate-100 border border-slate-200 rounded-xl p-6 shadow-sm">
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg className="w-3 h-3 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h4 className="text-lg font-semibold text-slate-800 mb-3">
+                  {currentLanguage === 'zh' ? '重要声明' : 'Important Disclaimer'}
+                </h4>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  {currentLanguage === 'zh' ? 
+                    'AI房产投资ROI工具仅提供预估信息，仅供参考。不构成财务、投资或法律建议。实际房产价值、租金收入、费用和回报可能因市场状况、融资条款、物业管理成本和其他因素而有所不同。用户应进行自己的尽职调查，并在做出任何房地产投资决策之前咨询持牌专业人士。Henry Yue和E REALTY INTERNATIONAL CORP. 不保证所提供信息的准确性或完整性。' :
+                    'The AI ROI Property Investment Tool provides estimated information for informational purposes only. It does not constitute financial, investment, or legal advice. Actual property values, rental income, expenses, and returns may vary due to market conditions, financing terms, property management costs, and other factors. Users should perform their own due diligence and consult licensed professionals before making any real estate investment decisions. Henry Yue and E REALTY INTERNATIONAL CORP. make no guarantees regarding the accuracy or completeness of the information provided.'
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Export to PDF Button */}
           <div className="flex justify-center">
             <Button 
