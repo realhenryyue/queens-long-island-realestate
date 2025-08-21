@@ -162,14 +162,27 @@ export const HeroSection = () => {
                     {t('hero.agentTitle')}
                   </p>
                   
-                  {/* Rating display for trustworthiness */}
-                  <div className="flex justify-center items-center gap-2 text-accent">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-current" aria-hidden="true" />
-                    ))}
-                    <span className="text-primary/80 ml-2 text-sm font-medium">
-                      {currentLanguage === 'zh' ? '5.0 星评级' : '5.0 Star Rating'}
-                    </span>
+                  {/* Google Business Profile Link */}
+                  <div className="flex justify-center">
+                    <a 
+                      href="https://www.google.com/maps/place/Hongyu(Henry)+Yue/@40.8193196,-73.0576455,8z/data=!4m6!3m5!1s0x8a8315272881ebe9:0x7c39536f08d6a820!8m2!3d40.8193196!4d-73.0576455!16s%2Fg%2F11xsfg045t"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center px-4 py-2 bg-[#4285F4] hover:bg-[#5a95f5] text-white text-sm font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-95 max-w-[280px] w-full"
+                      aria-label={currentLanguage === 'zh' ? '查看我们的Google商业档案' : 'View Our Google Business Profile'}
+                    >
+                      <img 
+                        src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" 
+                        alt="Google" 
+                        className="w-4 h-4 mr-2 flex-shrink-0"
+                        width={16}
+                        height={16}
+                        loading="lazy"
+                      />
+                      <span className="truncate">
+                        ⭐ {currentLanguage === 'zh' ? 'Google商业档案' : 'Google Business Profile'}
+                      </span>
+                    </a>
                   </div>
                 </div>
                 
