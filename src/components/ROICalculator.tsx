@@ -10,6 +10,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Plot from 'react-plotly.js';
+import { EnhancedCapRateDisplay } from '@/components/EnhancedCapRateDisplay';
 
 const ROICalculator = () => {
   const { t, currentLanguage } = useLanguage();
@@ -840,13 +841,14 @@ const ROICalculator = () => {
                     {currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash ROI'}
                   </p>
                 </div>
-                <div className="text-center p-3 bg-background rounded border">
-                  <div className="text-2xl font-bold text-secondary">
-                    {formatPercent(results.capRate)}
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    {currentLanguage === 'zh' ? '资本化率' : 'Cap Rate'}
-                  </p>
+                {/* Enhanced Cap Rate Display */}
+                <div className="md:col-span-1">
+                  <EnhancedCapRateDisplay 
+                    capRate={results.capRate} 
+                    isHighlighted={true}
+                    size="large"
+                    showBenchmark={true}
+                  />
                 </div>
               </div>
 
