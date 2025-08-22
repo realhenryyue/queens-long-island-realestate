@@ -6,8 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Calculator, DollarSign, TrendingUp, Home, Percent, Download, MapPin, BarChart3, AlertTriangle, Star } from 'lucide-react';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import html2pdf from 'html2pdf.js';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Plot from 'react-plotly.js';
 import { EnhancedCapRateDisplay } from '@/components/EnhancedCapRateDisplay';
@@ -51,6 +50,26 @@ const ROICalculator = () => {
     confidence_interval: { lower: 0, upper: 0 },
     mean_roi: 0
   });
+
+  // Utility functions
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(value);
+  };
+
+  const formatPercent = (value: number) => {
+    return `${value.toFixed(2)}%`;
+  };
+
+  const getROIColor = (roi: number) => {
+    if (roi >= 8) return 'text-green-600';
+    if (roi >= 4) return 'text-yellow-600';
+    return 'text-red-600';
+  };
 
   const regions = [
     { id: 'queens', name: currentLanguage === 'zh' ? '皇后区' : 'Queens', active: true, medianROI: 8.2, medianPrice: 720000, medianRent: 2850 },
@@ -279,7 +298,7 @@ const ROICalculator = () => {
           <div style="font-family: ${currentLanguage === 'zh' ? 
             'PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimHei, sans-serif' : 
             'Arial, Helvetica, sans-serif'}; 
-            padding: 40px; background: white; color: #000; line-height: 1.6; font-size: 14px;">
+            padding: 40px; background: #ffffff !important; color: #000000 !important; line-height: 1.6; font-size: 14px;">
             
             <!-- Header Section -->
             <div style="border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px;">
@@ -302,19 +321,19 @@ const ROICalculator = () => {
               <div style="background: #f8fafc; padding: 25px; border-radius: 10px; border: 1px solid #e2e8f0;">
                 <div style="margin-bottom: 12px;">
                   <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '投资评级' : 'Investment Rating'}:</span>
-                  <span style="font-size: 16px; color: #dc2626; font-weight: 600;"> ${results.investmentRating}/5 ${Array(results.investmentRating).fill('★').join('')}</span>
+                  <span style="font-size: 20px; color: #dc2626; font-weight: 700;"> ${results.investmentRating}/5 ${Array(results.investmentRating).fill('★').join('')}</span>
                 </div>
                 <div style="margin-bottom: 12px;">
                   <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '投资信号' : 'Investment Signal'}:</span>
-                  <span style="font-size: 16px; color: ${results.investmentSignal === 'BUY' ? '#059669' : results.investmentSignal === 'WAIT' ? '#d97706' : '#dc2626'}; font-weight: 700;"> ${results.investmentSignal}</span>
+                  <span style="font-size: 18px; color: ${results.investmentSignal === 'BUY' ? '#059669' : results.investmentSignal === 'WAIT' ? '#d97706' : '#dc2626'}; font-weight: 700;"> ${results.investmentSignal}</span>
                 </div>
                 <div style="margin-bottom: 12px;">
                   <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash ROI'}:</span>
-                  <span style="font-size: 16px; color: #059669; font-weight: 600;"> ${formatPercent(results.cashOnCashReturn)}</span>
+                  <span style="font-size: 20px; color: #059669; font-weight: 700;"> ${formatPercent(results.cashOnCashReturn)}</span>
                 </div>
                 <div style="margin-bottom: 0;">
                   <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '资本化率' : 'Cap Rate'}:</span>
-                  <span style="font-size: 16px; color: #059669; font-weight: 600;"> ${formatPercent(results.capRate)}</span>
+                  <span style="font-size: 20px; color: #059669; font-weight: 700;"> ${formatPercent(results.capRate)}</span>
                 </div>
               </div>
             </div>
@@ -325,7 +344,7 @@ const ROICalculator = () => {
                 ${currentLanguage === 'zh' ? '关键财务指标' : 'Key Financial Metrics'}
               </h3>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div style="background: #fefefe; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                <div style="background: #ffffff; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0;">
                   <div style="margin-bottom: 15px;">
                     <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '购买价格' : 'Purchase Price'}</div>
                     <div style="font-size: 18px; color: #059669; font-weight: 600;">${formatCurrency(parseFloat(inputs.purchasePrice))}</div>
@@ -339,7 +358,7 @@ const ROICalculator = () => {
                     <div style="font-size: 18px; color: #059669; font-weight: 600;">${formatCurrency(parseFloat(inputs.monthlyRent))}</div>
                   </div>
                 </div>
-                <div style="background: #fefefe; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                <div style="background: #ffffff; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0;">
                   <div style="margin-bottom: 15px;">
                     <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '年现金流' : 'Annual Cash Flow'}</div>
                     <div style="font-size: 18px; color: ${results.annualCashFlow >= 0 ? '#059669' : '#dc2626'}; font-weight: 600;">${formatCurrency(results.annualCashFlow)}</div>
@@ -367,191 +386,81 @@ const ROICalculator = () => {
                   <span style="font-size: 16px; color: #92400e; font-weight: 600;"> ${formatPercent(monteCarloResults.mean_roi)}</span>
                 </div>
                 <div style="margin-bottom: 15px;">
-                  <span style="font-weight: 700; color: #92400e;">${currentLanguage === 'zh' ? '回报率区间范围' : 'ROI Range'}:</span>
+                  <span style="font-weight: 700; color: #92400e;">${currentLanguage === 'zh' ? '90% 置信区间' : '90% Confidence Interval'}:</span>
                   <span style="font-size: 16px; color: #92400e; font-weight: 600;"> ${formatPercent(monteCarloResults.confidence_interval.lower)} - ${formatPercent(monteCarloResults.confidence_interval.upper)}</span>
                 </div>
-                <div style="margin-bottom: 0;">
-                  <span style="font-weight: 700; color: #92400e;">${currentLanguage === 'zh' ? '投资建议' : 'Investment Recommendation'}:</span>
-                  <span style="font-size: 16px; color: #92400e; font-weight: 600;"> ${currentLanguage === 'zh' ? 
-                    (results.investmentSignal === 'BUY' ? '建议购买' : results.investmentSignal === 'WAIT' ? '建议观望' : '不建议购买') :
-                    results.investmentSignal}</span>
+              </div>
+            </div>
+
+            <!-- Professional Contact Section -->
+            <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e5e7eb;">
+              <h3 style="color: #2563eb; font-size: 20px; margin: 0 0 15px 0; font-weight: 700;">
+                ${currentLanguage === 'zh' ? '专业房地产投资咨询' : 'Professional Real Estate Investment Consultation'}
+              </h3>
+              <div style="background: #eff6ff; padding: 25px; border-radius: 10px; border-left: 5px solid #2563eb;">
+                <p style="margin: 0 0 15px 0; font-size: 16px; color: #1e40af; font-weight: 600;">
+                  ${currentLanguage === 'zh' ? '岳泓宇 (Henry Yue) - 专业房地产投资分析师' : 'Hongyu (Henry) Yue - Professional Real Estate Investment Analyst'}
+                </p>
+                <div style="font-size: 14px; color: #1f2937; line-height: 1.8;">
+                  <div><strong>${currentLanguage === 'zh' ? '电话' : 'Phone'}:</strong> 718-717-5210</div>
+                  <div><strong>${currentLanguage === 'zh' ? '邮箱' : 'Email'}:</strong> forangh@gmail.com</div>
+                  <div><strong>${currentLanguage === 'zh' ? '网站' : 'Website'}:</strong> realhenryyue.com</div>
                 </div>
               </div>
             </div>
 
-            <!-- Property Details Section -->
-            <div style="margin-bottom: 35px;">
-              <h3 style="color: #1f2937; font-size: 18px; margin: 0 0 15px 0; border-left: 5px solid #2563eb; padding-left: 12px; font-weight: 700;">
-                ${currentLanguage === 'zh' ? '房产详细信息' : 'Property Details'}
-              </h3>
-              <div style="background: #f1f5f9; padding: 25px; border-radius: 10px; border: 1px solid #cbd5e1;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                  <div>
-                    <div style="margin-bottom: 12px;">
-                      <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '地区' : 'Region'}:</span>
-                      <span style="color: #1f2937; font-weight: 500;"> ${regions.find(r => r.id === selectedRegion)?.name || 'Queens'}</span>
-                    </div>
-                    <div style="margin-bottom: 12px;">
-                      <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '首付比例' : 'Down Payment'}:</span>
-                      <span style="color: #1f2937; font-weight: 500;"> ${inputs.downPaymentPercent}%</span>
-                    </div>
-                    <div style="margin-bottom: 12px;">
-                      <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '贷款利率' : 'Interest Rate'}:</span>
-                      <span style="color: #1f2937; font-weight: 500;"> ${inputs.loanInterestRate}%</span>
-                    </div>
-                  </div>
-                  <div>
-                    <div style="margin-bottom: 12px;">
-                      <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '月费用' : 'Monthly Expenses'}:</span>
-                      <span style="color: #1f2937; font-weight: 500;"> ${formatCurrency(parseFloat(inputs.monthlyExpenses))}</span>
-                    </div>
-                    <div style="margin-bottom: 12px;">
-                      <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '空置率' : 'Vacancy Rate'}:</span>
-                      <span style="color: #1f2937; font-weight: 500;"> ${inputs.vacancyRate}%</span>
-                    </div>
-                    <div style="margin-bottom: 12px;">
-                      <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '升值率' : 'Appreciation Rate'}:</span>
-                      <span style="color: #1f2937; font-weight: 500;"> ${inputs.appreciationRate}%</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Footer/Disclaimer Section -->
-            <div style="margin-top: 50px; padding-top: 25px; border-top: 2px solid #e5e7eb;">
-              <h3 style="color: #dc2626; font-size: 16px; margin: 0 0 15px 0; font-weight: 700;">
-                ${currentLanguage === 'zh' ? '重要免责声明' : 'Important Disclaimer'}
-              </h3>
-              <div style="background: #fef2f2; padding: 20px; border-radius: 8px; border-left: 4px solid #dc2626;">
-                <p style="font-size: 13px; color: #374151; line-height: 1.7; margin: 0; font-weight: 500;">
-                  ${currentLanguage === 'zh' ? 
-                    '本分析报告基于提供的数据和当前市场假设进行计算。实际投资结果可能因市场波动、政策变化、空置率变动、维修费用、管理成本等多种因素而有所不同。过往业绩不代表未来回报。房地产投资存在风险，包括但不限于市场价值下跌、流动性风险、利率变化等。投资者应根据自身财务状况和风险承受能力谨慎决策，建议在投资前咨询专业财务顾问。' :
-                    'This analysis report is based on provided data and current market assumptions. Actual investment results may vary due to market volatility, policy changes, vacancy rate fluctuations, repair costs, management expenses, and other factors. Past performance does not guarantee future returns. Real estate investment involves risks including but not limited to market value decline, liquidity risks, and interest rate changes. Investors should make decisions based on their financial situation and risk tolerance, and are advised to consult professional financial advisors before investing.'}
-                </p>
-              </div>
-              <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #d1d5db;">
-                <p style="font-size: 12px; color: #6b7280; margin: 0; font-weight: 500;">
-                  ${currentLanguage === 'zh' ? 
-                    '报告生成时间: ' + new Date().toLocaleDateString('zh-CN') + ' | 专业房地产投资分析师: Henry Yue' :
-                    'Report Generated: ' + new Date().toLocaleDateString('en-US') + ' | Professional Real Estate Investment Analyst: Henry Yue'}
-                </p>
-              </div>
+            <!-- Disclaimer -->
+            <div style="margin-top: 30px; padding: 15px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+              <p style="font-size: 12px; color: #6b7280; margin: 0; text-align: center; line-height: 1.5;">
+                ${currentLanguage === 'zh' ? 
+                  '免责声明：此工具仅供参考，不构成投资建议。请独立验证并咨询专业人士。' : 
+                  'Disclaimer: This tool is for informational purposes only and does not constitute investment advice. Please verify independently and consult professionals.'}
+              </p>
             </div>
           </div>
         `;
       };
 
-      // Create a temporary container for PDF generation
+      // Create temporary container
       const tempContainer = document.createElement('div');
-      tempContainer.style.cssText = `
-        position: absolute;
-        top: -10000px;
-        left: -10000px;
-        width: 794px;
-        background: white;
-        z-index: -1;
-      `;
       tempContainer.innerHTML = createPDFContent();
+      tempContainer.style.position = 'fixed';
+      tempContainer.style.left = '-9999px';
+      tempContainer.style.top = '0';
+      tempContainer.style.width = '210mm';
+      tempContainer.style.background = '#ffffff';
       document.body.appendChild(tempContainer);
 
-      // Wait for content to render
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // Generate canvas from the content
-      const canvas = await html2canvas(tempContainer, {
-        scale: 3,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#ffffff',
-        width: 794,
-        height: tempContainer.scrollHeight,
-        foreignObjectRendering: true,
-        logging: false
-      });
-
-      // Remove temporary container
-      document.body.removeChild(tempContainer);
-
-      // Create and save PDF
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-        compress: true
-      });
-
-      const imgData = canvas.toDataURL('image/jpeg', 0.95);
-      const imgWidth = 210; // A4 width in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      // Handle multi-page PDF if content is long
-      if (imgHeight > 297) { // A4 height in mm
-        let position = 0;
-        const pageHeight = 297;
-        
-        while (position < imgHeight) {
-          if (position > 0) {
-            pdf.addPage();
-          }
-          
-          pdf.addImage(
-            imgData,
-            'JPEG',
-            0,
-            -position,
-            imgWidth,
-            imgHeight,
-            undefined,
-            'FAST'
-          );
-          
-          position += pageHeight;
+      // Configure html2pdf with proper settings
+      const options = {
+        margin: [10, 10, 10, 10],
+        filename: `${currentLanguage === 'zh' ? 'NYC房地产投资分析报告' : 'NYC_Real_Estate_Investment_Analysis'}_${new Date().toISOString().split('T')[0]}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2, 
+          useCORS: true, 
+          backgroundColor: '#FFFFFF',
+          logging: false,
+          letterRendering: true
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait',
+          compress: true
         }
-      } else {
-        pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
-      }
+      };
 
-      // Generate filename based on language and region
-      const filename = currentLanguage === 'zh' ? 
-        `NYC房产投资分析报告-${regions.find(r => r.id === selectedRegion)?.name || '皇后区'}-${Date.now()}.pdf` :
-        `NYC-Real-Estate-Investment-Analysis-${selectedRegion}-${Date.now()}.pdf`;
+      // Generate and download PDF
+      await html2pdf().from(tempContainer).set(options).save();
 
-      pdf.save(filename);
+      // Clean up
+      document.body.removeChild(tempContainer);
 
     } catch (error) {
       console.error('PDF export error:', error);
-      // Show user-friendly error message
-      const errorMessage = currentLanguage === 'zh' ? 
-        'PDF生成失败，请重试。如问题持续，请联系技术支持。' : 
-        'PDF generation failed. Please try again. If the problem persists, contact technical support.';
-      
-      // Create toast notification instead of alert
-      if (typeof window !== 'undefined' && 'toastr' in window) {
-        (window as any).toastr.error(errorMessage);
-      } else {
-        alert(errorMessage);
-      }
+      alert(currentLanguage === 'zh' ? 'PDF 导出失败，请重试' : 'PDF export failed, please try again');
     }
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
-
-  const formatPercent = (percent: number) => {
-    return `${percent.toFixed(2)}%`;
-  };
-
-  const getROIColor = (roi: number) => {
-    if (roi >= 15) return 'text-green-600';
-    if (roi >= 8) return 'text-yellow-600';
-    return 'text-red-600';
   };
 
   const presetScenarios = [
@@ -814,35 +723,45 @@ const ROICalculator = () => {
             
             <CardContent className="p-0 space-y-6">
               {/* Investment Rating */}
-              <div className="text-center p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg">
-                <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="text-center p-6 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg mb-8">
+                <div className="flex items-center justify-center gap-2 mb-3">
                   {Array.from({ length: 5 }, (_, i) => (
-                    <Star key={i} className={`h-6 w-6 ${i < results.investmentRating ? 'text-yellow-500 fill-current' : 'text-gray-300'}`} />
+                    <Star key={i} className={`h-7 w-7 ${i < results.investmentRating ? 'text-yellow-500 fill-current' : 'text-gray-300'}`} />
                   ))}
                 </div>
-                <p className="text-lg font-semibold">
+                <p className="text-xl font-bold mb-3">
                   {currentLanguage === 'zh' ? '投资评级' : 'Investment Rating'}: {results.investmentRating}/5
                 </p>
                 <Badge 
                   variant={results.investmentSignal === 'BUY' ? 'default' : results.investmentSignal === 'WAIT' ? 'secondary' : 'destructive'}
-                  className="mt-2"
+                  className="text-base px-4 py-2 font-semibold"
                 >
                   {results.investmentSignal}
                 </Badge>
+                <p className="text-sm text-muted-foreground mt-3">
+                  {currentLanguage === 'zh' ? 
+                    '基于现金回报率、资本化率和市场分析' : 
+                    'Based on cash-on-cash return, cap rate, and market analysis'
+                  }
+                </p>
               </div>
 
-              {/* Key Metrics */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-3 bg-background rounded border">
-                  <div className="text-2xl font-bold text-primary">
+              {/* Key Metrics - Enhanced Cap Rate Display */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div className="text-center p-6 bg-background rounded-lg border shadow-sm">
+                  <div className="text-3xl font-bold text-primary mb-2">
                     {formatPercent(results.cashOnCashReturn)}
                   </div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-base font-medium text-muted-foreground">
                     {currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash ROI'}
                   </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {currentLanguage === 'zh' ? '年度现金收益率' : 'Annual Cash Return Rate'}
+                  </p>
                 </div>
+                
                 {/* Enhanced Cap Rate Display */}
-                <div className="md:col-span-1">
+                <div className="flex justify-center">
                   <EnhancedCapRateDisplay 
                     capRate={results.capRate} 
                     isHighlighted={true}
@@ -853,7 +772,7 @@ const ROICalculator = () => {
               </div>
 
               {/* Detailed Results */}
-              <div className="space-y-3">
+              <div className="space-y-4 mt-8 p-6 bg-muted/30 rounded-lg">
                 <div className="flex justify-between">
                   <span>{currentLanguage === 'zh' ? '现金投入' : 'Cash Invested'}:</span>
                   <span className="font-medium">{formatCurrency(results.cashInvested)}</span>
@@ -971,6 +890,30 @@ const ROICalculator = () => {
               <Download className="w-4 h-4 mr-2" />
               {currentLanguage === 'zh' ? '导出PDF报告' : 'Export PDF Report'}
             </Button>
+          </div>
+
+          {/* Disclaimer */}
+          <div className="mt-8 p-6 bg-muted/30 rounded-lg border border-border/50">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-muted-foreground">
+                <p className="font-medium text-foreground mb-2">
+                  {currentLanguage === 'zh' ? '免责声明' : 'Disclaimer'}
+                </p>
+                <p className="leading-relaxed">
+                  {currentLanguage === 'zh' ? 
+                    '此工具仅供参考，不构成投资建议。请独立验证并咨询专业人士。投资有风险，决策需谨慎。' : 
+                    'This tool is for informational purposes only and does not constitute investment advice. Please verify independently and consult professionals. Investment involves risks, decisions should be made carefully.'
+                  }
+                </p>
+                <p className="mt-2 text-xs text-muted-foreground/80">
+                  {currentLanguage === 'zh' ? 
+                    '数据基于输入参数和市场估算，实际结果可能有所不同。' : 
+                    'Data is based on input parameters and market estimates, actual results may vary.'
+                  }
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

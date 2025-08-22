@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { UnifiedSchema } from "@/components/UnifiedSchema";
 import { EnterpriseMetaTags } from "@/components/EnterpriseMetaTags";
 import { ComprehensiveSEOAudit } from "@/components/ComprehensiveSEOAudit";
+import { AdvancedSEOStrategy } from "@/components/AdvancedSEOStrategy";
 import { PerformanceOptimizer } from "@/components/PerformanceOptimizer";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
@@ -17,6 +18,7 @@ const Index = () => {
       {/* Enterprise-Level SEO Components - 90+ Score Compliance */}
       <UnifiedSchema />
       <EnterpriseMetaTags />
+      <AdvancedSEOStrategy page="home" />
       <PerformanceOptimizer />
       
       {/* SEO Audit Tool (Development/Admin) */}
