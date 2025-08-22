@@ -199,20 +199,9 @@ All colors MUST be HSL.
   body {
     font-size: 12pt;
     line-height: 1.5;
-    color: #000000 !important;
-    background: #ffffff !important;
+    color: #000 !important;
+    background: #fff !important;
   }
-}
-
-/* PDF export optimization */
-.pdf-export-container {
-  background: #ffffff !important;
-  color: #000000 !important;
-}
-
-.pdf-export-container * {
-  background: inherit !important;
-  color: inherit !important;
 }
 
 @layer base {
