@@ -8,7 +8,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Calculator, DollarSign, TrendingUp, Home, Percent, Download, MapPin, BarChart3, AlertTriangle, Star } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 import { useLanguage } from '@/contexts/LanguageContext';
-import Plot from 'react-plotly.js';
 import { EnhancedCapRateDisplay } from '@/components/EnhancedCapRateDisplay';
 
 const ROICalculator = () => {

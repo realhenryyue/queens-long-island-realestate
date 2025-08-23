@@ -11,6 +11,7 @@ import { PerformanceOptimizer } from "@/components/PerformanceOptimizer";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
 import BlogSection from "@/components/BlogSection";
+import SEOAuditComponent from "@/components/SEOAuditComponent";
 
 const Index = () => {
   return (
@@ -24,6 +25,7 @@ const Index = () => {
       {/* SEO Audit Tool (Development/Admin) */}
       <div id="seo-audit-section" className="hidden">
         <ComprehensiveSEOAudit />
+        <SEOAuditComponent />
       </div>
       
       <main role="main">
