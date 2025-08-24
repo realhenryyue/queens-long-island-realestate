@@ -13,10 +13,6 @@ import EnterpriseAccessibility from "@/components/EnterpriseAccessibility";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Essential optimizations only */}
-      <MobileOptimization />
-      <EnterpriseAccessibility />
-      
       {/* Essential SEO only */}
       <UnifiedSchema />
       
