@@ -11,6 +11,8 @@ import { PerformanceMonitor } from "@/components/PerformanceMonitor";
 import { AdvancedSEOOptimizer } from "@/components/AdvancedSEOOptimizer";
 import { GoogleComplianceOptimizer } from "@/components/GoogleComplianceOptimizer";
 import { SEOActionPlan } from "@/components/SEOActionPlan";
+import { MediumContentIntegration } from "@/components/MediumContentIntegration";
+import { MediumSEOStrategy } from "@/components/MediumSEOStrategy";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
 import BlogSection from "@/components/BlogSection";
@@ -28,6 +30,7 @@ const Index = () => {
       <AdvancedSEOOptimizer />
       <GoogleComplianceOptimizer />
       <SEOActionPlan />
+      <MediumSEOStrategy />
       
       {/* Skip to main content for accessibility */}
       <a 
@@ -45,6 +48,7 @@ const Index = () => {
         <MarketAnalysisHub />
         <ROICalculator />
         <BlogSection />
+        <MediumContentIntegration />
         <ContactSection />
       </main>
       
