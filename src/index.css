@@ -365,6 +365,7 @@ All colors MUST be HSL.
     -moz-user-drag: none;
     -o-user-drag: none;
     user-drag: none;
+  }
 }
 
 /* Enterprise Mobile Optimizations */
