@@ -138,15 +138,14 @@ export const HeroSection = () => {
             <Card className="p-8 bg-white/95 backdrop-blur-sm shadow-elegant max-w-sm">
               <div className="text-center space-y-6" itemScope itemType="https://schema.org/Person">
                 <div className="relative">
-                  <img 
+                   <img 
                     src={agentPhoto} 
                     alt={t('hero.agentAlt')}
                     className="w-32 h-32 rounded-full mx-auto object-cover shadow-card"
                     width={128}
                     height={128}
-                    loading="eager"
-                    fetchPriority="high"
-                    decoding="async"
+                     loading="eager"
+                     decoding="async"
                     itemProp="image"
                   />
                   <div className="absolute -bottom-2 -right-2 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
