@@ -215,12 +215,177 @@ All colors MUST be HSL.
   color: inherit !important;
 }
 
+/* Cross-browser media queries for enhanced compatibility */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  /* Safari and Chrome specific styles */
+  .webkit-only {
+    -webkit-appearance: none;
+  }
+}
+
+@media screen and (min--moz-device-pixel-ratio: 0) {
+  /* Firefox specific styles */
+  .firefox-only {
+    -moz-appearance: none;
+  }
+}
+
+/* Enhanced mobile support */
+@media screen and (max-width: 768px) {
+  html {
+    /* Better mobile viewport handling */
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+  }
+  
+  body {
+    /* Fix iOS Safari bottom bar issues */
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Fix touch issues on mobile Safari */
+  * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Allow text selection for content */
+  p, span, div, h1, h2, h3, h4, h5, h6, input, textarea {
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  body {
+    /* Fix iOS Safari viewport height issues */
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Fix iOS Safari flexbox bugs */
+  .flex {
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+}
+
+/* Enhanced dark mode support across browsers */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
+    /* Enhanced cross-browser box-sizing */
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  html {
+    /* Enhanced font rendering across browsers */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
+    
+    /* Better iOS support */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
   }
 
   body {
     @apply bg-background text-foreground;
+    
+    /* Enhanced cross-browser compatibility */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    
+    /* Fix Safari rendering issues */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    
+    /* Prevent horizontal scroll */
+    overflow-x: hidden;
+    
+    /* Better font rendering */
+    font-feature-settings: "kern" 1;
+    -webkit-font-feature-settings: "kern" 1;
+  }
+
+  /* Enhanced focus styles for accessibility */
+  *:focus {
+    outline: 2px solid hsl(var(--accent));
+    outline-offset: 2px;
+  }
+
+  /* Better button and input styling across browsers */
+  button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0;
+  }
+
+  /* Fix Safari's button styling */
+  button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: none;
+    border: none;
+  }
+
+  /* Enhanced image handling */
+  img {
+    max-width: 100%;
+    height: auto;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+  }
+
+  /* Fix Safari's flex bugs */
+  .flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  /* Enhanced grid support */
+  .grid {
+    display: -ms-grid;
+    display: grid;
+  }
+
+  /* Better transform support */
+  .transform {
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
   }
 }
