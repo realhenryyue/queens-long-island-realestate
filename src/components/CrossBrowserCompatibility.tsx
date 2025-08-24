@@ -28,15 +28,28 @@ export const CrossBrowserCompatibility = () => {
         document.documentElement.style.setProperty('--webkit-appearance', 'none');
       }
 
-      // Service Worker compatibility
+      // Enhanced Service Worker compatibility with Safari error handling
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(registrations => {
-          registrations.forEach(registration => {
-            if (registration.scope.includes(window.location.origin)) {
-              registration.update();
-            }
+        navigator.serviceWorker.getRegistrations()
+          .then(registrations => {
+            registrations.forEach(registration => {
+              try {
+                if (registration.scope.includes(window.location.origin)) {
+                  // Enhanced Safari-compatible update
+                  if (registration.update && typeof registration.update === 'function') {
+                    registration.update().catch(err => {
+                      console.warn('Service worker update failed:', err);
+                    });
+                  }
+                }
+              } catch (err) {
+                console.warn('Service worker registration check failed:', err);
+              }
+            });
+          })
+          .catch(err => {
+            console.warn('Service worker getRegistrations failed:', err);
           });
-        });
       }
     };
 
@@ -167,31 +180,70 @@ export const CrossBrowserCompatibility = () => {
         // Apply optimizations to existing elements
         document.querySelectorAll('*').forEach(optimizeElement);
         
-        // Observer for new elements
-        const observer = new MutationObserver((mutations) => {
-          mutations.forEach((mutation) => {
-            mutation.addedNodes.forEach((node) => {
-              if (node.nodeType === Node.ELEMENT_NODE) {
-                optimizeElement(node as Element);
-              }
-            });
+        // Enhanced observer for new elements with Safari error handling
+        let observer;
+        try {
+          observer = new MutationObserver((mutations) => {
+            try {
+              mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                  if (node.nodeType === Node.ELEMENT_NODE) {
+                    try {
+                      optimizeElement(node as Element);
+                    } catch (err) {
+                      console.warn('Element optimization failed:', err);
+                    }
+                  }
+                });
+              });
+            } catch (err) {
+              console.warn('Mutation processing failed:', err);
+            }
           });
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        // Safari back/forward cache fix with enhanced handling
-        window.addEventListener('pageshow', (event) => {
-          if (event.persisted) {
-            // Clear any stale states before reload
-            sessionStorage.clear();
-            window.location.reload();
+          
+          if (document.body) {
+            observer.observe(document.body, { 
+              childList: true, 
+              subtree: true,
+              attributes: false, // Reduce observer overhead
+              characterData: false
+            });
           }
-        });
+        } catch (err) {
+          console.warn('MutationObserver creation failed:', err);
+        }
 
-        // Fix Safari's aggressive memory management
-        window.addEventListener('pagehide', () => {
-          observer.disconnect();
-        });
+        // Enhanced Safari back/forward cache fix
+        const handlePageShow = (event) => {
+          try {
+            if (event.persisted) {
+              // More gentle approach - only clear specific items
+              if (sessionStorage.getItem('safari-cache-fix')) {
+                sessionStorage.removeItem('safari-cache-fix');
+              }
+              // Force re-render instead of full reload
+              document.body.style.display = 'none';
+              document.body.offsetHeight; // Trigger reflow
+              document.body.style.display = '';
+            }
+          } catch (err) {
+            console.warn('Page show handler failed:', err);
+          }
+        };
+
+        const handlePageHide = () => {
+          try {
+            if (observer) {
+              observer.disconnect();
+            }
+            sessionStorage.setItem('safari-cache-fix', 'true');
+          } catch (err) {
+            console.warn('Page hide handler failed:', err);
+          }
+        };
+
+        window.addEventListener('pageshow', handlePageShow, { passive: true });
+        window.addEventListener('pagehide', handlePageHide, { passive: true });
       }
     };
 
@@ -253,26 +305,52 @@ export const CrossBrowserCompatibility = () => {
     optimizeSafariRendering();
     initializeCrossBrowserEvents();
 
-    // Enhanced error reporting
-    window.addEventListener('error', (event) => {
-      console.error('Global error caught:', {
-        message: event.message,
-        filename: event.filename,
-        lineno: event.lineno,
-        colno: event.colno,
-        error: event.error,
-        userAgent: navigator.userAgent,
-        timestamp: new Date().toISOString()
-      });
-    });
+    // Enhanced error reporting with Safari-specific handling
+    const handleGlobalError = (event) => {
+      try {
+        // Filter out Service Worker errors that are not critical
+        if (event.message && event.message.includes('newestWorker is null')) {
+          console.warn('Service Worker update error (non-critical):', event.message);
+          return; // Don't log as error since it's handled
+        }
+        
+        console.error('Global error caught:', {
+          message: event.message,
+          filename: event.filename,
+          lineno: event.lineno,
+          colno: event.colno,
+          error: event.error,
+          userAgent: navigator.userAgent,
+          timestamp: new Date().toISOString()
+        });
+      } catch (err) {
+        console.warn('Error reporting failed:', err);
+      }
+    };
 
-    window.addEventListener('unhandledrejection', (event) => {
-      console.error('Unhandled promise rejection:', {
-        reason: event.reason,
-        userAgent: navigator.userAgent,
-        timestamp: new Date().toISOString()
-      });
-    });
+    const handleUnhandledRejection = (event) => {
+      try {
+        // Check if it's a Service Worker related error
+        const reason = event.reason;
+        if (reason && typeof reason === 'object' && reason.message && 
+            reason.message.includes('newestWorker is null')) {
+          console.warn('Service Worker promise rejection (handled):', reason.message);
+          event.preventDefault(); // Prevent default error handling
+          return;
+        }
+        
+        console.error('Unhandled promise rejection:', {
+          reason: event.reason,
+          userAgent: navigator.userAgent,
+          timestamp: new Date().toISOString()
+        });
+      } catch (err) {
+        console.warn('Promise rejection reporting failed:', err);
+      }
+    };
+
+    window.addEventListener('error', handleGlobalError, { passive: true });
+    window.addEventListener('unhandledrejection', handleUnhandledRejection, { passive: true });
 
   }, []);
 

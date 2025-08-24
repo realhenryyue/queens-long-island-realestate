@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <!-- Enhanced viewport meta tag for cross-browser compatibility -->
@@ -408,11 +408,28 @@
         document.head.appendChild(link);
       });
 
-      // Service Worker registration for caching
+      // Enhanced Service Worker registration with Safari compatibility
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').catch(() => {
-            // Silent fail if service worker is not available
+          navigator.serviceWorker.register('/sw.js', {
+            scope: '/',
+            updateViaCache: 'none' // Enhanced Safari compatibility
+          }).then(registration => {
+            console.log('Service Worker registered successfully');
+            
+            // Enhanced update handling for Safari
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              if (newWorker) {
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    console.log('New service worker available');
+                  }
+                });
+              }
+            });
+          }).catch(err => {
+            console.warn('Service Worker registration failed:', err);
           });
         });
       }

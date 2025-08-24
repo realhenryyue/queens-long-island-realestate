@@ -1,7 +1,7 @@
-// Enhanced Service Worker for Henry Yue Real Estate
-// NYC Real Estate AI Investment Analysis Expert - Enterprise Performance
+// Enhanced Service Worker for Henry Yue Real Estate - Safari Compatible
+// NYC Real Estate AI Investment Analysis Expert - Cross-Browser Performance
 
-const CACHE_NAME = 'realhenryyue-v2.1-enterprise';
+const CACHE_NAME = 'realhenryyue-v3.0-safari-fix';
 const OFFLINE_URL = '/index.html';
 
 // Critical resources for immediate caching
@@ -32,24 +32,38 @@ const EXTENDED_CACHE = [
   '/ads.txt'
 ];
 
-// Install event - cache critical resources immediately
+// Install event - cache critical resources with Safari error handling
 self.addEventListener('install', event => {
   event.waitUntil(
     Promise.all([
-      // Cache critical resources first
+      // Cache critical resources first with enhanced error handling
       caches.open(CACHE_NAME).then(cache => {
-        return cache.addAll(CRITICAL_CACHE.map(url => new Request(url, {
-          credentials: 'same-origin'
-        })));
+        return Promise.allSettled(CRITICAL_CACHE.map(url => {
+          const request = new Request(url, {
+            credentials: 'same-origin',
+            cache: 'default'
+          });
+          return cache.add(request).catch(err => {
+            console.warn(`Failed to cache ${url}:`, err);
+            return null;
+          });
+        }));
       }),
-      // Cache extended resources
+      // Cache extended resources with fallback
       caches.open(CACHE_NAME + '-extended').then(cache => {
-        return cache.addAll(EXTENDED_CACHE.map(url => new Request(url, {
-          credentials: 'same-origin'
-        })));
+        return Promise.allSettled(EXTENDED_CACHE.map(url => {
+          const request = new Request(url, {
+            credentials: 'same-origin',
+            cache: 'default'
+          });
+          return cache.add(request).catch(err => {
+            console.warn(`Failed to cache extended ${url}:`, err);
+            return null;
+          });
+        }));
       })
     ]).catch(err => {
-      console.log('Cache install failed:', err);
+      console.error('Cache install failed:', err);
     })
   );
   self.skipWaiting();
@@ -65,10 +79,11 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Safari-specific handling for navigation requests
+  // Enhanced Safari-compatible navigation handling
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      caches.match(event.request)
+      Promise.resolve()
+        .then(() => caches.match(event.request))
         .then(response => {
           if (response) {
             return response;
@@ -81,34 +96,57 @@ self.addEventListener('fetch', event => {
                 return response;
               }
               
-              // Clone and cache navigation responses
-              const responseToCache = response.clone();
-              caches.open(CACHE_NAME).then(cache => {
-                cache.put(event.request, responseToCache);
-              });
+              // Clone and cache navigation responses with Safari error handling
+              try {
+                const responseToCache = response.clone();
+                caches.open(CACHE_NAME)
+                  .then(cache => cache.put(event.request, responseToCache))
+                  .catch(err => console.warn('Cache put failed:', err));
+              } catch (err) {
+                console.warn('Response clone failed:', err);
+              }
               
               return response;
             })
-            .catch(() => {
+            .catch(err => {
+              console.warn('Navigation fetch failed:', err);
               // Fallback to offline page for navigation failures
-              return caches.match(OFFLINE_URL);
+              return caches.match(OFFLINE_URL).catch(() => {
+                // Final fallback - return basic HTML
+                return new Response('<!DOCTYPE html><html><head><title>Offline</title></head><body><h1>You are offline</h1></body></html>', {
+                  headers: { 'Content-Type': 'text/html' }
+                });
+              });
             });
+        })
+        .catch(err => {
+          console.error('Navigation handler failed:', err);
+          return new Response('<!DOCTYPE html><html><head><title>Error</title></head><body><h1>Service Worker Error</h1></body></html>', {
+            headers: { 'Content-Type': 'text/html' }
+          });
         })
     );
     return;
   }
 
-  // Standard caching strategy for other requests
+  // Enhanced Safari-compatible caching strategy for other requests
   event.respondWith(
-    caches.match(event.request)
+    Promise.resolve()
+      .then(() => caches.match(event.request))
       .then(response => {
         // Return cached version or fetch from network
         if (response) {
           return response;
         }
         
-        // Clone the request for caching
-        const fetchRequest = event.request.clone();
+        // Clone the request for caching with error handling
+        let fetchRequest;
+        try {
+          fetchRequest = event.request.clone();
+        } catch (err) {
+          console.warn('Request clone failed:', err);
+          fetchRequest = event.request;
+        }
         
         return fetch(fetchRequest)
           .then(response => {
@@ -117,50 +155,79 @@ self.addEventListener('fetch', event => {
               return response;
             }
             
-            // Clone response for caching with Safari-specific headers
-            const responseToCache = response.clone();
-            
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                // Add Safari-compatible cache headers
-                const headers = new Headers(responseToCache.headers);
-                headers.set('Cache-Control', 'public, max-age=86400');
-                
-                const modifiedResponse = new Response(responseToCache.body, {
-                  status: responseToCache.status,
-                  statusText: responseToCache.statusText,
-                  headers: headers
+            // Clone response for caching with enhanced Safari error handling
+            try {
+              const responseToCache = response.clone();
+              
+              caches.open(CACHE_NAME)
+                .then(cache => {
+                  try {
+                    // Simplified caching for better Safari compatibility
+                    cache.put(event.request, responseToCache);
+                  } catch (cacheErr) {
+                    console.warn('Cache put operation failed:', cacheErr);
+                  }
+                })
+                .catch(cacheOpenErr => {
+                  console.warn('Cache open failed:', cacheOpenErr);
                 });
-                
-                cache.put(event.request, modifiedResponse);
-              });
+            } catch (cloneErr) {
+              console.warn('Response clone failed:', cloneErr);
+            }
             
             return response;
           })
           .catch(error => {
-            console.error('Fetch failed for', event.request.url, error);
+            console.warn('Fetch failed for', event.request.url, error);
             // Return offline page for critical failures
             if (event.request.destination === 'document') {
-              return caches.match(OFFLINE_URL);
+              return caches.match(OFFLINE_URL).catch(() => {
+                return new Response('<!DOCTYPE html><html><head><title>Offline</title></head><body><h1>You are offline</h1></body></html>', {
+                  headers: { 'Content-Type': 'text/html' }
+                });
+              });
             }
-            throw error;
+            return Promise.reject(error);
           });
+      })
+      .catch(err => {
+        console.error('Cache match failed:', err);
+        return fetch(event.request).catch(() => {
+          return new Response('Network error', { status: 503 });
+        });
       })
   );
 });
 
-// Activate event - clean up old caches
+// Activate event - clean up old caches with Safari compatibility
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    Promise.resolve()
+      .then(() => caches.keys())
+      .then(cacheNames => {
+        const deletePromises = cacheNames
+          .filter(cacheName => cacheName !== CACHE_NAME && cacheName !== CACHE_NAME + '-extended')
+          .map(cacheName => {
+            console.log('Deleting old cache:', cacheName);
+            return caches.delete(cacheName).catch(err => {
+              console.warn('Failed to delete cache:', cacheName, err);
+              return false;
+            });
+          });
+        
+        return Promise.allSettled(deletePromises);
+      })
+      .then(() => {
+        // Safari-specific client claim with error handling
+        try {
+          return self.clients.claim();
+        } catch (err) {
+          console.warn('Client claim failed:', err);
+          return Promise.resolve();
+        }
+      })
+      .catch(err => {
+        console.error('Activation failed:', err);
+      })
   );
-  self.clients.claim();
 });
