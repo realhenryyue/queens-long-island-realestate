@@ -1,52 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Award, Clock, Users, Building, Calendar } from "lucide-react";
+import { MapPin, Award, Clock, Users } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
-
-const workExperience = [
-  {
-    titleKey: 'experience.realEstate1',
-    periodKey: 'experience.realEstate1.period',
-    locationKey: 'experience.realEstate1.location',
-    typeKey: 'experience.realEstate1.type',
-    descriptionKey: 'experience.realEstate1.description',
-  },
-  {
-    titleKey: 'experience.businessAgent',
-    periodKey: 'experience.businessAgent.period',
-    locationKey: 'experience.businessAgent.location',
-    typeKey: 'experience.businessAgent.type',
-    descriptionKey: 'experience.businessAgent.description',
-  },
-  {
-    titleKey: 'experience.realEstate2',
-    periodKey: 'experience.realEstate2.period',
-    locationKey: 'experience.realEstate2.location',
-    typeKey: 'experience.realEstate2.type',
-    descriptionKey: 'experience.realEstate2.description',
-  },
-  {
-    titleKey: 'experience.ceo',
-    periodKey: 'experience.ceo.period',
-    locationKey: 'experience.ceo.location',
-    typeKey: 'experience.ceo.type',
-    descriptionKey: 'experience.ceo.description',
-  },
-  {
-    titleKey: 'experience.generalManager',
-    periodKey: 'experience.generalManager.period',
-    locationKey: 'experience.generalManager.location',
-    typeKey: 'experience.generalManager.type',
-    descriptionKey: 'experience.generalManager.description',
-  },
-  {
-    titleKey: 'experience.productManager',
-    periodKey: 'experience.productManager.period',
-    locationKey: 'experience.productManager.location',
-    typeKey: 'experience.productManager.type',
-    descriptionKey: 'experience.productManager.description',
-  },
-];
 
 export const AboutSection = () => {
   const { t } = useLanguage();
@@ -158,49 +113,6 @@ export const AboutSection = () => {
             ))}
           </aside>
         </div>
-
-        {/* Work Experience Section */}
-        <section className="mt-20" itemScope itemType="https://schema.org/EmploymentHistory">
-          <h3 className="text-3xl font-bold text-primary text-center mb-12">{t('experience.title')}</h3>
-          <div className="space-y-6" role="list" aria-label="Work Experience">
-            {workExperience.map((job, index) => (
-              <Card 
-                key={index} 
-                className="p-6 hover:shadow-card transition-smooth"
-                itemScope 
-                itemType="https://schema.org/WorkExperience"
-                role="listitem"
-              >
-                <CardContent className="p-0">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                    <div className="flex-1">
-                      <h4 className="text-lg font-semibold text-primary mb-2" itemProp="jobTitle">
-                        {t(job.titleKey)}
-                      </h4>
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" aria-hidden="true" />
-                          <time itemProp="datePosted">{t(job.periodKey)}</time>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" aria-hidden="true" />
-                          <span itemProp="jobLocation">{t(job.locationKey)}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Building className="w-4 h-4" aria-hidden="true" />
-                          <span itemProp="hiringOrganization">{t(job.typeKey)}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-muted-foreground leading-relaxed" itemProp="description">
-                    {t(job.descriptionKey)}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
       </div>
     </section>
   );
