@@ -873,14 +873,21 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children, defaultLanguage }) => {
-  const [language, setLanguage] = useState<Language>(defaultLanguage);
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Determine language from URL path, fallback to defaultLanguage
+  const getLanguageFromPath = (pathname: string): Language => {
+    if (pathname.startsWith('/zh')) return 'zh';
+    if (pathname.startsWith('/en')) return 'en';
+    return defaultLanguage;
+  };
 
-  // Update language based on URL path
+  const [language, setLanguage] = useState<Language>(() => getLanguageFromPath(location.pathname));
+
+  // Update language when URL changes
   useEffect(() => {
-    const currentPath = location.pathname;
-    const langFromPath = currentPath.startsWith('/zh') ? 'zh' : 'en';
+    const langFromPath = getLanguageFromPath(location.pathname);
     if (langFromPath !== language) {
       setLanguage(langFromPath);
     }
@@ -889,11 +896,17 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children, de
   // Handle language switching with URL navigation
   const handleSetLanguage = (newLang: Language) => {
     const currentPath = location.pathname;
-    const newPath = currentPath.startsWith('/zh') 
-      ? currentPath.replace('/zh', `/${newLang}`)
-      : currentPath.startsWith('/en')
-      ? currentPath.replace('/en', `/${newLang}`)
-      : `/${newLang}`;
+    let newPath: string;
+    
+    if (currentPath === '/' || currentPath === '') {
+      newPath = `/${newLang}`;
+    } else if (currentPath.startsWith('/zh')) {
+      newPath = currentPath.replace('/zh', `/${newLang}`);
+    } else if (currentPath.startsWith('/en')) {
+      newPath = currentPath.replace('/en', `/${newLang}`);
+    } else {
+      newPath = `/${newLang}${currentPath}`;
+    }
     
     navigate(newPath, { replace: true });
   };

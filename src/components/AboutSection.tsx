@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Award, Clock, Users, Building, Calendar } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useSafeLanguage } from "@/hooks/useSafeLanguage";
 
 const workExperience = [
   {
@@ -49,7 +49,7 @@ const workExperience = [
 ];
 
 export const AboutSection = () => {
-  const { t } = useLanguage();
+  const { t } = useSafeLanguage();
   
   const stats = [
     {

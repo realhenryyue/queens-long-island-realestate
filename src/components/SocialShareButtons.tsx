@@ -1,11 +1,11 @@
 import { Share2, Facebook, MessageCircle, Twitter, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useSafeLanguage } from "@/hooks/useSafeLanguage";
 import { Share } from '@capacitor/share';
 import { Capacitor } from '@capacitor/core';
 
 export const SocialShareButtons = () => {
-  const { t } = useLanguage();
+  const { t } = useSafeLanguage();
   
   const currentUrl = "https://www.realhenryyue.com";
   const shareTitle = t('seo.shareTitle');

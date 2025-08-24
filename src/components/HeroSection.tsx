@@ -3,13 +3,13 @@ import { Card } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Star, TrendingUp, Calculator, Home } from "lucide-react";
 import agentPhoto from "@/assets/agent-photo.jpg";
 import queensSkyline from "@/assets/queens-skyline.jpg";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useSafeLanguage } from "@/hooks/useSafeLanguage";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { SocialMediaIcons } from "@/components/SocialMediaIcons";
 import EmailObfuscator from "@/components/EmailObfuscator";
 
 export const HeroSection = () => {
-  const { t, currentLanguage } = useLanguage();
+  const { t, currentLanguage } = useSafeLanguage();
 
   const handleContactClick = () => {
     const contactSection = document.getElementById('contact');

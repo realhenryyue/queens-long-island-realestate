@@ -7,11 +7,11 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Calculator, DollarSign, TrendingUp, Home, Percent, Download, MapPin, BarChart3, AlertTriangle, Star, Phone } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useSafeLanguage } from '@/hooks/useSafeLanguage';
 import { EnhancedCapRateDisplay } from '@/components/EnhancedCapRateDisplay';
 
 const ROICalculator = React.memo(() => {
-  const { t, currentLanguage } = useLanguage();
+  const { t, currentLanguage } = useSafeLanguage();
   
   // State management with proper initialization
   const [selectedRegion, setSelectedRegion] = useState('queens');
