@@ -18,17 +18,21 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* Default redirect to English */}
-            <Route path="/" element={<Navigate to="/en" replace />} />
-            
-            {/* Language-specific routes */}
-            <Route path="/en/*" element={
+            {/* Direct root route without redirect */}
+            <Route path="/" element={
               <LanguageProvider defaultLanguage="en">
                 <Index />
               </LanguageProvider>
             } />
             
-            <Route path="/zh/*" element={
+            {/* Language-specific routes */}
+            <Route path="/en" element={
+              <LanguageProvider defaultLanguage="en">
+                <Index />
+              </LanguageProvider>
+            } />
+            
+            <Route path="/zh" element={
               <LanguageProvider defaultLanguage="zh">
                 <Index />
               </LanguageProvider>
