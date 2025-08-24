@@ -4,22 +4,14 @@ import { AboutSection } from "@/components/AboutSection";
 import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
 import { UnifiedSchema } from "@/components/UnifiedSchema";
-import { EnterpriseMetaTags } from "@/components/EnterpriseMetaTags";
-import { PerformanceOptimizer } from "@/components/PerformanceOptimizer";
-import { SEOValidator } from "@/components/SEOValidator";
-import { PerformanceMonitor } from "@/components/PerformanceMonitor";
-import { AdvancedSEOOptimizer } from "@/components/AdvancedSEOOptimizer";
-import { GoogleComplianceOptimizer } from "@/components/GoogleComplianceOptimizer";
-import { SEOActionPlan } from "@/components/SEOActionPlan";
-import SimpleMediumContent from "@/components/SimpleMediumContent";
-import { MediumSEOStrategy } from "@/components/MediumSEOStrategy";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
+import SimpleMediumContent from "@/components/SimpleMediumContent";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Essential SEO only - no blocking components */}
+      {/* Essential SEO only */}
       <UnifiedSchema />
       
       {/* Skip to main content for accessibility */}

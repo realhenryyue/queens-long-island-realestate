@@ -1,24 +1,22 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { ErrorBoundary } from "./components/ErrorBoundary";
-import { CrossBrowserCompatibility } from "./components/CrossBrowserCompatibility";
 
 const App = () => (
   <HelmetProvider>
     <ErrorBoundary>
-      <CrossBrowserCompatibility />
       <TooltipProvider>
         <Toaster />
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* Direct root route without redirect */}
+            {/* Direct root route */}
             <Route path="/" element={
               <LanguageProvider defaultLanguage="en">
                 <Index />
