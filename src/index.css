@@ -112,16 +112,10 @@ All colors MUST be HSL.
 /* Background images moved from inline styles for SEO optimization */
 .hero-bg {
   background-image: url('./assets/queens-skyline.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 .roi-hero-bg {
   background-image: url('./assets/queens-skyline.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 /* Critical CSS for above-the-fold content */

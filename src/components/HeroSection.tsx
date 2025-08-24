@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Star, TrendingUp, Calculator, Home } from "lucide-react";
 import agentPhoto from "@/assets/agent-photo.jpg";
-import { useLanguage } from "@/hooks/useLanguage";
+import queensSkyline from "@/assets/queens-skyline.jpg";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { SocialMediaIcons } from "@/components/SocialMediaIcons";
 import EmailObfuscator from "@/components/EmailObfuscator";
@@ -144,6 +145,7 @@ export const HeroSection = () => {
                     width={128}
                     height={128}
                     loading="eager"
+                    fetchPriority="high"
                     decoding="async"
                     itemProp="image"
                   />

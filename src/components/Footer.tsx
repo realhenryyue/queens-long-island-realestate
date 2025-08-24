@@ -1,73 +1,129 @@
-import { useLanguage } from "@/hooks/useLanguage";
+import { Phone, Mail, MapPin } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import EmailObfuscator from "@/components/EmailObfuscator";
 
 export const Footer = () => {
-  const { currentLanguage } = useLanguage();
-
+  const { t } = useLanguage();
   return (
-    <footer className="bg-primary text-primary-foreground py-12">
+    <footer 
+      className="bg-primary text-primary-foreground py-12"
+      itemScope 
+      itemType="https://schema.org/Organization"
+      role="contentinfo"
+    >
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-4 gap-8">
           {/* Contact Info */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4">
-              {currentLanguage === 'zh' ? '岳泓宇' : 'Henry Yue'}
-            </h3>
-            <p className="mb-4">
-              {currentLanguage === 'zh' ? '持牌房地产经纪人' : 'Licensed Real Estate Agent'}
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold" itemProp="name">{t('footer.name')}</h3>
+            <p className="text-primary-foreground/80" itemProp="description">
+              {t('footer.title')}
             </p>
-            <div className="space-y-2">
-              <p>📞 (718) 717-5210</p>
-              <p>✉️ forangh@gmail.com</p>
-              <p>📍 {currentLanguage === 'zh' ? '皇后区 • 长岛 • 纽约' : 'Queens • Long Island • New York'}</p>
-            </div>
+            <address className="space-y-2 not-italic" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4" aria-hidden="true" />
+                <a 
+                  href="tel:7187175210" 
+                  className="hover:text-accent transition-smooth"
+                  itemProp="telephone"
+                  aria-label="Call Henry Yue at (718) 717-5210"
+                >
+                  (718) 717-5210
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4" aria-hidden="true" />
+                <EmailObfuscator 
+                  user="forangh" 
+                  domain="gmail" 
+                  tld="com" 
+                  className="hover:text-accent transition-smooth" 
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4" aria-hidden="true" />
+                <span itemProp="areaServed">Queens • Long Island • New York</span>
+              </div>
+            </address>
           </div>
-
+          
           {/* Services */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4">
-              {currentLanguage === 'zh' ? '服务项目' : 'Services'}
-            </h3>
-            <ul className="space-y-2">
-              <li>{currentLanguage === 'zh' ? '住宅销售' : 'Residential Sales'}</li>
-              <li>{currentLanguage === 'zh' ? '首次购房' : 'First-Time Buyers'}</li>
-              <li>{currentLanguage === 'zh' ? '投资分析' : 'Investment Analysis'}</li>
-              <li>{currentLanguage === 'zh' ? '投资房产' : 'Investment Properties'}</li>
-              <li>{currentLanguage === 'zh' ? '双语服务' : 'Bilingual Service'}</li>
+          <nav className="space-y-4" aria-label="Services Navigation">
+            <h3 className="text-xl font-semibold">{t('footer.services')}</h3>
+            <ul className="space-y-2 text-primary-foreground/80" itemProp="makesOffer" itemScope itemType="https://schema.org/Offer">
+              <li itemProp="itemOffered">{t('footer.services.residential')}</li>
+              <li itemProp="itemOffered">{t('footer.services.firstTime')}</li>
+              <li itemProp="itemOffered">{t('footer.services.analysis')}</li>
+              <li itemProp="itemOffered">{t('footer.services.management')}</li>
+              <li itemProp="itemOffered">{t('footer.services.investment')}</li>
+              <li itemProp="itemOffered">{t('footer.services.bilingual')}</li>
             </ul>
-          </div>
-
+          </nav>
+          
           {/* Office Locations */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4">
-              {currentLanguage === 'zh' ? '办公地点' : 'Office Locations'}
-            </h3>
-            <div className="space-y-4">
-              <div>
-                <h4 className="font-medium">Team Real Estate</h4>
-                <p className="text-sm text-primary-foreground/80">
-                  {currentLanguage === 'zh' ? '法拉盛办公室' : 'Flushing Office'}
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold">{t('footer.offices')}</h3>
+            <div className="space-y-4 text-primary-foreground/80" itemProp="location" itemScope itemType="https://schema.org/Place">
+              <address className="not-italic" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+                <h4 className="font-medium text-primary-foreground">{t('footer.offices.team')}</h4>
+                <p className="text-sm" itemProp="streetAddress">41-25 Kissena Blvd Suite 126</p>
+                <p className="text-sm">
+                  <span itemProp="addressLocality">Flushing</span>, 
+                  <span itemProp="addressRegion">NY</span> 
+                  <span itemProp="postalCode">11355</span>
                 </p>
-              </div>
-              <div>
-                <h4 className="font-medium">
-                  {currentLanguage === 'zh' ? '大颈办公室' : 'Great Neck Office'}
-                </h4>
-                <p className="text-sm text-primary-foreground/80">Nassau County</p>
-              </div>
+              </address>
+              <address className="not-italic" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+                <h4 className="font-medium text-primary-foreground">{t('footer.offices.flushing')}</h4>
+                <p className="text-sm" itemProp="streetAddress">39-07 Prince St #4D</p>
+                <p className="text-sm">
+                  <span itemProp="addressLocality">Flushing</span>, 
+                  <span itemProp="addressRegion">NY</span> 
+                  <span itemProp="postalCode">11354</span>
+                </p>
+              </address>
+              <address className="not-italic" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+                <h4 className="font-medium text-primary-foreground">{t('footer.offices.greatNeck')}</h4>
+                <p className="text-sm" itemProp="streetAddress">40 Cutter Mill Road Suite 400</p>
+                <p className="text-sm">
+                  <span itemProp="addressLocality">Great Neck</span>, 
+                  <span itemProp="addressRegion">NY</span> 
+                  <span itemProp="postalCode">11021</span>
+                </p>
+              </address>
             </div>
           </div>
+          
+          {/* WeChat QR Code */}
+          <aside className="space-y-4" aria-label="WeChat Contact">
+            <h3 className="text-xl font-semibold">{t('footer.wechatTitle')}</h3>
+            <figure className="text-center space-y-3">
+              <img 
+                src="/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4.png" 
+                alt={t('footer.wechatAlt')}
+                className="w-24 h-24 mx-auto rounded-lg bg-white p-2"
+                width={96}
+                height={96}
+                loading="lazy"
+                decoding="async"
+                itemProp="image"
+              />
+              <figcaption className="text-sm text-primary-foreground/80 leading-relaxed">
+                {t('footer.wechat')}
+              </figcaption>
+            </figure>
+          </aside>
         </div>
-
+        
         <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center">
-          <p className="text-sm text-primary-foreground/80">
-            {currentLanguage === 'zh' 
-              ? '© 2024 岳泓宇房地产。保留所有权利。' 
-              : '© 2024 Henry Yue Real Estate. All rights reserved.'
-            }
-          </p>
-          <p className="text-sm text-primary-foreground/80 mt-2">
-            {currentLanguage === 'zh' ? '平等住房机会' : 'Equal Housing Opportunity'}
-          </p>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-primary-foreground/60">
+              {t('footer.copyright')}
+            </p>
+            <p className="text-primary-foreground/60">
+              {t('footer.equalHousing')}
+            </p>
+          </div>
         </div>
       </div>
     </footer>

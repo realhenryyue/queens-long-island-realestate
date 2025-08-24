@@ -1,6 +1,6 @@
 import { Share2, Facebook, MessageCircle, Twitter, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Share } from '@capacitor/share';
 import { Capacitor } from '@capacitor/core';
 

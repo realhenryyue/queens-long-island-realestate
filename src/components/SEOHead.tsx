@@ -1,87 +1,235 @@
-import { Helmet } from 'react-helmet-async';
-import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const SEOHead = () => {
-  const location = useLocation();
-  const isChinesePath = location.pathname.startsWith('/zh');
-  const currentLanguage = isChinesePath ? 'zh' : 'en';
+  const { t, language } = useLanguage();
 
-  const siteData = {
-    en: {
-      title: "Henry Yue - NYC Real Estate | ROI Calculator",
-      description: "NYC Real Estate Expert Henry Yue, 15+ years exp. Free ROI calculator, 5-borough analysis. Call 718-717-5210",
-      keywords: "NYC real estate expert, Henry Yue, property investment, ROI calculator, Queens Brooklyn Manhattan, real estate analysis, 718-717-5210",
-      siteName: "Real Henry Yue - NYC Property Investment Expert",
-      locale: "en_US"
-    },
-    zh: {
-      title: "Henry岳 - NYC房地产专家 | ROI计算器",
-      description: "NYC房地产专家Henry岳，15年经验。免费ROI计算器，五大区投资分析。咨询 718-717-5210",
-      keywords: "纽约房地产专家, 岳泓宇, 房产投资, ROI计算器, 皇后区布鲁克林曼哈顿, 房地产分析, 718-717-5210",
-      siteName: "岳泓宇房地产 - 纽约房产投资专家",
-      locale: "zh_CN"
+  useEffect(() => {
+    // Update document title with location-specific keywords
+    const title = language === 'zh' 
+      ? 'Henry岳先生 - NYC房地产AI投资博客分析专家 | 曼哈顿皇后区布鲁克林布朗克斯史泰登岛拿骚县市场洞察'
+      : 'Henry Yue - NYC Real Estate AI Investment Blog & Analysis Expert | Manhattan Queens Brooklyn Bronx Staten Island Nassau County Market Insights';
+    document.title = title;
+    
+    // Update meta description with enhanced local SEO
+    const description = language === 'zh'
+      ? 'NYC纽约房地产AI投资博客分析平台，Henry岳先生专业分享15年投资经验。涵盖曼哈顿、皇后区、布鲁克林、布朗克斯、史泰登岛、拿骚县投资策略。法拉盛公寓投资指南、皇后区家庭住宅分析、阿斯托利亚投资物业深度报告。提供ROI计算器、市场趋势博客、投资分析文章。双语AI投资咨询: 718-717-5210'
+      : 'NYC Real Estate AI Investment Blog & Analysis Platform, Henry Yue shares 15+ years professional investment expertise. Covers Manhattan, Queens, Brooklyn, Bronx, Staten Island, Nassau County investment strategies. Flushing condo investment guides, Queens family home analysis, Astoria investment property deep reports. ROI calculator tools, market trend blogs, investment analysis articles. Bilingual AI investment consulting: 718-717-5210';
+    
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', description);
+    } else {
+      const newMetaDescription = document.createElement('meta');
+      newMetaDescription.name = 'description';
+      newMetaDescription.content = description;
+      document.head.appendChild(newMetaDescription);
     }
-  };
+    
+    // Enhanced keywords for better ranking with investment analysis focus and boroughs
+    const keywords = language === 'zh'
+      ? 'Henry岳先生, 纽约五大区房产投资分析专家, NYC纽约房地产经纪人, 曼哈顿投资房产, 皇后区投资物业, 布鲁克林投资分析, 布朗克斯投资房产, 史泰登岛地产投资, 拿骚县投资物业, 纽约投资型物业评估, 纽约买房现金回报率, 纽约多户型投资, 纽约房租盈利分析, 法拉盛公寓投资, 阿斯托利亚投资物业, 皇后区家庭住宅投资, 华人买房投资经纪, 海外房产投资咨询, 长岛投资房产, 纽约持牌投资分析师, 双语房产投资服务, 学区房投资分析, 商业地产投资咨询, 纽约房产估值专家, 投资回报率计算, 房产现金流分析, ROI投资计算器'
+      : 'Henry Yue NYC 5 boroughs real estate investment analysis, New York property investment expert Manhattan Queens Brooklyn Bronx Staten Island Nassau, NYC investment property valuation, New York cap rate analysis, NY investment ROI calculator, invest in NYC rental condo, New York multifamily investment, NYC real estate trends analysis, NY property cash-on-cash return, Queens investment properties Flushing Astoria, Manhattan investment analysis, Brooklyn investment property, Bronx rental investment, Staten Island property investment, Nassau County real estate investment, Long Island rental property, licensed NY investment specialist, bilingual real estate investment, commercial real estate investment NYC, residential investment analysis, property cash flow analysis, New York real estate market trends, investment property evaluation, NYC property investment consultant, real estate ROI calculator New York';
+    
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+      metaKeywords.setAttribute('content', keywords);
+    } else {
+      const newMetaKeywords = document.createElement('meta');
+      newMetaKeywords.name = 'keywords';
+      newMetaKeywords.content = keywords;
+      document.head.appendChild(newMetaKeywords);
+    }
 
-  const currentData = siteData[currentLanguage];
+    // Add hreflang attributes dynamically
+    const existingHreflang = document.querySelectorAll('link[hreflang]');
+    existingHreflang.forEach(link => link.remove());
 
-  return (
-    <Helmet>
-      <title>{currentData.title}</title>
-      <meta name="description" content={currentData.description} />
-      <meta name="keywords" content={currentData.keywords} />
-      <meta name="author" content="Henry Yue" />
-      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-      
-      <link rel="canonical" href="https://realhenryyue.com/" />
-      
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://realhenryyue.com/" />
-      <meta property="og:title" content={currentData.title} />
-      <meta property="og:description" content={currentData.description} />
-      <meta property="og:site_name" content={currentData.siteName} />
-      <meta property="og:locale" content={currentData.locale} />
-      <meta property="og:image" content="https://realhenryyue.com/assets/agent-photo.jpg" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
-      
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={currentData.title} />
-      <meta name="twitter:description" content={currentData.description} />
-      <meta name="twitter:image" content="https://realhenryyue.com/assets/agent-photo.jpg" />
-      
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
-      
-      <meta name="geo.region" content="US-NY" />
-      <meta name="geo.placename" content="New York City" />
-      <meta name="geo.position" content="40.7589,-73.9851" />
-      
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "RealEstateAgent",
-          "name": currentLanguage === 'zh' ? "岳泓宇" : "Henry Yue",
-          "url": "https://realhenryyue.com",
-          "email": "forangh@gmail.com",
-          "telephone": "+1-718-717-5210",
+    const baseUrl = window.location.origin;
+    const currentPath = window.location.pathname;
+    
+    // Determine the canonical URL and alternate language URLs
+    let canonicalUrl = `${baseUrl}${currentPath}`;
+    let alternateZh = `${baseUrl}/zh`;
+    let alternateEn = `${baseUrl}/en`;
+    
+    // Normalize paths and set proper canonical
+    if (currentPath.startsWith('/zh')) {
+      canonicalUrl = `${baseUrl}/zh`;
+      alternateEn = `${baseUrl}/en`;
+    } else if (currentPath.startsWith('/en')) {
+      canonicalUrl = `${baseUrl}/en`;
+      alternateZh = `${baseUrl}/zh`;
+    } else {
+      // Default redirect case
+      canonicalUrl = `${baseUrl}/en`;
+      alternateZh = `${baseUrl}/zh`;
+      alternateEn = `${baseUrl}/en`;
+    }
+    
+    const hreflangs = [
+      { lang: 'zh-CN', href: alternateZh },
+      { lang: 'en-US', href: alternateEn },
+      { lang: 'x-default', href: `${baseUrl}/en` }
+    ];
+
+    hreflangs.forEach(({ lang, href }) => {
+      const link = document.createElement('link');
+      link.rel = 'alternate';
+      link.hreflang = lang;
+      link.href = href;
+      document.head.appendChild(link);
+    });
+
+    // Add geo-targeting meta tags
+    const geoMeta = [
+      { name: 'geo.region', content: 'US-NY' },
+      { name: 'geo.placename', content: 'New York City' },
+      { name: 'geo.position', content: '40.7128;-74.0060' },
+      { name: 'ICBM', content: '40.7128, -74.0060' }
+    ];
+
+    geoMeta.forEach(({ name, content }) => {
+      let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement;
+      if (!meta) {
+        meta = document.createElement('meta');
+        (meta as HTMLMetaElement).name = name;
+        document.head.appendChild(meta);
+      }
+      (meta as HTMLMetaElement).content = content;
+    });
+
+    // Add canonical URL to prevent duplicate content
+    const existingCanonical = document.querySelector('link[rel="canonical"]');
+    if (existingCanonical) {
+      existingCanonical.remove();
+    }
+    const canonical = document.createElement('link');
+    canonical.rel = 'canonical';
+    canonical.href = canonicalUrl;
+    document.head.appendChild(canonical);
+
+    // Update Open Graph tags
+    const ogMeta = [
+      { property: 'og:title', content: title },
+      { property: 'og:description', content: description },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: canonicalUrl },
+      { property: 'og:locale', content: language === 'zh' ? 'zh_CN' : 'en_US' },
+      { property: 'og:site_name', content: 'RealHenryYue.com' }
+    ];
+
+    ogMeta.forEach(({ property, content }) => {
+      let meta = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement;
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute('property', property);
+        document.head.appendChild(meta);
+      }
+      (meta as HTMLMetaElement).content = content;
+    });
+
+    // Add JSON-LD structured data for better local SEO
+    const existingLD = document.querySelector('script[type="application/ld+json"]#seo-structured-data');
+    if (existingLD) {
+      existingLD.remove();
+    }
+
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "RealEstateAgent",
+      "name": language === 'zh' ? "岳鸿宇" : "Hongyu (Henry) Yue",
+      "alternateName": "Henry Yue",
+      "url": window.location.origin,
+      "description": description,
+      "telephone": "+1-718-717-5210",
+      "email": "forangh@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "New York",
+        "addressRegion": "NY",
+        "addressCountry": "US"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Queens",
           "address": {
             "@type": "PostalAddress",
-            "addressLocality": "New York",
+            "addressLocality": "Queens",
             "addressRegion": "NY",
             "addressCountry": "US"
-          },
-          "areaServed": ["Queens", "Brooklyn", "Manhattan", "Nassau County"],
-          "serviceType": "Real Estate Investment Analysis",
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "reviewCount": "127",
-            "bestRating": "5"
           }
-        })}
-      </script>
-    </Helmet>
-  );
+        },
+        {
+          "@type": "City", 
+          "name": "Manhattan",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Manhattan",
+            "addressRegion": "NY",
+            "addressCountry": "US"
+          }
+        },
+        {
+          "@type": "Place",
+          "name": "Long Island",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Long Island",
+            "addressRegion": "NY",
+            "addressCountry": "US"
+          }
+        }
+      ],
+      "knowsLanguage": ["zh-CN", "en-US"],
+      "jobTitle": "Licensed Real Estate Salesperson",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "150",
+        "bestRating": "5"
+      },
+      "priceRange": "$$",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": language === 'zh' ? "房地产服务" : "Real Estate Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": language === 'zh' ? "住宅买卖服务" : "Residential Sales",
+              "description": language === 'zh' ? "专业住宅房产买卖服务" : "Expert residential property buying and selling services"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service", 
+              "name": language === 'zh' ? "商业地产投资" : "Commercial Real Estate Investment",
+              "description": language === 'zh' ? "商业地产投资咨询与服务" : "Commercial property investment consultation and services"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": language === 'zh' ? "首次购房指导" : "First-Time Buyer Services", 
+              "description": language === 'zh' ? "首次购房者专业指导服务" : "Professional guidance for first-time home buyers"
+            }
+          }
+        ]
+      }
+    };
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'seo-structured-data';
+    script.textContent = JSON.stringify(structuredData);
+    document.head.appendChild(script);
+
+  }, [t, language]);
+
+  return null;
 };

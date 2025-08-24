@@ -3,16 +3,20 @@ import { ServicesSection } from "@/components/ServicesSection";
 import { AboutSection } from "@/components/AboutSection";
 import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
-import { SEOHead } from "@/components/SEOHead";
+import { UnifiedSchema } from "@/components/UnifiedSchema";
+import { EnterpriseMetaTags } from "@/components/EnterpriseMetaTags";
 import { PerformanceOptimizer } from "@/components/PerformanceOptimizer";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
 import BlogSection from "@/components/BlogSection";
+import ComprehensiveSEO from "@/components/ComprehensiveSEO";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead />
+      {/* Enterprise-Level SEO Components */}
+      <ComprehensiveSEO />
+      <UnifiedSchema />
       <PerformanceOptimizer />
       
       <main role="main">
