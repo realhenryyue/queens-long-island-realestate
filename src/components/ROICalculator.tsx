@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calculator, DollarSign, TrendingUp, Home, Percent, Download, MapPin, BarChart3, AlertTriangle, Star } from 'lucide-react';
+import { Calculator, DollarSign, TrendingUp, Home, Percent, Download, MapPin, BarChart3, AlertTriangle, Star, Phone } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { EnhancedCapRateDisplay } from '@/components/EnhancedCapRateDisplay';
 
-const ROICalculator = () => {
+const ROICalculator = React.memo(() => {
   const { t, currentLanguage } = useLanguage();
   
+  // State management with proper initialization
   const [selectedRegion, setSelectedRegion] = useState('queens');
   const [addressInput, setAddressInput] = useState('');
   const [analysisStage, setAnalysisStage] = useState('input');
@@ -47,184 +48,184 @@ const ROICalculator = () => {
   const [monteCarloResults, setMonteCarloResults] = useState({
     roi_distribution: [],
     confidence_interval: { lower: 0, upper: 0 },
-    mean_roi: 0
+    mean_roi: 0,
+    volatility: 0
   });
 
-  // Utility functions
-  const formatCurrency = (value: number) => {
+  // Memoized calculation functions for performance
+  const formatCurrency = useCallback((value: number): string => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0
+      maximumFractionDigits: 0,
     }).format(value);
-  };
+  }, []);
 
-  const formatPercent = (value: number) => {
+  const formatPercentage = useCallback((value: number): string => {
     return `${value.toFixed(2)}%`;
-  };
+  }, []);
 
-  const getROIColor = (roi: number) => {
-    if (roi >= 8) return 'text-green-600';
-    if (roi >= 4) return 'text-yellow-600';
-    return 'text-red-600';
-  };
+  const calculateAdvancedROI = useCallback(() => {
+    try {
+      const purchasePrice = parseFloat(inputs.purchasePrice) || 0;
+      const monthlyRent = parseFloat(inputs.monthlyRent) || 0;
+      const monthlyExpenses = parseFloat(inputs.monthlyExpenses) || 0;
+      const closingCosts = parseFloat(inputs.closingCosts) || 0;
+      const renovationCosts = parseFloat(inputs.renovationCosts) || 0;
+      const appreciationRate = parseFloat(inputs.appreciationRate) || 0;
+      const loanInterestRate = parseFloat(inputs.loanInterestRate) || 0;
+      const downPaymentPercent = parseFloat(inputs.downPaymentPercent) || 0;
+      const vacancyRate = parseFloat(inputs.vacancyRate) || 0;
 
-  const regions = [
-    { id: 'queens', name: currentLanguage === 'zh' ? '皇后区' : 'Queens', active: true, medianROI: 8.2, medianPrice: 720000, medianRent: 2850 },
-    { id: 'manhattan', name: currentLanguage === 'zh' ? '曼哈顿' : 'Manhattan', active: true, medianROI: 5.4, medianPrice: 1250000, medianRent: 4200 },
-    { id: 'nassau', name: currentLanguage === 'zh' ? '拿骚县' : 'Nassau County', active: true, medianROI: 6.8, medianPrice: 850000, medianRent: 3100 },
-    { id: 'bronx', name: currentLanguage === 'zh' ? '布朗克斯' : 'Bronx', active: true, medianROI: 9.1, medianPrice: 520000, medianRent: 2400 },
-    { id: 'brooklyn', name: currentLanguage === 'zh' ? '布鲁克林' : 'Brooklyn', active: true, medianROI: 7.3, medianPrice: 680000, medianRent: 2900 },
-    { id: 'staten', name: currentLanguage === 'zh' ? '史泰登岛' : 'Staten Island', active: true, medianROI: 7.8, medianPrice: 590000, medianRent: 2600 }
-  ];
+      // Input validation
+      if (purchasePrice <= 0 || monthlyRent <= 0) {
+        return;
+      }
 
-  const calculateAdvancedROI = () => {
-    const purchasePrice = parseFloat(inputs.purchasePrice) || 0;
-    const downPaymentPercent = parseFloat(inputs.downPaymentPercent) || 30;
-    const downPayment = purchasePrice * (downPaymentPercent / 100);
-    const loanAmount = purchasePrice - downPayment;
-    const monthlyRent = parseFloat(inputs.monthlyRent) || 0;
-    const monthlyExpenses = parseFloat(inputs.monthlyExpenses) || 0;
-    const closingCosts = parseFloat(inputs.closingCosts) || 0;
-    const renovationCosts = parseFloat(inputs.renovationCosts) || 0;
-    const appreciationRate = parseFloat(inputs.appreciationRate) || 0;
-    const interestRate = parseFloat(inputs.loanInterestRate) || 6.63;
-    const vacancyRate = parseFloat(inputs.vacancyRate) || 5;
+      const downPayment = (purchasePrice * downPaymentPercent) / 100;
+      const loanAmount = purchasePrice - downPayment;
+      const monthlyInterestRate = loanInterestRate / 100 / 12;
+      const numberOfPayments = 30 * 12; // 30 year mortgage
 
-    // Mortgage calculation
-    const monthlyInterestRate = (interestRate / 100) / 12;
-    const numberOfPayments = 30 * 12; // 30 years
-    const monthlyMortgage = loanAmount > 0 ? 
-      (loanAmount * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments))) / 
-      (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1) : 0;
+      // Monthly mortgage calculation
+      const monthlyMortgage = monthlyInterestRate > 0 
+        ? (loanAmount * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments))) / 
+          (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1)
+        : loanAmount / numberOfPayments;
 
-    const cashInvested = downPayment + closingCosts + renovationCosts;
-    const annualRent = monthlyRent * 12 * (1 - vacancyRate / 100);
-    const annualExpenses = monthlyExpenses * 12;
-    const annualMortgage = monthlyMortgage * 12;
-    const annualCashFlow = annualRent - annualExpenses - annualMortgage;
-    const monthlyProfit = annualCashFlow / 12;
-    
-    const cashOnCashReturn = cashInvested > 0 ? (annualCashFlow / cashInvested) * 100 : 0;
-    const capRate = purchasePrice > 0 ? ((annualRent - annualExpenses) / purchasePrice) * 100 : 0;
-    const annualAppreciation = purchasePrice * (appreciationRate / 100);
-    const totalROI = cashInvested > 0 ? ((annualCashFlow + annualAppreciation) / cashInvested) * 100 : 0;
+      const effectiveMonthlyRent = monthlyRent * (1 - vacancyRate / 100);
+      const monthlyProfit = effectiveMonthlyRent - monthlyExpenses - monthlyMortgage;
+      const annualCashFlow = monthlyProfit * 12;
+      const cashInvested = downPayment + closingCosts + renovationCosts;
+      const cashOnCashReturn = cashInvested > 0 ? (annualCashFlow / cashInvested) * 100 : 0;
+      const capRate = purchasePrice > 0 ? ((monthlyRent * 12 - monthlyExpenses * 12) / purchasePrice) * 100 : 0;
+      const annualAppreciation = purchasePrice * (appreciationRate / 100);
+      const totalROI = cashInvested > 0 ? ((annualCashFlow + annualAppreciation) / cashInvested) * 100 : 0;
 
-    // Investment rating calculation
-    let rating = 1;
-    if (cashOnCashReturn >= 8) rating = 5;
-    else if (cashOnCashReturn >= 6) rating = 4;
-    else if (cashOnCashReturn >= 4) rating = 3;
-    else if (cashOnCashReturn >= 2) rating = 2;
-
-    let signal = 'AVOID';
-    if (cashOnCashReturn >= 8 && capRate >= 5) signal = 'BUY';
-    else if (cashOnCashReturn >= 4 && capRate >= 3) signal = 'WAIT';
-
-    // Break-even down payment calculation
-    const targetROI = 8; // 8% target
-    const breakEvenDownPayment = annualCashFlow > 0 ? (annualCashFlow / (targetROI / 100)) : 0;
-
-    // Maximum purchase price for target ROI
-    const maxPurchasePrice = annualCashFlow > 0 ? 
-      (annualCashFlow + annualExpenses + annualMortgage) / (1 - vacancyRate / 100) * 12 : 0;
-
-    setResults({
-      cashInvested,
-      annualCashFlow,
-      cashOnCashReturn,
-      capRate,
-      totalROI,
-      monthlyProfit,
-      annualAppreciation,
-      monthlyMortgage,
-      breakEvenDownPayment,
-      maxPurchasePrice,
-      investmentRating: rating,
-      investmentSignal: signal
-    });
-
-    // Monte Carlo simulation
-    runMonteCarloSimulation(cashInvested, monthlyRent, monthlyExpenses, monthlyMortgage, vacancyRate, appreciationRate);
-  };
-
-  const runMonteCarloSimulation = (cashInvested: number, baseRent: number, expenses: number, mortgage: number, baseVacancy: number, baseAppreciation: number) => {
-    const simulations = 1000; // Reduced for performance
-    const roiResults = [];
-
-    for (let i = 0; i < simulations; i++) {
-      // Random variations
-      const rentVariation = 1 + (Math.random() - 0.5) * 0.1; // ±5%
-      const vacancyVariation = Math.max(0, baseVacancy + (Math.random() - 0.5) * 4); // ±2%
+      // Investment rating calculation
+      let rating = 1;
+      let signal = 'AVOID';
       
-      const adjustedRent = baseRent * rentVariation;
-      const annualRent = adjustedRent * 12 * (1 - vacancyVariation / 100);
-      const annualExpenses = expenses * 12;
-      const annualMortgage = mortgage * 12;
-      const annualCashFlow = annualRent - annualExpenses - annualMortgage;
-      
-      const roi = cashInvested > 0 ? (annualCashFlow / cashInvested) * 100 : 0;
-      roiResults.push(roi);
+      if (cashOnCashReturn >= 15 && capRate >= 8) {
+        rating = 5;
+        signal = 'STRONG BUY';
+      } else if (cashOnCashReturn >= 10 && capRate >= 6) {
+        rating = 4;
+        signal = 'BUY';
+      } else if (cashOnCashReturn >= 6 && capRate >= 4) {
+        rating = 3;
+        signal = 'HOLD';
+      } else if (cashOnCashReturn >= 3 && capRate >= 2) {
+        rating = 2;
+        signal = 'WEAK HOLD';
+      }
+
+      // Break-even analysis
+      const breakEvenDownPayment = cashInvested > 0 ? 
+        (monthlyExpenses + monthlyMortgage) * 12 / (monthlyRent * 12 / cashInvested) : 0;
+      const maxPurchasePrice = effectiveMonthlyRent > 0 ? 
+        (effectiveMonthlyRent * 12) / (capRate / 100) : 0;
+
+      setResults({
+        cashInvested,
+        annualCashFlow,
+        cashOnCashReturn,
+        capRate,
+        totalROI,
+        monthlyProfit,
+        annualAppreciation,
+        monthlyMortgage,
+        breakEvenDownPayment,
+        maxPurchasePrice,
+        investmentRating: rating,
+        investmentSignal: signal
+      });
+
+      // Monte Carlo simulation
+      runMonteCarloSimulation();
+    } catch (error) {
+      console.error('ROI calculation error:', error);
     }
-
-    roiResults.sort((a, b) => a - b);
-    const mean = roiResults.reduce((sum, val) => sum + val, 0) / roiResults.length;
-    const p5 = roiResults[Math.floor(simulations * 0.05)];
-    const p95 = roiResults[Math.floor(simulations * 0.95)];
-
-    setMonteCarloResults({
-      roi_distribution: roiResults,
-      confidence_interval: { lower: p5, upper: p95 },
-      mean_roi: mean
-    });
-  };
-
-  useEffect(() => {
-    calculateAdvancedROI();
   }, [inputs]);
 
-  const handleInputChange = (field: string, value: string) => {
-    // Store the raw string value to allow empty fields
-    setInputs(prev => ({ ...prev, [field]: value }));
-  };
+  const runMonteCarloSimulation = useCallback(() => {
+    try {
+      const simulations = 1000;
+      const results = [];
 
-  const analyzeProperty = async () => {
+      for (let i = 0; i < simulations; i++) {
+        // Add randomness to key variables
+        const randPurchasePrice = parseFloat(inputs.purchasePrice) * (0.9 + Math.random() * 0.2);
+        const randMonthlyRent = parseFloat(inputs.monthlyRent) * (0.85 + Math.random() * 0.3);
+        const randAppreciationRate = parseFloat(inputs.appreciationRate) * (0.5 + Math.random() * 1.5);
+        
+        const downPayment = (randPurchasePrice * parseFloat(inputs.downPaymentPercent)) / 100;
+        const cashInvested = downPayment + parseFloat(inputs.closingCosts) + parseFloat(inputs.renovationCosts);
+        const annualCashFlow = (randMonthlyRent - parseFloat(inputs.monthlyExpenses)) * 12;
+        const annualAppreciation = randPurchasePrice * (randAppreciationRate / 100);
+        const totalROI = cashInvested > 0 ? ((annualCashFlow + annualAppreciation) / cashInvested) * 100 : 0;
+        
+        results.push(totalROI);
+      }
+
+      results.sort((a, b) => a - b);
+      const mean = results.reduce((a, b) => a + b, 0) / results.length;
+      const variance = results.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / results.length;
+      const volatility = Math.sqrt(variance);
+
+      setMonteCarloResults({
+        roi_distribution: results,
+        confidence_interval: {
+          lower: results[Math.floor(simulations * 0.05)],
+          upper: results[Math.floor(simulations * 0.95)]
+        },
+        mean_roi: mean,
+        volatility: volatility
+      });
+    } catch (error) {
+      console.error('Monte Carlo simulation error:', error);
+    }
+  }, [inputs]);
+
+  // Effect hooks with proper dependencies
+  useEffect(() => {
+    calculateAdvancedROI();
+  }, [calculateAdvancedROI]);
+
+  const handleInputChange = useCallback((field: string, value: string) => {
+    setInputs(prev => ({ ...prev, [field]: value }));
+  }, []);
+
+  const analyzeAddress = useCallback(async () => {
     if (!addressInput.trim()) return;
-    
+
     setAnalysisStage('analyzing');
     
-    // Show contact prompt for Henry Yue as per specifications
-    const shouldContact = window.confirm(
-      currentLanguage === 'zh' ? 
-        '为获得最准确的投资分析，请联系专业房地产投资分析师 岳泓宇 (Henry Yue)。\n\n电话: 718-717-5210\n邮箱: forangh@gmail.com\n\n点击"确定"继续基础分析，或"取消"先联系专家。' :
-        'For the most accurate investment analysis, please contact professional real estate investment analyst Hongyu (Henry) Yue.\n\nPhone: 718-717-5210\nEmail: forangh@gmail.com\n\nClick "OK" to continue with basic analysis, or "Cancel" to contact the expert first.'
-    );
-    
-    if (!shouldContact) {
+    try {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Extract region from address and apply region-specific data
+      const regionFromAddress = detectRegionFromAddress(addressInput);
+      setSelectedRegion(regionFromAddress);
+      
+      // Get mock data for the detected region
+      const mockData = getRegionMockData(regionFromAddress);
+      setInputs(prev => ({ ...prev, ...mockData }));
+      
+      setAnalysisStage('complete');
+      
+      setTimeout(() => {
+        setAnalysisStage('input');
+      }, 5000);
+    } catch (error) {
+      console.error('Address analysis error:', error);
       setAnalysisStage('input');
-      return;
     }
-    
-    // Simulate AI analysis with realistic delay
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
-    // Extract region from address and apply region-specific data
-    const regionFromAddress = detectRegionFromAddress(addressInput);
-    setSelectedRegion(regionFromAddress);
-    
-    // Get mock data for the detected region
-    const mockData = getRegionMockData(regionFromAddress);
-    setInputs(prev => ({ ...prev, ...mockData }));
-    
-    setAnalysisStage('complete');
-    
-    setTimeout(() => {
-      setAnalysisStage('input');
-    }, 5000);
-  };
+  }, [addressInput]);
 
-  const detectRegionFromAddress = (address: string): string => {
+  const detectRegionFromAddress = useCallback((address: string): string => {
     const lowerAddress = address.toLowerCase();
     if (lowerAddress.includes('manhattan') || lowerAddress.includes('nyc') || lowerAddress.includes('new york, ny')) return 'manhattan';
     if (lowerAddress.includes('brooklyn') || lowerAddress.includes('bk')) return 'brooklyn';
@@ -233,9 +234,9 @@ const ROICalculator = () => {
     if (lowerAddress.includes('nassau') || lowerAddress.includes('long island') || lowerAddress.includes('li')) return 'nassau';
     if (lowerAddress.includes('queens') || lowerAddress.includes('flushing') || lowerAddress.includes('astoria') || lowerAddress.includes('elmhurst')) return 'queens';
     return 'queens'; // Default to Queens
-  };
+  }, []);
 
-  const getRegionMockData = (region: string) => {
+  const getRegionMockData = useCallback((region: string) => {
     const regionData = {
       queens: {
         purchasePrice: '785000',
@@ -248,172 +249,122 @@ const ROICalculator = () => {
       manhattan: {
         purchasePrice: '1250000',
         monthlyRent: '4800',
-        monthlyExpenses: '1400',
+        monthlyExpenses: '1450',
         closingCosts: '25000',
         renovationCosts: '45000',
-        appreciationRate: '3.2'
-      },
-      nassau: {
-        purchasePrice: '650000',
-        monthlyRent: '2800',
-        monthlyExpenses: '750',
-        closingCosts: '13000',
-        renovationCosts: '22000',
-        appreciationRate: '5.1'
-      },
-      bronx: {
-        purchasePrice: '480000',
-        monthlyRent: '2200',
-        monthlyExpenses: '580',
-        closingCosts: '9600',
-        renovationCosts: '18000',
-        appreciationRate: '6.2'
+        appreciationRate: '5.2'
       },
       brooklyn: {
         purchasePrice: '920000',
-        monthlyRent: '3600',
-        monthlyExpenses: '980',
+        monthlyRent: '3900',
+        monthlyExpenses: '1100',
         closingCosts: '18400',
         renovationCosts: '32000',
-        appreciationRate: '4.1'
+        appreciationRate: '4.6'
+      },
+      bronx: {
+        purchasePrice: '580000',
+        monthlyRent: '2800',
+        monthlyExpenses: '750',
+        closingCosts: '11600',
+        renovationCosts: '22000',
+        appreciationRate: '4.2'
       },
       staten: {
-        purchasePrice: '580000',
-        monthlyRent: '2600',
-        monthlyExpenses: '680',
-        closingCosts: '11600',
-        renovationCosts: '20000',
-        appreciationRate: '4.9'
+        purchasePrice: '650000',
+        monthlyRent: '2950',
+        monthlyExpenses: '820',
+        closingCosts: '13000',
+        renovationCosts: '24000',
+        appreciationRate: '3.8'
+      },
+      nassau: {
+        purchasePrice: '890000',
+        monthlyRent: '3650',
+        monthlyExpenses: '980',
+        closingCosts: '17800',
+        renovationCosts: '29000',
+        appreciationRate: '4.4'
       }
     };
     return regionData[region as keyof typeof regionData] || regionData.queens;
-  };
+  }, []);
 
-  const exportToPDF = async () => {
+  const exportToPDF = useCallback(async () => {
     try {
-      // Create comprehensive PDF content based on language
       const createPDFContent = () => {
+        const date = new Date().toLocaleDateString(currentLanguage === 'zh' ? 'zh-CN' : 'en-US');
         return `
-          <div style="font-family: ${currentLanguage === 'zh' ? 
-            'PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimHei, sans-serif' : 
-            'Arial, Helvetica, sans-serif'}; 
-            padding: 40px; background: #ffffff !important; color: #000000 !important; line-height: 1.6; font-size: 14px;">
-            
-            <!-- Header Section -->
-            <div style="border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px;">
-              <h1 style="color: #2563eb; font-size: 28px; margin: 0 0 8px 0; font-weight: bold;">
-                realhenryyue.com
+          <div style="font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 40px; border-bottom: 3px solid #2563eb; padding-bottom: 20px;">
+              <h1 style="color: #1e40af; margin: 0; font-size: 28px;">
+                ${currentLanguage === 'zh' ? 'NYC房地产投资分析报告' : 'NYC Real Estate Investment Analysis Report'}
               </h1>
-              <h2 style="font-size: 22px; margin: 0 0 8px 0; font-weight: 600; color: #1f2937;">
-                ${currentLanguage === 'zh' ? 'NYC房地产投资AI分析报告' : 'NYC Real Estate AI Investment Analysis Report'}
-              </h2>
-              <p style="color: #6b7280; font-size: 14px; margin: 0; font-weight: 500;">
-                Henry Yue | 718-717-5210 | forangh@gmail.com
+              <p style="color: #6b7280; margin: 10px 0 0 0; font-size: 16px;">
+                ${currentLanguage === 'zh' ? '由Henry岳先生专业分析' : 'Professional Analysis by Henry Yue'} | ${date}
               </p>
             </div>
-            
-            <!-- Investment Summary Section -->
-            <div style="margin-bottom: 35px;">
-              <h3 style="color: #1f2937; font-size: 18px; margin: 0 0 15px 0; border-left: 5px solid #2563eb; padding-left: 12px; font-weight: 700;">
-                ${currentLanguage === 'zh' ? '投资总结' : 'Investment Summary'}
-              </h3>
-              <div style="background: #f8fafc; padding: 25px; border-radius: 10px; border: 1px solid #e2e8f0;">
-                <div style="margin-bottom: 12px;">
-                  <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '投资评级' : 'Investment Rating'}:</span>
-                  <span style="font-size: 20px; color: #dc2626; font-weight: 700;"> ${results.investmentRating}/5 ${Array(results.investmentRating).fill('★').join('')}</span>
-                </div>
-                <div style="margin-bottom: 12px;">
-                  <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '投资信号' : 'Investment Signal'}:</span>
-                  <span style="font-size: 18px; color: ${results.investmentSignal === 'BUY' ? '#059669' : results.investmentSignal === 'WAIT' ? '#d97706' : '#dc2626'}; font-weight: 700;"> ${results.investmentSignal}</span>
-                </div>
-                <div style="margin-bottom: 12px;">
-                  <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash ROI'}:</span>
-                  <span style="font-size: 20px; color: #059669; font-weight: 700;"> ${formatPercent(results.cashOnCashReturn)}</span>
-                </div>
-                <div style="margin-bottom: 0;">
-                  <span style="font-weight: 700; color: #374151;">${currentLanguage === 'zh' ? '资本化率' : 'Cap Rate'}:</span>
-                  <span style="font-size: 20px; color: #059669; font-weight: 700;"> ${formatPercent(results.capRate)}</span>
-                </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+              <div>
+                <h2 style="color: #1e40af; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
+                  ${currentLanguage === 'zh' ? '投资参数' : 'Investment Parameters'}
+                </h2>
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #f3f4f6;"><strong>${currentLanguage === 'zh' ? '购买价格' : 'Purchase Price'}:</strong></td><td style="text-align: right;">${formatCurrency(parseFloat(inputs.purchasePrice))}</td></tr>
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #f3f4f6;"><strong>${currentLanguage === 'zh' ? '月租金' : 'Monthly Rent'}:</strong></td><td style="text-align: right;">${formatCurrency(parseFloat(inputs.monthlyRent))}</td></tr>
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #f3f4f6;"><strong>${currentLanguage === 'zh' ? '月支出' : 'Monthly Expenses'}:</strong></td><td style="text-align: right;">${formatCurrency(parseFloat(inputs.monthlyExpenses))}</td></tr>
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #f3f4f6;"><strong>${currentLanguage === 'zh' ? '首付比例' : 'Down Payment'}:</strong></td><td style="text-align: right;">${inputs.downPaymentPercent}%</td></tr>
+                  <tr><td style="padding: 8px 0;"><strong>${currentLanguage === 'zh' ? '升值率' : 'Appreciation Rate'}:</strong></td><td style="text-align: right;">${inputs.appreciationRate}%</td></tr>
+                </table>
+              </div>
+
+              <div>
+                <h2 style="color: #1e40af; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
+                  ${currentLanguage === 'zh' ? '投资回报分析' : 'ROI Analysis'}
+                </h2>
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #f3f4f6;"><strong>${currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash Return'}:</strong></td><td style="text-align: right; color: ${results.cashOnCashReturn >= 8 ? '#059669' : results.cashOnCashReturn >= 5 ? '#d97706' : '#dc2626'};">${formatPercentage(results.cashOnCashReturn)}</td></tr>
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #f3f4f6;"><strong>${currentLanguage === 'zh' ? '资本化率' : 'Cap Rate'}:</strong></td><td style="text-align: right; color: ${results.capRate >= 6 ? '#059669' : results.capRate >= 4 ? '#d97706' : '#dc2626'};">${formatPercentage(results.capRate)}</td></tr>
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #f3f4f6;"><strong>${currentLanguage === 'zh' ? '总投资回报率' : 'Total ROI'}:</strong></td><td style="text-align: right;">${formatPercentage(results.totalROI)}</td></tr>
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #f3f4f6;"><strong>${currentLanguage === 'zh' ? '月现金流' : 'Monthly Cash Flow'}:</strong></td><td style="text-align: right; color: ${results.monthlyProfit >= 0 ? '#059669' : '#dc2626'};">${formatCurrency(results.monthlyProfit)}</td></tr>
+                  <tr><td style="padding: 8px 0;"><strong>${currentLanguage === 'zh' ? '投资评级' : 'Investment Rating'}:</strong></td><td style="text-align: right;"><span style="background: ${results.investmentRating >= 4 ? '#10b981' : results.investmentRating >= 3 ? '#f59e0b' : '#ef4444'}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px;">${results.investmentSignal}</span></td></tr>
+                </table>
               </div>
             </div>
 
-            <!-- Key Metrics Section -->
-            <div style="margin-bottom: 35px;">
-              <h3 style="color: #1f2937; font-size: 18px; margin: 0 0 15px 0; border-left: 5px solid #2563eb; padding-left: 12px; font-weight: 700;">
-                ${currentLanguage === 'zh' ? '关键财务指标' : 'Key Financial Metrics'}
+            <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="color: #1e40af; margin-top: 0;">
+                ${currentLanguage === 'zh' ? '风险分析 (蒙特卡洛模拟)' : 'Risk Analysis (Monte Carlo Simulation)'}
               </h3>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div style="background: #ffffff; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0;">
-                  <div style="margin-bottom: 15px;">
-                    <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '购买价格' : 'Purchase Price'}</div>
-                    <div style="font-size: 18px; color: #059669; font-weight: 600;">${formatCurrency(parseFloat(inputs.purchasePrice))}</div>
-                  </div>
-                  <div style="margin-bottom: 15px;">
-                    <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '现金投入' : 'Cash Invested'}</div>
-                    <div style="font-size: 18px; color: #059669; font-weight: 600;">${formatCurrency(results.cashInvested)}</div>
-                  </div>
-                  <div style="margin-bottom: 0;">
-                    <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '月租金' : 'Monthly Rent'}</div>
-                    <div style="font-size: 18px; color: #059669; font-weight: 600;">${formatCurrency(parseFloat(inputs.monthlyRent))}</div>
-                  </div>
-                </div>
-                <div style="background: #ffffff; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0;">
-                  <div style="margin-bottom: 15px;">
-                    <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '年现金流' : 'Annual Cash Flow'}</div>
-                    <div style="font-size: 18px; color: ${results.annualCashFlow >= 0 ? '#059669' : '#dc2626'}; font-weight: 600;">${formatCurrency(results.annualCashFlow)}</div>
-                  </div>
-                  <div style="margin-bottom: 15px;">
-                    <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '月净利润' : 'Monthly Profit'}</div>
-                    <div style="font-size: 18px; color: ${results.monthlyProfit >= 0 ? '#059669' : '#dc2626'}; font-weight: 600;">${formatCurrency(results.monthlyProfit)}</div>
-                  </div>
-                  <div style="margin-bottom: 0;">
-                    <div style="font-weight: 700; color: #374151; margin-bottom: 5px;">${currentLanguage === 'zh' ? '总投资回报率' : 'Total ROI'}</div>
-                    <div style="font-size: 18px; color: #059669; font-weight: 600;">${formatPercent(results.totalROI)}</div>
-                  </div>
-                </div>
-              </div>
+              <p><strong>${currentLanguage === 'zh' ? '预期ROI范围' : 'Expected ROI Range'}:</strong> ${formatPercentage(monteCarloResults.confidence_interval.lower)} - ${formatPercentage(monteCarloResults.confidence_interval.upper)} (90% ${currentLanguage === 'zh' ? '置信区间' : 'Confidence Interval'})</p>
+              <p><strong>${currentLanguage === 'zh' ? '平均ROI' : 'Mean ROI'}:</strong> ${formatPercentage(monteCarloResults.mean_roi)}</p>
+              <p><strong>${currentLanguage === 'zh' ? '波动率' : 'Volatility'}:</strong> ${formatPercentage(monteCarloResults.volatility)}</p>
             </div>
 
-            <!-- Risk Analysis Section -->
-            <div style="margin-bottom: 35px;">
-              <h3 style="color: #1f2937; font-size: 18px; margin: 0 0 15px 0; border-left: 5px solid #2563eb; padding-left: 12px; font-weight: 700;">
-                ${currentLanguage === 'zh' ? '风险分析与预测 (90% 置信区间)' : 'Risk Analysis & Forecast (90% Confidence Interval)'}
+            <div style="border: 1px solid #e5e7eb; padding: 20px; border-radius: 8px; background: white;">
+              <h3 style="color: #1e40af; margin-top: 0;">
+                ${currentLanguage === 'zh' ? '专业建议' : 'Professional Recommendation'}
               </h3>
-              <div style="background: #fef3c7; padding: 25px; border-radius: 10px; border-left: 5px solid #f59e0b;">
-                <div style="margin-bottom: 15px;">
-                  <span style="font-weight: 700; color: #92400e;">${currentLanguage === 'zh' ? '预期平均回报率' : 'Expected Average ROI'}:</span>
-                  <span style="font-size: 16px; color: #92400e; font-weight: 600;"> ${formatPercent(monteCarloResults.mean_roi)}</span>
-                </div>
-                <div style="margin-bottom: 15px;">
-                  <span style="font-weight: 700; color: #92400e;">${currentLanguage === 'zh' ? '90% 置信区间' : '90% Confidence Interval'}:</span>
-                  <span style="font-size: 16px; color: #92400e; font-weight: 600;"> ${formatPercent(monteCarloResults.confidence_interval.lower)} - ${formatPercent(monteCarloResults.confidence_interval.upper)}</span>
-                </div>
+              <p style="margin-bottom: 15px;"><strong>${currentLanguage === 'zh' ? '投资信号' : 'Investment Signal'}:</strong> <span style="color: ${results.investmentRating >= 4 ? '#059669' : results.investmentRating >= 3 ? '#d97706' : '#dc2626'}; font-weight: bold;">${results.investmentSignal}</span></p>
+              
+              <div style="margin-bottom: 15px;">
+                <strong>${currentLanguage === 'zh' ? '关键指标分析' : 'Key Metrics Analysis'}:</strong>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                  <li style="margin-bottom: 5px;">${currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash Return'}: ${results.cashOnCashReturn >= 8 ? (currentLanguage === 'zh' ? '优秀 (≥8%)' : 'Excellent (≥8%)') : results.cashOnCashReturn >= 5 ? (currentLanguage === 'zh' ? '良好 (5-8%)' : 'Good (5-8%)') : (currentLanguage === 'zh' ? '需要改善 (<5%)' : 'Needs Improvement (<5%)')}</li>
+                  <li style="margin-bottom: 5px;">${currentLanguage === 'zh' ? '资本化率' : 'Cap Rate'}: ${results.capRate >= 6 ? (currentLanguage === 'zh' ? '优秀 (≥6%)' : 'Excellent (≥6%)') : results.capRate >= 4 ? (currentLanguage === 'zh' ? '良好 (4-6%)' : 'Good (4-6%)') : (currentLanguage === 'zh' ? '需要改善 (<4%)' : 'Needs Improvement (<4%)')}</li>
+                  <li>${currentLanguage === 'zh' ? '现金流状况' : 'Cash Flow Status'}: ${results.monthlyProfit >= 500 ? (currentLanguage === 'zh' ? '正现金流，投资优质' : 'Positive cash flow, quality investment') : results.monthlyProfit >= 0 ? (currentLanguage === 'zh' ? '现金流平衡' : 'Break-even cash flow') : (currentLanguage === 'zh' ? '负现金流，需谨慎考虑' : 'Negative cash flow, consider carefully')}</li>
+                </ul>
               </div>
+              
+              <p style="margin-bottom: 0; font-size: 14px; color: #6b7280; border-top: 1px solid #e5e7eb; padding-top: 15px;">
+                <em>${currentLanguage === 'zh' ? '免责声明：此分析仅供参考，投资决策请咨询专业人士。' : 'Disclaimer: This analysis is for informational purposes only. Please consult professionals for investment decisions.'}</em>
+              </p>
             </div>
 
-            <!-- Professional Contact Section -->
-            <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e5e7eb;">
-              <h3 style="color: #2563eb; font-size: 20px; margin: 0 0 15px 0; font-weight: 700;">
-                ${currentLanguage === 'zh' ? '专业房地产投资咨询' : 'Professional Real Estate Investment Consultation'}
-              </h3>
-              <div style="background: #eff6ff; padding: 25px; border-radius: 10px; border-left: 5px solid #2563eb;">
-                <p style="margin: 0 0 15px 0; font-size: 16px; color: #1e40af; font-weight: 600;">
-                  ${currentLanguage === 'zh' ? '岳泓宇 (Henry Yue) - 专业房地产投资分析师' : 'Hongyu (Henry) Yue - Professional Real Estate Investment Analyst'}
-                </p>
-                <div style="font-size: 14px; color: #1f2937; line-height: 1.8;">
-                  <div><strong>${currentLanguage === 'zh' ? '电话' : 'Phone'}:</strong> 718-717-5210</div>
-                  <div><strong>${currentLanguage === 'zh' ? '邮箱' : 'Email'}:</strong> forangh@gmail.com</div>
-                  <div><strong>${currentLanguage === 'zh' ? '网站' : 'Website'}:</strong> realhenryyue.com</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Disclaimer -->
-            <div style="margin-top: 30px; padding: 15px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
-              <p style="font-size: 12px; color: #6b7280; margin: 0; text-align: center; line-height: 1.5;">
-                ${currentLanguage === 'zh' ? 
-                  '免责声明：此工具仅供参考，不构成投资建议。请独立验证并咨询专业人士。' : 
-                  'Disclaimer: This tool is for informational purposes only and does not constitute investment advice. Please verify independently and consult professionals.'}
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px solid #e5e7eb;">
+              <p style="color: #6b7280; margin: 0; font-size: 14px;">
+                ${currentLanguage === 'zh' ? '联系 Henry岳先生' : 'Contact Henry Yue'} | 📞 (718) 717-5210 | 📧 forangh@gmail.com | 🌐 realhenryyue.com
               </p>
             </div>
           </div>
@@ -460,9 +411,10 @@ const ROICalculator = () => {
       console.error('PDF export error:', error);
       alert(currentLanguage === 'zh' ? 'PDF 导出失败，请重试' : 'PDF export failed, please try again');
     }
-  };
+  }, [inputs, results, monteCarloResults, currentLanguage, formatCurrency, formatPercentage]);
 
-  const presetScenarios = [
+  // Memoized preset scenarios
+  const presetScenarios = useMemo(() => [
     {
       name: currentLanguage === 'zh' ? '法拉盛公寓投资' : 'Flushing Condo Investment',
       values: { purchasePrice: '720000', monthlyRent: '2850', monthlyExpenses: '680', closingCosts: '14400', renovationCosts: '18000', appreciationRate: '5.8', loanInterestRate: '6.63', downPaymentPercent: '30', vacancyRate: '4.5' },
@@ -478,30 +430,46 @@ const ROICalculator = () => {
       priority: 2
     },
     {
-      name: currentLanguage === 'zh' ? '阿斯托利亚投资型物业' : 'Astoria Investment Property',
-      values: { purchasePrice: '840000', monthlyRent: '3150', monthlyExpenses: '820', closingCosts: '16800', renovationCosts: '22000', appreciationRate: '4.5', loanInterestRate: '6.63', downPaymentPercent: '30', vacancyRate: '4.2' },
-      region: 'queens',
-      roiEstimate: 7.6,
+      name: currentLanguage === 'zh' ? '曼哈顿豪华公寓' : 'Manhattan Luxury Condo',
+      values: { purchasePrice: '1350000', monthlyRent: '5200', monthlyExpenses: '1600', closingCosts: '27000', renovationCosts: '45000', appreciationRate: '5.5', loanInterestRate: '6.63', downPaymentPercent: '35', vacancyRate: '6.0' },
+      region: 'manhattan',
+      roiEstimate: 6.2,
       priority: 3
     }
-  ];
+  ], [currentLanguage]);
+
+  // Memoized regions data
+  const regions = useMemo(() => [
+    { id: 'queens', name: currentLanguage === 'zh' ? '皇后区' : 'Queens', avgPrice: '$785K', avgRent: '$3.4K' },
+    { id: 'manhattan', name: currentLanguage === 'zh' ? '曼哈顿' : 'Manhattan', avgPrice: '$1.25M', avgRent: '$4.8K' },
+    { id: 'brooklyn', name: currentLanguage === 'zh' ? '布鲁克林' : 'Brooklyn', avgPrice: '$920K', avgRent: '$3.9K' },
+    { id: 'bronx', name: currentLanguage === 'zh' ? '布朗克斯' : 'Bronx', avgPrice: '$580K', avgRent: '$2.8K' },
+    { id: 'staten', name: currentLanguage === 'zh' ? '史泰登岛' : 'Staten Island', avgPrice: '$650K', avgRent: '$2.95K' },
+    { id: 'nassau', name: currentLanguage === 'zh' ? '拿骚县' : 'Nassau County', avgPrice: '$890K', avgRent: '$3.65K' }
+  ], [currentLanguage]);
+
+  const loadScenario = useCallback((scenario: any) => {
+    setInputs(scenario.values);
+    setSelectedRegion(scenario.region);
+  }, []);
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-br from-secondary/10 to-background">
+    <section id="roi-calculator" className="py-16 px-4 bg-gradient-to-br from-secondary/10 to-background">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            {t('roi.title')}
+          <h2 className="text-4xl font-bold text-primary mb-4">
+            {currentLanguage === 'zh' ? 'NYC 房地产投资 ROI 计算器' : 'NYC Real Estate Investment ROI Calculator'}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            {t('roi.subtitle')}
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            {currentLanguage === 'zh' 
+              ? '使用我们的专业级投资分析工具，获取基于蒙特卡洛模拟的精确ROI计算，为您的纽约房产投资决策提供数据支持'
+              : 'Use our professional-grade investment analysis tool with Monte Carlo simulation for accurate ROI calculations to support your NYC real estate investment decisions'
+            }
           </p>
           
-          {/* Region Selector */}
           <div className="mt-8 mb-6">
-            <h3 className="text-lg font-semibold mb-4 flex items-center justify-center gap-2">
-              <MapPin className="h-5 w-5" />
-              {currentLanguage === 'zh' ? '选择分析区域' : 'Select Analysis Region'}
+            <h3 className="text-lg font-semibold mb-4">
+              {currentLanguage === 'zh' ? '选择投资区域' : 'Select Investment Region'}
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
               {regions.map((region) => (
@@ -509,21 +477,15 @@ const ROICalculator = () => {
                   key={region.id}
                   variant={selectedRegion === region.id ? "default" : "outline"}
                   size="sm"
-                  className="text-xs h-auto py-3 px-2 transition-all duration-200"
                   onClick={() => setSelectedRegion(region.id)}
+                  className="h-auto p-3 text-center"
                 >
                   <div className="text-center">
                     <div className="font-medium text-xs leading-tight">{region.name}</div>
                     <div className={`text-xs font-semibold mt-1 ${
-                      selectedRegion === region.id 
-                        ? 'text-primary-foreground/90' 
-                        : region.medianROI >= 8 
-                          ? 'text-green-600' 
-                          : region.medianROI >= 6 
-                            ? 'text-yellow-600' 
-                            : 'text-red-600'
+                      selectedRegion === region.id ? 'text-primary-foreground' : 'text-muted-foreground'
                     }`}>
-                      ROI: {region.medianROI}%
+                      {region.avgPrice}
                     </div>
                   </div>
                 </Button>
@@ -531,54 +493,51 @@ const ROICalculator = () => {
             </div>
           </div>
 
-          {/* Preset Scenarios */}
           <div className="mt-8">
-            <h3 className="text-lg font-semibold mb-4 flex items-center justify-center gap-2">
-              <Star className="h-5 w-5" />
-              {currentLanguage === 'zh' ? '快速分析场景' : 'Quick Analysis Scenarios'}
+            <h3 className="text-lg font-semibold mb-4">
+              {currentLanguage === 'zh' ? '快速开始投资分析' : 'Quick Start Investment Analysis'}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {presetScenarios.sort((a, b) => a.priority - b.priority).map((scenario, index) => (
-                <Card key={index} 
-                  className={`p-4 cursor-pointer hover:shadow-lg transition-all duration-300 border-2 ${
-                    inputs.purchasePrice === scenario.values.purchasePrice && inputs.monthlyRent === scenario.values.monthlyRent
-                      ? 'bg-gradient-to-br from-primary/20 to-primary/10 border-primary text-primary-foreground shadow-lg'
-                      : 'bg-gradient-to-br from-secondary/5 to-background border-secondary/30 hover:border-primary/50'
-                  }`}
-                >
-                  <div className="flex flex-col space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h4 className={`font-bold text-sm leading-tight break-words ${
-                        inputs.purchasePrice === scenario.values.purchasePrice && inputs.monthlyRent === scenario.values.monthlyRent
-                          ? 'text-primary-foreground' 
-                          : 'text-primary'
-                      }`}>
-                        {scenario.name}
-                      </h4>
-                      <Badge variant="outline" className={`text-xs ml-2 flex-shrink-0 ${
-                        inputs.purchasePrice === scenario.values.purchasePrice && inputs.monthlyRent === scenario.values.monthlyRent
-                          ? 'bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30'
-                          : 'bg-green-50 text-green-700 border-green-200'
-                      }`}>
-                        ROI: {scenario.roiEstimate}%
-                      </Badge>
+              {presetScenarios.map((scenario, index) => (
+                <Card key={index} className="border-2 hover:border-primary/50 transition-colors cursor-pointer relative overflow-hidden group">
+                  <div className="absolute top-2 right-2">
+                    <Badge variant={scenario.priority === 1 ? "default" : scenario.priority === 2 ? "secondary" : "outline"} className="text-xs">
+                      {scenario.priority === 1 ? (currentLanguage === 'zh' ? '推荐' : 'Recommended') : 
+                       scenario.priority === 2 ? (currentLanguage === 'zh' ? '热门' : 'Popular') : 
+                       (currentLanguage === 'zh' ? '精选' : 'Featured')}
+                    </Badge>
+                  </div>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm font-medium">{scenario.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="flex flex-col space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground">
+                          {currentLanguage === 'zh' ? '预期ROI' : 'Expected ROI'}
+                        </span>
+                        <span className="text-sm font-bold text-green-600">
+                          {scenario.roiEstimate}%
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground">
+                          {currentLanguage === 'zh' ? '房价' : 'Price'}
+                        </span>
+                        <span className="text-xs font-medium">
+                          {formatCurrency(parseFloat(scenario.values.purchasePrice))}
+                        </span>
+                      </div>
                     </div>
                     <Button 
-                      variant={inputs.purchasePrice === scenario.values.purchasePrice && inputs.monthlyRent === scenario.values.monthlyRent ? "secondary" : "outline"}
+                      variant="outline" 
                       size="sm" 
-                      className={`w-full transition-colors duration-200 ${
-                        inputs.purchasePrice === scenario.values.purchasePrice && inputs.monthlyRent === scenario.values.monthlyRent
-                          ? 'bg-primary-foreground text-primary hover:bg-primary-foreground/90'
-                          : 'hover:bg-primary hover:text-primary-foreground'
-                      }`}
-                      onClick={() => {
-                        setInputs(scenario.values);
-                        setSelectedRegion(scenario.region);
-                      }}
+                      className="w-full mt-4 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => loadScenario(scenario)}
                     >
                       {currentLanguage === 'zh' ? '加载场景' : 'Load Scenario'}
                     </Button>
-                  </div>
+                  </CardContent>
                 </Card>
               ))}
             </div>
@@ -597,327 +556,354 @@ const ROICalculator = () => {
                 {currentLanguage === 'zh' ? '输入房产详情进行专业ROI分析' : 'Enter property details for professional ROI analysis'}
               </CardDescription>
             </CardHeader>
-            
-            <CardContent className="p-0 space-y-4">
-              <Tabs defaultValue="basic" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="basic">{currentLanguage === 'zh' ? '基础信息' : 'Basic Info'}</TabsTrigger>
-                  <TabsTrigger value="advanced">{currentLanguage === 'zh' ? '高级设置' : 'Advanced'}</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="basic" className="space-y-4 mt-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="purchase-price">{currentLanguage === 'zh' ? '购买价格' : 'Purchase Price'}</Label>
-                      <Input
-                        id="purchase-price"
-                        type="text"
-                        value={inputs.purchasePrice}
-                        onChange={(e) => handleInputChange('purchasePrice', e.target.value)}
-                        placeholder="750000"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="monthly-rent">{currentLanguage === 'zh' ? '月租金' : 'Monthly Rent'}</Label>
-                      <Input
-                        id="monthly-rent"
-                        type="text"
-                        value={inputs.monthlyRent}
-                        onChange={(e) => handleInputChange('monthlyRent', e.target.value)}
-                        placeholder="3200"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="monthly-expenses">{currentLanguage === 'zh' ? '月支出' : 'Monthly Expenses'}</Label>
-                      <Input
-                        id="monthly-expenses"
-                        type="text"
-                        value={inputs.monthlyExpenses}
-                        onChange={(e) => handleInputChange('monthlyExpenses', e.target.value)}
-                        placeholder="800"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="down-payment">{currentLanguage === 'zh' ? '首付比例 (%)' : 'Down Payment (%)'}</Label>
-                      <Input
-                        id="down-payment"
-                        type="text"
-                        value={inputs.downPaymentPercent}
-                        onChange={(e) => handleInputChange('downPaymentPercent', e.target.value)}
-                        placeholder="30"
-                      />
-                    </div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="advanced" className="space-y-4 mt-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="closing-costs">{currentLanguage === 'zh' ? '过户费用' : 'Closing Costs'}</Label>
-                      <Input
-                        id="closing-costs"
-                        type="text"
-                        value={inputs.closingCosts}
-                        onChange={(e) => handleInputChange('closingCosts', e.target.value)}
-                        placeholder="15000"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="renovation-costs">{currentLanguage === 'zh' ? '装修费用' : 'Renovation Costs'}</Label>
-                      <Input
-                        id="renovation-costs"
-                        type="text"
-                        value={inputs.renovationCosts}
-                        onChange={(e) => handleInputChange('renovationCosts', e.target.value)}
-                        placeholder="25000"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="appreciation-rate">{currentLanguage === 'zh' ? '年升值率 (%)' : 'Appreciation Rate (%)'}</Label>
-                      <Input
-                        id="appreciation-rate"
-                        type="text"
-                        value={inputs.appreciationRate}
-                        onChange={(e) => handleInputChange('appreciationRate', e.target.value)}
-                        placeholder="4.5"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="interest-rate">{currentLanguage === 'zh' ? '贷款利率 (%)' : 'Interest Rate (%)'}</Label>
-                      <Input
-                        id="interest-rate"
-                        type="text"
-                        value={inputs.loanInterestRate}
-                        onChange={(e) => handleInputChange('loanInterestRate', e.target.value)}
-                        placeholder="6.63"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="vacancy-rate">{currentLanguage === 'zh' ? '空置率 (%)' : 'Vacancy Rate (%)'}</Label>
-                      <Input
-                        id="vacancy-rate"
-                        type="text"
-                        value={inputs.vacancyRate}
-                        onChange={(e) => handleInputChange('vacancyRate', e.target.value)}
-                        placeholder="5"
-                      />
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
 
-          {/* Results Section */}
-          <Card className="p-6 shadow-lg border-primary/20">
-            <CardHeader className="p-0 mb-6">
-              <CardTitle className="flex items-center gap-2 text-xl">
-                <TrendingUp className="h-5 w-5" />
-                {currentLanguage === 'zh' ? 'ROI 分析结果' : 'ROI Analysis Results'}
-              </CardTitle>
-              <CardDescription>
-                {currentLanguage === 'zh' ? '基于AI算法的专业投资回报分析' : 'Professional investment return analysis based on AI algorithms'}
-              </CardDescription>
-            </CardHeader>
-            
-            <CardContent className="p-0 space-y-6">
-              {/* Investment Rating */}
-              <div className="text-center p-6 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg mb-8">
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <Star key={i} className={`h-7 w-7 ${i < results.investmentRating ? 'text-yellow-500 fill-current' : 'text-gray-300'}`} />
-                  ))}
+            <div className="space-y-6">
+              {/* Basic Parameters */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="purchasePrice" className="text-sm font-medium">
+                    {currentLanguage === 'zh' ? '购买价格 ($)' : 'Purchase Price ($)'}
+                  </Label>
+                  <Input
+                    id="purchasePrice"
+                    type="number"
+                    value={inputs.purchasePrice}
+                    onChange={(e) => handleInputChange('purchasePrice', e.target.value)}
+                    className="text-right"
+                    placeholder="750000"
+                  />
                 </div>
-                <p className="text-xl font-bold mb-3">
-                  {currentLanguage === 'zh' ? '投资评级' : 'Investment Rating'}: {results.investmentRating}/5
-                </p>
-                <Badge 
-                  variant={results.investmentSignal === 'BUY' ? 'default' : results.investmentSignal === 'WAIT' ? 'secondary' : 'destructive'}
-                  className="text-base px-4 py-2 font-semibold"
-                >
-                  {results.investmentSignal}
-                </Badge>
-                <p className="text-sm text-muted-foreground mt-3">
-                  {currentLanguage === 'zh' ? 
-                    '基于现金回报率、资本化率和市场分析' : 
-                    'Based on cash-on-cash return, cap rate, and market analysis'
-                  }
-                </p>
-              </div>
-
-              {/* Key Metrics - Enhanced Cap Rate Display */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div className="text-center p-6 bg-background rounded-lg border shadow-sm">
-                  <div className="text-3xl font-bold text-primary mb-2">
-                    {formatPercent(results.cashOnCashReturn)}
-                  </div>
-                  <p className="text-base font-medium text-muted-foreground">
-                    {currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash ROI'}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {currentLanguage === 'zh' ? '年度现金收益率' : 'Annual Cash Return Rate'}
-                  </p>
-                </div>
-                
-                {/* Enhanced Cap Rate Display */}
-                <div className="flex justify-center">
-                  <EnhancedCapRateDisplay 
-                    capRate={results.capRate} 
-                    isHighlighted={true}
-                    size="large"
-                    showBenchmark={true}
+                <div className="space-y-2">
+                  <Label htmlFor="monthlyRent" className="text-sm font-medium">
+                    {currentLanguage === 'zh' ? '月租金 ($)' : 'Monthly Rent ($)'}
+                  </Label>
+                  <Input
+                    id="monthlyRent"
+                    type="number"
+                    value={inputs.monthlyRent}
+                    onChange={(e) => handleInputChange('monthlyRent', e.target.value)}
+                    className="text-right"
+                    placeholder="3200"
                   />
                 </div>
               </div>
 
-              {/* Detailed Results */}
-              <div className="space-y-4 mt-8 p-6 bg-muted/30 rounded-lg">
-                <div className="flex justify-between">
-                  <span>{currentLanguage === 'zh' ? '现金投入' : 'Cash Invested'}:</span>
-                  <span className="font-medium">{formatCurrency(results.cashInvested)}</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="monthlyExpenses" className="text-sm font-medium">
+                    {currentLanguage === 'zh' ? '月支出 ($)' : 'Monthly Expenses ($)'}
+                  </Label>
+                  <Input
+                    id="monthlyExpenses"
+                    type="number"
+                    value={inputs.monthlyExpenses}
+                    onChange={(e) => handleInputChange('monthlyExpenses', e.target.value)}
+                    className="text-right"
+                    placeholder="800"
+                  />
                 </div>
-                <div className="flex justify-between">
-                  <span>{currentLanguage === 'zh' ? '年现金流' : 'Annual Cash Flow'}:</span>
-                  <span className={`font-medium ${results.annualCashFlow >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {formatCurrency(results.annualCashFlow)}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span>{currentLanguage === 'zh' ? '月利润' : 'Monthly Profit'}:</span>
-                  <span className={`font-medium ${results.monthlyProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {formatCurrency(results.monthlyProfit)}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span>{currentLanguage === 'zh' ? '总ROI' : 'Total ROI'}:</span>
-                  <span className={`font-medium ${getROIColor(results.totalROI)}`}>
-                    {formatPercent(results.totalROI)}
-                  </span>
+                <div className="space-y-2">
+                  <Label htmlFor="downPaymentPercent" className="text-sm font-medium">
+                    {currentLanguage === 'zh' ? '首付比例 (%)' : 'Down Payment (%)'}
+                  </Label>
+                  <Input
+                    id="downPaymentPercent"
+                    type="number"
+                    value={inputs.downPaymentPercent}
+                    onChange={(e) => handleInputChange('downPaymentPercent', e.target.value)}
+                    className="text-right"
+                    placeholder="30"
+                    min="0"
+                    max="100"
+                  />
                 </div>
               </div>
 
-              {/* Monte Carlo Results */}
-              {monteCarloResults.roi_distribution.length > 0 && (
-                <div className="mt-4 p-4 bg-muted/50 rounded-lg">
-                  <h4 className="font-semibold mb-2 flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4" />
-                    {currentLanguage === 'zh' ? '风险分析 (90% 置信区间)' : 'Risk Analysis (90% Confidence Interval)'}
-                  </h4>
-                  <div className="text-sm space-y-1">
-                    <div>
-                      {currentLanguage === 'zh' ? '预期ROI' : 'Expected ROI'}: <span className="font-medium">{formatPercent(monteCarloResults.mean_roi)}</span>
-                    </div>
-                    <div>
-                      {currentLanguage === 'zh' ? '范围' : 'Range'}: <span className="font-medium">
-                        {formatPercent(monteCarloResults.confidence_interval.lower)} - {formatPercent(monteCarloResults.confidence_interval.upper)}
-                      </span>
-                    </div>
-                  </div>
+              {/* Advanced Parameters */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="closingCosts" className="text-sm font-medium">
+                    {currentLanguage === 'zh' ? '交易费用 ($)' : 'Closing Costs ($)'}
+                  </Label>
+                  <Input
+                    id="closingCosts"
+                    type="number"
+                    value={inputs.closingCosts}
+                    onChange={(e) => handleInputChange('closingCosts', e.target.value)}
+                    className="text-right"
+                    placeholder="15000"
+                  />
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+                <div className="space-y-2">
+                  <Label htmlFor="renovationCosts" className="text-sm font-medium">
+                    {currentLanguage === 'zh' ? '装修费用 ($)' : 'Renovation Costs ($)'}
+                  </Label>
+                  <Input
+                    id="renovationCosts"
+                    type="number"
+                    value={inputs.renovationCosts}
+                    onChange={(e) => handleInputChange('renovationCosts', e.target.value)}
+                    className="text-right"
+                    placeholder="25000"
+                  />
+                </div>
+              </div>
 
-        {/* Property Analysis Form and Export - Moved to bottom */}
-        <div className="mt-12 space-y-6">
-          {/* Property Analysis Section */}
-          <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg p-6 border border-primary/20">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <BarChart3 className="h-5 w-5" />
-              {currentLanguage === 'zh' ? 'AI物业分析' : 'AI Property Analysis'}
-            </h3>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="flex-1">
-                <Label htmlFor="address-input" className="text-sm font-medium mb-2 block">
-                  {currentLanguage === 'zh' ? '输入物业地址进行AI分析' : 'Enter Property Address for AI Analysis'}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="appreciationRate" className="text-sm font-medium">
+                    {currentLanguage === 'zh' ? '年升值率 (%)' : 'Appreciation Rate (%)'}
+                  </Label>
+                  <Input
+                    id="appreciationRate"
+                    type="number"
+                    step="0.1"
+                    value={inputs.appreciationRate}
+                    onChange={(e) => handleInputChange('appreciationRate', e.target.value)}
+                    className="text-right"
+                    placeholder="4.5"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="loanInterestRate" className="text-sm font-medium">
+                    {currentLanguage === 'zh' ? '贷款利率 (%)' : 'Loan Interest Rate (%)'}
+                  </Label>
+                  <Input
+                    id="loanInterestRate"
+                    type="number"
+                    step="0.01"
+                    value={inputs.loanInterestRate}
+                    onChange={(e) => handleInputChange('loanInterestRate', e.target.value)}
+                    className="text-right"
+                    placeholder="6.63"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="vacancyRate" className="text-sm font-medium">
+                  {currentLanguage === 'zh' ? '空置率 (%)' : 'Vacancy Rate (%)'}
                 </Label>
                 <Input
-                  id="address-input"
-                  placeholder={currentLanguage === 'zh' ? '例如: 123 Main St, Flushing, NY 11354' : 'e.g., 123 Main St, Flushing, NY 11354'}
-                  value={addressInput}
-                  onChange={(e) => setAddressInput(e.target.value)}
-                  className="w-full"
+                  id="vacancyRate"
+                  type="number"
+                  step="0.1"
+                  value={inputs.vacancyRate}
+                  onChange={(e) => handleInputChange('vacancyRate', e.target.value)}
+                  className="text-right"
+                  placeholder="5"
                 />
               </div>
-              <div className="flex flex-col justify-end">
-                <Button 
-                  onClick={analyzeProperty}
-                  disabled={!addressInput.trim() || analysisStage === 'analyzing'}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-2 h-10"
-                >
-                  {analysisStage === 'analyzing' ? (
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      {currentLanguage === 'zh' ? 'AI分析中...' : 'AI Analyzing...'}
-                    </div>
-                  ) : (
-                    <>
-                      <BarChart3 className="w-4 h-4 mr-2" />
-                      {currentLanguage === 'zh' ? 'AI分析' : 'AI Analyze'}
-                    </>
-                  )}
-                </Button>
+            </div>
+          </Card>
+
+          {/* Results Section */}
+          <Card className="p-6 shadow-lg border-accent/20">
+            <CardHeader className="p-0 mb-6">
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <TrendingUp className="h-5 w-5" />
+                {currentLanguage === 'zh' ? '投资回报分析' : 'Investment Returns Analysis'}
+              </CardTitle>
+              <CardDescription>
+                {currentLanguage === 'zh' ? '基于蒙特卡洛模拟的专业投资分析结果' : 'Professional investment analysis based on Monte Carlo simulation'}
+              </CardDescription>
+            </CardHeader>
+
+            {/* Investment Rating */}
+            <div className="text-center p-6 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg mb-8">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`h-5 w-5 ${
+                        star <= results.investmentRating
+                          ? 'text-yellow-400 fill-current'
+                          : 'text-gray-300'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-primary mb-2">
+                {results.investmentSignal}
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                {currentLanguage === 'zh' ? '投资建议评级' : 'Investment Recommendation Rating'}
+              </p>
+            </div>
+
+            {/* Key Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="text-center p-6 bg-background rounded-lg border shadow-sm">
+                <div className="text-3xl font-bold text-primary mb-2">
+                  {formatPercentage(results.cashOnCashReturn)}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {currentLanguage === 'zh' ? '现金回报率' : 'Cash-on-Cash Return'}
+                </div>
+              </div>
+              <div className="text-center p-6 bg-background rounded-lg border shadow-sm">
+                <EnhancedCapRateDisplay 
+                  capRate={results.capRate}
+                  size="large"
+                />
               </div>
             </div>
 
-            {analysisStage === 'complete' && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
-                <div className="flex items-center gap-2 text-green-800">
-                  <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs">✓</span>
-                  </div>
-                  <span className="font-medium">
-                    {currentLanguage === 'zh' ? 'AI分析完成' : 'AI Analysis Complete'}
-                  </span>
-                </div>
-                <p className="text-green-700 text-sm mt-2">
-                  {currentLanguage === 'zh' ? 
-                    '已基于地址和市场数据更新投资参数。' : 
-                    'Investment parameters updated based on address and market data.'}
-                </p>
-              </div>
-            )}
-          </div>
+            <div className="flex justify-center">
+              <Button 
+                onClick={exportToPDF}
+                size="lg"
+                className="bg-accent hover:bg-accent/90 text-accent-foreground"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                {currentLanguage === 'zh' ? '导出详细报告' : 'Export Detailed Report'}
+              </Button>
+            </div>
 
-          {/* Export to PDF Button */}
+            {/* Detailed Metrics */}
+            <div className="space-y-4 mt-8 p-6 bg-muted/30 rounded-lg">
+              <div className="flex justify-between">
+                <span className="text-sm text-muted-foreground">{currentLanguage === 'zh' ? '总投资回报率' : 'Total ROI'}:</span>
+                <span className="font-medium">{formatPercentage(results.totalROI)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-muted-foreground">{currentLanguage === 'zh' ? '月现金流' : 'Monthly Cash Flow'}:</span>
+                <span className={`font-medium ${results.monthlyProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {formatCurrency(results.monthlyProfit)}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-muted-foreground">{currentLanguage === 'zh' ? '年升值收益' : 'Annual Appreciation'}:</span>
+                <span className="font-medium">{formatCurrency(results.annualAppreciation)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-muted-foreground">{currentLanguage === 'zh' ? '月供' : 'Monthly Mortgage'}:</span>
+                <span className="font-medium">{formatCurrency(results.monthlyMortgage)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-muted-foreground">{currentLanguage === 'zh' ? '总投入资金' : 'Total Cash Invested'}:</span>
+                <span className="font-medium">{formatCurrency(results.cashInvested)}</span>
+              </div>
+
+              {/* Monte Carlo Results */}
+              <div className="mt-4 p-4 bg-muted/50 rounded-lg">
+                <h4 className="font-medium text-sm mb-2">
+                  {currentLanguage === 'zh' ? '风险分析 (1000次模拟)' : 'Risk Analysis (1000 Simulations)'}
+                </h4>
+                <div className="text-sm space-y-1">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">{currentLanguage === 'zh' ? '预期ROI范围' : 'Expected ROI Range'}:</span>
+                    <span>{formatPercentage(monteCarloResults.confidence_interval.lower)} - {formatPercentage(monteCarloResults.confidence_interval.upper)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">{currentLanguage === 'zh' ? '平均ROI' : 'Mean ROI'}:</span>
+                    <span>{formatPercentage(monteCarloResults.mean_roi)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">{currentLanguage === 'zh' ? '波动率' : 'Volatility'}:</span>
+                    <span>{formatPercentage(monteCarloResults.volatility)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Address Analysis Section */}
+        <div className="mt-12 space-y-6">
+          <Card className="p-6">
+            <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg p-6 border border-primary/20">
+              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                <MapPin className="h-5 w-5" />
+                {currentLanguage === 'zh' ? 'AI 地址智能分析' : 'AI Address Intelligence Analysis'}
+              </h3>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1">
+                  <Label htmlFor="address" className="text-sm font-medium mb-2 block">
+                    {currentLanguage === 'zh' ? '输入房产地址进行智能分析' : 'Enter property address for intelligent analysis'}
+                  </Label>
+                  <Input
+                    id="address"
+                    value={addressInput}
+                    onChange={(e) => setAddressInput(e.target.value)}
+                    placeholder={currentLanguage === 'zh' 
+                      ? '例如: 123 Main St, Flushing, NY 11354' 
+                      : 'e.g., 123 Main St, Flushing, NY 11354'
+                    }
+                    className="text-sm"
+                    disabled={analysisStage === 'analyzing'}
+                  />
+                </div>
+                <div className="flex flex-col justify-end">
+                  <Button 
+                    onClick={analyzeAddress}
+                    disabled={!addressInput.trim() || analysisStage === 'analyzing'}
+                    className="bg-primary hover:bg-primary/90"
+                  >
+                    {analysisStage === 'analyzing' ? (
+                      <>
+                        <div className="flex items-center gap-2">
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                          {currentLanguage === 'zh' ? '分析中...' : 'Analyzing...'}
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <BarChart3 className="w-4 h-4 mr-2" />
+                        {currentLanguage === 'zh' ? '智能分析' : 'Analyze'}
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
+
+              {analysisStage === 'complete' && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
+                  <div className="flex items-center gap-2 text-green-800">
+                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-xs">✓</span>
+                    </div>
+                    <span className="font-medium">
+                      {currentLanguage === 'zh' 
+                        ? '地址分析完成！投资参数已根据区域数据自动更新。' 
+                        : 'Address analysis complete! Investment parameters updated based on regional data.'
+                      }
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </Card>
+
           <div className="flex justify-center">
-            <Button 
-              onClick={exportToPDF}
-              className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-3"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              {currentLanguage === 'zh' ? '导出PDF报告' : 'Export PDF Report'}
+            <Button variant="outline" size="lg" asChild>
+              <a href="#contact" className="flex items-center gap-2">
+                <Phone className="w-4 h-4" />
+                {currentLanguage === 'zh' ? '咨询专业投资建议' : 'Get Professional Investment Advice'}
+              </a>
             </Button>
           </div>
 
           {/* Disclaimer */}
-          <div className="mt-8 p-6 bg-muted/30 rounded-lg border border-border/50">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
-              <div className="text-sm text-muted-foreground">
-                <p className="font-medium text-foreground mb-2">
-                  {currentLanguage === 'zh' ? '免责声明' : 'Disclaimer'}
-                </p>
-                <p className="leading-relaxed">
-                  {currentLanguage === 'zh' ? 
-                    '此工具仅供参考，不构成投资建议。请独立验证并咨询专业人士。投资有风险，决策需谨慎。' : 
-                    'This tool is for informational purposes only and does not constitute investment advice. Please verify independently and consult professionals. Investment involves risks, decisions should be made carefully.'
-                  }
-                </p>
-                <p className="mt-2 text-xs text-muted-foreground/80">
-                  {currentLanguage === 'zh' ? 
-                    '数据基于输入参数和市场估算，实际结果可能有所不同。' : 
-                    'Data is based on input parameters and market estimates, actual results may vary.'
-                  }
-                </p>
-              </div>
+          <div className="mt-8 p-4 bg-muted/30 rounded-lg border border-border/50">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4 text-amber-500" />
+              <span className="text-sm text-muted-foreground">
+                {currentLanguage === 'zh' 
+                  ? '免责声明：此工具仅供参考，不构成投资建议。请独立验证并咨询专业人士。'
+                  : 'Disclaimer: This tool is for informational purposes only and does not constitute investment advice. Please verify independently and consult professionals.'
+                }
+              </span>
             </div>
           </div>
         </div>
       </div>
     </section>
   );
-};
+});
+
+ROICalculator.displayName = 'ROICalculator';
 
 export default ROICalculator;
