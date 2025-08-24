@@ -8,6 +8,9 @@ import { EnterpriseMetaTags } from "@/components/EnterpriseMetaTags";
 import { PerformanceOptimizer } from "@/components/PerformanceOptimizer";
 import { SEOValidator } from "@/components/SEOValidator";
 import { PerformanceMonitor } from "@/components/PerformanceMonitor";
+import { AdvancedSEOOptimizer } from "@/components/AdvancedSEOOptimizer";
+import { GoogleComplianceOptimizer } from "@/components/GoogleComplianceOptimizer";
+import { SEOActionPlan } from "@/components/SEOActionPlan";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
 import BlogSection from "@/components/BlogSection";
@@ -22,6 +25,9 @@ const Index = () => {
       <PerformanceOptimizer />
       <SEOValidator />
       <PerformanceMonitor />
+      <AdvancedSEOOptimizer />
+      <GoogleComplianceOptimizer />
+      <SEOActionPlan />
       
       {/* Skip to main content for accessibility */}
       <a 
