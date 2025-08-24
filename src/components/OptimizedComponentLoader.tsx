@@ -1,9 +1,6 @@
 import React from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
 
 export const OptimizedComponentLoader = () => {
-  const { currentLanguage } = useLanguage();
-
   React.useEffect(() => {
     // Cleanup redundant SEO components to prevent conflicts
     const removeRedundantMetaTags = () => {
@@ -40,7 +37,7 @@ export const OptimizedComponentLoader = () => {
     const timeoutId = setTimeout(removeRedundantMetaTags, 100);
     
     return () => clearTimeout(timeoutId);
-  }, [currentLanguage]);
+  }, []);
 
   return null;
 };
