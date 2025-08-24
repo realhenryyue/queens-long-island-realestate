@@ -9,19 +9,13 @@ import ROICalculator from "@/components/ROICalculator";
 import RealMediumContent from "@/components/RealMediumContent";
 import MobileOptimization from "@/components/MobileOptimization";
 import EnterpriseAccessibility from "@/components/EnterpriseAccessibility";
-import UnifiedWebOptimization from "@/components/UnifiedWebOptimization";
-import CrossBrowserCompatibility from "@/components/CrossBrowserCompatibility";
-import ProgressiveWebAppOptimization from "@/components/ProgressiveWebAppOptimization";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Enterprise optimizations */}
-      <CrossBrowserCompatibility />
+      {/* Essential optimizations only */}
       <MobileOptimization />
       <EnterpriseAccessibility />
-      <UnifiedWebOptimization />
-      <ProgressiveWebAppOptimization />
       
       {/* Essential SEO only */}
       <UnifiedSchema />
