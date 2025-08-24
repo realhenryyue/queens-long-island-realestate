@@ -8,13 +8,11 @@ import NotFound from "./pages/NotFound";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { CrossBrowserCompatibility } from "./components/CrossBrowserCompatibility";
-import { OptimizedComponentLoader } from "./components/OptimizedComponentLoader";
 
 const App = () => (
   <HelmetProvider>
     <ErrorBoundary>
       <CrossBrowserCompatibility />
-      <OptimizedComponentLoader />
       <TooltipProvider>
         <Toaster />
         <Sonner />
