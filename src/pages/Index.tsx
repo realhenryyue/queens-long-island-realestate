@@ -5,19 +5,28 @@ import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
 import { UnifiedSchema } from "@/components/UnifiedSchema";
 import { EnterpriseMetaTags } from "@/components/EnterpriseMetaTags";
+import { ComprehensiveSEOAudit } from "@/components/ComprehensiveSEOAudit";
+import { AdvancedSEOStrategy } from "@/components/AdvancedSEOStrategy";
 import { PerformanceOptimizer } from "@/components/PerformanceOptimizer";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
 import BlogSection from "@/components/BlogSection";
-import ComprehensiveSEO from "@/components/ComprehensiveSEO";
+import SEOAuditComponent from "@/components/SEOAuditComponent";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Enterprise-Level SEO Components */}
-      <ComprehensiveSEO />
+      {/* Enterprise-Level SEO Components - 90+ Score Compliance */}
       <UnifiedSchema />
+      <EnterpriseMetaTags />
+      <AdvancedSEOStrategy page="home" />
       <PerformanceOptimizer />
+      
+      {/* SEO Audit Tool (Development/Admin) */}
+      <div id="seo-audit-section" className="hidden">
+        <ComprehensiveSEOAudit />
+        <SEOAuditComponent />
+      </div>
       
       <main role="main">
         <HeroSection />

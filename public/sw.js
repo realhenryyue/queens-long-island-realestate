@@ -55,50 +55,15 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
-// Fetch event - serve from cache, fallback to network with Safari compatibility
+// Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', event => {
-  // Skip cross-origin requests except for fonts and critical resources
+  // Skip cross-origin requests
   if (!event.request.url.startsWith(self.location.origin) && 
       !event.request.url.startsWith('https://fonts.googleapis.com') &&
-      !event.request.url.startsWith('https://fonts.gstatic.com') &&
-      !event.request.url.startsWith('https://polyfill.io')) {
+      !event.request.url.startsWith('https://fonts.gstatic.com')) {
     return;
   }
 
-  // Safari-specific handling for navigation requests
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      caches.match(event.request)
-        .then(response => {
-          if (response) {
-            return response;
-          }
-          
-          return fetch(event.request)
-            .then(response => {
-              // Ensure we have a valid response
-              if (!response || response.status !== 200) {
-                return response;
-              }
-              
-              // Clone and cache navigation responses
-              const responseToCache = response.clone();
-              caches.open(CACHE_NAME).then(cache => {
-                cache.put(event.request, responseToCache);
-              });
-              
-              return response;
-            })
-            .catch(() => {
-              // Fallback to offline page for navigation failures
-              return caches.match(OFFLINE_URL);
-            });
-        })
-    );
-    return;
-  }
-
-  // Standard caching strategy for other requests
   event.respondWith(
     caches.match(event.request)
       .then(response => {
@@ -110,41 +75,22 @@ self.addEventListener('fetch', event => {
         // Clone the request for caching
         const fetchRequest = event.request.clone();
         
-        return fetch(fetchRequest)
-          .then(response => {
-            // Check if valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            
-            // Clone response for caching with Safari-specific headers
-            const responseToCache = response.clone();
-            
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                // Add Safari-compatible cache headers
-                const headers = new Headers(responseToCache.headers);
-                headers.set('Cache-Control', 'public, max-age=86400');
-                
-                const modifiedResponse = new Response(responseToCache.body, {
-                  status: responseToCache.status,
-                  statusText: responseToCache.statusText,
-                  headers: headers
-                });
-                
-                cache.put(event.request, modifiedResponse);
-              });
-            
+        return fetch(fetchRequest).then(response => {
+          // Check if valid response
+          if (!response || response.status !== 200 || response.type !== 'basic') {
             return response;
-          })
-          .catch(error => {
-            console.error('Fetch failed for', event.request.url, error);
-            // Return offline page for critical failures
-            if (event.request.destination === 'document') {
-              return caches.match(OFFLINE_URL);
-            }
-            throw error;
-          });
+          }
+          
+          // Clone response for caching
+          const responseToCache = response.clone();
+          
+          caches.open(CACHE_NAME)
+            .then(cache => {
+              cache.put(event.request, responseToCache);
+            });
+          
+          return response;
+        });
       })
   );
 });
