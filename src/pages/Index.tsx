@@ -20,7 +20,8 @@ import ComprehensiveSEO from "@/components/ComprehensiveSEO";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background"
+         suppressHydrationWarning={true}>
       {/* Enterprise-Level SEO & Performance Components */}
       <ComprehensiveSEO />
       <UnifiedSchema />
