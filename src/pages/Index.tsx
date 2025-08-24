@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 import { UnifiedSchema } from "@/components/UnifiedSchema";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
-import SimpleMediumContent from "@/components/SimpleMediumContent";
+import RealMediumContent from "@/components/RealMediumContent";
 
 const Index = () => {
   return (
@@ -29,7 +29,7 @@ const Index = () => {
         <AboutSection />
         <MarketAnalysisHub />
         <ROICalculator />
-        <SimpleMediumContent />
+        <RealMediumContent />
         <ContactSection />
       </main>
       
