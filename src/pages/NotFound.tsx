@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { SEOHead } from "@/components/SEOHead";
+import ComprehensiveSEO from "@/components/ComprehensiveSEO";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const NotFound = () => {
@@ -8,7 +8,7 @@ const NotFound = () => {
 
   return (
     <>
-      <SEOHead />
+      <ComprehensiveSEO />
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center max-w-lg mx-auto px-4">
           <h1 className="text-6xl font-bold mb-6 text-primary">404</h1>

@@ -144,8 +144,8 @@ export const HeroSection = () => {
                     className="w-32 h-32 rounded-full mx-auto object-cover shadow-card"
                     width={128}
                     height={128}
-                     loading="eager"
-                     decoding="async"
+                    loading="eager"
+                    decoding="async"
                     itemProp="image"
                   />
                   <div className="absolute -bottom-2 -right-2 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">

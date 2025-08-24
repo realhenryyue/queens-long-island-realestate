@@ -4,7 +4,7 @@ import { AboutSection } from "@/components/AboutSection";
 import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
 import { UnifiedSchema } from "@/components/UnifiedSchema";
-import { EnterpriseMetaTags } from "@/components/EnterpriseMetaTags";
+
 import { PerformanceOptimizer } from "@/components/PerformanceOptimizer";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
