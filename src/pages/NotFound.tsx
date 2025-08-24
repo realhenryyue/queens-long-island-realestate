@@ -1,10 +1,8 @@
 import { useLocation } from "react-router-dom";
 import ComprehensiveSEO from "@/components/ComprehensiveSEO";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 const NotFound = () => {
   const location = useLocation();
-  const { t } = useLanguage();
 
   return (
     <>

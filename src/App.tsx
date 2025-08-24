@@ -20,7 +20,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* Default redirect to English */}
+            {/* Default redirect to English - immediate redirect */}
             <Route path="/" element={<Navigate to="/en" replace />} />
             
             {/* Language-specific routes */}
@@ -36,8 +36,12 @@ const App = () => (
               </LanguageProvider>
             } />
             
-            {/* Catch-all for 404 */}
-            <Route path="*" element={<NotFound />} />
+            {/* Catch-all for 404 - wrap in LanguageProvider */}
+            <Route path="*" element={
+              <LanguageProvider defaultLanguage="en">
+                <NotFound />
+              </LanguageProvider>
+            } />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
