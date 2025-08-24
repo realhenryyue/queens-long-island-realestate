@@ -54,150 +54,99 @@ const RealMediumContent = memo(() => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Only fetch if we're in browser and posts are still default
+    if (typeof window === 'undefined') return;
+    
     const fetchMediumPosts = async () => {
       try {
         setLoading(true);
-        console.log('🔄 Fetching real Medium posts...');
         
-        // Add timeout to prevent hanging
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
         
-        // Use AllOrigins proxy to fetch RSS feed
         const RSS_URL = 'https://medium.com/feed/@realhenryyue';
         const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(RSS_URL)}`;
         
         const response = await fetch(proxyUrl, { 
           signal: controller.signal,
-          headers: {
-            'Accept': 'application/json',
-          }
+          headers: { 'Accept': 'application/json' }
         });
         
         clearTimeout(timeoutId);
         
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const data = await response.json();
         
         if (data.contents) {
-          // Parse RSS XML
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
           const items = xmlDoc.querySelectorAll('item');
           
-          if (items.length === 0) {
-            throw new Error('No articles found in RSS feed');
-          }
-          
-          const mediumPosts: MediumPost[] = Array.from(items).slice(0, 6).map((item) => {
-            const title = item.querySelector('title')?.textContent || 'Untitled';
-            const link = item.querySelector('link')?.textContent || '#';
-            const pubDate = item.querySelector('pubDate')?.textContent || new Date().toISOString();
-            const description = item.querySelector('description')?.textContent || '';
-            const creator = item.querySelector('creator')?.textContent || 'Henry Yue';
-            
-            // Extract categories
-            const categories: string[] = [];
-            const categoryNodes = item.querySelectorAll('category');
-            categoryNodes.forEach(cat => {
-              const catText = cat.textContent;
-              if (catText && categories.length < 3) {
-                categories.push(catText);
+          if (items.length > 0) {
+            const mediumPosts: MediumPost[] = Array.from(items).slice(0, 6).map((item) => {
+              const title = item.querySelector('title')?.textContent || 'Untitled';
+              const link = item.querySelector('link')?.textContent || '#';
+              const pubDate = item.querySelector('pubDate')?.textContent || new Date().toISOString();
+              const description = item.querySelector('description')?.textContent || '';
+              const creator = item.querySelector('creator')?.textContent || 'Henry Yue';
+              
+              const categories: string[] = [];
+              const categoryNodes = item.querySelectorAll('category');
+              categoryNodes.forEach(cat => {
+                const catText = cat.textContent;
+                if (catText && categories.length < 3) {
+                  categories.push(catText);
+                }
+              });
+              
+              if (categories.length === 0) {
+                const titleLower = title.toLowerCase();
+                if (titleLower.includes('queens') || titleLower.includes('flushing')) categories.push('Queens');
+                if (titleLower.includes('manhattan')) categories.push('Manhattan');
+                if (titleLower.includes('brooklyn')) categories.push('Brooklyn');
+                if (titleLower.includes('investment') || titleLower.includes('roi')) categories.push('Investment');
+                if (titleLower.includes('ai') || titleLower.includes('analysis')) categories.push('AI Analysis');
+                if (categories.length === 0) categories.push('Real Estate');
               }
+              
+              const cleanDescription = description
+                .replace(/<[^>]*>/g, '')
+                .replace(/&[^;]+;/g, ' ')
+                .trim()
+                .substring(0, 150) + (description.length > 150 ? '...' : '');
+              
+              const wordCount = cleanDescription.split(' ').length;
+              const readTime = Math.max(Math.ceil(wordCount / 200 * 10), 3) + ' min read';
+              
+              const daysOld = Math.floor((Date.now() - new Date(pubDate).getTime()) / (1000 * 60 * 60 * 24));
+              const engagement = Math.max(1200 - daysOld * 20, 200) + Math.floor(Math.random() * 300);
+              
+              return {
+                title: title.length > 80 ? title.substring(0, 77) + '...' : title,
+                url: link,
+                pubDate,
+                categories: categories.slice(0, 3),
+                description: cleanDescription || title,
+                readTime,
+                engagement: engagement + ' claps',
+                author: creator
+              };
             });
             
-            // Fallback categories based on title
-            if (categories.length === 0) {
-              const titleLower = title.toLowerCase();
-              if (titleLower.includes('queens') || titleLower.includes('flushing')) categories.push('Queens');
-              if (titleLower.includes('manhattan')) categories.push('Manhattan');
-              if (titleLower.includes('brooklyn')) categories.push('Brooklyn');
-              if (titleLower.includes('investment') || titleLower.includes('roi')) categories.push('Investment');
-              if (titleLower.includes('ai') || titleLower.includes('analysis')) categories.push('AI Analysis');
-              if (categories.length === 0) categories.push('Real Estate');
-            }
-            
-            // Clean description and limit length
-            const cleanDescription = description
-              .replace(/<[^>]*>/g, '') // Remove HTML tags
-              .replace(/&[^;]+;/g, ' ') // Remove HTML entities
-              .trim()
-              .substring(0, 150) + (description.length > 150 ? '...' : '');
-            
-            // Estimate read time
-            const wordCount = cleanDescription.split(' ').length;
-            const readTime = Math.max(Math.ceil(wordCount / 200 * 10), 3) + ' min read';
-            
-            // Generate engagement
-            const daysOld = Math.floor((Date.now() - new Date(pubDate).getTime()) / (1000 * 60 * 60 * 24));
-            const engagement = Math.max(1200 - daysOld * 20, 200) + Math.floor(Math.random() * 300);
-            
-            return {
-              title: title.length > 80 ? title.substring(0, 77) + '...' : title,
-              url: link,
-              pubDate,
-              categories: categories.slice(0, 3),
-              description: cleanDescription || title,
-              readTime,
-              engagement: engagement + ' claps',
-              author: creator
-            };
-          });
-          
-          setPosts(mediumPosts);
-          console.log('✅ Real Medium posts loaded:', mediumPosts.length);
-        } else {
-          throw new Error('No content received from proxy');
+            setPosts(mediumPosts);
+          }
         }
       } catch (error) {
-        console.warn('❌ Failed to fetch real Medium posts, using fallback:', error);
-        
-        // Fallback content - always provide something to display
-        const fallbackPosts: MediumPost[] = [
-          {
-            title: "NYC Real Estate Market Trends 2024: AI-Powered Investment Analysis",
-            url: "https://medium.com/@realhenryyue",
-            pubDate: new Date().toISOString(),
-            categories: ["Real Estate", "AI", "Investment"],
-            description: "Deep dive into how AI is revolutionizing real estate investment analysis in New York City. Latest market trends and insights.",
-            readTime: "8 min read",
-            engagement: "1.2K claps",
-            author: "Henry Yue"
-          },
-          {
-            title: "Queens Property Investment Guide: Hidden Gems in Flushing",
-            url: "https://medium.com/@realhenryyue",
-            pubDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-            categories: ["Queens", "Investment"],
-            description: "Discover undervalued investment opportunities in Flushing, Queens. Comprehensive analysis of cap rates and yields.",
-            readTime: "12 min read",
-            engagement: "892 claps",
-            author: "Henry Yue"
-          },
-          {
-            title: "ROI Calculator: How to Evaluate NYC Real Estate Investments",
-            url: "https://medium.com/@realhenryyue",
-            pubDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-            categories: ["ROI", "Calculator"],
-            description: "Step-by-step guide to calculating real estate ROI using advanced metrics. Free calculator tool included.",
-            readTime: "15 min read",
-            engagement: "2.1K claps",
-            author: "Henry Yue"
-          }
-        ];
-        
-        setPosts(fallbackPosts);
+        // Silently fail and keep default posts - no console warnings
+        // This prevents any potential rendering issues
       } finally {
         setLoading(false);
       }
     };
 
-    // Add a small delay to prevent immediate network calls on mount
-    const timer = setTimeout(fetchMediumPosts, 100);
-    
+    // Delay the fetch to ensure component is mounted and rendered first
+    const timer = setTimeout(fetchMediumPosts, 2000);
     return () => clearTimeout(timer);
   }, []);
 
