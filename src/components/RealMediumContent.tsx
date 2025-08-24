@@ -300,14 +300,12 @@ const RealMediumContent = () => {
               className="text-sm lg:text-lg px-6 lg:px-8 py-4 lg:py-6 border-2 hover:bg-secondary/10 w-full sm:w-auto"
             >
               <a
-                href="https://medium.com/feed/@realhenryyue"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:forangh@gmail.com?subject=Real Estate Investment Inquiry"
                 className="flex items-center gap-2 lg:gap-3"
-                title="Subscribe to RSS feed"
+                title="Contact Henry Yue for investment consultation"
               >
                 <TrendingUp className="h-4 w-4 lg:h-5 lg:w-5" />
-                <span>RSS Feed</span>
+                <span>Get Consultation</span>
               </a>
             </Button>
           </div>
