@@ -1,19 +1,19 @@
 import { useLocation } from 'react-router-dom';
 
-// 简化的语言钩子，直接从URL获取语言
+// Simple language hook without complex dependencies
 export const useLanguage = () => {
   const location = useLocation();
   const currentLanguage = location.pathname.startsWith('/zh') ? 'zh' : 'en';
 
-  // 基础翻译
-  const translations: Record<string, Record<string, string>> = {
+  // Essential translations only
+  const translations = {
     'hero.title': {
       en: 'Your Trusted Real Estate Partner in Queens & Long Island',
       zh: 'Real Henry Yue | 纽约房产投资分析权威 | 数据驱动地产投资专家'
     },
     'hero.subtitle': {
-      en: 'Licensed New York Real Estate Agent specializing in helping you find your dream home or investment property with personalized service and local expertise. Serving Flushing, Manhattan, Nassau County and all of New York State.',
-      zh: '纽约州持牌房地产经纪人，专精纽约房产投资分析、现金回报率计算、投资风险模拟。为华人投资者提供数据驱动的纽约投资型物业评估服务，覆盖曼哈顿、皇后区、长岛及全纽约州投资机会分析'
+      en: 'Licensed New York Real Estate Agent specializing in helping you find your dream home or investment property with personalized service and local expertise.',
+      zh: '纽约州持牌房地产经纪人，专精纽约房产投资分析、现金回报率计算、投资风险模拟。'
     },
     'hero.slogan': {
       en: 'MOVE ON, CARRY ON.',
@@ -45,12 +45,12 @@ export const useLanguage = () => {
     }
   };
 
-  const t = (key: string): string => {
+  const t = (key) => {
     const translation = translations[key];
     return translation?.[currentLanguage] || key;
   };
 
-  const setLanguage = (newLang: 'en' | 'zh') => {
+  const setLanguage = (newLang) => {
     const newPath = newLang === 'en' ? '/' : '/zh';
     window.location.href = newPath;
   };
