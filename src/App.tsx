@@ -7,36 +7,33 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { ErrorBoundary } from "./components/ErrorBoundary";
-import { CrossBrowserCompatibility } from "./components/CrossBrowserCompatibility";
-import { OptimizedComponentLoader } from "./components/OptimizedComponentLoader";
 
 const App = () => (
   <HelmetProvider>
     <ErrorBoundary>
-      <CrossBrowserCompatibility />
-      <OptimizedComponentLoader />
       <TooltipProvider>
         <Toaster />
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* Default redirect to English - immediate redirect */}
+            {/* Default redirect to English */}
             <Route path="/" element={<Navigate to="/en" replace />} />
             
-            {/* Language-specific routes */}
+            {/* English route */}
             <Route path="/en/*" element={
               <LanguageProvider defaultLanguage="en">
                 <Index />
               </LanguageProvider>
             } />
             
+            {/* Chinese route */}
             <Route path="/zh/*" element={
               <LanguageProvider defaultLanguage="zh">
                 <Index />
               </LanguageProvider>
             } />
             
-            {/* Catch-all for 404 - wrap in LanguageProvider */}
+            {/* 404 page */}
             <Route path="*" element={
               <LanguageProvider defaultLanguage="en">
                 <NotFound />

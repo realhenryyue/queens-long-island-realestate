@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLocation } from 'react-router-dom';
 
 export const UnifiedSchema = () => {
-  const { language } = useLanguage();
+  const location = useLocation();
+  const isChinesePath = location.pathname.startsWith('/zh');
+  const language = isChinesePath ? 'zh' : 'en';
 
   useEffect(() => {
     // Remove all existing schemas to prevent duplicates

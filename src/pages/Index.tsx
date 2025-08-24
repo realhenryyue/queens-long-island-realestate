@@ -14,12 +14,13 @@ import ComprehensiveSEO from "@/components/ComprehensiveSEO";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Enterprise-Level SEO Components */}
-      <ComprehensiveSEO />
-      <UnifiedSchema />
-      <PerformanceOptimizer />
-      
+      {/* Main content */}
       <main role="main">
+        {/* Enterprise-Level SEO Components */}
+        <ComprehensiveSEO />
+        <UnifiedSchema />
+        <PerformanceOptimizer />
+        
         <HeroSection />
         <ServicesSection />
         <AboutSection />
