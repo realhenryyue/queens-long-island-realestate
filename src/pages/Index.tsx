@@ -11,27 +11,16 @@ import { PerformanceMonitor } from "@/components/PerformanceMonitor";
 import { AdvancedSEOOptimizer } from "@/components/AdvancedSEOOptimizer";
 import { GoogleComplianceOptimizer } from "@/components/GoogleComplianceOptimizer";
 import { SEOActionPlan } from "@/components/SEOActionPlan";
-import { MediumContentIntegration } from "@/components/MediumContentIntegration";
+import SimpleMediumContent from "@/components/SimpleMediumContent";
 import { MediumSEOStrategy } from "@/components/MediumSEOStrategy";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
-import BlogSection from "@/components/BlogSection";
-import ComprehensiveSEO from "@/components/ComprehensiveSEO";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background"
-         suppressHydrationWarning={true}>
-      {/* Enterprise-Level SEO & Performance Components */}
-      <ComprehensiveSEO />
+    <div className="min-h-screen bg-background">
+      {/* Essential SEO only - no blocking components */}
       <UnifiedSchema />
-      <PerformanceOptimizer />
-      <SEOValidator />
-      <PerformanceMonitor />
-      <AdvancedSEOOptimizer />
-      <GoogleComplianceOptimizer />
-      <SEOActionPlan />
-      <MediumSEOStrategy />
       
       {/* Skip to main content for accessibility */}
       <a 
@@ -48,7 +37,7 @@ const Index = () => {
         <AboutSection />
         <MarketAnalysisHub />
         <ROICalculator />
-        <MediumContentIntegration />
+        <SimpleMediumContent />
         <ContactSection />
       </main>
       
