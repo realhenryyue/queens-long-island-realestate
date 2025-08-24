@@ -7,10 +7,12 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { CrossBrowserCompatibility } from "./components/CrossBrowserCompatibility";
 
 const App = () => (
   <HelmetProvider>
     <ErrorBoundary>
+      <CrossBrowserCompatibility />
       <TooltipProvider>
         <Toaster />
         <Sonner />

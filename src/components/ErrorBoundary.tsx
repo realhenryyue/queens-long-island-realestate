@@ -22,11 +22,28 @@ export class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Error caught by boundary:', error, errorInfo);
     
+    // Enhanced error reporting with Safari debugging
+    console.error('Component stack:', errorInfo.componentStack);
+    console.error('Error stack:', error.stack);
+    console.error('User agent:', navigator.userAgent);
+    console.error('Error occurred at:', new Date().toISOString());
+    
+    // Check if Safari-specific issues
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (isSafari) {
+      console.error('Safari detected - checking for compatibility issues');
+    }
+    
     // Log to analytics if available
     if (typeof window !== 'undefined' && 'gtag' in window) {
       (window as any).gtag('event', 'exception', {
         description: error.toString(),
-        fatal: false
+        fatal: false,
+        custom_map: {
+          error_boundary: 'true',
+          user_agent: navigator.userAgent.substring(0, 100),
+          safari_detected: isSafari
+        }
       });
     }
   }
