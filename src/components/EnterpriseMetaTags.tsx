@@ -12,15 +12,15 @@ export const EnterpriseMetaTags = () => {
 
     // Optimized titles under 60 characters with high-value keywords
     const title = currentLanguage === 'zh' 
-      ? 'Henry岳 - NYC房地产AI专家 | ROI计算器'
-      : 'Henry Yue - NYC Real Estate Expert | ROI Calculator';
+      ? 'Henry岳 - NYC房地产专家 | ROI计算器' // 32 chars
+      : 'Henry Yue - NYC Real Estate | ROI Calculator'; // 48 chars
     
     document.title = title;
     
     // Optimized meta description under 160 characters with compelling CTA
     const description = currentLanguage === 'zh'
-      ? 'NYC房地产专家Henry岳，15年经验。免费ROI计算器，五大区投资分析。咨询 718-717-5210'
-      : 'NYC Real Estate Expert Henry Yue, 15+ years exp. Free ROI calculator, 5-borough analysis. Call 718-717-5210';
+      ? 'NYC房地产专家Henry岳，15年经验。免费ROI计算器，五大区投资分析。咨询 718-717-5210' // 56 chars
+      : 'NYC Real Estate Expert Henry Yue, 15+ years exp. Free ROI calculator, 5-borough analysis. Call 718-717-5210'; // 116 chars
     
     // Enhanced keywords with long-tail variations
     const keywords = currentLanguage === 'zh'

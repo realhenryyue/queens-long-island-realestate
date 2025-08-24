@@ -17,7 +17,6 @@ const Index = () => {
       {/* Enterprise-Level SEO Components */}
       <ComprehensiveSEO />
       <UnifiedSchema />
-      <EnterpriseMetaTags />
       <PerformanceOptimizer />
       
       <main role="main">
