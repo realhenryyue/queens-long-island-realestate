@@ -156,12 +156,25 @@ export const MediumContentIntegration = () => {
 
   if (loading) {
     return (
-      <section className="py-16 bg-secondary/30" aria-label="Latest Articles Loading">
+      <section className="py-20 bg-gradient-to-br from-secondary/20 via-background to-secondary/30" aria-label="Latest Articles Loading">
         <div className="container mx-auto px-4">
-          <div className="text-center">
+          <div className="text-center space-y-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-primary font-medium text-sm mb-4">
+              <BookOpen className="h-4 w-4" />
+              <span>Loading Fresh Content</span>
+            </div>
             <div className="animate-pulse space-y-4">
-              <div className="h-8 bg-muted rounded w-64 mx-auto"></div>
-              <div className="h-4 bg-muted rounded w-96 mx-auto"></div>
+              <div className="h-10 bg-muted rounded w-96 mx-auto"></div>
+              <div className="h-6 bg-muted rounded w-[32rem] mx-auto"></div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="bg-card rounded-2xl p-6 space-y-4">
+                    <div className="h-6 bg-muted rounded"></div>
+                    <div className="h-4 bg-muted rounded w-3/4"></div>
+                    <div className="h-20 bg-muted rounded"></div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

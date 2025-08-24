@@ -47,7 +47,6 @@ const Index = () => {
         <AboutSection />
         <MarketAnalysisHub />
         <ROICalculator />
-        <BlogSection />
         <MediumContentIntegration />
         <ContactSection />
       </main>
