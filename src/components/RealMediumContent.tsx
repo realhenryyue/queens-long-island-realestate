@@ -138,8 +138,7 @@ const RealMediumContent = memo(() => {
           }
         }
       } catch (error) {
-        // Silently fail and keep default posts - no console warnings
-        // This prevents any potential rendering issues
+        // Production: Silent error handling - keep default posts
       } finally {
         setLoading(false);
       }
