@@ -1,9 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLocation } from 'react-router-dom';
 
 const ComprehensiveSEO = () => {
-  const { currentLanguage } = useLanguage();
+  const location = useLocation();
+  const isChinesePath = location.pathname.startsWith('/zh');
+  const currentLanguage = isChinesePath ? 'zh' : 'en';
 
   const siteData = {
     en: {
