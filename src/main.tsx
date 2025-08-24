@@ -8,8 +8,13 @@ try {
     const root = createRoot(rootElement);
     root.render(<App />);
   } else {
-    console.error('Root element not found');
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Root element not found');
+    }
   }
 } catch (error) {
-  console.error('Failed to render app:', error);
+  if (process.env.NODE_ENV === 'development') {
+    console.error('Failed to render app:', error);
+  }
+  // In production, fail silently or show a user-friendly error
 }

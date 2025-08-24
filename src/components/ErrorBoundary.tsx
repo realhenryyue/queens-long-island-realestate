@@ -20,31 +20,36 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Error caught by boundary:', error, errorInfo);
-    
-    // Enhanced error reporting with Safari debugging
-    console.error('Component stack:', errorInfo.componentStack);
-    console.error('Error stack:', error.stack);
-    console.error('User agent:', navigator.userAgent);
-    console.error('Error occurred at:', new Date().toISOString());
-    
-    // Check if Safari-specific issues
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    if (isSafari) {
-      console.error('Safari detected - checking for compatibility issues');
+    // Only log in development
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error caught by boundary:', error, errorInfo);
+      console.error('Component stack:', errorInfo.componentStack);
+      console.error('Error stack:', error.stack);
+      console.error('User agent:', navigator.userAgent);
+      console.error('Error occurred at:', new Date().toISOString());
+      
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      if (isSafari) {
+        console.error('Safari detected - checking for compatibility issues');
+      }
     }
     
-    // Log to analytics if available
+    // Always log to analytics if available
     if (typeof window !== 'undefined' && 'gtag' in window) {
-      (window as any).gtag('event', 'exception', {
-        description: error.toString(),
-        fatal: false,
-        custom_map: {
-          error_boundary: 'true',
-          user_agent: navigator.userAgent.substring(0, 100),
-          safari_detected: isSafari
-        }
-      });
+      try {
+        (window as any).gtag('event', 'exception', {
+          description: error.toString().substring(0, 150), // Limit description length
+          fatal: false,
+          custom_map: {
+            error_boundary: 'true',
+            user_agent: navigator.userAgent.substring(0, 100),
+            error_type: error.name || 'Unknown',
+            timestamp: new Date().toISOString()
+          }
+        });
+      } catch (analyticsError) {
+        // Silently fail if analytics tracking fails
+      }
     }
   }
 

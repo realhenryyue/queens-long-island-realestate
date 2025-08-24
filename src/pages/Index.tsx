@@ -9,6 +9,7 @@ import ROICalculator from "@/components/ROICalculator";
 import RealMediumContent from "@/components/RealMediumContent";
 import MobileOptimization from "@/components/MobileOptimization";
 import EnterpriseAccessibility from "@/components/EnterpriseAccessibility";
+import UnifiedWebOptimization from "@/components/UnifiedWebOptimization";
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
       {/* Enterprise optimizations */}
       <MobileOptimization />
       <EnterpriseAccessibility />
+      <UnifiedWebOptimization />
       
       {/* Essential SEO only */}
       <UnifiedSchema />

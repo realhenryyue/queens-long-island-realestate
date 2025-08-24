@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import { SEOHead } from "@/components/SEOHead";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const NotFound = () => {
@@ -8,7 +7,10 @@ const NotFound = () => {
 
   return (
     <>
-      <SEOHead />
+      {/* Inline SEO for 404 page */}
+      <title>404 - Page Not Found | Henry Yue Real Estate</title>
+      <meta name="description" content="Page not found. Return to Henry Yue Real Estate for NYC investment analysis and property services." />
+      <meta name="robots" content="noindex, nofollow" />
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center max-w-lg mx-auto px-4">
           <h1 className="text-6xl font-bold mb-6 text-primary">404</h1>

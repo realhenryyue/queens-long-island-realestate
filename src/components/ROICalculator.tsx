@@ -181,7 +181,12 @@ const ROICalculator = () => {
   };
 
   useEffect(() => {
-    calculateAdvancedROI();
+    // Debounce calculations to improve performance
+    const timer = setTimeout(() => {
+      calculateAdvancedROI();
+    }, 300);
+    
+    return () => clearTimeout(timer);
   }, [inputs]);
 
   const handleInputChange = (field: string, value: string) => {
