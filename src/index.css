@@ -465,3 +465,157 @@ All colors MUST be HSL.
     display: none !important;
   }
 }
+
+/* Enhanced Cross-Browser Compatibility */
+@layer utilities {
+  /* Grid fallbacks with browser prefixes */
+  .grid {
+    display: -ms-grid;
+    display: grid;
+  }
+  
+  /* Flexbox with vendor prefixes for maximum compatibility */
+  .flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  
+  .flex-col {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+  
+  .justify-center {
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+  
+  .items-center {
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+  
+  /* Transform with vendor prefixes */
+  .transform {
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* Transition with vendor prefixes */
+  .transition {
+    -webkit-transition: all 0.15s ease-in-out;
+    -moz-transition: all 0.15s ease-in-out;
+    -o-transition: all 0.15s ease-in-out;
+    transition: all 0.15s ease-in-out;
+  }
+  
+  /* Border radius with vendor prefixes */
+  .rounded {
+    -webkit-border-radius: 0.25rem;
+    -moz-border-radius: 0.25rem;
+    border-radius: 0.25rem;
+  }
+  
+  /* Box shadow with vendor prefixes */
+  .shadow {
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* Device-specific optimizations */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  /* WebKit-specific styles */
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  textarea {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+  }
+}
+
+/* Mozilla Firefox specific */
+@-moz-document url-prefix() {
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+/* Internet Explorer specific */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .grid {
+    display: -ms-grid;
+  }
+  
+  .flex {
+    display: -ms-flexbox;
+  }
+}
+
+/* Enhanced mobile viewport handling */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari specific */
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Fix for iOS viewport height */
+  body {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Orientation change handling */
+@media (orientation: landscape) and (max-height: 500px) {
+  .py-16 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .py-20 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+}
+
+/* Wide screen optimization */
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1400px;
+  }
+  
+  .text-6xl {
+    font-size: 4rem;
+  }
+  
+  .text-5xl {
+    font-size: 3.5rem;
+  }
+}
+
+/* Ultra-high DPI displays */
+@media (-webkit-min-device-pixel-ratio: 3), (min-resolution: 288dpi) {
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}

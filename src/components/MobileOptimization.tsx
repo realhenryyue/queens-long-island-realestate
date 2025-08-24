@@ -2,6 +2,56 @@ import { useEffect } from 'react';
 
 const MobileOptimization = () => {
   useEffect(() => {
+    // Enhanced Responsive Design Fixes
+    const enhanceResponsiveDesign = () => {
+      const style = document.createElement('style');
+      style.textContent = `
+        /* Enhanced responsive breakpoints */
+        @media (max-width: 320px) {
+          .container { padding-left: 0.75rem; padding-right: 0.75rem; }
+          .text-4xl { font-size: 1.875rem; }
+          .text-5xl { font-size: 2.25rem; }
+          .p-6 { padding: 1rem; }
+          .gap-8 { gap: 1rem; }
+        }
+        
+        @media (max-width: 480px) {
+          .grid-cols-2 { grid-template-columns: 1fr; }
+          .md\\:grid-cols-2 { grid-template-columns: 1fr; }
+          .flex-row { flex-direction: column; }
+          .text-base { font-size: 0.875rem; }
+        }
+        
+        @media (max-width: 640px) {
+          .sm\\:text-lg { font-size: 1rem; }
+          .sm\\:p-6 { padding: 1rem; }
+          .sm\\:gap-6 { gap: 1rem; }
+          .hidden.sm\\:block { display: none !important; }
+        }
+        
+        /* Ultra-wide screen optimization */
+        @media (min-width: 1920px) {
+          .container { max-width: 1400px; }
+        }
+        
+        /* High-DPI screen optimization */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+          img {
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+          }
+        }
+        
+        /* Landscape mobile optimization */
+        @media (max-height: 500px) and (orientation: landscape) {
+          .min-h-screen { min-height: 100vh; }
+          .py-16 { padding-top: 2rem; padding-bottom: 2rem; }
+          .py-20 { padding-top: 3rem; padding-bottom: 3rem; }
+        }
+      `;
+      document.head.appendChild(style);
+    };
+
     // Prevent zoom on iOS when input is focused
     const preventZoom = () => {
       document.querySelectorAll('input, select, textarea').forEach(element => {
@@ -85,6 +135,7 @@ const MobileOptimization = () => {
     };
 
     // Initialize optimizations
+    enhanceResponsiveDesign();
     preventZoom();
     optimizeTouch();
     mobilePerformance();
