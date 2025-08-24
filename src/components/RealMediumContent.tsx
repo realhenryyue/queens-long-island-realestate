@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,8 +15,42 @@ interface MediumPost {
   author: string;
 }
 
-const RealMediumContent = () => {
-  const [posts, setPosts] = useState<MediumPost[]>([]);
+// Default fallback posts to ensure something always displays
+const DEFAULT_POSTS: MediumPost[] = [
+  {
+    title: "NYC Real Estate Market Trends 2024: AI-Powered Investment Analysis",
+    url: "https://medium.com/@realhenryyue",
+    pubDate: new Date().toISOString(),
+    categories: ["Real Estate", "AI", "Investment"],
+    description: "Deep dive into how AI is revolutionizing real estate investment analysis in New York City. Latest market trends and insights.",
+    readTime: "8 min read",
+    engagement: "1.2K claps",
+    author: "Henry Yue"
+  },
+  {
+    title: "Queens Property Investment Guide: Hidden Gems in Flushing",
+    url: "https://medium.com/@realhenryyue",
+    pubDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    categories: ["Queens", "Investment"],
+    description: "Discover undervalued investment opportunities in Flushing, Queens. Comprehensive analysis of cap rates and yields.",
+    readTime: "12 min read",
+    engagement: "892 claps",
+    author: "Henry Yue"
+  },
+  {
+    title: "ROI Calculator: How to Evaluate NYC Real Estate Investments",
+    url: "https://medium.com/@realhenryyue",
+    pubDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+    categories: ["ROI", "Calculator"],
+    description: "Step-by-step guide to calculating real estate ROI using advanced metrics. Free calculator tool included.",
+    readTime: "15 min read",
+    engagement: "2.1K claps",
+    author: "Henry Yue"
+  }
+];
+
+const RealMediumContent = memo(() => {
+  const [posts, setPosts] = useState<MediumPost[]>(DEFAULT_POSTS);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -25,11 +59,27 @@ const RealMediumContent = () => {
         setLoading(true);
         console.log('🔄 Fetching real Medium posts...');
         
+        // Add timeout to prevent hanging
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        
         // Use AllOrigins proxy to fetch RSS feed
         const RSS_URL = 'https://medium.com/feed/@realhenryyue';
         const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(RSS_URL)}`;
         
-        const response = await fetch(proxyUrl);
+        const response = await fetch(proxyUrl, { 
+          signal: controller.signal,
+          headers: {
+            'Accept': 'application/json',
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const data = await response.json();
         
         if (data.contents) {
@@ -37,6 +87,10 @@ const RealMediumContent = () => {
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
           const items = xmlDoc.querySelectorAll('item');
+          
+          if (items.length === 0) {
+            throw new Error('No articles found in RSS feed');
+          }
           
           const mediumPosts: MediumPost[] = Array.from(items).slice(0, 6).map((item) => {
             const title = item.querySelector('title')?.textContent || 'Untitled';
@@ -95,12 +149,14 @@ const RealMediumContent = () => {
           
           setPosts(mediumPosts);
           console.log('✅ Real Medium posts loaded:', mediumPosts.length);
+        } else {
+          throw new Error('No content received from proxy');
         }
       } catch (error) {
         console.warn('❌ Failed to fetch real Medium posts, using fallback:', error);
         
-        // Fallback content
-        setPosts([
+        // Fallback content - always provide something to display
+        const fallbackPosts: MediumPost[] = [
           {
             title: "NYC Real Estate Market Trends 2024: AI-Powered Investment Analysis",
             url: "https://medium.com/@realhenryyue",
@@ -131,13 +187,18 @@ const RealMediumContent = () => {
             engagement: "2.1K claps",
             author: "Henry Yue"
           }
-        ]);
+        ];
+        
+        setPosts(fallbackPosts);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMediumPosts();
+    // Add a small delay to prevent immediate network calls on mount
+    const timer = setTimeout(fetchMediumPosts, 100);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -313,6 +374,8 @@ const RealMediumContent = () => {
       </div>
     </section>
   );
-};
+});
+
+RealMediumContent.displayName = 'RealMediumContent';
 
 export default RealMediumContent;
