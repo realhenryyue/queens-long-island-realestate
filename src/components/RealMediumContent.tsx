@@ -263,9 +263,13 @@ const RealMediumContent = () => {
         </div>
 
         <div className="text-center space-y-4 lg:space-y-6">
+          <h3 className="text-2xl lg:text-3xl font-bold text-foreground mb-4">
+            Want More Investment Insights?
+          </h3>
+          
           <div className="max-w-xl lg:max-w-2xl mx-auto space-y-3 lg:space-y-4 px-4">
             <p className="text-sm lg:text-base text-muted-foreground">
-              Get weekly insights directly in your inbox. Join thousands of investors staying ahead of NYC market trends.
+              Get weekly insights directly in your inbox. Join thousands of investors staying ahead of NYC market trends and AI-powered analysis.
             </p>
           </div>
           
@@ -281,7 +285,7 @@ const RealMediumContent = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 lg:gap-3"
-                title="Follow Henry Yue on Medium"
+                title="Follow Henry Yue on Medium for more investment insights"
               >
                 <BookOpen className="h-4 w-4 lg:h-5 lg:w-5" />
                 <span>Follow on Medium</span>
