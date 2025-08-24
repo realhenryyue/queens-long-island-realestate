@@ -271,52 +271,68 @@ const RealMediumContent = memo(() => {
           ))}
         </div>
 
-        <div className="text-center space-y-4 lg:space-y-6">
-          <h3 className="text-2xl lg:text-3xl font-bold text-foreground mb-4">
-            Want More Investment Insights?
-          </h3>
-          
-          <div className="max-w-xl lg:max-w-2xl mx-auto space-y-3 lg:space-y-4 px-4">
-            <p className="text-sm lg:text-base text-muted-foreground">
-              Get weekly insights directly in your inbox. Join thousands of investors staying ahead of NYC market trends and AI-powered analysis.
-            </p>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 justify-center items-center px-4">
-            <Button
-              variant="default"
-              size="lg"
-              asChild
-              className="text-sm lg:text-lg px-6 lg:px-8 py-4 lg:py-6 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary shadow-lg lg:shadow-xl hover:shadow-xl lg:hover:shadow-2xl transition-all duration-300 w-full sm:w-auto"
-            >
-              <a
-                href="https://medium.com/@realhenryyue"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 lg:gap-3"
-                title="Follow Henry Yue on Medium for more investment insights"
-              >
-                <BookOpen className="h-4 w-4 lg:h-5 lg:w-5" />
-                <span>Follow on Medium</span>
-                <ExternalLink className="h-4 w-4 lg:h-5 lg:w-5" />
-              </a>
-            </Button>
+        {/* Want More Investment Insights Section - iOS Safari Optimized */}
+        <div className="text-center space-y-6 max-w-4xl mx-auto">
+          <div className="bg-card/90 backdrop-blur-sm border border-border/50 rounded-2xl p-6 sm:p-8 shadow-lg">
+            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-6 leading-tight">
+              Want More Investment Insights?
+            </h3>
             
-            <Button
-              variant="outline"
-              size="lg"
-              asChild
-              className="text-sm lg:text-lg px-6 lg:px-8 py-4 lg:py-6 border-2 hover:bg-secondary/10 w-full sm:w-auto"
-            >
-              <a
-                href="mailto:forangh@gmail.com?subject=Real Estate Investment Inquiry"
-                className="flex items-center gap-2 lg:gap-3"
-                title="Contact Henry Yue for investment consultation"
+            <div className="max-w-2xl mx-auto mb-8">
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+                Subscribe to our professional analysis reports for the latest NYC real estate AI investment strategies and market trend analysis.
+              </p>
+            </div>
+            
+            {/* iOS Safari optimized button container */}
+            <div className="flex flex-col gap-4 items-center justify-center max-w-md mx-auto">
+              <Button
+                variant="default"
+                size="lg"
+                asChild
+                className="w-full min-h-[56px] text-base font-semibold px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl"
+                style={{ WebkitAppearance: 'none', touchAction: 'manipulation' }}
               >
-                <TrendingUp className="h-4 w-4 lg:h-5 lg:w-5" />
-                <span>Get Consultation</span>
-              </a>
-            </Button>
+                <a
+                  href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const contactSection = document.getElementById('contact');
+                    if (contactSection) {
+                      contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                  className="flex items-center justify-center gap-3"
+                  title="Contact Investment Advisor for personalized consultation"
+                >
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  <span>Contact Investment Advisor</span>
+                </a>
+              </Button>
+              
+              <Button
+                variant="ghost"
+                size="lg"
+                asChild
+                className="w-full min-h-[56px] text-base font-medium px-8 py-4 border border-border hover:bg-muted/50 transition-all duration-300 rounded-xl"
+                style={{ WebkitAppearance: 'none', touchAction: 'manipulation' }}
+              >
+                <a
+                  href="https://medium.com/@realhenryyue"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-3"
+                  title="View more articles on Medium"
+                >
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                  <span>View More Articles</span>
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
