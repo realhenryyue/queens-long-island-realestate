@@ -3,10 +3,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, User, ArrowRight, TrendingUp, Home, BarChart3 } from 'lucide-react';
-import { useSafeLanguage } from '@/hooks/useSafeLanguage';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const BlogSection = () => {
-  const { currentLanguage } = useSafeLanguage();
+  const { currentLanguage } = useLanguage();
 
   const blogPosts = [
     {

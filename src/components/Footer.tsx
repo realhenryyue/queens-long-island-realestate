@@ -1,9 +1,9 @@
 import { Phone, Mail, MapPin } from "lucide-react";
-import { useSafeLanguage } from "@/hooks/useSafeLanguage";
+import { useLanguage } from "@/hooks/useLanguage";
 import EmailObfuscator from "@/components/EmailObfuscator";
 
 export const Footer = () => {
-  const { t } = useSafeLanguage();
+  const { t } = useLanguage();
   return (
     <footer 
       className="bg-primary text-primary-foreground py-12"

@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { TrendingUp, AlertTriangle } from 'lucide-react';
-import { useSafeLanguage } from '@/hooks/useSafeLanguage';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface EnhancedCapRateDisplayProps {
   capRate: number;
@@ -17,7 +17,7 @@ export const EnhancedCapRateDisplay: React.FC<EnhancedCapRateDisplayProps> = ({
   size = 'medium',
   showBenchmark = true
 }) => {
-  const { currentLanguage } = useSafeLanguage();
+  const { currentLanguage } = useLanguage();
 
   const formatPercent = (value: number) => {
     return `${value.toFixed(2)}%`;

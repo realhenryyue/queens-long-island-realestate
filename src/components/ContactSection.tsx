@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useSafeLanguage } from "@/hooks/useSafeLanguage";
+import { useLanguage } from "@/hooks/useLanguage";
 import { SocialShareButtons } from "@/components/SocialShareButtons";
 import EmailObfuscator from "@/components/EmailObfuscator";
 
@@ -17,7 +17,7 @@ export const ContactSection = () => {
     message: ''
   });
   const { toast } = useToast();
-  const { t } = useSafeLanguage();
+  const { t } = useLanguage();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

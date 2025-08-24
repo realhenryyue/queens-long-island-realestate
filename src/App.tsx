@@ -5,29 +5,23 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import { LanguageProvider } from "./contexts/LanguageContext";
-import { ErrorBoundary } from "./components/ErrorBoundary";
 
 const App = () => (
   <HelmetProvider>
-    <ErrorBoundary>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <LanguageProvider defaultLanguage="en">
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/en" element={<Index />} />
-              <Route path="/en/*" element={<Index />} />
-              <Route path="/zh" element={<Index />} />
-              <Route path="/zh/*" element={<Index />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </LanguageProvider>
-        </BrowserRouter>
-      </TooltipProvider>
-    </ErrorBoundary>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/en" element={<Index />} />
+          <Route path="/en/*" element={<Index />} />
+          <Route path="/zh" element={<Index />} />
+          <Route path="/zh/*" element={<Index />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
   </HelmetProvider>
 );
 

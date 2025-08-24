@@ -3,11 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TrendingUp, MapPin, GraduationCap, DollarSign, Users, BarChart3, Calendar, Award } from 'lucide-react';
-import { useSafeLanguage } from '@/hooks/useSafeLanguage';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const MarketAnalysisHub = () => {
   const [activeCategory, setActiveCategory] = useState('local');
-  const { t } = useSafeLanguage();
+  const { t } = useLanguage();
 
   const localMarketContent = [
     {

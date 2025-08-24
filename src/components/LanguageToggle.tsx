@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { useSafeLanguage } from "@/hooks/useSafeLanguage";
+import { useLanguage } from "@/hooks/useLanguage";
 import { Globe } from "lucide-react";
 
 export const LanguageToggle = () => {
-  const { language, setLanguage } = useSafeLanguage();
+  const { language, setLanguage } = useLanguage();
 
   return (
     <Button

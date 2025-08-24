@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Home, Users, TrendingUp, Shield, Key, Heart } from "lucide-react";
-import { useSafeLanguage } from "@/hooks/useSafeLanguage";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export const ServicesSection = () => {
-  const { t } = useSafeLanguage();
+  const { t } = useLanguage();
 
   const services = [
     {

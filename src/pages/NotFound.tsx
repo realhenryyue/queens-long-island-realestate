@@ -1,41 +1,27 @@
-import { useLocation } from "react-router-dom";
-import ComprehensiveSEO from "@/components/ComprehensiveSEO";
+import { useLocation } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
 
 const NotFound = () => {
   const location = useLocation();
+  const isChinesePath = location.pathname.startsWith('/zh');
+  
+  const content = {
+    title: isChinesePath ? '页面未找到' : 'Page Not Found',
+    description: isChinesePath ? '抱歉，您访问的页面不存在。' : 'Sorry, the page you are looking for does not exist.',
+    button: isChinesePath ? '返回首页' : 'Go Home'
+  };
 
   return (
-    <>
-      <ComprehensiveSEO />
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center max-w-lg mx-auto px-4">
-          <h1 className="text-6xl font-bold mb-6 text-primary">404</h1>
-          <h2 className="text-2xl font-semibold mb-4 text-foreground">Page Not Found</h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            The page you're looking for doesn't exist or has been moved.
-          </p>
-          
-          <div className="space-y-4">
-            <a 
-              href="/en" 
-              className="inline-block bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium"
-            >
-              Return to Home
-            </a>
-            
-            <div className="mt-6">
-              <p className="text-sm text-muted-foreground mb-4">Quick Links:</p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <a href="/en/investment-analysis" className="text-primary hover:underline">Investment Analysis</a>
-                <a href="/en/queens-real-estate" className="text-primary hover:underline">Queens Real Estate</a>
-                <a href="/en/roi-calculator" className="text-primary hover:underline">ROI Calculator</a>
-                <a href="/en/contact" className="text-primary hover:underline">Contact</a>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="text-center">
+        <h1 className="text-6xl font-bold text-primary mb-4">404</h1>
+        <h2 className="text-2xl font-semibold mb-4">{content.title}</h2>
+        <p className="text-muted-foreground mb-8">{content.description}</p>
+        <Button onClick={() => window.location.href = isChinesePath ? '/zh' : '/'}>
+          {content.button}
+        </Button>
       </div>
-    </>
+    </div>
   );
 };
 
