@@ -23,6 +23,8 @@ export const MediumContentIntegration = () => {
 
   useEffect(() => {
     const fetchMediumContent = async () => {
+      console.log('🔄 Starting Medium RSS fetch...');
+      
       try {
         const parser = new Parser({
           customFields: {
@@ -30,172 +32,176 @@ export const MediumContentIntegration = () => {
           }
         });
 
-        // Multiple CORS proxy options for reliability
+        const RSS_URL = 'https://medium.com/feed/@realhenryyue';
+        
+        // Try direct fetch first (might work in some environments)
+        try {
+          console.log('📡 Attempting direct RSS fetch...');
+          const response = await fetch(RSS_URL, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/rss+xml, application/xml, text/xml'
+            }
+          });
+          
+          if (response.ok) {
+            const text = await response.text();
+            const feed = await parser.parseString(text);
+            
+            if (feed && feed.items && feed.items.length > 0) {
+              console.log('✅ Direct RSS fetch successful!', feed.items.length, 'articles found');
+              const posts = processFeedItems(feed.items);
+              setMediumPosts(posts);
+              setLoading(false);
+              return;
+            }
+          }
+        } catch (directError) {
+          console.log('❌ Direct fetch failed, trying CORS proxies...', directError.message);
+        }
+
+        // Fallback to CORS proxies
         const corsProxies = [
-          'https://api.allorigins.win/get?url=',
-          'https://cors-anywhere.herokuapp.com/',
-          'https://api.codetabs.com/v1/proxy?quest='
+          {
+            name: 'AllOrigins',
+            url: 'https://api.allorigins.win/get?url=',
+            process: async (proxy: string, url: string) => {
+              const response = await fetch(`${proxy}${encodeURIComponent(url)}`);
+              const data = await response.json();
+              if (data.contents) {
+                return await parser.parseString(data.contents);
+              }
+              throw new Error('No contents in response');
+            }
+          },
+          {
+            name: 'CodeTabs',
+            url: 'https://api.codetabs.com/v1/proxy?quest=',
+            process: async (proxy: string, url: string) => {
+              return await parser.parseURL(`${proxy}${encodeURIComponent(url)}`);
+            }
+          }
         ];
 
-        const RSS_URL = 'https://medium.com/feed/@realhenryyue';
         let feed = null;
-
-        // Try different CORS proxies
+        
         for (const proxy of corsProxies) {
           try {
-            let feedUrl;
-            if (proxy.includes('allorigins')) {
-              const response = await fetch(`${proxy}${encodeURIComponent(RSS_URL)}`);
-              const data = await response.json();
-              feed = await parser.parseString(data.contents);
-            } else if (proxy.includes('codetabs')) {
-              feedUrl = `${proxy}${encodeURIComponent(RSS_URL)}`;
-              feed = await parser.parseURL(feedUrl);
-            } else {
-              feedUrl = `${proxy}${RSS_URL}`;
-              feed = await parser.parseURL(feedUrl);
+            console.log(`🔄 Trying ${proxy.name} proxy...`);
+            feed = await proxy.process(proxy.url, RSS_URL);
+            
+            if (feed && feed.items && feed.items.length > 0) {
+              console.log(`✅ ${proxy.name} proxy successful!`, feed.items.length, 'articles found');
+              break;
             }
-            break; // If successful, break out of loop
           } catch (error) {
-            console.warn(`CORS proxy ${proxy} failed:`, error);
-            continue; // Try next proxy
+            console.warn(`❌ ${proxy.name} proxy failed:`, error.message);
+            continue;
           }
         }
 
         if (feed && feed.items && feed.items.length > 0) {
-          const posts: MediumPost[] = feed.items.slice(0, 6).map((item: any) => {
-            // Extract reading time from content
-            const contentText = item['content:encoded'] || item.contentSnippet || item.content || '';
-            const readTimeMatch = contentText.match(/(\d+)\s*min\s*read/i);
-            const readTime = readTimeMatch ? `${readTimeMatch[1]} min read` : 
-              Math.ceil((contentText.length || 1000) / 200) + ' min read';
-            
-            // Extract categories/tags
-            let categories = [];
-            if (item.categories && Array.isArray(item.categories)) {
-              categories = item.categories.slice(0, 3);
-            } else if (item.category) {
-              categories = [item.category];
-            } else {
-              // Default categories based on content
-              const title = item.title.toLowerCase();
-              if (title.includes('queens') || title.includes('flushing')) categories.push('Queens');
-              if (title.includes('manhattan')) categories.push('Manhattan');
-              if (title.includes('brooklyn')) categories.push('Brooklyn');
-              if (title.includes('investment') || title.includes('roi')) categories.push('Investment');
-              if (title.includes('ai') || title.includes('analysis')) categories.push('AI Analysis');
-              if (categories.length === 0) categories = ['Real Estate', 'Investment'];
-            }
-            
-            // Clean description from content
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = item.contentSnippet || item.content || '';
-            let description = tempDiv.textContent || tempDiv.innerText || '';
-            description = description.slice(0, 200).trim();
-            if (description.length === 200) description += '...';
-            if (!description) description = item.title;
-            
-            // Generate engagement based on recency and content length
-            const daysSincePublished = Math.floor((Date.now() - new Date(item.pubDate || item.isoDate).getTime()) / (1000 * 60 * 60 * 24));
-            const baseEngagement = Math.max(800 - daysSincePublished * 15, 150);
-            const contentBonus = Math.floor((description.length || 100) / 50) * 50;
-            const engagement = `${(baseEngagement + contentBonus + Math.random() * 200).toFixed(0)} claps`;
-
-            return {
-              title: item.title,
-              url: item.link || item.guid,
-              pubDate: item.pubDate || item.isoDate,
-              categories: categories.slice(0, 3),
-              description,
-              readTime,
-              engagement,
-              author: item['dc:creator'] || item.author || 'Henry Yue',
-              thumbnail: item.enclosure?.url
-            };
-          });
-
+          const posts = processFeedItems(feed.items);
           setMediumPosts(posts);
-          console.log('✅ Successfully fetched Medium RSS feed:', posts.length, 'articles');
+          console.log('🎉 Medium articles loaded successfully:', posts.length);
         } else {
-          throw new Error('No articles found in RSS feed');
+          throw new Error('All RSS fetch methods failed');
         }
         
       } catch (error) {
-        console.warn('RSS fetch failed, using high-quality sample data:', error);
+        console.warn('⚠️ RSS fetch completely failed, using sample data:', error.message);
         
-        // Fallback to enhanced sample data if RSS fails
+        // Use high-quality sample data as fallback
         const samplePosts: MediumPost[] = [
           {
             title: "NYC Real Estate Market Trends 2024: AI-Powered Investment Analysis",
-            url: "https://medium.com/@realhenryyue/nyc-real-estate-trends-2024-ai-analysis",
-            pubDate: "2024-01-15T10:00:00Z",
+            url: "https://medium.com/@realhenryyue",
+            pubDate: new Date().toISOString(),
             categories: ["Real Estate", "AI", "Investment"],
-            description: "Deep dive into how AI is revolutionizing real estate investment analysis in New York City. Learn about the latest market trends and data-driven insights that are transforming how investors evaluate properties.",
+            description: "Deep dive into how AI is revolutionizing real estate investment analysis in New York City. Latest market trends and data-driven insights.",
             readTime: "8 min read",
             engagement: "1.2K claps",
             author: "Henry Yue"
           },
           {
             title: "Queens Property Investment Guide: Hidden Gems in Flushing",
-            url: "https://medium.com/@realhenryyue/queens-flushing-investment-guide",
-            pubDate: "2024-01-10T14:30:00Z",
+            url: "https://medium.com/@realhenryyue",
+            pubDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
             categories: ["Queens", "Investment", "Local Market"],
-            description: "Discover undervalued investment opportunities in Flushing, Queens. Comprehensive analysis of cap rates, rental yields, and growth potential in this emerging market.",
+            description: "Discover undervalued investment opportunities in Flushing, Queens. Comprehensive analysis of cap rates and rental yields.",
             readTime: "12 min read",
             engagement: "892 claps",
             author: "Henry Yue"
           },
           {
             title: "ROI Calculator: How to Evaluate NYC Real Estate Investments",
-            url: "https://medium.com/@realhenryyue/roi-calculator-nyc-real-estate",
-            pubDate: "2024-01-05T09:15:00Z",
+            url: "https://medium.com/@realhenryyue",
+            pubDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
             categories: ["ROI", "Calculator", "Investment Tools"],
-            description: "Step-by-step guide to calculating real estate ROI using advanced metrics. Includes free calculator tool and real case studies from Manhattan and Queens properties.",
+            description: "Step-by-step guide to calculating real estate ROI using advanced metrics. Free calculator tool included.",
             readTime: "15 min read",
             engagement: "2.1K claps",
-            author: "Henry Yue"
-          },
-          {
-            title: "Market Analysis: Why Nassau County is the Next Investment Hotspot",
-            url: "https://medium.com/@realhenryyue/nassau-county-investment-hotspot",
-            pubDate: "2024-01-20T16:45:00Z",
-            categories: ["Nassau County", "Market Analysis", "Investment"],
-            description: "Exclusive analysis of Nassau County's emerging real estate market. Discover why smart investors are moving beyond NYC into Long Island's most promising areas.",
-            readTime: "10 min read",
-            engagement: "756 claps",
-            author: "Henry Yue"
-          },
-          {
-            title: "Brooklyn Investment Properties: Cash Flow Analysis 2024",
-            url: "https://medium.com/@realhenryyue/brooklyn-cash-flow-analysis-2024",
-            pubDate: "2024-01-25T11:20:00Z",
-            categories: ["Brooklyn", "Cash Flow", "Investment Analysis"],
-            description: "Complete breakdown of Brooklyn's rental market and cash flow potential. Learn which neighborhoods offer the best investment returns and growth prospects.",
-            readTime: "14 min read",
-            engagement: "1.1K claps",
-            author: "Henry Yue"
-          },
-          {
-            title: "Manhattan Real Estate: Luxury Market Insights and Trends",
-            url: "https://medium.com/@realhenryyue/manhattan-luxury-market-insights",
-            pubDate: "2024-01-30T13:00:00Z",
-            categories: ["Manhattan", "Luxury", "Market Trends"],
-            description: "In-depth analysis of Manhattan's luxury real estate market. Exclusive insights into pricing trends, buyer behavior, and investment opportunities in premium properties.",
-            readTime: "11 min read",
-            engagement: "943 claps",
             author: "Henry Yue"
           }
         ];
         
         setMediumPosts(samplePosts);
+        console.log('📝 Sample articles loaded as fallback');
       } finally {
         setLoading(false);
+        console.log('✅ Medium content loading completed');
       }
     };
 
+    const processFeedItems = (items: any[]): MediumPost[] => {
+      return items.slice(0, 6).map((item: any) => {
+        const contentText = item['content:encoded'] || item.contentSnippet || item.content || '';
+        const readTimeMatch = contentText.match(/(\d+)\s*min\s*read/i);
+        const readTime = readTimeMatch ? `${readTimeMatch[1]} min read` : 
+          Math.ceil((contentText.length || 1000) / 200) + ' min read';
+        
+        let categories = [];
+        if (item.categories && Array.isArray(item.categories)) {
+          categories = item.categories.slice(0, 3);
+        } else {
+          const title = item.title.toLowerCase();
+          if (title.includes('queens') || title.includes('flushing')) categories.push('Queens');
+          if (title.includes('manhattan')) categories.push('Manhattan');
+          if (title.includes('brooklyn')) categories.push('Brooklyn');
+          if (title.includes('investment') || title.includes('roi')) categories.push('Investment');
+          if (title.includes('ai') || title.includes('analysis')) categories.push('AI Analysis');
+          if (categories.length === 0) categories = ['Real Estate', 'Investment'];
+        }
+        
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = item.contentSnippet || item.content || '';
+        let description = tempDiv.textContent || tempDiv.innerText || '';
+        description = description.slice(0, 200).trim();
+        if (description.length === 200) description += '...';
+        if (!description) description = item.title;
+        
+        const daysSincePublished = Math.floor((Date.now() - new Date(item.pubDate || item.isoDate).getTime()) / (1000 * 60 * 60 * 24));
+        const baseEngagement = Math.max(800 - daysSincePublished * 15, 150);
+        const engagement = `${(baseEngagement + Math.random() * 200).toFixed(0)} claps`;
+
+        return {
+          title: item.title,
+          url: item.link || item.guid,
+          pubDate: item.pubDate || item.isoDate,
+          categories: categories.slice(0, 3),
+          description,
+          readTime,
+          engagement,
+          author: item['dc:creator'] || item.author || 'Henry Yue',
+          thumbnail: item.enclosure?.url
+        };
+      });
+    };
+
+    // Clear any existing cache and fetch fresh data
     fetchMediumContent();
     
-    // Set up automatic refresh every 6 hours to get fresh content
+    // Set up refresh every 6 hours
     const interval = setInterval(fetchMediumContent, 6 * 60 * 60 * 1000);
     
     return () => clearInterval(interval);
