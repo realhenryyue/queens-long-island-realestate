@@ -892,15 +892,26 @@ const ROICalculator = () => {
           </div>
 
           {/* Disclaimer */}
-          <div className="mt-8 p-4 bg-muted/30 rounded-lg border border-border/50">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0" />
-              <p className="text-xs text-muted-foreground">
-                {currentLanguage === 'zh' ? 
-                  '此工具仅供参考，不构成投资建议。请咨询专业人士。' : 
-                  'This tool is for informational purposes only and does not constitute investment advice. Please consult professionals.'
-                }
-              </p>
+          <div className="mt-8 p-6 bg-muted/30 rounded-lg border border-border/50">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-muted-foreground">
+                <p className="font-medium text-foreground mb-2">
+                  {currentLanguage === 'zh' ? '免责声明' : 'Disclaimer'}
+                </p>
+                <p className="leading-relaxed">
+                  {currentLanguage === 'zh' ? 
+                    '此工具仅供参考，不构成投资建议。请独立验证并咨询专业人士。投资有风险，决策需谨慎。' : 
+                    'This tool is for informational purposes only and does not constitute investment advice. Please verify independently and consult professionals. Investment involves risks, decisions should be made carefully.'
+                  }
+                </p>
+                <p className="mt-2 text-xs text-muted-foreground/80">
+                  {currentLanguage === 'zh' ? 
+                    '数据基于输入参数和市场估算，实际结果可能有所不同。' : 
+                    'Data is based on input parameters and market estimates, actual results may vary.'
+                  }
+                </p>
+              </div>
             </div>
           </div>
         </div>
