@@ -15,10 +15,8 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          {/* Wrap ALL routes in LanguageProvider to prevent context errors */}
           <LanguageProvider defaultLanguage="en">
             <Routes>
-              {/* All routes now have guaranteed LanguageProvider context */}
               <Route path="/" element={<Index />} />
               <Route path="/en" element={<Index />} />
               <Route path="/en/*" element={<Index />} />

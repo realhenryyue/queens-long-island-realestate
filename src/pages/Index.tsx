@@ -4,6 +4,7 @@ import { AboutSection } from "@/components/AboutSection";
 import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
 import { UnifiedSchema } from "@/components/UnifiedSchema";
+import { OptimizedComponentLoader } from "@/components/OptimizedComponentLoader";
 
 import { PerformanceOptimizer } from "@/components/PerformanceOptimizer";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
@@ -20,6 +21,7 @@ const Index = () => {
         <ComprehensiveSEO />
         <UnifiedSchema />
         <PerformanceOptimizer />
+        <OptimizedComponentLoader />
         
         <HeroSection />
         <ServicesSection />
