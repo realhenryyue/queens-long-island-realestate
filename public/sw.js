@@ -1,7 +1,7 @@
 // Enhanced Service Worker for Henry Yue Real Estate
 // NYC Real Estate AI Investment Analysis Expert - Enterprise Performance
 
-const CACHE_NAME = 'realhenryyue-v2.1-enterprise';
+const CACHE_NAME = 'realhenryyue-v3.0-fixed';
 const OFFLINE_URL = '/index.html';
 
 // Critical resources for immediate caching
