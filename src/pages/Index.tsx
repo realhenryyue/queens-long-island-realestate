@@ -9,13 +9,17 @@ import ROICalculator from "@/components/ROICalculator";
 import RealMediumContent from "@/components/RealMediumContent";
 import UnifiedErrorFix from "@/components/UnifiedErrorFix";
 import MobileOptimization from "@/components/MobileOptimization";
+import UniversalCompatibility from "@/components/UniversalCompatibility";
+import AccessibilityEnhancements from "@/components/AccessibilityEnhancements";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Unified error fixes and optimizations */}
+      {/* Comprehensive compatibility and optimization fixes */}
       <UnifiedErrorFix />
+      <UniversalCompatibility />
       <MobileOptimization />
+      <AccessibilityEnhancements />
       
       {/* Essential SEO only */}
       <UnifiedSchema />

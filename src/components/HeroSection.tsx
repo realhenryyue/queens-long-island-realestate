@@ -142,8 +142,8 @@ export const HeroSection = () => {
                     src={agentPhoto} 
                     alt={t('hero.agentAlt')}
                     className="w-32 h-32 rounded-full mx-auto object-cover shadow-card"
-                    width={128}
-                    height={128}
+                    width="128"
+                    height="128"
                     loading="eager"
                     decoding="async"
                     itemProp="image"
@@ -174,9 +174,10 @@ export const HeroSection = () => {
                         src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" 
                         alt="Google" 
                         className="w-4 h-4 mr-2 flex-shrink-0"
-                        width={16}
-                        height={16}
+                        width="16"
+                        height="16"
                         loading="lazy"
+                        decoding="async"
                       />
                       <span className="truncate">
                         ⭐ {currentLanguage === 'zh' ? 'Google商业档案' : 'Google Business Profile'}
