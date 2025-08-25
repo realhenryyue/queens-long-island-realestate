@@ -6,11 +6,13 @@ import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { LanguageProvider } from "./contexts/LanguageContext";
-import { ErrorBoundary } from "./components/ErrorBoundary";
+import { OptimizedErrorBoundary } from "./components/OptimizedErrorBoundary";
+import PerformanceOptimizer from "./components/PerformanceOptimizer";
 
 const App = () => (
   <HelmetProvider>
-    <ErrorBoundary>
+    <OptimizedErrorBoundary>
+      <PerformanceOptimizer />
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -41,7 +43,7 @@ const App = () => (
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
-    </ErrorBoundary>
+    </OptimizedErrorBoundary>
   </HelmetProvider>
 );
 
