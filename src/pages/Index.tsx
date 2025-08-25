@@ -8,12 +8,14 @@ import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
 import RealMediumContent from "@/components/RealMediumContent";
 import UnifiedErrorFix from "@/components/UnifiedErrorFix";
+import MobileOptimization from "@/components/MobileOptimization";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Unified error fixes and optimizations */}
       <UnifiedErrorFix />
+      <MobileOptimization />
       
       {/* Essential SEO only */}
       <UnifiedSchema />

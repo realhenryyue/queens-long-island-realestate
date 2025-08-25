@@ -2,44 +2,55 @@ import { useEffect } from 'react';
 
 const MobileOptimization = () => {
   useEffect(() => {
-    // 简化的移动端优化，避免阻塞渲染
+    // Lightweight mobile optimizations that don't interfere with iPad Chrome
     const timer = setTimeout(() => {
       try {
-        // 基础触摸优化
         const style = document.createElement('style');
+        style.setAttribute('data-mobile-optimization', 'true');
         style.textContent = `
-          /* 基础移动端优化 */
+          /* Essential mobile optimizations only */
           @media (max-width: 768px) {
             button, .btn, [role="button"], a {
               min-height: 44px;
               min-width: 44px;
+              touch-action: manipulation;
             }
             
-            .text-4xl { font-size: 2rem; }
-            .text-5xl { font-size: 2.5rem; }
+            /* Responsive typography */
+            .text-4xl { font-size: clamp(1.875rem, 5vw, 2.25rem); }
+            .text-5xl { font-size: clamp(2.25rem, 6vw, 3rem); }
+            .text-6xl { font-size: clamp(2.5rem, 7vw, 3.75rem); }
+            
+            /* Improved spacing */
+            .container { padding-left: 1rem; padding-right: 1rem; }
             .p-6 { padding: 1rem; }
             .gap-8 { gap: 1rem; }
+            .gap-12 { gap: 1.5rem; }
           }
           
-          /* iOS Safari 修复 */
-          @supports (-webkit-touch-callout: none) {
+          /* iOS Safari specific fixes without breaking iPad Chrome */
+          @supports (-webkit-touch-callout: none) and (not (user-agent: *Chrome*)) {
             .min-h-screen {
+              min-height: -webkit-fill-available;
+            }
+            body {
               min-height: -webkit-fill-available;
             }
           }
           
-          /* 触摸设备优化 */
+          /* Touch device optimizations */
           @media (pointer: coarse) {
             * {
               touch-action: manipulation;
+              -webkit-tap-highlight-color: transparent;
             }
           }
         `;
         document.head.appendChild(style);
       } catch (error) {
-        // 静默处理错误，不阻塞渲染
+        // Silent error handling
       }
-    }, 200); // 延迟执行避免阻塞
+    }, 100); // Minimal delay to avoid blocking
 
     return () => clearTimeout(timer);
   }, []);

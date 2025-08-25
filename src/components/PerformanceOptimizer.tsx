@@ -5,6 +5,12 @@ import { useEffect } from 'react';
  */
 const PerformanceOptimizer = () => {
   useEffect(() => {
+    // Skip performance optimizations on iPad Chrome to prevent black screen
+    if (navigator.userAgent.includes('iPad') && navigator.userAgent.includes('Chrome')) {
+      console.debug('Skipping performance optimizations for iPad Chrome compatibility');
+      return;
+    }
+    
     try {
       // 1. Optimize images loading
       const optimizeImages = () => {

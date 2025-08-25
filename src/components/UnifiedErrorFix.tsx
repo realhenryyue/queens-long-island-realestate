@@ -7,12 +7,61 @@ import { useEffect } from 'react';
 const UnifiedErrorFix = () => {
   useEffect(() => {
     try {
-      // 1. Critical DOM and viewport fixes
+      // 1. Critical DOM and viewport fixes - iPad Chrome priority
       const rootElement = document.getElementById('root');
       if (rootElement) {
         rootElement.style.minHeight = '100vh';
         rootElement.style.minHeight = '100dvh';
-        rootElement.style.isolation = 'isolate'; // Create stacking context
+        rootElement.style.isolation = 'isolate';
+        rootElement.style.display = 'block'; // Force display for iPad Chrome
+        rootElement.style.position = 'relative'; // Ensure positioning context
+      }
+
+      // Immediate iPad Chrome compatibility fix
+      if (navigator.userAgent.includes('iPad') && navigator.userAgent.includes('Chrome')) {
+        const iPadChromeStyle = document.createElement('style');
+        iPadChromeStyle.setAttribute('data-ipad-chrome-fix', 'true');
+        iPadChromeStyle.textContent = `
+          html, body {
+            height: 100% !important;
+            width: 100% !important;
+            overflow-x: hidden !important;
+            position: relative !important;
+            background: hsl(var(--background)) !important;
+          }
+          
+          #root {
+            min-height: 100vh !important;
+            min-height: 100dvh !important;
+            display: block !important;
+            position: relative !important;
+            z-index: 1 !important;
+            background: hsl(var(--background)) !important;
+          }
+          
+          /* Force hardware acceleration on iPad Chrome */
+          * {
+            -webkit-transform: translateZ(0) !important;
+            transform: translateZ(0) !important;
+            -webkit-backface-visibility: hidden !important;
+            backface-visibility: hidden !important;
+          }
+          
+          /* Disable problematic features on iPad Chrome */
+          .animate-pulse, .animate-spin, .animate-bounce {
+            animation: none !important;
+          }
+          
+          /* Fix flexbox issues on iPad Chrome */
+          .flex {
+            display: -webkit-box !important;
+            display: -webkit-flex !important;
+            display: flex !important;
+            -webkit-flex-wrap: wrap !important;
+            flex-wrap: wrap !important;
+          }
+        `;
+        document.head.insertBefore(iPadChromeStyle, document.head.firstChild);
       }
 
       // 2. Comprehensive browser compatibility styles
