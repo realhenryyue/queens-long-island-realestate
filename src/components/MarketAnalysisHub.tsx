@@ -281,13 +281,13 @@ const MarketAnalysisHub = () => {
   };
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-br from-background to-secondary/10">
+    <section id="market-analysis" className="py-8 md:py-16 px-4 bg-gradient-to-br from-background to-secondary/10 relative z-10">
       <div className="container mx-auto max-w-7xl">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
             {t('marketAnalysis.title')}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
             {t('marketAnalysis.subtitle')}
           </p>
         </div>
