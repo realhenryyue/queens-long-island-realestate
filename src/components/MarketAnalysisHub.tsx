@@ -281,8 +281,8 @@ const MarketAnalysisHub = () => {
   };
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-br from-background to-secondary/10">
-      <div className="container mx-auto max-w-7xl">
+    <section className="section-spacing py-8 md:py-16 px-4 bg-gradient-to-br from-background to-secondary/10">
+      <div className="responsive-container">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
             {t('marketAnalysis.title')}
@@ -326,7 +326,7 @@ const MarketAnalysisHub = () => {
           </TabsList>
 
           <TabsContent value="local" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="responsive-grid">
               {localMarketContent.map((item, index) => (
                 <Card key={index} id={`local-content-${index}`} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
@@ -359,7 +359,7 @@ const MarketAnalysisHub = () => {
           </TabsContent>
 
           <TabsContent value="educational" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="responsive-grid">
               {educationalContent.map((item, index) => (
                 <Card key={index} id={`educational-content-${index}`} className="hover:shadow-lg transition-shadow">
                   <CardHeader>

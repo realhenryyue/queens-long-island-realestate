@@ -11,6 +11,7 @@ import UnifiedErrorFix from "@/components/UnifiedErrorFix";
 import MobileOptimization from "@/components/MobileOptimization";
 import UniversalCompatibility from "@/components/UniversalCompatibility";
 import AccessibilityEnhancements from "@/components/AccessibilityEnhancements";
+import ResponsiveLayout from "@/components/ResponsiveLayout";
 
 const Index = () => {
   return (
@@ -20,6 +21,7 @@ const Index = () => {
       <UniversalCompatibility />
       <MobileOptimization />
       <AccessibilityEnhancements />
+      <ResponsiveLayout />
       
       {/* Essential SEO only */}
       <UnifiedSchema />

@@ -474,6 +474,17 @@ All colors MUST be HSL.
     display: grid;
   }
   
+  /* Fix viewport units for dynamic viewport height */
+  .min-h-screen-safe {
+    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
+  }
+  
+  .h-screen-safe {
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+  }
+  
   /* Flexbox with vendor prefixes for maximum compatibility */
   .flex {
     display: -webkit-box;
@@ -617,5 +628,59 @@ All colors MUST be HSL.
     image-rendering: -webkit-optimize-contrast;
     image-rendering: optimize-contrast;
     image-rendering: crisp-edges;
+  }
+}
+
+/* Final spacing and overlap fixes */
+.section-spacing {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 4rem;
+  clear: both;
+}
+
+@media (min-width: 768px) {
+  .section-spacing {
+    margin-bottom: 6rem;
+  }
+}
+
+/* Responsive container for consistent layouts */
+.responsive-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .responsive-container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-container {
+    padding: 0 2rem;
+  }
+}
+
+/* Responsive grid for cards */
+.responsive-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
   }
 }
