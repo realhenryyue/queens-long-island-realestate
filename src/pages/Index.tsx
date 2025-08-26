@@ -11,8 +11,6 @@ import UnifiedErrorFix from "@/components/UnifiedErrorFix";
 import MobileOptimization from "@/components/MobileOptimization";
 import UniversalCompatibility from "@/components/UniversalCompatibility";
 import AccessibilityEnhancements from "@/components/AccessibilityEnhancements";
-import ResponsiveLayout from "@/components/ResponsiveLayout";
-import CrossBrowserFixes from "@/components/CrossBrowserFixes";
 
 const Index = () => {
   return (
@@ -20,8 +18,6 @@ const Index = () => {
       {/* Comprehensive compatibility and optimization fixes */}
       <UnifiedErrorFix />
       <UniversalCompatibility />
-      <ResponsiveLayout />
-      <CrossBrowserFixes />
       <MobileOptimization />
       <AccessibilityEnhancements />
       
