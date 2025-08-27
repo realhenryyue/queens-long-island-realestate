@@ -12,11 +12,15 @@ import MobileOptimization from "@/components/MobileOptimization";
 import UniversalCompatibility from "@/components/UniversalCompatibility";
 import AccessibilityEnhancements from "@/components/AccessibilityEnhancements";
 import ResponsiveLayout from "@/components/ResponsiveLayout";
+import IPadChromeCompatibility from "@/components/IPadChromeCompatibility";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Comprehensive compatibility and optimization fixes */}
+      {/* iPad Chrome compatibility fix - must be first */}
+      <IPadChromeCompatibility />
+      
+      {/* Other compatibility fixes */}
       <UnifiedErrorFix />
       <UniversalCompatibility />
       <MobileOptimization />
