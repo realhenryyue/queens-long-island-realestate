@@ -38,34 +38,25 @@ const CleanCompatibilityFix = () => {
         const baseStyle = document.createElement('style');
         baseStyle.setAttribute('data-clean-compatibility', 'true');
         baseStyle.textContent = `
-          /* Essential HTML/Body setup */
-          html {
-            height: 100%;
-            width: 100%;
-            -webkit-text-size-adjust: 100%;
-            text-size-adjust: 100%;
-          }
-          
-          body {
+          /* CRITICAL: iPad Chrome specific fixes */
+          html, body {
             height: 100%;
             width: 100%;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
             background: hsl(var(--background));
             color: hsl(var(--foreground));
-            font-family: system-ui, -apple-system, sans-serif;
-            line-height: 1.5;
           }
           
           #root {
             min-height: 100vh;
             width: 100%;
-            position: relative;
             background: hsl(var(--background));
+            display: block;
+            position: relative;
           }
           
-          /* Safe flexbox without transforms */
+          /* Safe layout without transforms */
           .flex {
             display: flex;
           }
@@ -74,80 +65,48 @@ const CleanCompatibilityFix = () => {
             display: grid;
           }
           
-          /* Safe responsive images */
+          /* Essential responsive images */
           img {
             max-width: 100%;
             height: auto;
             display: block;
           }
           
-          /* Essential form fixes */
-          input, textarea, select, button {
-            font-family: inherit;
-            font-size: 16px;
-            background: hsl(var(--background));
-            color: hsl(var(--foreground));
-            border: 1px solid hsl(var(--border));
-          }
-          
-          /* Touch improvements without breaking anything */
+          /* Touch and interaction fixes */
           button, [role="button"], a {
             min-height: 44px;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
           }
           
-          /* Essential accessibility */
+          /* Accessibility */
           *:focus-visible {
             outline: 2px solid hsl(var(--primary));
             outline-offset: 2px;
           }
           
-          .sr-only {
-            position: absolute !important;
-            width: 1px !important;
-            height: 1px !important;
-            padding: 0 !important;
-            margin: -1px !important;
-            overflow: hidden !important;
-            clip: rect(0, 0, 0, 0) !important;
-            white-space: nowrap !important;
-            border: 0 !important;
-          }
-          
-          /* Mobile responsive without breaking iPad Chrome */
+          /* Mobile responsive */
           @media (max-width: 768px) {
             .container {
               padding-left: 1rem;
               padding-right: 1rem;
             }
             
-            button, [role="button"], a {
-              min-height: 44px;
-              min-width: 44px;
-              padding: 12px 16px;
-            }
-            
-            /* Responsive typography */
             .text-4xl { font-size: clamp(1.875rem, 5vw, 2.25rem); }
             .text-5xl { font-size: clamp(2.25rem, 6vw, 3rem); }
             .text-6xl { font-size: clamp(2.5rem, 7vw, 3.75rem); }
           }
           
-          /* iPad specific fixes - very minimal */
-          @media (max-width: 1024px) and (min-width: 769px) {
-            #root {
-              min-height: 100vh;
-              isolation: isolate;
+          /* iPad Pro fixes - minimal and safe */
+          @media (min-width: 768px) and (max-width: 1024px) {
+            body {
+              background: hsl(var(--background)) !important;
+              min-height: 100vh !important;
             }
-          }
-          
-          /* Reduced motion support */
-          @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-              animation-duration: 0.01ms !important;
-              animation-iteration-count: 1 !important;
-              transition-duration: 0.01ms !important;
+            
+            #root {
+              min-height: 100vh !important;
+              background: hsl(var(--background)) !important;
             }
           }
         `;
