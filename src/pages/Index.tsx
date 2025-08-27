@@ -7,25 +7,13 @@ import { UnifiedSchema } from "@/components/UnifiedSchema";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
 import RealMediumContent from "@/components/RealMediumContent";
-import UnifiedErrorFix from "@/components/UnifiedErrorFix";
-import MobileOptimization from "@/components/MobileOptimization";
-import UniversalCompatibility from "@/components/UniversalCompatibility";
-import AccessibilityEnhancements from "@/components/AccessibilityEnhancements";
-import ResponsiveLayout from "@/components/ResponsiveLayout";
-import IPadChromeCompatibility from "@/components/IPadChromeCompatibility";
+import CleanCompatibilityFix from "@/components/CleanCompatibilityFix";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* iPad Chrome compatibility fix - must be first */}
-      <IPadChromeCompatibility />
-      
-      {/* Other compatibility fixes */}
-      <UnifiedErrorFix />
-      <UniversalCompatibility />
-      <MobileOptimization />
-      <AccessibilityEnhancements />
-      <ResponsiveLayout />
+      {/* Single clean compatibility fix */}
+      <CleanCompatibilityFix />
       
       {/* Essential SEO only */}
       <UnifiedSchema />
