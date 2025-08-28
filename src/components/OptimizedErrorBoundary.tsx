@@ -74,24 +74,18 @@ export class OptimizedErrorBoundary extends Component<Props, State> {
   private handleRetry = () => {
     const { retryCount } = this.state;
     
-    if (retryCount < 3) {
+    if (retryCount < 2) { // Reduced from 3 to 2 retries
       this.setState({
         hasError: false,
         error: undefined,
         errorInfo: undefined,
         retryCount: retryCount + 1
       });
-      
-      // Auto-retry after delay for network-related errors
-      if (this.state.error?.message.includes('fetch') || 
-          this.state.error?.message.includes('network')) {
-        this.retryTimer = setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      }
     } else {
-      // After 3 retries, suggest page reload
-      window.location.reload();
+      // After 2 retries, suggest page reload
+      if (window.confirm('Multiple errors occurred. Would you like to reload the page?')) {
+        window.location.reload();
+      }
     }
   };
 
@@ -151,11 +145,11 @@ export class OptimizedErrorBoundary extends Component<Props, State> {
               <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <Button 
                   onClick={this.handleRetry}
-                  disabled={retryCount >= 3}
+                  disabled={retryCount >= 2}
                   className="flex-1"
                 >
                   <RefreshCw className="w-4 h-4 mr-2" />
-                  {retryCount >= 3 ? 'Reload Page' : 'Try Again'}
+                  {retryCount >= 2 ? 'Reload Page' : 'Try Again'}
                 </Button>
                 <Button 
                   variant="outline" 
@@ -169,7 +163,7 @@ export class OptimizedErrorBoundary extends Component<Props, State> {
               
               {retryCount > 0 && (
                 <p className="text-xs text-muted-foreground">
-                  Retry attempt: {retryCount}/3
+                  Retry attempt: {retryCount}/2
                 </p>
               )}
             </CardContent>

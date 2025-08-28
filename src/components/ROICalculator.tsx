@@ -463,7 +463,10 @@ const ROICalculator = () => {
 
     } catch (error) {
       console.error('PDF export error:', error);
-      alert(currentLanguage === 'zh' ? 'PDF 导出失败，请重试' : 'PDF export failed, please try again');
+      const message = currentLanguage === 'zh' ? 'PDF 导出失败，请重试' : 'PDF export failed, please try again';
+      if (window.confirm(`${message}\n\nWould you like to contact Henry Yue for assistance?\nPhone: 718-717-5210`)) {
+        window.open('tel:+17187175210', '_self');
+      }
     }
   };
 

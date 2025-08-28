@@ -138,7 +138,10 @@ const RealMediumContent = memo(() => {
           }
         }
       } catch (error) {
-        // Production: Silent error handling - keep default posts
+        // Silent error handling - keep default posts, but log in development
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('Medium RSS fetch failed:', error);
+        }
       } finally {
         setLoading(false);
       }
