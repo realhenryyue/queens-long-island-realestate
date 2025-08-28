@@ -2,8 +2,8 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <!-- Enhanced viewport meta tag for cross-browser compatibility -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover, shrink-to-fit=no" />
+    <!-- Safari/WebKit optimized viewport meta tag for iPad Chrome -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover" />
     
     <!-- Enhanced cross-browser compatibility meta tags -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -365,13 +365,13 @@
         });
       })();
 
-      // Advanced lazy loading with intersection observer
-      if ('IntersectionObserver' in window) {
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-          entries.forEach(entry => {
+      // Safari-compatible lazy loading with fallback
+      if ('IntersectionObserver' in window && !navigator.userAgent.includes('iPad')) {
+        const imageObserver = new IntersectionObserver(function(entries, observer) {
+          entries.forEach(function(entry) {
             if (entry.isIntersecting) {
-              const img = entry.target;
-              if (img.dataset.src) {
+              var img = entry.target;
+              if (img.dataset && img.dataset.src) {
                 img.src = img.dataset.src;
                 img.classList.remove('lazy');
                 observer.unobserve(img);
@@ -383,15 +383,12 @@
           threshold: 0.01
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
-          const lazyImages = document.querySelectorAll('img[data-src]');
-          lazyImages.forEach(img => imageObserver.observe(img));
+        document.addEventListener('DOMContentLoaded', function() {
+          var lazyImages = document.querySelectorAll('img[data-src]');
+          lazyImages.forEach(function(img) {
+            imageObserver.observe(img);
+          });
         });
-      } else {
-        // Fallback for older browsers
-        const script = document.createElement('script');
-        script.src = 'https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver';
-        document.head.appendChild(script);
       }
 
       // Critical resource hints

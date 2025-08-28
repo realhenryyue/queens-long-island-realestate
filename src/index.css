@@ -103,7 +103,7 @@
   border: 0;
 }
 
-/* Clean base styles without conflicting transforms */
+/* WebKit-compatible base styles for iPad Safari/Chrome */
 @layer base {
   * {
     @apply border-border;
@@ -111,10 +111,11 @@
   }
 
   html {
-    font-family: system-ui, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     overflow-x: hidden;
+    height: 100%;
   }
 
   body {
@@ -122,20 +123,27 @@
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    font-family: system-ui, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     line-height: 1.5;
+    height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   img {
     max-width: 100%;
     height: auto;
+    display: block;
+    -webkit-image-smoothing: true;
   }
 
   button, input, select, textarea {
     font-family: inherit;
-    font-size: inherit;
+    font-size: 16px; /* Prevent zoom on iOS */
     line-height: inherit;
     margin: 0;
+    -webkit-appearance: none;
+    appearance: none;
   }
 }
 

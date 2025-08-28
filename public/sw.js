@@ -1,7 +1,7 @@
 // Enhanced Service Worker for Henry Yue Real Estate - Safari Compatible
 // NYC Real Estate AI Investment Analysis Expert - Cross-Browser Performance
 
-const CACHE_NAME = 'realhenryyue-v3.0-safari-fix';
+const CACHE_NAME = 'realhenryyue-v4.0-ipad-webkit-fix';
 const OFFLINE_URL = '/index.html';
 
 // Critical resources for immediate caching
@@ -69,13 +69,19 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
-// Fetch event - serve from cache, fallback to network with Safari compatibility
+// Fetch event - iPad WebKit compatible caching
 self.addEventListener('fetch', event => {
-  // Skip cross-origin requests except for fonts and critical resources
+  // Enhanced iPad Safari compatibility - skip problematic requests
   if (!event.request.url.startsWith(self.location.origin) && 
       !event.request.url.startsWith('https://fonts.googleapis.com') &&
-      !event.request.url.startsWith('https://fonts.gstatic.com') &&
-      !event.request.url.startsWith('https://polyfill.io')) {
+      !event.request.url.startsWith('https://fonts.gstatic.com')) {
+    return;
+  }
+  
+  // Skip requests that cause issues on iPad WebKit
+  if (event.request.url.includes('chrome-extension') || 
+      event.request.url.includes('moz-extension') ||
+      event.request.method !== 'GET') {
     return;
   }
 
