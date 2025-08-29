@@ -37,20 +37,6 @@ export const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
       </div>
       
-      {/* Logo */}
-      <div className="absolute top-4 left-4 z-20">
-        <img 
-          src="/lovable-uploads/ca0cd4ba-386e-4bdd-8888-4a0e9cf52c35.png"
-          alt="RealHenryYue Logo"
-          className="h-12 lg:h-16 w-auto object-contain drop-shadow-lg"
-          width="200"
-          height="64"
-          loading="eager"
-          decoding="async"
-          fetchPriority="high"
-        />
-      </div>
-
       {/* Language Toggle */}
       <div className="absolute top-4 right-4 z-20">
         <LanguageToggle />
