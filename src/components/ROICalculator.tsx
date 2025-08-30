@@ -296,6 +296,11 @@ const ROICalculator = () => {
 
   const exportToPDF = async () => {
     try {
+      if (!html2pdf) {
+        console.warn('PDF library not available');
+        return;
+      }
+      
       // Create comprehensive PDF content based on language
       const createPDFContent = () => {
         return `
