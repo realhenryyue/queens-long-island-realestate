@@ -74,12 +74,7 @@ const RealMediumContent = memo(() => {
         
         clearTimeout(timeoutId);
         
-        if (!response.ok) {
-          if (process.env.NODE_ENV === 'development') {
-            console.warn(`HTTP error! status: ${response.status}`);
-          }
-          return; // Gracefully fail without throwing
-        }
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const data = await response.json();
         

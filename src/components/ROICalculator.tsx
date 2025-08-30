@@ -462,16 +462,11 @@ const ROICalculator = () => {
       document.body.removeChild(tempContainer);
 
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('PDF export error:', error);
-      }
+      console.error('PDF export error:', error);
       const message = currentLanguage === 'zh' ? 'PDF 导出失败，请重试' : 'PDF export failed, please try again';
       if (window.confirm(`${message}\n\nWould you like to contact Henry Yue for assistance?\nPhone: 718-717-5210`)) {
         window.open('tel:+17187175210', '_self');
       }
-    } finally {
-      // Ensure loading states are reset
-      setAnalysisStage('input');
     }
   };
 
