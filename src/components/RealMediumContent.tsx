@@ -58,11 +58,6 @@ const RealMediumContent = memo(() => {
     if (typeof window === 'undefined') return;
     
     const fetchMediumPosts = async () => {
-      // Avoid fetching if component is unmounted
-      if (!document.body.contains(document.querySelector('[data-component="medium-content"]'))) {
-        return;
-      }
-      
       try {
         setLoading(true);
         
@@ -158,10 +153,7 @@ const RealMediumContent = memo(() => {
   }, []);
 
   return (
-    <section 
-      className="py-16 lg:py-20 bg-gradient-to-br from-secondary/20 via-background to-secondary/30 relative overflow-hidden"
-      data-component="medium-content"
-    >
+    <section className="py-16 lg:py-20 bg-gradient-to-br from-secondary/20 via-background to-secondary/30 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       <div className="absolute top-10 right-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl"></div>

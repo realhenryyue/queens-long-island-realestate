@@ -154,27 +154,22 @@
     padding-right: 1rem;
   }
   
-  /* Improved touch targets for mobile - iOS Safari compatible */
-  button, [role="button"], a[href], input, textarea, select {
+  /* Improved touch targets for mobile */
+  button, [role="button"], a, input, textarea, select {
     min-height: 44px;
     min-width: 44px;
     padding: 12px 16px;
     touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
   }
   
-  /* Enhanced responsive typography - more reliable sizing */
-  h1, .text-6xl { font-size: clamp(2rem, 5vw + 1rem, 3.75rem) !important; }
-  h2, .text-5xl { font-size: clamp(1.75rem, 4vw + 1rem, 3rem) !important; }
-  h3, .text-4xl { font-size: clamp(1.5rem, 3vw + 1rem, 2.25rem) !important; }
-  h4, .text-3xl { font-size: clamp(1.25rem, 2.5vw + 1rem, 1.875rem) !important; }
-  h5, .text-2xl { font-size: clamp(1.125rem, 2vw + 0.5rem, 1.5rem) !important; }
-  h6, .text-xl { font-size: clamp(1rem, 1.5vw + 0.5rem, 1.25rem) !important; }
-  .text-lg { font-size: clamp(1rem, 1vw + 0.25rem, 1.125rem) !important; }
-  
-  /* Better line height for readability */
-  h1, h2, h3, h4, h5, h6 { line-height: 1.2; }
-  p, .text-base { line-height: 1.6; }
+  /* Enhanced responsive typography */
+  .text-4xl { font-size: clamp(1.875rem, 5vw, 2.25rem); }
+  .text-5xl { font-size: clamp(2.25rem, 6vw, 3rem); }
+  .text-6xl { font-size: clamp(2.5rem, 7vw, 3.75rem); }
+  .text-3xl { font-size: clamp(1.5rem, 4vw, 1.875rem); }
+  .text-2xl { font-size: clamp(1.25rem, 3vw, 1.5rem); }
+  .text-xl { font-size: clamp(1.125rem, 2.5vw, 1.25rem); }
+  .text-lg { font-size: clamp(1rem, 2vw, 1.125rem); }
 }
 
 /* Enhanced accessibility with improved contrast */

@@ -70,14 +70,14 @@ export const HeroSection = () => {
             <div className="space-y-4">
               <header>
                 <h1 
-                  className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight break-words"
+                  className="text-5xl lg:text-6xl font-bold leading-tight"
                   itemProp="name"
                 >
                   {t('hero.title')}
                 </h1>
               </header>
               <p 
-                className="text-lg sm:text-xl lg:text-2xl text-white/90 leading-relaxed break-words"
+                className="text-xl lg:text-2xl text-white/90 leading-relaxed"
                 itemProp="description"
               >
                 {t('hero.subtitle')}
