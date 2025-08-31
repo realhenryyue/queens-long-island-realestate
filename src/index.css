@@ -77,10 +77,60 @@
 /* Background images for components */
 .hero-bg {
   background-image: url('./assets/queens-skyline.jpg');
+  contain: layout style paint;
+  will-change: transform;
 }
 
 .roi-hero-bg {
   background-image: url('./assets/queens-skyline.jpg');
+}
+
+/* Enhanced Core Web Vitals Optimization */
+button, [role="button"], a[role="button"] {
+  contain: layout style;
+}
+
+/* CLS (Cumulative Layout Shift) prevention */
+img, video, iframe {
+  aspect-ratio: attr(width) / attr(height);
+}
+
+/* Enhanced font display for performance */
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+  font-weight: 400 700;
+  src: url('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2') format('woff2');
+}
+
+/* Google's 2024-2025 Performance Optimizations */
+@media (prefers-reduced-motion: no-preference) {
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+  
+  .performance-animation {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+}
+
+/* Enhanced accessibility for screen readers */
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Progressive enhancement for modern browsers */
+@supports (backdrop-filter: blur(10px)) {
+  .backdrop-blur-enhanced {
+    backdrop-filter: blur(10px) saturate(150%);
+  }
 }
 
 /* Essential utilities */
