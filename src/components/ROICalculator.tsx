@@ -202,8 +202,8 @@ const ROICalculator = () => {
     // Show contact prompt for Henry Yue as per specifications
     const shouldContact = window.confirm(
       currentLanguage === 'zh' ? 
-        '为获得最准确的投资分析，请联系专业房地产投资分析师 岳泓宇 (Henry Yue)。\n\n电话: 718-717-5210\n邮箱: forangh@gmail.com\n\n点击"确定"继续基础分析，或"取消"先联系专家。' :
-        'For the most accurate investment analysis, please contact professional real estate investment analyst Hongyu (Henry) Yue.\n\nPhone: 718-717-5210\nEmail: forangh@gmail.com\n\nClick "OK" to continue with basic analysis, or "Cancel" to contact the expert first.'
+        '为获得最准确的投资分析，请联系专业房地产投资分析师 岳泓宇 (Henry Yue)。\n\n电话: 718-717-5210\n邮箱: RealHenryYue@gmail.com\n\n点击"确定"继续基础分析，或"取消"先联系专家。' :
+        'For the most accurate investment analysis, please contact professional real estate investment analyst Hongyu (Henry) Yue.\n\nPhone: 718-717-5210\nEmail: RealHenryYue@gmail.com\n\nClick "OK" to continue with basic analysis, or "Cancel" to contact the expert first.'
     );
     
     if (!shouldContact) {
@@ -313,7 +313,7 @@ const ROICalculator = () => {
                 ${currentLanguage === 'zh' ? 'NYC房地产投资AI分析报告' : 'NYC Real Estate AI Investment Analysis Report'}
               </h2>
               <p style="color: #6b7280; font-size: 14px; margin: 0; font-weight: 500;">
-                Henry Yue | 718-717-5210 | forangh@gmail.com
+                Henry Yue | 718-717-5210 | RealHenryYue@gmail.com
               </p>
             </div>
             
@@ -407,7 +407,7 @@ const ROICalculator = () => {
                 </p>
                 <div style="font-size: 14px; color: #1f2937; line-height: 1.8;">
                   <div><strong>${currentLanguage === 'zh' ? '电话' : 'Phone'}:</strong> 718-717-5210</div>
-                  <div><strong>${currentLanguage === 'zh' ? '邮箱' : 'Email'}:</strong> forangh@gmail.com</div>
+                  <div><strong>${currentLanguage === 'zh' ? '邮箱' : 'Email'}:</strong> RealHenryYue@gmail.com</div>
                   <div><strong>${currentLanguage === 'zh' ? '网站' : 'Website'}:</strong> realhenryyue.com</div>
                 </div>
               </div>
@@ -462,11 +462,16 @@ const ROICalculator = () => {
       document.body.removeChild(tempContainer);
 
     } catch (error) {
-      console.error('PDF export error:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('PDF export error:', error);
+      }
       const message = currentLanguage === 'zh' ? 'PDF 导出失败，请重试' : 'PDF export failed, please try again';
       if (window.confirm(`${message}\n\nWould you like to contact Henry Yue for assistance?\nPhone: 718-717-5210`)) {
         window.open('tel:+17187175210', '_self');
       }
+    } finally {
+      // Ensure loading states are reset
+      setAnalysisStage('input');
     }
   };
 

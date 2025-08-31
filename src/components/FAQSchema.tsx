@@ -10,7 +10,7 @@ export const FAQSchema = () => {
     },
     {
       question: "如何联系Henry岳先生？",
-      answer: "您可以通过电话(718) 717-5210联系我，或发送邮件至forangh@gmail.com。我提供中英文双语服务，工作时间是周一至周五9:00-18:00，周末10:00-17:00。"
+      answer: "您可以通过电话(718) 717-5210联系我，或发送邮件至RealHenryYue@gmail.com。我提供中英文双语服务，工作时间是周一至周五9:00-18:00，周末10:00-17:00。"
     },
     {
       question: "什么是房地产投资ROI计算？",
@@ -31,7 +31,7 @@ export const FAQSchema = () => {
     },
     {
       question: "How can I contact Henry Yue?",
-      answer: "You can reach me at (718) 717-5210 or email forangh@gmail.com. I provide bilingual services in English and Chinese. My business hours are Monday-Friday 9:00 AM-6:00 PM, weekends 10:00 AM-5:00 PM."
+      answer: "You can reach me at (718) 717-5210 or email RealHenryYue@gmail.com. I provide bilingual services in English and Chinese. My business hours are Monday-Friday 9:00 AM-6:00 PM, weekends 10:00 AM-5:00 PM."
     },
     {
       question: "What is real estate investment ROI calculation?",
