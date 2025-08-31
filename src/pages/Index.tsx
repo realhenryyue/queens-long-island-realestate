@@ -7,13 +7,13 @@ import { UnifiedSchema } from "@/components/UnifiedSchema";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
 import RealMediumContent from "@/components/RealMediumContent";
-import SystemHealthMonitor from "@/components/SystemHealthMonitor";
+import UnifiedOptimizer from "@/components/UnifiedOptimizer";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* System health monitoring and optimization */}
-      <SystemHealthMonitor />
+      {/* Unified performance and compatibility optimizer */}
+      <UnifiedOptimizer />
       
       {/* Essential SEO only */}
       <UnifiedSchema />

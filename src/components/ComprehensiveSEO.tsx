@@ -70,7 +70,7 @@ const ComprehensiveSEO = () => {
           "@type": "RealEstateAgent",
           "name": currentLanguage === 'zh' ? "岳泓宇" : "Henry Yue",
           "url": "https://realhenryyue.com",
-          "email": "RealHenryYue@gmail.com",
+          "email": "forangh@gmail.com",
           "telephone": "+1-718-717-5210",
           "address": {
             "@type": "PostalAddress",
