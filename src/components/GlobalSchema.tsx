@@ -23,7 +23,7 @@ export const GlobalSchema = () => {
       "alternateName": "Henry岳先生",
       "jobTitle": language === 'zh' ? "房地产专家" : "Real Estate Expert",
       "telephone": "+1-718-717-5210",
-      "email": "forangh@gmail.com",
+      "email": "RealHenryYue@gmail.com",
       "knowsLanguage": ["en", "zh-CN"],
       "areaServed": [
         {
@@ -168,7 +168,7 @@ export const GlobalSchema = () => {
       : "Professional NYC real estate agent services with investment analysis, market consulting and bilingual support",
     "url": "https://www.realhenryyue.com",
     "telephone": "+1-718-717-5210",
-    "email": "forangh@gmail.com",
+    "email": "RealHenryYue@gmail.com",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "41-25 Kissena Blvd Suite 126",
