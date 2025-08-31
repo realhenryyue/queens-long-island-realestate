@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Star, TrendingUp, Calculator, Home } from "lucide-react";
 import agentPhoto from "@/assets/agent-photo.jpg";
 import queensSkyline from "@/assets/queens-skyline.jpg";
+// Logo will be handled via direct text/styling since file is not available
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { SocialMediaIcons } from "@/components/SocialMediaIcons";
@@ -37,21 +38,18 @@ export const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
       </div>
       
-      {/* Logo */}
-      <div className="absolute top-4 left-4 z-20">
-        <img 
-          src="/lovable-uploads/a74ca3c0-60d0-45f4-8f61-1ab950ce1650.png"
-          alt="RealHenryYue Logo"
-          className="h-12 w-auto sm:h-16 lg:h-20 object-contain"
-          width="200"
-          height="80"
-          loading="eager"
-          decoding="async"
-        />
-      </div>
-      
-      {/* Language Toggle */}
-      <div className="absolute top-4 right-4 z-20">
+      {/* Logo and Language Toggle */}
+      <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-center">
+        <div className="flex items-center">
+          <div className="bg-white/95 backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg border border-white/20">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary leading-tight">
+              RealHenryYue
+            </h1>
+            <p className="text-xs sm:text-sm text-muted-foreground font-medium">
+              {currentLanguage === 'zh' ? 'NYC房地产AI投资分析' : 'NYC Real Estate AI Analysis'}
+            </p>
+          </div>
+        </div>
         <LanguageToggle />
       </div>
       
