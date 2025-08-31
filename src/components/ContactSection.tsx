@@ -216,8 +216,8 @@ Message: ${formData.message}`;
                 
                 <Button 
                   type="submit" 
-                  variant="default" 
-                  size="lg"
+                  variant="cta" 
+                  size="lg" 
                   className="w-full text-lg py-6"
                   aria-describedby="submit-helper"
                 >

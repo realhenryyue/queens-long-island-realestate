@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Star, TrendingUp, Calculator, Home } from "lucide-react";
 import agentPhoto from "@/assets/agent-photo.jpg";
 import queensSkyline from "@/assets/queens-skyline.jpg";
-// Logo will be handled via direct text/styling since file is not available
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { SocialMediaIcons } from "@/components/SocialMediaIcons";
@@ -38,18 +37,8 @@ export const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
       </div>
       
-      {/* Logo and Language Toggle */}
-      <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-center">
-        <div className="flex items-center">
-          <div className="bg-white/95 backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg border border-white/20">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary leading-tight">
-              RealHenryYue
-            </h1>
-            <p className="text-xs sm:text-sm text-muted-foreground font-medium">
-              {currentLanguage === 'zh' ? 'NYC房地产AI投资分析' : 'NYC Real Estate AI Analysis'}
-            </p>
-          </div>
-        </div>
+      {/* Language Toggle */}
+      <div className="absolute top-4 right-4 z-20">
         <LanguageToggle />
       </div>
       
@@ -219,7 +208,7 @@ export const HeroSection = () => {
                     <Mail className="w-4 h-4 text-accent flex-shrink-0" aria-hidden="true" />
                     <span itemProp="email">
                       <EmailObfuscator 
-                        user="RealHenryYue" 
+                        user="forangh" 
                         domain="gmail" 
                         tld="com" 
                         className="underline decoration-transparent hover:decoration-inherit transition-smooth hover:text-accent" 

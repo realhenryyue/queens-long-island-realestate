@@ -29,7 +29,7 @@ export const UnifiedSchema = () => {
             "height": 400
           },
           "telephone": "+1-718-717-5210",
-          "email": "RealHenryYue@gmail.com",
+          "email": "forangh@gmail.com",
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "41-25 Kissena Blvd Suite 126",
@@ -100,7 +100,7 @@ export const UnifiedSchema = () => {
             : "Professional NYC real estate AI investment analysis services",
           "url": "https://www.realhenryyue.com",
           "telephone": "+1-718-717-5210",
-          "email": "RealHenryYue@gmail.com",
+          "email": "forangh@gmail.com",
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "41-25 Kissena Blvd Suite 126",

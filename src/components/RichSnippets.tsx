@@ -93,7 +93,7 @@ export const RichSnippets = ({ pageType = 'home', title, description }: RichSnip
           "mainEntity": {
             "@type": "ContactPoint",
             "telephone": "+1-718-717-5210",
-            "email": "RealHenryYue@gmail.com",
+            "email": "forangh@gmail.com",
             "contactType": "customer service",
             "availableLanguage": ["English", "Chinese"]
           }

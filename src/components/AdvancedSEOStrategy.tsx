@@ -29,7 +29,7 @@ export const AdvancedSEOStrategy: React.FC<AdvancedSEOStrategyProps> = ({
     },
     contact: {
       title: "Contact Henry Yue | NYC Real Estate Expert | 718-717-5210",
-      description: "Contact NYC real estate expert Henry Yue for professional investment consultation. Phone: 718-717-5210. Email: RealHenryYue@gmail.com. Free market analysis.",
+      description: "Contact NYC real estate expert Henry Yue for professional investment consultation. Phone: 718-717-5210. Email: forangh@gmail.com. Free market analysis.",
       keywords: "contact Henry Yue, NYC real estate consultation, real estate expert contact, 718-717-5210",
       canonical: "https://realhenryyue.com/#contact",
       h1: "Contact NYC Real Estate Expert Henry Yue"
