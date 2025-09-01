@@ -10,7 +10,7 @@ interface EmailObfuscatedContactProps {
 
 const EmailObfuscatedContact: React.FC<EmailObfuscatedContactProps> = ({ 
   className = "text-primary hover:text-primary/80 transition-colors",
-  user = "forangh",
+  user = "RealHenryYue",
   domain = "gmail", 
   tld = "com"
 }) => {

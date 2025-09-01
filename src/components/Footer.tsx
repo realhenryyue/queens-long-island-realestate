@@ -34,7 +34,7 @@ export const Footer = () => {
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" aria-hidden="true" />
                 <EmailObfuscator 
-                  user="forangh" 
+                  user="RealHenryYue" 
                   domain="gmail" 
                   tld="com" 
                   className="hover:text-accent transition-smooth" 
