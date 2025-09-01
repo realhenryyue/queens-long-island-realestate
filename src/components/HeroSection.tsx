@@ -208,7 +208,7 @@ export const HeroSection = () => {
                     <Mail className="w-4 h-4 text-accent flex-shrink-0" aria-hidden="true" />
                     <span itemProp="email">
                       <EmailObfuscator 
-                        user="forangh" 
+                        user="RealHenryYue" 
                         domain="gmail" 
                         tld="com" 
                         className="underline decoration-transparent hover:decoration-inherit transition-smooth hover:text-accent" 

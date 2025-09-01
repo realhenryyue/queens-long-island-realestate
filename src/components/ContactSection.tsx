@@ -30,7 +30,7 @@ Phone: ${formData.phone}
 
 Message: ${formData.message}`;
     
-    const targetEmail = `${'forangh'}@${'gmail'}.${'com'}`;
+    const targetEmail = `${'RealHenryYue'}@${'gmail'}.${'com'}`;
     const mailtoUrl = `mailto:${encodeURIComponent(targetEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailtoUrl;
     
@@ -104,7 +104,7 @@ Message: ${formData.message}`;
                     <div>
                       <div className="font-semibold text-primary">{t('contact.email')}</div>
                        <EmailObfuscator 
-                        user="forangh" 
+                        user="RealHenryYue" 
                         domain="gmail" 
                         tld="com" 
                         className="text-lg text-foreground hover:text-primary transition-smooth" 
@@ -216,9 +216,8 @@ Message: ${formData.message}`;
                 
                 <Button 
                   type="submit" 
-                  variant="cta" 
                   size="lg" 
-                  className="w-full text-lg py-6"
+                  className="w-full text-lg py-6 bg-gradient-primary text-primary-foreground hover:shadow-elegant transform hover:-translate-y-0.5 font-semibold"
                   aria-describedby="submit-helper"
                 >
                   {t('contact.sendButton')}
