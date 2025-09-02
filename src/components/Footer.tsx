@@ -20,11 +20,11 @@ export const Footer = () => {
               {t('footer.title')}
             </p>
             <address className="space-y-2 not-italic" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4" aria-hidden="true" />
+              <div className="flex items-center gap-2 leading-none">
+                <Phone className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                 <a 
                   href="tel:7187175210" 
-                  className="hover:text-accent transition-smooth"
+                  className="hover:text-accent transition-smooth leading-none inline-block"
                   itemProp="telephone"
                   aria-label="Call Henry Yue at (718) 717-5210"
                 >
