@@ -5,7 +5,7 @@ import { TikTokIcon, DouyinIcon } from "@/components/icons/TikTokIcon";
 const socialPlatforms = [
   {
     name: "LinkedIn",
-    url: "http://linkedin.com/in/hongyu-yue-85232191",
+    url: "https://www.linkedin.com/in/henryyue",
     icon: Linkedin,
     color: "text-[#0077b5] hover:text-[#0077b5] hover:scale-110"
   },
