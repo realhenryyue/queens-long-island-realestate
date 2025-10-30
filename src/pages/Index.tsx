@@ -53,9 +53,6 @@ const Index = () => {
         <section id="manhattan-properties">
           <AboutSection />
         </section>
-        <section id="nassau-county-homes">
-          <AboutSection />
-        </section>
         <section id="roi-calculator">
           <ROICalculator />
         </section>
