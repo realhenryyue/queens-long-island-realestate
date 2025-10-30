@@ -62,80 +62,81 @@ const RealMediumContent = memo(() => {
         setLoading(true);
         
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
         
         const RSS_URL = 'https://medium.com/feed/@realhenryyue';
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(RSS_URL)}`;
+        const proxyUrl = `https://proxy.cors.sh/${RSS_URL}`;
         
         const response = await fetch(proxyUrl, { 
           signal: controller.signal,
-          headers: { 'Accept': 'application/json' }
+          headers: { 
+            'Accept': 'application/xml, application/rss+xml, text/xml',
+            'x-cors-api-key': 'temp_8ed3f4c0b8e64d0aa7e6f9c1d2b5a3e7'
+          }
         });
         
         clearTimeout(timeoutId);
         
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
-        const data = await response.json();
+        const xmlText = await response.text();
         
-        if (data.contents) {
-          const parser = new DOMParser();
-          const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
-          const items = xmlDoc.querySelectorAll('item');
-          
-          if (items.length > 0) {
-            const mediumPosts: MediumPost[] = Array.from(items).slice(0, 6).map((item) => {
-              const title = item.querySelector('title')?.textContent || 'Untitled';
-              const link = item.querySelector('link')?.textContent || '#';
-              const pubDate = item.querySelector('pubDate')?.textContent || new Date().toISOString();
-              const description = item.querySelector('description')?.textContent || '';
-              const creator = item.querySelector('creator')?.textContent || 'Henry Yue';
-              
-              const categories: string[] = [];
-              const categoryNodes = item.querySelectorAll('category');
-              categoryNodes.forEach(cat => {
-                const catText = cat.textContent;
-                if (catText && categories.length < 3) {
-                  categories.push(catText);
-                }
-              });
-              
-              if (categories.length === 0) {
-                const titleLower = title.toLowerCase();
-                if (titleLower.includes('queens') || titleLower.includes('flushing')) categories.push('Queens');
-                if (titleLower.includes('manhattan')) categories.push('Manhattan');
-                if (titleLower.includes('brooklyn')) categories.push('Brooklyn');
-                if (titleLower.includes('investment') || titleLower.includes('roi')) categories.push('Investment');
-                if (titleLower.includes('ai') || titleLower.includes('analysis')) categories.push('AI Analysis');
-                if (categories.length === 0) categories.push('Real Estate');
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+        const items = xmlDoc.querySelectorAll('item');
+        
+        if (items.length > 0) {
+          const mediumPosts: MediumPost[] = Array.from(items).slice(0, 6).map((item) => {
+            const title = item.querySelector('title')?.textContent || 'Untitled';
+            const link = item.querySelector('link')?.textContent || '#';
+            const pubDate = item.querySelector('pubDate')?.textContent || new Date().toISOString();
+            const description = item.querySelector('description')?.textContent || '';
+            const creator = item.querySelector('creator')?.textContent || 'Henry Yue';
+            
+            const categories: string[] = [];
+            const categoryNodes = item.querySelectorAll('category');
+            categoryNodes.forEach(cat => {
+              const catText = cat.textContent;
+              if (catText && categories.length < 3) {
+                categories.push(catText);
               }
-              
-              const cleanDescription = description
-                .replace(/<[^>]*>/g, '')
-                .replace(/&[^;]+;/g, ' ')
-                .trim()
-                .substring(0, 150) + (description.length > 150 ? '...' : '');
-              
-              const wordCount = cleanDescription.split(' ').length;
-              const readTime = Math.max(Math.ceil(wordCount / 200 * 10), 3) + ' min read';
-              
-              const daysOld = Math.floor((Date.now() - new Date(pubDate).getTime()) / (1000 * 60 * 60 * 24));
-              const engagement = Math.max(1200 - daysOld * 20, 200) + Math.floor(Math.random() * 300);
-              
-              return {
-                title: title.length > 80 ? title.substring(0, 77) + '...' : title,
-                url: link,
-                pubDate,
-                categories: categories.slice(0, 3),
-                description: cleanDescription || title,
-                readTime,
-                engagement: engagement + ' claps',
-                author: creator
-              };
             });
             
-            setPosts(mediumPosts);
-          }
+            if (categories.length === 0) {
+              const titleLower = title.toLowerCase();
+              if (titleLower.includes('queens') || titleLower.includes('flushing')) categories.push('Queens');
+              if (titleLower.includes('manhattan')) categories.push('Manhattan');
+              if (titleLower.includes('brooklyn')) categories.push('Brooklyn');
+              if (titleLower.includes('investment') || titleLower.includes('roi')) categories.push('Investment');
+              if (titleLower.includes('ai') || titleLower.includes('analysis')) categories.push('AI Analysis');
+              if (categories.length === 0) categories.push('Real Estate');
+            }
+            
+            const cleanDescription = description
+              .replace(/<[^>]*>/g, '')
+              .replace(/&[^;]+;/g, ' ')
+              .trim()
+              .substring(0, 150) + (description.length > 150 ? '...' : '');
+            
+            const wordCount = cleanDescription.split(' ').length;
+            const readTime = Math.max(Math.ceil(wordCount / 200 * 10), 3) + ' min read';
+            
+            const daysOld = Math.floor((Date.now() - new Date(pubDate).getTime()) / (1000 * 60 * 60 * 24));
+            const engagement = Math.max(1200 - daysOld * 20, 200) + Math.floor(Math.random() * 300);
+            
+            return {
+              title: title.length > 80 ? title.substring(0, 77) + '...' : title,
+              url: link,
+              pubDate,
+              categories: categories.slice(0, 3),
+              description: cleanDescription || title,
+              readTime,
+              engagement: engagement + ' claps',
+              author: creator
+            };
+          });
+          
+          setPosts(mediumPosts);
         }
       } catch (error) {
         // Silent error handling - keep default posts, but log in development
