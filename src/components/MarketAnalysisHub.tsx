@@ -2,12 +2,85 @@ import React, { useState, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { TrendingUp, MapPin, GraduationCap, DollarSign, Users, BarChart3, Calendar, Award } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { TrendingUp, MapPin, GraduationCap, DollarSign, Users, BarChart3, Calendar, Award, Clock, Building } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+
+const workExperience = [
+  {
+    titleKey: 'experience.realEstate1',
+    periodKey: 'experience.realEstate1.period',
+    locationKey: 'experience.realEstate1.location',
+    typeKey: 'experience.realEstate1.type',
+    descriptionKey: 'experience.realEstate1.description',
+  },
+  {
+    titleKey: 'experience.businessAgent',
+    periodKey: 'experience.businessAgent.period',
+    locationKey: 'experience.businessAgent.location',
+    typeKey: 'experience.businessAgent.type',
+    descriptionKey: 'experience.businessAgent.description',
+  },
+  {
+    titleKey: 'experience.realEstate2',
+    periodKey: 'experience.realEstate2.period',
+    locationKey: 'experience.realEstate2.location',
+    typeKey: 'experience.realEstate2.type',
+    descriptionKey: 'experience.realEstate2.description',
+  },
+  {
+    titleKey: 'experience.ceo',
+    periodKey: 'experience.ceo.period',
+    locationKey: 'experience.ceo.location',
+    typeKey: 'experience.ceo.type',
+    descriptionKey: 'experience.ceo.description',
+  },
+  {
+    titleKey: 'experience.generalManager',
+    periodKey: 'experience.generalManager.period',
+    locationKey: 'experience.generalManager.location',
+    typeKey: 'experience.generalManager.type',
+    descriptionKey: 'experience.generalManager.description',
+  },
+  {
+    titleKey: 'experience.productManager',
+    periodKey: 'experience.productManager.period',
+    locationKey: 'experience.productManager.location',
+    typeKey: 'experience.productManager.type',
+    descriptionKey: 'experience.productManager.description',
+  },
+];
 
 const MarketAnalysisHub = () => {
   const [activeCategory, setActiveCategory] = useState('local');
   const { t } = useLanguage();
+  
+  const stats = [
+    {
+      icon: MapPin,
+      value: t('stats.areas.value'),
+      label: t('stats.areas.label'),
+      description: t('stats.areas.description')
+    },
+    {
+      icon: Award,
+      value: t('stats.licensed.value'),
+      label: t('stats.licensed.label'),
+      description: t('stats.licensed.description')
+    },
+    {
+      icon: Clock,
+      value: t('stats.availability.value'),
+      label: t('stats.availability.label'),
+      description: t('stats.availability.description')
+    },
+    {
+      icon: Users,
+      value: t('stats.clients.value'),
+      label: t('stats.clients.label'),
+      description: t('stats.clients.description')
+    }
+  ];
 
   const localMarketContent = [
     {
@@ -310,7 +383,11 @@ const MarketAnalysisHub = () => {
         </div>
 
         <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full">
-          <TabsList className="grid grid-cols-1 sm:grid-cols-3 w-full gap-2 mb-8">
+          <TabsList className="grid grid-cols-1 sm:grid-cols-4 w-full gap-2 mb-8">
+            <TabsTrigger value="about" className="flex items-center gap-2 whitespace-normal text-center text-xs sm:text-sm py-2">
+              <Users className="h-4 w-4" />
+              {t('about.title')}
+            </TabsTrigger>
             <TabsTrigger value="local" className="flex items-center gap-2 whitespace-normal text-center text-xs sm:text-sm py-2">
               <MapPin className="h-4 w-4" />
               {t('marketAnalysis.localMarket')}
@@ -324,6 +401,108 @@ const MarketAnalysisHub = () => {
               {t('marketAnalysis.insights')}
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="about" className="space-y-8">
+            <div className="grid lg:grid-cols-2 gap-16 items-start">
+              {/* Left Column - Content */}
+              <article className="space-y-8">
+                <div className="space-y-6">
+                  <section className="space-y-4">
+                    <h3 className="text-2xl font-semibold text-primary">{t('about.localExpert.title')}</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {t('about.localExpert.description')}
+                    </p>
+                  </section>
+                  
+                  <section className="space-y-4">
+                    <h3 className="text-2xl font-semibold text-primary">{t('about.bilingual.title')}</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {t('about.bilingual.description')}
+                    </p>
+                  </section>
+
+                  <section className="space-y-4">
+                    <h3 className="text-2xl font-semibold text-primary">{t('about.experience.title')}</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {t('about.experience.description')}
+                    </p>
+                  </section>
+                </div>
+                
+                <div className="pt-4">
+                  <Button 
+                    variant="cta" 
+                    size="lg"
+                    className="text-lg px-8 py-6"
+                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                  >
+                    {t('about.cta')}
+                  </Button>
+                </div>
+              </article>
+              
+              {/* Right Column - Stats */}
+              <aside className="grid grid-cols-2 gap-6">
+                {stats.map((stat, index) => (
+                  <Card 
+                    key={index} 
+                    className="text-center p-6 hover:shadow-card transition-smooth bg-gradient-to-br from-card to-secondary/30"
+                  >
+                    <CardContent className="space-y-4 p-0">
+                      <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center mx-auto">
+                        <stat.icon className="w-6 h-6 text-primary-foreground" aria-hidden="true" />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="text-3xl font-bold text-primary">{stat.value}</div>
+                        <div className="text-lg font-semibold text-foreground">{stat.label}</div>
+                        <div className="text-sm text-muted-foreground">{stat.description}</div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </aside>
+            </div>
+
+            {/* Work Experience Section */}
+            <section className="mt-12">
+              <h3 className="text-3xl font-bold text-primary text-center mb-12">{t('experience.title')}</h3>
+              <div className="space-y-6">
+                {workExperience.map((job, index) => (
+                  <Card 
+                    key={index} 
+                    className="p-6 hover:shadow-card transition-smooth"
+                  >
+                    <CardContent className="p-0">
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                        <div className="flex-1">
+                          <h4 className="text-lg font-semibold text-primary mb-2">
+                            {t(job.titleKey)}
+                          </h4>
+                          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Calendar className="w-4 h-4" aria-hidden="true" />
+                              <time>{t(job.periodKey)}</time>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <MapPin className="w-4 h-4" aria-hidden="true" />
+                              <span>{t(job.locationKey)}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Building className="w-4 h-4" aria-hidden="true" />
+                              <span>{t(job.typeKey)}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {t(job.descriptionKey)}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </section>
+          </TabsContent>
 
           <TabsContent value="local" className="space-y-6">
             <div className="responsive-grid">

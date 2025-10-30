@@ -1,6 +1,5 @@
 import { HeroSection } from "@/components/HeroSection";
 import { ServicesSection } from "@/components/ServicesSection";
-import { AboutSection } from "@/components/AboutSection";
 import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
 import { UnifiedSchema } from "@/components/UnifiedSchema";
@@ -46,9 +45,6 @@ const Index = () => {
         <HeroSection />
         <section id="investment-analysis">
           <MarketAnalysisHub />
-        </section>
-        <section id="about">
-          <AboutSection />
         </section>
         <section id="queens-real-estate">
           <ServicesSection />
