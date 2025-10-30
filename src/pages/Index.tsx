@@ -44,14 +44,14 @@ const Index = () => {
       
       <main role="main" id="main-content">
         <HeroSection />
+        <section id="manhattan-properties">
+          <AboutSection />
+        </section>
         <section id="investment-analysis">
           <MarketAnalysisHub />
         </section>
         <section id="queens-real-estate">
           <ServicesSection />
-        </section>
-        <section id="manhattan-properties">
-          <AboutSection />
         </section>
         <section id="roi-calculator">
           <ROICalculator />
