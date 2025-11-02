@@ -62,16 +62,16 @@ const RealMediumContent = memo(() => {
         setLoading(true);
         
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        const timeoutId = setTimeout(() => controller.abort(), 12000);
         
         const RSS_URL = 'https://medium.com/feed/@realhenryyue';
-        const proxyUrl = `https://proxy.cors.sh/${RSS_URL}`;
+        // Use AllOrigins CORS proxy - more reliable
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(RSS_URL)}`;
         
         const response = await fetch(proxyUrl, { 
           signal: controller.signal,
           headers: { 
-            'Accept': 'application/xml, application/rss+xml, text/xml',
-            'x-cors-api-key': 'temp_8ed3f4c0b8e64d0aa7e6f9c1d2b5a3e7'
+            'Accept': 'application/xml, application/rss+xml, text/xml'
           }
         });
         
