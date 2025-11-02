@@ -146,7 +146,6 @@ export const HeroSection = () => {
                     height="128"
                     loading="eager"
                     decoding="async"
-                    fetchPriority="high"
                     itemProp="image"
                   />
                   <div className="absolute -bottom-2 -right-2 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
