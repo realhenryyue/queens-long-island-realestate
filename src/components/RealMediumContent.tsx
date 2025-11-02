@@ -62,45 +62,34 @@ const RealMediumContent = memo(() => {
         setLoading(true);
         
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 12000);
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
         
         const RSS_URL = 'https://medium.com/feed/@realhenryyue';
-        // Use AllOrigins CORS proxy - more reliable
-        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(RSS_URL)}`;
+        // Use RSS2JSON - more reliable for RSS feeds
+        const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
         
         const response = await fetch(proxyUrl, { 
-          signal: controller.signal,
-          headers: { 
-            'Accept': 'application/xml, application/rss+xml, text/xml'
-          }
+          signal: controller.signal
         });
         
         clearTimeout(timeoutId);
         
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
-        const xmlText = await response.text();
+        const data = await response.json();
         
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-        const items = xmlDoc.querySelectorAll('item');
-        
-        if (items.length > 0) {
-          const mediumPosts: MediumPost[] = Array.from(items).slice(0, 6).map((item) => {
-            const title = item.querySelector('title')?.textContent || 'Untitled';
-            const link = item.querySelector('link')?.textContent || '#';
-            const pubDate = item.querySelector('pubDate')?.textContent || new Date().toISOString();
-            const description = item.querySelector('description')?.textContent || '';
-            const creator = item.querySelector('creator')?.textContent || 'Henry Yue';
+        if (data.status === 'ok' && data.items && data.items.length > 0) {
+          const mediumPosts: MediumPost[] = data.items.slice(0, 6).map((item: any) => {
+            const title = item.title || 'Untitled';
+            const link = item.link || item.guid || '#';
+            const pubDate = item.pubDate || new Date().toISOString();
+            const description = item.description || item.content || '';
+            const creator = item.author || 'Henry Yue';
             
             const categories: string[] = [];
-            const categoryNodes = item.querySelectorAll('category');
-            categoryNodes.forEach(cat => {
-              const catText = cat.textContent;
-              if (catText && categories.length < 3) {
-                categories.push(catText);
-              }
-            });
+            if (item.categories && Array.isArray(item.categories)) {
+              categories.push(...item.categories.slice(0, 3));
+            }
             
             if (categories.length === 0) {
               const titleLower = title.toLowerCase();
