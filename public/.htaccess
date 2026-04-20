@@ -141,6 +141,12 @@ RewriteRule ^blog/(.*)$ /en#blog [R=301,L]
   # Remove server signature
   Header unset Server
   Header unset X-Powered-By
+
+  # Prevent sitemap/XML files from appearing as search results
+  # (Google still crawls them, but won't show them in SERPs)
+  <FilesMatch "\.(xml|txt)$">
+    Header set X-Robots-Tag "noindex, follow"
+  </FilesMatch>
 </IfModule>
 
 # Additional SEO Optimizations
