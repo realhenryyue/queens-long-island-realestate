@@ -16,12 +16,18 @@ export const UnifiedSchema = () => {
         {
           "@type": "RealEstateAgent",
           "@id": "https://www.realhenryyue.com/#person",
-          "name": language === 'zh' ? "岳鸿宇" : "Hongyu (Henry) Yue",
-          "alternateName": ["Henry Yue", "Henry岳先生"],
+          "name": language === 'zh' ? "岳泓宇" : "Henry Yue",
+          "alternateName": ["Henry Yue", "岳泓宇", "Hongyu Yue", "Henry岳"],
           "description": language === 'zh' 
-            ? "纽约州持牌房地产经纪人，专业AI投资分析，服务五大区华人客户"
-            : "Licensed NYC Real Estate Agent specializing in AI investment analysis for 5 boroughs",
+            ? "岳泓宇 (Henry Yue) - 纽约州持牌房地产经纪人，专注曼哈顿、皇后区、布鲁克林、长岛投资分析，提供AI驱动的ROI计算和中英双语服务"
+            : "Henry Yue (岳泓宇) - Licensed NYC Real Estate Agent specializing in Manhattan, Queens, Brooklyn & Nassau County investment analysis with AI-powered ROI tools and bilingual service",
           "url": "https://www.realhenryyue.com",
+          "sameAs": [
+            "https://www.facebook.com/RealHenryYue",
+            "https://www.instagram.com/realhenryyue",
+            "https://www.linkedin.com/in/realhenryyue",
+            "https://www.tiktok.com/@realhenryyue"
+          ],
           "image": {
             "@type": "ImageObject",
             "url": "https://www.realhenryyue.com/assets/agent-photo.jpg",
