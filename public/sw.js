@@ -1,15 +1,13 @@
 // Enhanced Service Worker for Henry Yue Real Estate - Safari Compatible
 // NYC Real Estate AI Investment Analysis Expert - Cross-Browser Performance
 
-const CACHE_NAME = 'realhenryyue-v6.0-favicon-fix-2026-03-11';
+const CACHE_NAME = 'realhenryyue-v6.1-indexing-fix-2026-04-27';
 const OFFLINE_URL = '/index.html';
 
 // Critical resources for immediate caching
 const CRITICAL_CACHE = [
   '/',
   '/index.html',
-  '/en',
-  '/zh',
   '/assets/agent-photo.jpg',
   '/assets/queens-skyline.jpg',
   '/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.png',
