@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://www.realhenryyue.com/" />
   <meta http-equiv="refresh" content="0; url=/" />
   <title>Redirecting...</title>
   <script>
@@ -11,21 +13,17 @@
       var search = window.location.search || '';
       var hash = window.location.hash || '';
 
-      // Retain language prefix, assuming your language paths are /zh/ or /en/
-      // You can customize the regex if needed
-      var langMatch = path.match(/^\/(zh|en)(\/.*)?$/);
-      var langPrefix = '';
-      var restPath = '';
+      var sectionMap = {
+        '/investment-analysis': '/#investment-analysis',
+        '/queens-real-estate': '/#queens-real-estate',
+        '/manhattan-properties': '/#manhattan-properties',
+        '/roi-calculator': '/#roi-calculator',
+        '/contact': '/#contact',
+        '/blog': '/#blog'
+      };
 
-      if (langMatch) {
-        langPrefix = '/' + langMatch[1];
-        restPath = langMatch[2] || '/';
-      } else {
-        restPath = path;
-      }
-
-      // Construct the redirect URL using index.html + hash routing format
-      var redirectUrl = langPrefix + '/index.html#' + restPath + search + hash;
+      var normalizedPath = path.replace(/^\/en/, '').replace(/^\/zh/, '') || '/';
+      var redirectUrl = sectionMap[normalizedPath] || '/';
 
       // Redirect immediately
       window.location.replace(redirectUrl);
