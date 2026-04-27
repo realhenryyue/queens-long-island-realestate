@@ -55,7 +55,7 @@
       "name": "ROI Calculator",
       "short_name": "ROI Calc",
       "description": "Calculate NYC real estate investment returns",
-      "url": "/roi-calculator",
+      "url": "/#roi-calculator",
       "icons": [
         {
           "src": "/favicon-192x192.png",
@@ -67,7 +67,7 @@
       "name": "Contact Henry",
       "short_name": "Contact",
       "description": "Get in touch with Henry Yue",
-      "url": "/contact",
+      "url": "/#contact",
       "icons": [
         {
           "src": "/favicon-192x192.png",
