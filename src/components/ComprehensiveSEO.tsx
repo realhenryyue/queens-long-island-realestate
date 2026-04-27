@@ -4,6 +4,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 const ComprehensiveSEO = () => {
   const { currentLanguage } = useLanguage();
+  const canonicalUrl = "https://www.realhenryyue.com/";
+  const agentImageUrl = "https://www.realhenryyue.com/assets/agent-photo.jpg";
 
   const siteData = {
     en: {
@@ -34,16 +36,16 @@ const ComprehensiveSEO = () => {
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
       
       {/* Canonical URL */}
-      <link rel="canonical" href="https://realhenryyue.com/" />
+      <link rel="canonical" href={canonicalUrl} />
       
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://realhenryyue.com/" />
+      <meta property="og:url" content={canonicalUrl} />
       <meta property="og:title" content={currentData.title} />
       <meta property="og:description" content={currentData.description} />
       <meta property="og:site_name" content={currentData.siteName} />
       <meta property="og:locale" content={currentData.locale} />
-      <meta property="og:image" content="https://realhenryyue.com/assets/agent-photo.jpg" />
+      <meta property="og:image" content={agentImageUrl} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       
@@ -51,7 +53,7 @@ const ComprehensiveSEO = () => {
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={currentData.title} />
       <meta name="twitter:description" content={currentData.description} />
-      <meta name="twitter:image" content="https://realhenryyue.com/assets/agent-photo.jpg" />
+      <meta name="twitter:image" content={agentImageUrl} />
       
       {/* Mobile Optimization */}
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -69,7 +71,7 @@ const ComprehensiveSEO = () => {
           "@context": "https://schema.org",
           "@type": "RealEstateAgent",
           "name": currentLanguage === 'zh' ? "岳泓宇" : "Henry Yue",
-          "url": "https://realhenryyue.com",
+          "url": "https://www.realhenryyue.com",
           "email": "RealHenryYue@gmail.com",
           "telephone": "+1-718-717-5210",
           "address": {
