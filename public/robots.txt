@@ -35,32 +35,3 @@ Crawl-delay: 1
 
 # Sitemap location
 Sitemap: https://www.realhenryyue.com/sitemap.xml
-Sitemap: https://www.realhenryyue.com/image-sitemap.xml
-
-# Important pages for crawling
-# Main pages
-# https://www.realhenryyue.com/
-# https://www.realhenryyue.com/en
-# https://www.realhenryyue.com/zh
-
-# Investment Analysis Tools
-# https://www.realhenryyue.com/en/investment-analysis
-# https://www.realhenryyue.com/zh/investment-analysis
-# https://www.realhenryyue.com/en/roi-calculator
-# https://www.realhenryyue.com/zh/roi-calculator
-
-# Service Area Pages
-# https://www.realhenryyue.com/en/queens-real-estate
-# https://www.realhenryyue.com/zh/queens-real-estate
-# https://www.realhenryyue.com/en/manhattan-properties
-# https://www.realhenryyue.com/zh/manhattan-properties
-# https://www.realhenryyue.com/en/nassau-county-homes
-# https://www.realhenryyue.com/zh/nassau-county-homes
-
-# Blog & Content
-# https://www.realhenryyue.com/en/blog
-# https://www.realhenryyue.com/zh/blog
-
-# Contact
-# https://www.realhenryyue.com/en/contact
-# https://www.realhenryyue.com/zh/contact
