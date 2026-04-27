@@ -17,21 +17,21 @@ export const AdvancedSEOStrategy: React.FC<AdvancedSEOStrategyProps> = ({
       title: customTitle || "NYC Real Estate Expert | Henry Yue | Top Investment Analysis",
       description: customDescription || "NYC's top real estate expert Henry Yue. Get professional investment analysis, market insights, and ROI calculations. Call 718-717-5210 for expert consultation.",
       keywords: "NYC real estate, Henry Yue, investment analysis, ROI calculator, Queens real estate, Manhattan properties, real estate expert",
-      canonical: "https://realhenryyue.com/",
+      canonical: "https://www.realhenryyue.com/",
       h1: "NYC Real Estate Investment Expert - Henry Yue"
     },
     calculator: {
       title: "Free NYC ROI Calculator | Real Estate Investment Analysis Tool",
       description: "Calculate NYC real estate ROI instantly. Free investment analysis tool with cap rates, cash flow projections, and market data by expert Henry Yue.",
       keywords: "ROI calculator, NYC real estate calculator, investment analysis, cap rate calculator, cash flow analysis",
-      canonical: "https://realhenryyue.com/#calculator",
+      canonical: "https://www.realhenryyue.com/#roi-calculator",
       h1: "NYC Real Estate ROI Calculator"
     },
     contact: {
       title: "Contact Henry Yue | NYC Real Estate Expert | 718-717-5210",
       description: "Contact NYC real estate expert Henry Yue for professional investment consultation. Phone: 718-717-5210. Email: RealHenryYue@gmail.com. Free market analysis.",
       keywords: "contact Henry Yue, NYC real estate consultation, real estate expert contact, 718-717-5210",
-      canonical: "https://realhenryyue.com/#contact",
+      canonical: "https://www.realhenryyue.com/#contact",
       h1: "Contact NYC Real Estate Expert Henry Yue"
     }
   };
@@ -54,7 +54,7 @@ export const AdvancedSEOStrategy: React.FC<AdvancedSEOStrategyProps> = ({
       <meta property="og:url" content={config.canonical} />
       <meta property="og:title" content={config.title} />
       <meta property="og:description" content={config.description} />
-      <meta property="og:image" content="https://realhenryyue.com/og-image.jpg" />
+      <meta property="og:image" content="https://www.realhenryyue.com/og-image.jpg" />
       <meta property="og:site_name" content="Henry Yue Real Estate" />
       <meta property="og:locale" content="en_US" />
       
@@ -63,7 +63,7 @@ export const AdvancedSEOStrategy: React.FC<AdvancedSEOStrategyProps> = ({
       <meta property="twitter:url" content={config.canonical} />
       <meta property="twitter:title" content={config.title} />
       <meta property="twitter:description" content={config.description} />
-      <meta property="twitter:image" content="https://realhenryyue.com/og-image.jpg" />
+      <meta property="twitter:image" content="https://www.realhenryyue.com/og-image.jpg" />
       <meta name="twitter:creator" content="@henryyue_realestate" />
       
       {/* Additional SEO Tags */}
