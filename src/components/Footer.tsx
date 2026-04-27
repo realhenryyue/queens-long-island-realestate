@@ -51,12 +51,12 @@ export const Footer = () => {
           <nav className="space-y-4" aria-label="Services Navigation">
             <h3 className="text-xl font-semibold">{t('footer.services')}</h3>
             <ul className="space-y-2 text-primary-foreground/80" itemProp="makesOffer" itemScope itemType="https://schema.org/Offer">
-              <li itemProp="itemOffered">{t('footer.services.residential')}</li>
-              <li itemProp="itemOffered">{t('footer.services.firstTime')}</li>
-              <li itemProp="itemOffered">{t('footer.services.analysis')}</li>
-              <li itemProp="itemOffered">{t('footer.services.management')}</li>
-              <li itemProp="itemOffered">{t('footer.services.investment')}</li>
-              <li itemProp="itemOffered">{t('footer.services.bilingual')}</li>
+              <li itemProp="itemOffered"><a href="#services" className="hover:text-accent transition-smooth">{t('footer.services.residential')}</a></li>
+              <li itemProp="itemOffered"><a href="#services" className="hover:text-accent transition-smooth">{t('footer.services.firstTime')}</a></li>
+              <li itemProp="itemOffered"><a href="#investment-analysis" className="hover:text-accent transition-smooth">{t('footer.services.analysis')}</a></li>
+              <li itemProp="itemOffered"><a href="#roi-calculator" className="hover:text-accent transition-smooth">{t('footer.services.management')}</a></li>
+              <li itemProp="itemOffered"><a href="#roi-calculator" className="hover:text-accent transition-smooth">{t('footer.services.investment')}</a></li>
+              <li itemProp="itemOffered"><a href="#contact" className="hover:text-accent transition-smooth">{t('footer.services.bilingual')}</a></li>
             </ul>
           </nav>
           
