@@ -96,6 +96,22 @@
 # Enable rewriting for SPA routing
 RewriteEngine On
 
+# Unified domain redirect and HTTPS before SPA fallback
+RewriteCond %{HTTP_HOST} !^www\.realhenryyue\.com$ [NC,OR]
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://www.realhenryyue.com/$1 [R=301,L]
+
+# Redirect language-only aliases to the canonical homepage
+RewriteRule ^(en|zh)/?$ / [R=301,L]
+
+# Redirect known section URLs to homepage anchors for a single-page site
+RewriteRule ^(en/|zh/)?investment-analysis/?$ /#investment-analysis [R=301,L]
+RewriteRule ^(en/|zh/)?queens-real-estate/?$ /#queens-real-estate [R=301,L]
+RewriteRule ^(en/|zh/)?manhattan-properties/?$ /#manhattan-properties [R=301,L]
+RewriteRule ^(en/|zh/)?roi-calculator/?$ /#roi-calculator [R=301,L]
+RewriteRule ^(en/|zh/)?contact/?$ /#contact [R=301,L]
+RewriteRule ^(en/|zh/)?blog(/.*)?$ /#blog [R=301,L]
+
 # Handle React Router 
 # If an existing asset or directory is requested go to it as it is
 RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
@@ -104,29 +120,6 @@ RewriteRule ^ - [L]
 
 # If the requested resource doesn't exist, use index.html
 RewriteRule ^ /index.html [L]
-
-# Unified domain redirect - remove www (SEO improvement)
-RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
-
-# Force HTTPS
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-# Language-specific redirects for SEO
-RewriteRule ^zh/?$ /zh [R=301,L]
-RewriteRule ^en/?$ /en [R=301,L]
-
-# Content pages redirect to homepage (since it's a single-page app)
-# These URLs will be handled by the React app routing
-RewriteRule ^investment-analysis/?$ /en#investment-analysis [R=301,L]
-RewriteRule ^queens-real-estate/?$ /en#queens-real-estate [R=301,L]
-RewriteRule ^manhattan-properties/?$ /en#manhattan-properties [R=301,L]
-RewriteRule ^nassau-county-homes/?$ /en#nassau-county-homes [R=301,L]
-RewriteRule ^roi-calculator/?$ /en#roi-calculator [R=301,L]
-RewriteRule ^contact/?$ /en#contact [R=301,L]
-RewriteRule ^blog/?$ /en#blog [R=301,L]
-RewriteRule ^blog/(.*)$ /en#blog [R=301,L]
 
 # Enhanced Security Headers for SEO
 <IfModule mod_headers.c>
