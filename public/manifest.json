@@ -44,9 +44,9 @@
   "categories": ["business", "finance", "education"],
   "screenshots": [
     {
-      "src": "/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.png",
+      "src": "/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.webp",
       "sizes": "1200x630",
-      "type": "image/png",
+      "type": "image/webp",
       "label": "NYC Real Estate Investment Analysis Dashboard"
     }
   ],
