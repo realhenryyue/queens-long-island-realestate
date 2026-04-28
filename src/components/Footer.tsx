@@ -101,7 +101,7 @@ export const Footer = () => {
               <picture>
                 <source srcSet="/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4-192.webp 192w" type="image/webp" sizes="96px" />
                 <img 
-                  src="/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4.png" 
+                  src="/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4-192.webp" 
                   alt={t('footer.wechatAlt')}
                   className="w-24 h-24 mx-auto rounded-lg bg-white p-2"
                   width={96}
