@@ -7,7 +7,6 @@ import { UnifiedSchema } from "@/components/UnifiedSchema";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
 import RealMediumContent from "@/components/RealMediumContent";
-import SystemHealthMonitor from "@/components/SystemHealthMonitor";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -27,9 +26,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Comprehensive system health and optimization monitoring */}
-      <SystemHealthMonitor />
-      
       {/* Essential SEO only */}
       <UnifiedSchema />
       
