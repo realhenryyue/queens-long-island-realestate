@@ -12,9 +12,11 @@ export const AdvancedSEOStrategy: React.FC<AdvancedSEOStrategyProps> = ({
   customTitle,
   customDescription 
 }) => {
+  const primaryTitle = "Henry Yue 岳泓宇 | NYC Real Estate Investment Expert";
+
   const seoConfig = {
     home: {
-      title: customTitle || "NYC Real Estate Expert | Henry Yue | Top Investment Analysis",
+      title: customTitle || primaryTitle,
       description: customDescription || "NYC's top real estate expert Henry Yue. Get professional investment analysis, market insights, and ROI calculations. Call 718-717-5210 for expert consultation.",
       keywords: "NYC real estate, Henry Yue, investment analysis, ROI calculator, Queens real estate, Manhattan properties, real estate expert",
       canonical: "https://www.realhenryyue.com/",
