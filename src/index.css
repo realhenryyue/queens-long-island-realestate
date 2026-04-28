@@ -76,11 +76,19 @@
 
 /* Background images for components */
 .hero-bg {
-  background-image: url('./assets/queens-skyline.jpg');
+  background-image: url('./assets/queens-skyline-640.webp');
+  background-image: image-set(
+    url('./assets/queens-skyline-640.webp') 1x,
+    url('./assets/queens-skyline-1024.webp') 2x
+  );
 }
 
 .roi-hero-bg {
-  background-image: url('./assets/queens-skyline.jpg');
+  background-image: url('./assets/queens-skyline-640.webp');
+  background-image: image-set(
+    url('./assets/queens-skyline-640.webp') 1x,
+    url('./assets/queens-skyline-1024.webp') 2x
+  );
 }
 
 /* Essential utilities */
