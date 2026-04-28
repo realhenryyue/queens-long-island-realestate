@@ -6,17 +6,18 @@ const ComprehensiveSEO = () => {
   const { currentLanguage } = useLanguage();
   const canonicalUrl = "https://www.realhenryyue.com/";
   const agentImageUrl = "https://www.realhenryyue.com/assets/agent-photo-512.webp";
+  const primaryTitle = "Henry Yue 岳泓宇 | NYC Real Estate Investment Expert";
 
   const siteData = {
     en: {
-      title: "Henry Yue - NYC Real Estate | ROI Calculator", // 48 chars
+      title: primaryTitle,
       description: "NYC Real Estate Expert Henry Yue, 15+ years exp. Free ROI calculator, 5-borough analysis. Call 718-717-5210", // 116 chars
       keywords: "NYC real estate expert, Henry Yue, property investment, ROI calculator, Queens Brooklyn Manhattan, real estate analysis, 718-717-5210",
       siteName: "Real Henry Yue - NYC Property Investment Expert",
       locale: "en_US"
     },
     zh: {
-      title: "Henry岳 - NYC房地产专家 | ROI计算器", // 32 chars
+      title: primaryTitle,
       description: "NYC房地产专家Henry岳，15年经验。免费ROI计算器，五大区投资分析。咨询 718-717-5210", // 56 chars
       keywords: "纽约房地产专家, 岳泓宇, 房产投资, ROI计算器, 皇后区布鲁克林曼哈顿, 房地产分析, 718-717-5210",
       siteName: "岳泓宇房地产 - 纽约房产投资专家",
