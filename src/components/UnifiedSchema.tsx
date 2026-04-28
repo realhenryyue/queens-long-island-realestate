@@ -30,7 +30,7 @@ export const UnifiedSchema = () => {
           ],
           "image": {
             "@type": "ImageObject",
-            "url": "https://www.realhenryyue.com/assets/agent-photo.jpg",
+            "url": "https://www.realhenryyue.com/assets/agent-photo-512.webp",
             "width": 400,
             "height": 400
           },

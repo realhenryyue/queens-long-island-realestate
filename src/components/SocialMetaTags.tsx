@@ -46,7 +46,7 @@ export const SocialMetaTags = () => {
     "@type": "Organization",
     "name": "Henry Yue Real Estate",
     "url": "https://www.realhenryyue.com",
-    "logo": "https://www.realhenryyue.com/assets/agent-photo.jpg",
+    "logo": "https://www.realhenryyue.com/assets/agent-photo-512.webp",
     "description": current.description,
     "contactPoint": {
       "@type": "ContactPoint",
@@ -61,7 +61,7 @@ export const SocialMetaTags = () => {
       <meta property="linkedin:owner" content="Henry Yue" />
       <meta property="linkedin:title" content={current.title} />
       <meta property="linkedin:description" content={current.description} />
-      <meta property="linkedin:image" content="https://www.realhenryyue.com/assets/agent-photo.jpg" />
+      <meta property="linkedin:image" content="https://www.realhenryyue.com/assets/agent-photo-512.webp" />
       
       {/* Facebook Specific Meta Tags */}
       <meta property="fb:app_id" content="realhenryyue" />
@@ -80,7 +80,7 @@ export const SocialMetaTags = () => {
       <meta property="wechat:card" content="summary_large_image" />
       <meta property="wechat:title" content={current.title} />
       <meta property="wechat:description" content={current.description} />
-      <meta property="wechat:image" content="https://www.realhenryyue.com/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4.png" />
+      <meta property="wechat:image" content="https://www.realhenryyue.com/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4.webp" />
       
       {/* Additional Social Schema */}
       <script

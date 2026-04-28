@@ -9,10 +9,10 @@ export const GlobalSchema = () => {
     "name": "Henry Yue Real Estate",
     "alternateName": "Henry岳先生房地产",
     "url": "https://www.realhenryyue.com",
-    "logo": "https://www.realhenryyue.com/assets/agent-photo.jpg",
+    "logo": "https://www.realhenryyue.com/assets/agent-photo-512.webp",
     "image": [
-      "https://www.realhenryyue.com/assets/agent-photo.jpg",
-      "https://www.realhenryyue.com/assets/queens-skyline.jpg"
+      "https://www.realhenryyue.com/assets/agent-photo-512.webp",
+      "https://www.realhenryyue.com/assets/queens-skyline-1024.webp"
     ],
     "description": language === 'zh' 
       ? "Henry岳先生 - 纽约房地产专家，提供专业的房地产投资分析和咨询服务"
@@ -145,7 +145,7 @@ export const GlobalSchema = () => {
       "name": "Henry Yue Real Estate",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.realhenryyue.com/assets/agent-photo.jpg"
+        "url": "https://www.realhenryyue.com/assets/agent-photo-512.webp"
       }
     },
     "potentialAction": {
@@ -212,8 +212,8 @@ export const GlobalSchema = () => {
     ],
     "knowsLanguage": ["en", "zh-CN"],
     "image": [
-      "https://www.realhenryyue.com/assets/agent-photo.jpg",
-      "https://www.realhenryyue.com/assets/queens-skyline.jpg"
+      "https://www.realhenryyue.com/assets/agent-photo-512.webp",
+      "https://www.realhenryyue.com/assets/queens-skyline-1024.webp"
     ],
     "aggregateRating": {
       "@type": "AggregateRating",

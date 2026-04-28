@@ -1,16 +1,18 @@
 // Enhanced Service Worker for Henry Yue Real Estate - Safari Compatible
 // NYC Real Estate AI Investment Analysis Expert - Cross-Browser Performance
 
-const CACHE_NAME = 'realhenryyue-v6.1-indexing-fix-2026-04-27';
+const CACHE_NAME = 'realhenryyue-v6.2-webp-images-2026-04-28';
 const OFFLINE_URL = '/index.html';
 
 // Critical resources for immediate caching
 const CRITICAL_CACHE = [
   '/',
   '/index.html',
-  '/assets/agent-photo.jpg',
-  '/assets/queens-skyline.jpg',
-  '/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.png',
+  '/assets/agent-photo-256.webp',
+  '/assets/agent-photo-512.webp',
+  '/assets/queens-skyline-640.webp',
+  '/assets/queens-skyline-1024.webp',
+  '/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.webp',
   '/android-chrome-192x192.png',
   '/android-chrome-512x512.png',
   '/apple-touch-icon.png',
@@ -20,9 +22,9 @@ const CRITICAL_CACHE = [
 
 // Extended cache for performance
 const EXTENDED_CACHE = [
-  '/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.png',
-  '/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4.png',
-  '/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.png',
+  '/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.webp',
+  '/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4-192.webp',
+  '/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.webp',
   '/manifest.json',
   '/robots.txt',
   '/sitemap.xml',

@@ -98,16 +98,19 @@ export const Footer = () => {
           <aside className="space-y-4" aria-label="WeChat Contact">
             <h3 className="text-xl font-semibold">{t('footer.wechatTitle')}</h3>
             <figure className="text-center space-y-3">
-              <img 
-                src="/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4.png" 
-                alt={t('footer.wechatAlt')}
-                className="w-24 h-24 mx-auto rounded-lg bg-white p-2"
-                width={96}
-                height={96}
-                loading="lazy"
-                decoding="async"
-                itemProp="image"
-              />
+              <picture>
+                <source srcSet="/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4-192.webp 192w" type="image/webp" sizes="96px" />
+                <img 
+                  src="/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4-192.webp" 
+                  alt={t('footer.wechatAlt')}
+                  className="w-24 h-24 mx-auto rounded-lg bg-white p-2"
+                  width={96}
+                  height={96}
+                  loading="lazy"
+                  decoding="async"
+                  itemProp="image"
+                />
+              </picture>
               <figcaption className="text-sm text-primary-foreground/80 leading-relaxed">
                 {t('footer.wechat')}
               </figcaption>

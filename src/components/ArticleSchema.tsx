@@ -28,7 +28,7 @@ export const ArticleSchema = () => {
       "name": "Henry Yue Real Estate",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.realhenryyue.com/assets/agent-photo.jpg",
+        "url": "https://www.realhenryyue.com/assets/agent-photo-512.webp",
         "width": 400,
         "height": 400
       }
@@ -38,14 +38,14 @@ export const ArticleSchema = () => {
     "image": [
       {
         "@type": "ImageObject",
-        "url": "https://www.realhenryyue.com/assets/queens-skyline.jpg",
+        "url": "https://www.realhenryyue.com/assets/queens-skyline-1024.webp",
         "width": 1200,
         "height": 800,
         "caption": language === 'zh' ? "纽约皇后区天际线" : "Queens NYC Skyline"
       },
       {
         "@type": "ImageObject", 
-        "url": "https://www.realhenryyue.com/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.png",
+        "url": "https://www.realhenryyue.com/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.webp",
         "width": 800,
         "height": 600,
         "caption": language === 'zh' ? "房地产投资分析工具" : "Real Estate Investment Analysis Tool"

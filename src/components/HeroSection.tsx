@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Star, TrendingUp, Calculator, Home } from "lucide-react";
-import agentPhoto from "@/assets/agent-photo.jpg";
-import queensSkyline from "@/assets/queens-skyline.jpg";
+import agentPhoto128 from "@/assets/agent-photo-128.webp";
+import agentPhoto256 from "@/assets/agent-photo-256.webp";
+import agentPhoto512 from "@/assets/agent-photo-512.webp";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { SocialMediaIcons } from "@/components/SocialMediaIcons";
@@ -139,7 +140,9 @@ export const HeroSection = () => {
               <div className="text-center space-y-6" itemScope itemType="https://schema.org/Person">
                 <div className="relative">
                    <img 
-                    src={agentPhoto} 
+                    src={agentPhoto256}
+                    srcSet={`${agentPhoto128} 128w, ${agentPhoto256} 256w, ${agentPhoto512} 512w`}
+                    sizes="128px"
                     alt={t('hero.agentAlt')}
                     className="w-32 h-32 rounded-full mx-auto object-cover shadow-card"
                     width="128"
@@ -171,15 +174,7 @@ export const HeroSection = () => {
                       className="inline-flex items-center justify-center px-4 py-2 bg-[#4285F4] hover:bg-[#5a95f5] text-white text-sm font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-95 max-w-[280px] w-full"
                       aria-label={currentLanguage === 'zh' ? '查看我们的Google商业档案' : 'View Our Google Business Profile'}
                     >
-                      <img 
-                        src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" 
-                        alt="Google" 
-                        className="w-4 h-4 mr-2 flex-shrink-0"
-                        width="16"
-                        height="16"
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      <Star className="w-4 h-4 mr-2 flex-shrink-0" aria-hidden="true" />
                       <span className="truncate">
                         ⭐ {currentLanguage === 'zh' ? 'Google商业档案' : 'Google Business Profile'}
                       </span>

@@ -5,7 +5,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 const ComprehensiveSEO = () => {
   const { currentLanguage } = useLanguage();
   const canonicalUrl = "https://www.realhenryyue.com/";
-  const agentImageUrl = "https://www.realhenryyue.com/assets/agent-photo.jpg";
+  const agentImageUrl = "https://www.realhenryyue.com/assets/agent-photo-512.webp";
 
   const siteData = {
     en: {
