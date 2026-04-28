@@ -145,6 +145,7 @@ export const HeroSection = () => {
                     width="128"
                     height="128"
                     loading="eager"
+                     fetchPriority="high"
                     decoding="async"
                     itemProp="image"
                   />
