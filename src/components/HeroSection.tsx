@@ -174,15 +174,7 @@ export const HeroSection = () => {
                       className="inline-flex items-center justify-center px-4 py-2 bg-[#4285F4] hover:bg-[#5a95f5] text-white text-sm font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-95 max-w-[280px] w-full"
                       aria-label={currentLanguage === 'zh' ? '查看我们的Google商业档案' : 'View Our Google Business Profile'}
                     >
-                      <img 
-                        src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" 
-                        alt="Google" 
-                        className="w-4 h-4 mr-2 flex-shrink-0"
-                        width="16"
-                        height="16"
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      <Star className="w-4 h-4 mr-2 flex-shrink-0" aria-hidden="true" />
                       <span className="truncate">
                         ⭐ {currentLanguage === 'zh' ? 'Google商业档案' : 'Google Business Profile'}
                       </span>
