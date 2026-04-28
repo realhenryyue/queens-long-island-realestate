@@ -22,8 +22,8 @@ export const ProductSchema = () => {
       "url": "https://www.realhenryyue.com"
     },
     "image": [
-      "https://www.realhenryyue.com/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.png",
-      "https://www.realhenryyue.com/assets/queens-skyline.jpg"
+      "https://www.realhenryyue.com/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.webp",
+      "https://www.realhenryyue.com/assets/queens-skyline-1024.webp"
     ],
     "offers": {
       "@type": "Offer",

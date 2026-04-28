@@ -54,7 +54,7 @@ export const AdvancedSEOStrategy: React.FC<AdvancedSEOStrategyProps> = ({
       <meta property="og:url" content={config.canonical} />
       <meta property="og:title" content={config.title} />
       <meta property="og:description" content={config.description} />
-      <meta property="og:image" content="https://www.realhenryyue.com/og-image.jpg" />
+      <meta property="og:image" content="https://www.realhenryyue.com/og-image.webp" />
       <meta property="og:site_name" content="Henry Yue Real Estate" />
       <meta property="og:locale" content="en_US" />
       
@@ -63,7 +63,7 @@ export const AdvancedSEOStrategy: React.FC<AdvancedSEOStrategyProps> = ({
       <meta property="twitter:url" content={config.canonical} />
       <meta property="twitter:title" content={config.title} />
       <meta property="twitter:description" content={config.description} />
-      <meta property="twitter:image" content="https://www.realhenryyue.com/og-image.jpg" />
+      <meta property="twitter:image" content="https://www.realhenryyue.com/og-image.webp" />
       <meta name="twitter:creator" content="@henryyue_realestate" />
       
       {/* Additional SEO Tags */}
