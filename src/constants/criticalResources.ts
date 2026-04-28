@@ -14,8 +14,8 @@ export const resourceHints = `
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
   
   <!-- Preload critical images -->
-  <link rel="preload" href="/assets/agent-photo.jpg" as="image">
-  <link rel="preload" href="/assets/queens-skyline.jpg" as="image">
+  <link rel="preload" href="/assets/agent-photo-256.webp" as="image" type="image/webp" imagesrcset="/assets/agent-photo-128.webp 128w, /assets/agent-photo-256.webp 256w, /assets/agent-photo-512.webp 512w" imagesizes="128px">
+  <link rel="preload" href="/assets/queens-skyline-640.webp" as="image" type="image/webp" imagesrcset="/assets/queens-skyline-640.webp 640w, /assets/queens-skyline-1024.webp 1024w" imagesizes="100vw">
   
   <!-- Prefetch likely navigation targets -->
   <link rel="prefetch" href="#about">
