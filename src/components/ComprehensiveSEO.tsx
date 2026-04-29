@@ -6,7 +6,7 @@ const ComprehensiveSEO = () => {
   const { currentLanguage } = useLanguage();
   const canonicalUrl = "https://www.realhenryyue.com/";
   const agentImageUrl = "https://www.realhenryyue.com/assets/agent-photo-512.webp";
-  const primaryTitle = "Henry Yue 岳泓宇 | NYC Real Estate Investment Expert";
+  const primaryTitle = "Henry Yue 岳先生 | NYC Real Estate Investment Expert";
 
   const siteData = {
     en: {

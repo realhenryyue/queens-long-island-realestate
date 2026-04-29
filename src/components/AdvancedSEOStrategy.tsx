@@ -12,7 +12,7 @@ export const AdvancedSEOStrategy: React.FC<AdvancedSEOStrategyProps> = ({
   customTitle,
   customDescription 
 }) => {
-  const primaryTitle = "Henry Yue 岳泓宇 | NYC Real Estate Investment Expert";
+  const primaryTitle = "Henry Yue 岳先生 | NYC Real Estate Investment Expert";
 
   const seoConfig = {
     home: {
