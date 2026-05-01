@@ -52,9 +52,14 @@ export const AdvancedSEOStrategy: React.FC<AdvancedSEOStrategyProps> = ({
       <meta name="description" content={config.description} />
       <meta name="keywords" content={config.keywords} />
       
-      {/* Canonical URL */}
+      {/* Canonical URL (per language variant) */}
       <link rel="canonical" href={config.canonical} />
-      
+
+      {/* hreflang annotations linking both language variants */}
+      <link rel="alternate" hrefLang="en" href="https://www.realhenryyue.com/en/" />
+      <link rel="alternate" hrefLang="zh" href="https://www.realhenryyue.com/zh/" />
+      <link rel="alternate" hrefLang="x-default" href="https://www.realhenryyue.com/en/" />
+
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
       <meta property="og:url" content={config.canonical} />
@@ -62,7 +67,7 @@ export const AdvancedSEOStrategy: React.FC<AdvancedSEOStrategyProps> = ({
       <meta property="og:description" content={config.description} />
       <meta property="og:image" content="https://www.realhenryyue.com/og-image.webp" />
       <meta property="og:site_name" content="Henry Yue Real Estate" />
-      <meta property="og:locale" content="en_US" />
+      <meta property="og:locale" content={currentLanguage === 'zh' ? 'zh_CN' : 'en_US'} />
       
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
