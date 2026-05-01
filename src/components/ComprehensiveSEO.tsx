@@ -4,7 +4,10 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 const ComprehensiveSEO = () => {
   const { currentLanguage } = useLanguage();
-  const canonicalUrl = "https://www.realhenryyue.com/";
+  // Canonical points to the language-specific URL so each variant is independently indexable.
+  const canonicalUrl = currentLanguage === 'zh'
+    ? "https://www.realhenryyue.com/zh/"
+    : "https://www.realhenryyue.com/en/";
   const agentImageUrl = "https://www.realhenryyue.com/assets/agent-photo-512.webp";
   const primaryTitle = "Henry Yue 岳先生 | NYC Real Estate Investment Expert";
 
@@ -36,9 +39,14 @@ const ComprehensiveSEO = () => {
       <meta name="author" content="Henry Yue" />
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
       
-      {/* Canonical URL */}
+      {/* Canonical URL (per language) */}
       <link rel="canonical" href={canonicalUrl} />
-      
+
+      {/* hreflang annotations linking both language variants */}
+      <link rel="alternate" hrefLang="en" href="https://www.realhenryyue.com/en/" />
+      <link rel="alternate" hrefLang="zh" href="https://www.realhenryyue.com/zh/" />
+      <link rel="alternate" hrefLang="x-default" href="https://www.realhenryyue.com/en/" />
+
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
       <meta property="og:url" content={canonicalUrl} />

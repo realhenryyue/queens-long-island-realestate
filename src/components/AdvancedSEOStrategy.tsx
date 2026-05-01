@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface AdvancedSEOStrategyProps {
   page?: 'home' | 'calculator' | 'contact';
@@ -12,28 +13,31 @@ export const AdvancedSEOStrategy: React.FC<AdvancedSEOStrategyProps> = ({
   customTitle,
   customDescription 
 }) => {
+  const { currentLanguage } = useLanguage();
   const primaryTitle = "Henry Yue 岳先生 | NYC Real Estate Investment Expert";
+  const langPath = currentLanguage === 'zh' ? '/zh/' : '/en/';
+  const baseCanonical = `https://www.realhenryyue.com${langPath}`;
 
   const seoConfig = {
     home: {
       title: customTitle || primaryTitle,
       description: customDescription || "NYC's top real estate expert Henry Yue. Get professional investment analysis, market insights, and ROI calculations. Call 718-717-5210 for expert consultation.",
       keywords: "NYC real estate, Henry Yue, investment analysis, ROI calculator, Queens real estate, Manhattan properties, real estate expert",
-      canonical: "https://www.realhenryyue.com/",
+      canonical: baseCanonical,
       h1: "NYC Real Estate Investment Expert - Henry Yue"
     },
     calculator: {
       title: "Free NYC ROI Calculator | Real Estate Investment Analysis Tool",
       description: "Calculate NYC real estate ROI instantly. Free investment analysis tool with cap rates, cash flow projections, and market data by expert Henry Yue.",
       keywords: "ROI calculator, NYC real estate calculator, investment analysis, cap rate calculator, cash flow analysis",
-      canonical: "https://www.realhenryyue.com/#roi-calculator",
+      canonical: `${baseCanonical}#roi-calculator`,
       h1: "NYC Real Estate ROI Calculator"
     },
     contact: {
       title: "Contact Henry Yue | NYC Real Estate Expert | 718-717-5210",
       description: "Contact NYC real estate expert Henry Yue for professional investment consultation. Phone: 718-717-5210. Email: RealHenryYue@gmail.com. Free market analysis.",
       keywords: "contact Henry Yue, NYC real estate consultation, real estate expert contact, 718-717-5210",
-      canonical: "https://www.realhenryyue.com/#contact",
+      canonical: `${baseCanonical}#contact`,
       h1: "Contact NYC Real Estate Expert Henry Yue"
     }
   };
@@ -48,9 +52,14 @@ export const AdvancedSEOStrategy: React.FC<AdvancedSEOStrategyProps> = ({
       <meta name="description" content={config.description} />
       <meta name="keywords" content={config.keywords} />
       
-      {/* Canonical URL */}
+      {/* Canonical URL (per language variant) */}
       <link rel="canonical" href={config.canonical} />
-      
+
+      {/* hreflang annotations linking both language variants */}
+      <link rel="alternate" hrefLang="en" href="https://www.realhenryyue.com/en/" />
+      <link rel="alternate" hrefLang="zh" href="https://www.realhenryyue.com/zh/" />
+      <link rel="alternate" hrefLang="x-default" href="https://www.realhenryyue.com/en/" />
+
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
       <meta property="og:url" content={config.canonical} />
@@ -58,7 +67,7 @@ export const AdvancedSEOStrategy: React.FC<AdvancedSEOStrategyProps> = ({
       <meta property="og:description" content={config.description} />
       <meta property="og:image" content="https://www.realhenryyue.com/og-image.webp" />
       <meta property="og:site_name" content="Henry Yue Real Estate" />
-      <meta property="og:locale" content="en_US" />
+      <meta property="og:locale" content={currentLanguage === 'zh' ? 'zh_CN' : 'en_US'} />
       
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />

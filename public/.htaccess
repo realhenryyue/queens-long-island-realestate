@@ -101,8 +101,8 @@ RewriteCond %{HTTP_HOST} !^www\.realhenryyue\.com$ [NC,OR]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://www.realhenryyue.com/$1 [R=301,L]
 
-# Redirect language-only aliases to the canonical homepage
-RewriteRule ^(en|zh)/?$ / [R=301,L]
+# Redirect root to English language variant (default language)
+RewriteRule ^$ /en/ [R=301,L]
 
 # Redirect known section URLs to homepage anchors for a single-page site
 RewriteRule ^(en/|zh/)?investment-analysis/?$ /#investment-analysis [R=301,L]
