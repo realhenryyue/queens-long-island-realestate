@@ -1,7 +1,7 @@
 // Enhanced Service Worker for Henry Yue Real Estate - Safari Compatible
 // NYC Real Estate AI Investment Analysis Expert - Cross-Browser Performance
 
-const CACHE_NAME = 'realhenryyue-v6.2-webp-images-2026-04-28';
+const CACHE_NAME = 'realhenryyue-v6.3-multilang-2026-05-02';
 const OFFLINE_URL = '/index.html';
 
 // Critical resources for immediate caching
@@ -82,6 +82,13 @@ self.addEventListener('fetch', event => {
       event.request.url.includes('moz-extension') ||
       event.request.method !== 'GET') {
     return;
+  }
+
+  // Bypass SW entirely for language entry routes so /en/ and /zh/ always
+  // fetch the freshest static HTML (prevents stale/blank-page caching bugs).
+  const reqUrl = new URL(event.request.url);
+  if (/^\/(en|zh)(\/.*)?$/.test(reqUrl.pathname)) {
+    return; // let the browser handle it normally
   }
 
   // Enhanced Safari-compatible navigation handling
