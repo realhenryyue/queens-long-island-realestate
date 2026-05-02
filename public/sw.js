@@ -84,6 +84,13 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  // Bypass SW entirely for language entry routes so /en/ and /zh/ always
+  // fetch the freshest static HTML (prevents stale/blank-page caching bugs).
+  const reqUrl = new URL(event.request.url);
+  if (/^\/(en|zh)(\/.*)?$/.test(reqUrl.pathname)) {
+    return; // let the browser handle it normally
+  }
+
   // Enhanced Safari-compatible navigation handling
   if (event.request.mode === 'navigate') {
     event.respondWith(
