@@ -4,26 +4,31 @@ import { Globe } from "lucide-react";
 
 /**
  * Language toggle.
- * Navigates to real static URLs (/en/ and /zh/) so search engines see
- * independent, fully-rendered language pages instead of client-only switching.
+ *
+ * IMPORTANT: This switches the SPA's language IN PLACE via LanguageContext.
+ * It does NOT navigate to /en/ or /zh/, because those routes serve separate
+ * static SEO landing pages (public/en/index.html, public/zh/index.html) that
+ * intentionally contain only a stripped-down summary for search engines.
+ * Sending a real user there would show an "incomplete" page missing the
+ * ROI calculator, market analysis, Medium feed, etc.
+ *
+ * Crawlers still discover /en/ and /zh/ via sitemap + hreflang.
  */
 export const LanguageToggle = () => {
-  const { language } = useLanguage();
-  const targetHref = language === "en" ? "/zh/" : "/en/";
-  const targetLabel = language === "en" ? "中文" : "English";
-  const targetHrefLang = language === "en" ? "zh" : "en";
+  const { language, setLanguage } = useLanguage();
+  const nextLang = language === "en" ? "zh" : "en";
+  const targetLabel = nextLang === "zh" ? "中文" : "English";
 
   return (
     <Button
-      asChild
       variant="outline"
       size="sm"
       className="flex items-center gap-2"
+      onClick={() => setLanguage(nextLang)}
+      aria-label={`Switch language to ${targetLabel}`}
     >
-      <a href={targetHref} hrefLang={targetHrefLang} rel="alternate" aria-label={`Switch language to ${targetLabel}`}>
-        <Globe className="w-4 h-4" />
-        {targetLabel}
-      </a>
+      <Globe className="w-4 h-4" />
+      {targetLabel}
     </Button>
   );
 };
