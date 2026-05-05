@@ -222,5 +222,19 @@
     }
   }
   </script>
+
+  <!-- Real browsers get the full React app in English.
+       Crawlers without JS keep the static SEO HTML above. -->
+  <script>
+    (function () {
+      try {
+        if (window.location.search.indexOf('stay=1') !== -1) return;
+        var ua = navigator.userAgent || '';
+        var isBot = /bot|crawler|spider|crawling|facebookexternalhit|embedly|quora link preview|showyoubot|outbrain|pinterest|slackbot|vkShare|W3C_Validator|baiduspider|bingbot|yandex|duckduckbot|applebot|googlebot/i.test(ua);
+        if (isBot) return;
+        window.location.replace('/?lang=en');
+      } catch (e) {}
+    })();
+  </script>
 </body>
 </html>
