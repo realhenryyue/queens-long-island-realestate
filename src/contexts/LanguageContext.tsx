@@ -876,13 +876,24 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children, de
   const [language, setLanguage] = useState<Language>(defaultLanguage);
   const location = useLocation();
 
-  // Initialize/update language when the SPA itself is loaded on a language-prefixed route.
-  // Do not tie this to language state changes; the language toggle must not navigate to
-  // /en/ or /zh/ because those URLs are static SEO entry pages on the published site.
+  // Initialize language from URL once. Priority: ?lang= query (set by static SEO
+  // landing pages redirecting real visitors) > /zh or /en path prefix > default.
+  // Not tied to language state — toggling language must NOT navigate.
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const langFromQuery = params.get('lang');
     const currentPath = location.pathname;
-    const langFromPath = currentPath.startsWith('/zh') ? 'zh' : 'en';
-    setLanguage((currentLanguage) => currentLanguage === langFromPath ? currentLanguage : langFromPath);
+    let nextLang: Language | null = null;
+    if (langFromQuery === 'zh' || langFromQuery === 'en') {
+      nextLang = langFromQuery;
+    } else if (currentPath.startsWith('/zh')) {
+      nextLang = 'zh';
+    } else if (currentPath.startsWith('/en')) {
+      nextLang = 'en';
+    }
+    if (nextLang) {
+      setLanguage((current) => (current === nextLang ? current : (nextLang as Language)));
+    }
   }, [location.pathname]);
 
   // Handle language switching inside the full React app without URL navigation.
