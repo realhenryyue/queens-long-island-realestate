@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 type Language = 'en' | 'zh';
 
@@ -874,28 +874,20 @@ interface LanguageProviderProps {
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children, defaultLanguage }) => {
   const [language, setLanguage] = useState<Language>(defaultLanguage);
-  const navigate = useNavigate();
   const location = useLocation();
 
-  // Update language based on URL path
+  // Initialize/update language when the SPA itself is loaded on a language-prefixed route.
+  // Do not tie this to language state changes; the language toggle must not navigate to
+  // /en/ or /zh/ because those URLs are static SEO entry pages on the published site.
   useEffect(() => {
     const currentPath = location.pathname;
     const langFromPath = currentPath.startsWith('/zh') ? 'zh' : 'en';
-    if (langFromPath !== language) {
-      setLanguage(langFromPath);
-    }
-  }, [location.pathname, language]);
+    setLanguage((currentLanguage) => currentLanguage === langFromPath ? currentLanguage : langFromPath);
+  }, [location.pathname]);
 
-  // Handle language switching with URL navigation
+  // Handle language switching inside the full React app without URL navigation.
   const handleSetLanguage = (newLang: Language) => {
-    const currentPath = location.pathname;
-    const newPath = currentPath.startsWith('/zh') 
-      ? currentPath.replace('/zh', `/${newLang}`)
-      : currentPath.startsWith('/en')
-      ? currentPath.replace('/en', `/${newLang}`)
-      : `/${newLang}`;
-    
-    navigate(newPath, { replace: true });
+    setLanguage(newLang);
   };
 
   const t = (key: string): string => {
