@@ -1,245 +1,131 @@
-// Enhanced Service Worker for Henry Yue Real Estate - Safari Compatible
-// NYC Real Estate AI Investment Analysis Expert - Cross-Browser Performance
+// Henry Yue Real Estate — Service Worker
+// Strategy:
+//  - Network-first for HTML navigations (so a new deploy is picked up immediately
+//    and Chrome users never get a blank screen from a cached index.html that
+//    references stale hashed JS bundle filenames).
+//  - Cache-first for static assets (images, fonts, css, js) with background refresh.
+//  - On activate, purge ALL old caches AND any cached HTML documents.
 
-const CACHE_NAME = 'realhenryyue-v6.3-multilang-2026-05-02';
+const CACHE_VERSION = 'v7.0-2026-05-06';
+const STATIC_CACHE = `realhenryyue-static-${CACHE_VERSION}`;
+const RUNTIME_CACHE = `realhenryyue-runtime-${CACHE_VERSION}`;
 const OFFLINE_URL = '/index.html';
 
-// Critical resources for immediate caching
-const CRITICAL_CACHE = [
-  '/',
-  '/index.html',
+const PRECACHE_ASSETS = [
   '/assets/agent-photo-256.webp',
   '/assets/agent-photo-512.webp',
   '/assets/queens-skyline-640.webp',
   '/assets/queens-skyline-1024.webp',
   '/lovable-uploads/37df6745-4c04-4216-b503-10af6f8c13aa.webp',
-  '/android-chrome-192x192.png',
-  '/android-chrome-512x512.png',
+  '/favicon.ico',
   '/apple-touch-icon.png',
   '/favicon-96x96.png',
-  '/favicon.ico'
+  '/manifest.json'
 ];
 
-// Extended cache for performance
-const EXTENDED_CACHE = [
-  '/lovable-uploads/7822d7f2-39af-4ce6-9499-31e488327974.webp',
-  '/lovable-uploads/913b3b6c-94b4-41bb-843a-d28cd0eed1a4-192.webp',
-  '/lovable-uploads/e70886eb-1687-4063-b5fa-bd44be25b6e2.webp',
-  '/manifest.json',
-  '/robots.txt',
-  '/sitemap.xml',
-  '/ads.txt'
-];
-
-// Install event - cache critical resources with Safari error handling
-self.addEventListener('install', event => {
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    Promise.all([
-      // Cache critical resources first with enhanced error handling
-      caches.open(CACHE_NAME).then(cache => {
-        return Promise.allSettled(CRITICAL_CACHE.map(url => {
-          const request = new Request(url, {
-            credentials: 'same-origin',
-            cache: 'default'
-          });
-          return cache.add(request).catch(err => {
-            console.warn(`Failed to cache ${url}:`, err);
-            return null;
-          });
-        }));
-      }),
-      // Cache extended resources with fallback
-      caches.open(CACHE_NAME + '-extended').then(cache => {
-        return Promise.allSettled(EXTENDED_CACHE.map(url => {
-          const request = new Request(url, {
-            credentials: 'same-origin',
-            cache: 'default'
-          });
-          return cache.add(request).catch(err => {
-            console.warn(`Failed to cache extended ${url}:`, err);
-            return null;
-          });
-        }));
-      })
-    ]).catch(err => {
-      console.error('Cache install failed:', err);
-    })
+    caches.open(STATIC_CACHE).then((cache) =>
+      Promise.allSettled(
+        PRECACHE_ASSETS.map((url) =>
+          cache.add(new Request(url, { credentials: 'same-origin', cache: 'reload' }))
+            .catch(() => undefined)
+        )
+      )
+    )
   );
+  // Take over immediately so old SW versions stop serving stale HTML.
   self.skipWaiting();
 });
 
-// Fetch event - iPad WebKit compatible caching
-self.addEventListener('fetch', event => {
-  // Enhanced iPad Safari compatibility - skip problematic requests
-  if (!event.request.url.startsWith(self.location.origin) && 
-      !event.request.url.startsWith('https://fonts.googleapis.com') &&
-      !event.request.url.startsWith('https://fonts.gstatic.com')) {
-    return;
-  }
-  
-  // Skip requests that cause issues on iPad WebKit
-  if (event.request.url.includes('chrome-extension') || 
-      event.request.url.includes('moz-extension') ||
-      event.request.method !== 'GET') {
-    return;
-  }
-
-  // Bypass SW entirely for language entry routes so /en/ and /zh/ always
-  // fetch the freshest static HTML (prevents stale/blank-page caching bugs).
-  const reqUrl = new URL(event.request.url);
-  if (/^\/(en|zh)(\/.*)?$/.test(reqUrl.pathname)) {
-    return; // let the browser handle it normally
-  }
-
-  // Enhanced Safari-compatible navigation handling
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      Promise.resolve()
-        .then(() => caches.match(event.request))
-        .then(response => {
-          if (response) {
-            return response;
-          }
-          
-          return fetch(event.request)
-            .then(response => {
-              // Ensure we have a valid response
-              if (!response || response.status !== 200) {
-                return response;
-              }
-              
-              // Clone and cache navigation responses with Safari error handling
-              try {
-                const responseToCache = response.clone();
-                caches.open(CACHE_NAME)
-                  .then(cache => cache.put(event.request, responseToCache))
-                  .catch(err => console.warn('Cache put failed:', err));
-              } catch (err) {
-                console.warn('Response clone failed:', err);
-              }
-              
-              return response;
-            })
-            .catch(err => {
-              console.warn('Navigation fetch failed:', err);
-              // Fallback to offline page for navigation failures
-              return caches.match(OFFLINE_URL).catch(() => {
-                // Final fallback - return basic HTML
-                return new Response('<!DOCTYPE html><html><head><title>Offline</title></head><body><h1>You are offline</h1></body></html>', {
-                  headers: { 'Content-Type': 'text/html' }
-                });
-              });
-            });
-        })
-        .catch(err => {
-          console.error('Navigation handler failed:', err);
-          return new Response('<!DOCTYPE html><html><head><title>Error</title></head><body><h1>Service Worker Error</h1></body></html>', {
-            headers: { 'Content-Type': 'text/html' }
-          });
-        })
+self.addEventListener('activate', (event) => {
+  event.waitUntil((async () => {
+    // 1. Delete every cache that is not the current version.
+    const keys = await caches.keys();
+    await Promise.all(
+      keys
+        .filter((k) => k !== STATIC_CACHE && k !== RUNTIME_CACHE)
+        .map((k) => caches.delete(k))
     );
-    return;
-  }
-
-  // Enhanced Safari-compatible caching strategy for other requests
-  event.respondWith(
-    Promise.resolve()
-      .then(() => caches.match(event.request))
-      .then(response => {
-        // Return cached version or fetch from network
-        if (response) {
-          return response;
-        }
-        
-        // Clone the request for caching with error handling
-        let fetchRequest;
-        try {
-          fetchRequest = event.request.clone();
-        } catch (err) {
-          console.warn('Request clone failed:', err);
-          fetchRequest = event.request;
-        }
-        
-        return fetch(fetchRequest)
-          .then(response => {
-            // Check if valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
+    // 2. Defensive: also purge any HTML documents that may still be sitting in
+    //    current caches from a previous SW version.
+    for (const cacheName of [STATIC_CACHE, RUNTIME_CACHE]) {
+      try {
+        const cache = await caches.open(cacheName);
+        const reqs = await cache.keys();
+        await Promise.all(
+          reqs.map(async (req) => {
+            if (req.mode === 'navigate' || req.destination === 'document' || req.url.endsWith('.html')) {
+              await cache.delete(req);
             }
-            
-            // Clone response for caching with enhanced Safari error handling
-            try {
-              const responseToCache = response.clone();
-              
-              caches.open(CACHE_NAME)
-                .then(cache => {
-                  try {
-                    // Simplified caching for better Safari compatibility
-                    cache.put(event.request, responseToCache);
-                  } catch (cacheErr) {
-                    console.warn('Cache put operation failed:', cacheErr);
-                  }
-                })
-                .catch(cacheOpenErr => {
-                  console.warn('Cache open failed:', cacheOpenErr);
-                });
-            } catch (cloneErr) {
-              console.warn('Response clone failed:', cloneErr);
-            }
-            
-            return response;
           })
-          .catch(error => {
-            console.warn('Fetch failed for', event.request.url, error);
-            // Return offline page for critical failures
-            if (event.request.destination === 'document') {
-              return caches.match(OFFLINE_URL).catch(() => {
-                return new Response('<!DOCTYPE html><html><head><title>Offline</title></head><body><h1>You are offline</h1></body></html>', {
-                  headers: { 'Content-Type': 'text/html' }
-                });
-              });
-            }
-            return Promise.reject(error);
-          });
-      })
-      .catch(err => {
-        console.error('Cache match failed:', err);
-        return fetch(event.request).catch(() => {
-          return new Response('Network error', { status: 503 });
-        });
-      })
-  );
+        );
+      } catch (_) { /* ignore */ }
+    }
+    await self.clients.claim();
+  })());
 });
 
-// Activate event - clean up old caches with Safari compatibility
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    Promise.resolve()
-      .then(() => caches.keys())
-      .then(cacheNames => {
-        const deletePromises = cacheNames
-          .filter(cacheName => cacheName !== CACHE_NAME && cacheName !== CACHE_NAME + '-extended')
-          .map(cacheName => {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName).catch(err => {
-              console.warn('Failed to delete cache:', cacheName, err);
-              return false;
-            });
-          });
-        
-        return Promise.allSettled(deletePromises);
-      })
-      .then(() => {
-        // Safari-specific client claim with error handling
-        try {
-          return self.clients.claim();
-        } catch (err) {
-          console.warn('Client claim failed:', err);
-          return Promise.resolve();
-        }
-      })
-      .catch(err => {
-        console.error('Activation failed:', err);
-      })
-  );
+// One-time message hook so the page can ask the SW to clear everything.
+self.addEventListener('message', (event) => {
+  if (event.data === 'CLEAR_CACHES') {
+    event.waitUntil(
+      caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
+    );
+  }
+});
+
+self.addEventListener('fetch', (event) => {
+  const req = event.request;
+
+  // Only handle GET.
+  if (req.method !== 'GET') return;
+
+  const url = new URL(req.url);
+
+  // Never intercept cross-origin requests except Google Fonts (which we want to cache).
+  const sameOrigin = url.origin === self.location.origin;
+  const isGoogleFont = url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com';
+  if (!sameOrigin && !isGoogleFont) return;
+
+  // Bypass SW for the static SEO landing pages — always fetch fresh.
+  if (sameOrigin && /^\/(en|zh)(\/.*)?$/.test(url.pathname)) return;
+
+  // HTML navigations -> network-first, fall back to cache, then offline page.
+  const isNavigation = req.mode === 'navigate' ||
+    (req.destination === '' && req.headers.get('accept')?.includes('text/html'));
+
+  if (isNavigation) {
+    event.respondWith((async () => {
+      try {
+        const fresh = await fetch(req, { cache: 'no-store' });
+        // Do NOT cache navigation responses — index.html references hashed
+        // bundle filenames that change on every deploy. Caching it causes
+        // blank screens after deploy because the cached HTML asks for JS
+        // files that no longer exist on the server.
+        return fresh;
+      } catch (_) {
+        const cached = await caches.match(req) || await caches.match(OFFLINE_URL);
+        return cached || new Response(
+          '<!doctype html><meta charset="utf-8"><title>Offline</title><h1>You are offline</h1>',
+          { headers: { 'Content-Type': 'text/html; charset=utf-8' }, status: 503 }
+        );
+      }
+    })());
+    return;
+  }
+
+  // Static assets -> cache-first with background refresh (stale-while-revalidate).
+  event.respondWith((async () => {
+    const cache = await caches.open(RUNTIME_CACHE);
+    const cached = await cache.match(req);
+    const networkPromise = fetch(req).then((res) => {
+      if (res && res.status === 200 && (res.type === 'basic' || res.type === 'cors')) {
+        // Clone before consuming.
+        cache.put(req, res.clone()).catch(() => undefined);
+      }
+      return res;
+    }).catch(() => undefined);
+    return cached || networkPromise || fetch(req);
+  })());
 });

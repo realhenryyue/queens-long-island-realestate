@@ -148,8 +148,8 @@ export const HeroSection = () => {
                     width="128"
                     height="128"
                     loading="eager"
-                     fetchPriority="high"
-                    decoding="async"
+                     {...({ fetchpriority: "high" } as any)}
+                     decoding="async"
                     itemProp="image"
                   />
                   <div className="absolute -bottom-2 -right-2 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
