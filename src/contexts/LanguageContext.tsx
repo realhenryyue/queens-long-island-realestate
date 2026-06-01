@@ -874,6 +874,7 @@ interface LanguageProviderProps {
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children, defaultLanguage }) => {
   const [language, setLanguage] = useState<Language>(defaultLanguage);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const location = useLocation();
 
   // Initialize language from URL once. Priority: ?lang= query (set by static SEO
@@ -896,15 +897,23 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children, de
     }
   }, [location.pathname]);
 
-  // Handle language switching inside the full React app without URL navigation.
+  // Smooth cross-fade when switching languages to avoid the perceived "jump"
+  // caused by synchronous text length reflow between EN and ZH.
   const handleSetLanguage = (newLang: Language) => {
-    setLanguage(newLang);
+    if (newLang === language) return;
+    setIsTransitioning(true);
+    // Fade out briefly, then swap content, then fade back in on next frame.
+    window.setTimeout(() => {
+      setLanguage(newLang);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setIsTransitioning(false));
+      });
+    }, 150);
   };
 
   const t = (key: string): string => {
     const translation = translations[key];
     if (!translation) {
-      // Missing translation for key: ${key}
       return key;
     }
     return translation[language] || translation.en || key;
@@ -912,7 +921,14 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children, de
 
   return (
     <LanguageContext.Provider value={{ language, currentLanguage: language, setLanguage: handleSetLanguage, t }}>
-      {children}
+      <div
+        style={{
+          opacity: isTransitioning ? 0 : 1,
+          transition: 'opacity 150ms ease-in-out',
+        }}
+      >
+        {children}
+      </div>
     </LanguageContext.Provider>
   );
 };
