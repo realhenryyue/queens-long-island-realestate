@@ -41,6 +41,9 @@ const Index = () => {
       
       <main role="main" id="main-content">
         <HeroSection />
+        <section id="mortgage-rates">
+          <MortgageRates />
+        </section>
         <section id="queens-real-estate">
           <ServicesSection />
         </section>
