@@ -129,29 +129,22 @@
     <script type="module" defer src="/src/main.tsx"></script>
     <script defer>
       // Service worker lifecycle:
-      // 1. Force-update any installed SW on every page load (so v6.x users
-      //    pick up v7.x immediately and the blank-screen-in-Chrome issue
-      //    resolves itself on next visit, even without a hard refresh).
-      // 2. When the new SW takes control, reload once so the page runs
-      //    against the fresh bundle list (prevents "old HTML + new JS" mix).
+      // Register only. We deliberately do NOT call reg.update() on every load
+      // and do NOT reload on 'controllerchange' — combined with skipWaiting()
+      // that caused an endless reload loop on iPad Safari (update -> new SW
+      // takes control -> reload -> update -> ...). The SW uses network-first
+      // for HTML, so new deploys are picked up without any forced reload.
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           const register = () =>
             navigator.serviceWorker
               .register('/sw.js', { scope: '/', updateViaCache: 'none' })
-              .then((reg) => { try { reg.update(); } catch (_) {} })
               .catch(() => undefined);
           if ('requestIdleCallback' in window) {
             window.requestIdleCallback(register, { timeout: 3000 });
           } else {
             window.setTimeout(register, 1500);
           }
-          let didReload = false;
-          navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (didReload) return;
-            didReload = true;
-            window.location.reload();
-          });
         });
       }
     </script>
