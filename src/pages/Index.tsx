@@ -7,6 +7,7 @@ import { UnifiedSchema } from "@/components/UnifiedSchema";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
 import RealMediumContent from "@/components/RealMediumContent";
+import MortgageRates from "@/components/MortgageRates";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -40,6 +41,9 @@ const Index = () => {
       
       <main role="main" id="main-content">
         <HeroSection />
+        <section id="mortgage-rates">
+          <MortgageRates />
+        </section>
         <section id="queens-real-estate">
           <ServicesSection />
         </section>
