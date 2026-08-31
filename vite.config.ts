@@ -24,6 +24,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     asyncCssPlugin(),
+    mcpPlugin(),
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
