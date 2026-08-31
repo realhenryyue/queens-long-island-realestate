@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "sdk_version": "0.28.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "queens-long-island-realestate",
+      "version": "0.1.0",
+      "title": "queens-long-island-realestate"
+    },
+    "tools": [
+      {
+        "name": "search_properties",
+        "title": "Search property listings",
+        "description": "Search active NYC-area real estate listings (Queens, Manhattan, Brooklyn, Bronx, Staten Island, Nassau County) by city, price range, bedrooms, and property type.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+              "description": "City name filter, e.g. 'Flushing'."
+            },
+            "state": {
+              "type": "string",
+              "description": "Two-letter state code, e.g. 'NY'."
+            },
+            "min_price": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Minimum price in USD."
+            },
+            "max_price": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Maximum price in USD."
+            },
+            "min_bedrooms": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Minimum bedroom count."
+            },
+            "property_type": {
+              "type": "string",
+              "description": "Property type filter, e.g. 'condo'."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 10,
+              "description": "Maximum results to return."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_property",
+        "title": "Get property details",
+        "description": "Fetch the full details of one property listing by its id.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The property id returned by search_properties."
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "estimate_roi",
+        "title": "Estimate investment ROI",
+        "description": "Estimate cap rate, monthly cash flow, and cash-on-cash return for a rental property investment.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "purchase_price": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Purchase price in USD."
+            },
+            "down_payment_percent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "default": 20,
+              "description": "Down payment as a percentage of price."
+            },
+            "interest_rate_percent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 30,
+              "default": 6.5,
+              "description": "Annual mortgage rate."
+            },
+            "loan_years": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 40,
+              "default": 30,
+              "description": "Mortgage term in years."
+            },
+            "monthly_rent": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Expected gross monthly rent in USD."
+            },
+            "monthly_expenses": {
+              "type": "number",
+              "minimum": 0,
+              "default": 0,
+              "description": "Monthly taxes, insurance, HOA, maintenance, and management in USD."
+            },
+            "vacancy_percent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 50,
+              "default": 5,
+              "description": "Assumed vacancy rate."
+            }
+          },
+          "required": [
+            "purchase_price",
+            "monthly_rent"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_agent_contact",
+        "title": "Get agent contact info",
+        "description": "Return the public contact details and service areas for Henry Yue, the NYC real estate investment agent behind this site.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
