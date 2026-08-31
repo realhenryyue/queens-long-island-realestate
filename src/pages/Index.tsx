@@ -7,6 +7,7 @@ import { UnifiedSchema } from "@/components/UnifiedSchema";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
 import RealMediumContent from "@/components/RealMediumContent";
+import MortgageRates from "@/components/MortgageRates";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
