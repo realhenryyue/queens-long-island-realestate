@@ -178,9 +178,10 @@ export const MortgageRates = () => {
           <div className="mt-6 pt-4 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
             <span>
               {zh
-                ? `更新时间：${updatedLabel} · 数据为全美平均值`
-                : `Updated: ${updatedLabel} · Based on national averages`}
+                ? `更新时间：${updatedLabel} · 数据为全美平均值${live ? "" : "（暂用最近一次参考值）"}`
+                : `Updated: ${updatedLabel} · Based on national averages${live ? "" : " (last known reference values)"}`}
             </span>
+
             <a
               href="https://www.mortgagenewsdaily.com/mortgage-rates"
               target="_blank"
