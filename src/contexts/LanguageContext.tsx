@@ -875,15 +875,14 @@ interface LanguageProviderProps {
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children, defaultLanguage }) => {
   const [language, setLanguage] = useState<Language>(defaultLanguage);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const location = useLocation();
 
   // Initialize language from URL once. Priority: ?lang= query (set by static SEO
   // landing pages redirecting real visitors) > /zh or /en path prefix > default.
-  // Not tied to language state — toggling language must NOT navigate.
+  // Read from window.location so this provider works with or without a Router.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const langFromQuery = params.get('lang');
-    const currentPath = location.pathname;
+    const currentPath = window.location.pathname;
     let nextLang: Language | null = null;
     if (langFromQuery === 'zh' || langFromQuery === 'en') {
       nextLang = langFromQuery;
@@ -895,7 +894,8 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children, de
     if (nextLang) {
       setLanguage((current) => (current === nextLang ? current : (nextLang as Language)));
     }
-  }, [location.pathname]);
+  }, []);
+
 
   // Smooth cross-fade when switching languages to avoid the perceived "jump"
   // caused by synchronous text length reflow between EN and ZH.
