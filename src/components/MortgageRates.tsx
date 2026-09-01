@@ -1,12 +1,15 @@
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { ArrowUpRight, ArrowDownRight, Minus, TrendingUp, ExternalLink } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
 
 /**
- * Daily mortgage rates (national averages), sourced from Mortgage News Daily.
- * Update `RATES_UPDATED` and the `change` / `rate` values when refreshing.
+ * Daily mortgage rates (national averages), auto-fetched every day from
+ * Mortgage News Daily via the `mortgage-rates` edge function.
+ * The values below are only a fallback if the live fetch fails.
  */
-const RATES_UPDATED = "2026-08-28";
+const FALLBACK_UPDATED = "2026-08-28";
 
 type RateRow = {
   key: string;
@@ -26,8 +29,14 @@ const RATES: RateRow[] = [
   { key: "va", labelEn: "30 Yr. VA", labelZh: "30年 VA 退伍军人贷款", rate: 6.37, change: 0.02 },
 ];
 
+type LiveRate = { key: string; label: string; rate: number; change: number };
+type LivePayload = { updated: string; rates: LiveRate[] };
+
+const CACHE_KEY = "mnd-rates-v1";
+
 const formatChange = (change: number) =>
   `${change > 0 ? "+" : change < 0 ? "-" : ""}${Math.abs(change).toFixed(2)}%`;
+
 
 const ChangeBadge = ({ change, large = false }: { change: number; large?: boolean }) => {
   const Icon = change > 0 ? ArrowUpRight : change < 0 ? ArrowDownRight : Minus;
