@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { useLocation } from 'react-router-dom';
 
 type Language = 'en' | 'zh';
 
