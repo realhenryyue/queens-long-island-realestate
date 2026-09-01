@@ -60,13 +60,56 @@ export const MortgageRates = () => {
   const { currentLanguage } = useLanguage();
   const zh = currentLanguage === "zh";
 
-  const featured = RATES.filter((r) => r.featured);
-  const rest = RATES.filter((r) => !r.featured);
+  const [live, setLive] = useState<LivePayload | null>(() => {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw) as { at: number; payload: LivePayload };
+      if (Date.now() - parsed.at > 6 * 60 * 60 * 1000) return null;
+      return parsed.payload;
+    } catch {
+      return null;
+    }
+  });
 
-  const updatedLabel = new Date(RATES_UPDATED).toLocaleDateString(
-    zh ? "zh-CN" : "en-US",
-    { year: "numeric", month: zh ? "long" : "short", day: "numeric" }
-  );
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const { data, error } = await supabase.functions.invoke<LivePayload>("mortgage-rates");
+      if (!active) return;
+      if (error || !data?.rates?.length) {
+        console.warn("Live mortgage rates unavailable, using fallback values", error);
+        return;
+      }
+      setLive(data);
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), payload: data }));
+      } catch {
+        /* storage unavailable */
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  // Merge live numbers into the bilingual label list so EN/ZH stay in sync.
+  const rows: RateRow[] = RATES.map((row) => {
+    const match = live?.rates.find((r) => r.key === row.key);
+    return match ? { ...row, rate: match.rate, change: match.change } : row;
+  });
+
+  const featured = rows.filter((r) => r.featured);
+  const rest = rows.filter((r) => !r.featured);
+
+  const updatedLabel = new Date(
+    `${live?.updated ?? FALLBACK_UPDATED}T12:00:00`
+  ).toLocaleDateString(zh ? "zh-CN" : "en-US", {
+    year: "numeric",
+    month: zh ? "long" : "short",
+    day: "numeric",
+  });
+
 
   return (
     <section
