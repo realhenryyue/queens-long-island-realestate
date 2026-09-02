@@ -75,15 +75,18 @@ export const MortgageRates = () => {
   useEffect(() => {
     let active = true;
     (async () => {
-      const { data, error } = await supabase.functions.invoke<LivePayload>("mortgage-rates");
-      if (!active) return;
-      if (error || !data?.rates?.length) {
-        console.warn("Live mortgage rates unavailable, using fallback values", error);
-        return;
-      }
-      setLive(data);
+      let payload: LivePayload | null = null;
       try {
-        localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), payload: data }));
+        const { data, error } = await supabase.functions.invoke<LivePayload>("mortgage-rates");
+        if (!error && data?.rates?.length) payload = data;
+      } catch {
+        /* edge function unreachable */
+      }
+      if (!payload) payload = await fetchRatesViaProxy();
+      if (!active || !payload) return;
+      setLive(payload);
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), payload }));
       } catch {
         /* storage unavailable */
       }
@@ -92,6 +95,7 @@ export const MortgageRates = () => {
       active = false;
     };
   }, []);
+
 
   // Merge live numbers into the bilingual label list so EN/ZH stay in sync.
   const rows: RateRow[] = RATES.map((row) => {
