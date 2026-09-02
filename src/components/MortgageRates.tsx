@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowUpRight, ArrowDownRight, Minus, TrendingUp, ExternalLink } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchRatesViaProxy, type LivePayload, type LiveRate } from "@/lib/mortgageRates";
 
 /**
  * Daily mortgage rates (national averages), auto-fetched every day from
