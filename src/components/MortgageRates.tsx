@@ -30,8 +30,6 @@ const RATES: RateRow[] = [
   { key: "va", labelEn: "30 Yr. VA", labelZh: "30年 VA 退伍军人贷款", rate: 6.37, change: 0.02 },
 ];
 
-type LiveRate = { key: string; label: string; rate: number; change: number };
-type LivePayload = { updated: string; rates: LiveRate[] };
 
 const CACHE_KEY = "mnd-rates-v1";
 
