@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowUpRight, ArrowDownRight, Minus, TrendingUp, ExternalLink } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchRatesViaProxy, type LivePayload, type LiveRate } from "@/lib/mortgageRates";
 
 /**
  * Daily mortgage rates (national averages), auto-fetched every day from
@@ -29,8 +30,6 @@ const RATES: RateRow[] = [
   { key: "va", labelEn: "30 Yr. VA", labelZh: "30年 VA 退伍军人贷款", rate: 6.37, change: 0.02 },
 ];
 
-type LiveRate = { key: string; label: string; rate: number; change: number };
-type LivePayload = { updated: string; rates: LiveRate[] };
 
 const CACHE_KEY = "mnd-rates-v1";
 
@@ -75,15 +74,18 @@ export const MortgageRates = () => {
   useEffect(() => {
     let active = true;
     (async () => {
-      const { data, error } = await supabase.functions.invoke<LivePayload>("mortgage-rates");
-      if (!active) return;
-      if (error || !data?.rates?.length) {
-        console.warn("Live mortgage rates unavailable, using fallback values", error);
-        return;
-      }
-      setLive(data);
+      let payload: LivePayload | null = null;
       try {
-        localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), payload: data }));
+        const { data, error } = await supabase.functions.invoke<LivePayload>("mortgage-rates");
+        if (!error && data?.rates?.length) payload = data;
+      } catch {
+        /* edge function unreachable */
+      }
+      if (!payload) payload = await fetchRatesViaProxy();
+      if (!active || !payload) return;
+      setLive(payload);
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), payload }));
       } catch {
         /* storage unavailable */
       }
@@ -92,6 +94,7 @@ export const MortgageRates = () => {
       active = false;
     };
   }, []);
+
 
   // Merge live numbers into the bilingual label list so EN/ZH stay in sync.
   const rows: RateRow[] = RATES.map((row) => {
