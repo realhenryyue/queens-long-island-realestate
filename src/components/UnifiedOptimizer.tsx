@@ -89,14 +89,14 @@ const UnifiedOptimizer = () => {
         
         // Add global error handlers
         window.addEventListener('error', (event) => {
-          if (process.env.NODE_ENV === 'development') {
+          if (import.meta.env.DEV) {
             console.debug('Global error caught:', event.error?.message);
           }
           event.preventDefault();
         });
 
         window.addEventListener('unhandledrejection', (event) => {
-          if (process.env.NODE_ENV === 'development') {
+          if (import.meta.env.DEV) {
             console.debug('Promise rejection caught:', event.reason);
           }
           event.preventDefault();

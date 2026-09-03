@@ -129,7 +129,7 @@ const RealMediumContent = memo(() => {
         }
       } catch (error) {
         // Silent error handling - keep default posts, but log in development
-        if (process.env.NODE_ENV === 'development') {
+        if (import.meta.env.DEV) {
           console.warn('Medium RSS fetch failed:', error);
         }
       } finally {
