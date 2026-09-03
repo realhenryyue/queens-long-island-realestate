@@ -96,7 +96,11 @@ Deno.serve(async (req) => {
       }
     }
 
-    return new Response(JSON.stringify(cache!.payload), {
+    if (!cache) {
+      throw new Error('Mortgage rate cache is unavailable');
+    }
+
+    return new Response(JSON.stringify(cache.payload), {
       headers: {
         ...corsHeaders,
         'Content-Type': 'application/json',

@@ -20,7 +20,7 @@ interface State {
  * and automatic retry mechanism
  */
 export class OptimizedErrorBoundary extends Component<Props, State> {
-  private retryTimer?: NodeJS.Timeout;
+  private retryTimer?: ReturnType<typeof setTimeout>;
 
   constructor(props: Props) {
     super(props);
@@ -44,7 +44,7 @@ export class OptimizedErrorBoundary extends Component<Props, State> {
     });
 
     // Log error for debugging (only in development)
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.group('🚨 Error Boundary Caught Error');
       console.error('Error:', error);
       console.error('Error Info:', errorInfo);
@@ -52,7 +52,7 @@ export class OptimizedErrorBoundary extends Component<Props, State> {
     }
 
     // Track error for analytics (in production)
-    if (process.env.NODE_ENV === 'production') {
+    if (import.meta.env.PROD) {
       this.trackError(error, errorInfo);
     }
   }
@@ -130,7 +130,7 @@ export class OptimizedErrorBoundary extends Component<Props, State> {
                 }
               </p>
               
-              {process.env.NODE_ENV === 'development' && error && (
+              {import.meta.env.DEV && error && (
                 <details className="text-left bg-muted p-3 rounded text-xs">
                   <summary className="cursor-pointer font-semibold mb-2">
                     Error Details (Development)
