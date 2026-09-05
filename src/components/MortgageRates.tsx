@@ -205,7 +205,9 @@ export const MortgageRates = () => {
               {zh ? "数据来源：Mortgage News Daily" : "Source: Mortgage News Daily"}
               <ExternalLink className="w-4 h-4" aria-hidden="true" />
             </a>
-          </div>
+        <MonthlyPaymentCalculator getRate={rateFor} />
+      </div>
+
         </Card>
       </div>
     </section>
