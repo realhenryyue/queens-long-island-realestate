@@ -4,6 +4,7 @@ import { ArrowUpRight, ArrowDownRight, Minus, TrendingUp, ExternalLink } from "l
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchRatesViaProxy, type LivePayload, type LiveRate } from "@/lib/mortgageRates";
+import MonthlyPaymentCalculator from "@/components/MonthlyPaymentCalculator";
 
 /**
  * Daily mortgage rates (national averages), auto-fetched every day from
@@ -105,6 +106,17 @@ export const MortgageRates = () => {
   const featured = rows.filter((r) => r.featured);
   const rest = rows.filter((r) => !r.featured);
 
+  // Live rates only publish 30yr and 15yr fixed; shorter terms are priced off
+  // the 15yr benchmark, which is stated in the calculator UI.
+  const rateFor = (years: number) => {
+    const thirty = rows.find((r) => r.key === "30yr")?.rate ?? 6.81;
+    const fifteen = rows.find((r) => r.key === "15yr")?.rate ?? 6.35;
+    if (years >= 30) return { rate: thirty, basisEn: "30 Yr. Fixed", basisZh: "30年固定利率" };
+    if (years >= 15) return { rate: fifteen, basisEn: "15 Yr. Fixed", basisZh: "15年固定利率" };
+    return { rate: fifteen, basisEn: "15 Yr. Fixed benchmark", basisZh: "参考15年固定利率" };
+  };
+
+
   const updatedLabel = new Date(
     `${live?.updated ?? FALLBACK_UPDATED}T12:00:00`
   ).toLocaleDateString(zh ? "zh-CN" : "en-US", {
@@ -196,7 +208,10 @@ export const MortgageRates = () => {
             </a>
           </div>
         </Card>
+
+        <MonthlyPaymentCalculator getRate={rateFor} />
       </div>
+
     </section>
   );
 };
