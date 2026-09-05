@@ -110,7 +110,22 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
         <h3 className="text-xl lg:text-2xl font-bold text-primary">
           {zh ? "月供计算器" : "Monthly Payment Calculator"}
         </h3>
+        <Button
+          type="button"
+          size="icon"
+          onClick={handleShare}
+          title={zh ? "分享给客户" : "Share with a client"}
+          aria-label={zh ? "分享给客户" : "Share with a client"}
+          className="ml-auto h-9 w-9 rounded-full bg-accent text-accent-foreground shadow-elegant hover:bg-accent/90"
+        >
+          {shared ? (
+            <Check className="w-4 h-4" aria-hidden="true" />
+          ) : (
+            <Share2 className="w-4 h-4" aria-hidden="true" />
+          )}
+        </Button>
       </div>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Inputs */}
