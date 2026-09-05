@@ -2,13 +2,15 @@ import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Calculator } from "lucide-react";
+import { Calculator, Share2, Check } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { toast } from "sonner";
 
 type RateLookup = (years: number) => { rate: number; basisEn: string; basisZh: string };
 
 const DOWN_OPTIONS = [20, 30, 50, 80];
 const TERM_OPTIONS = [5, 10, 15, 30];
+const SHARE_BASE = "https://www.realhenryyue.com/rates/";
 
 const monthlyPayment = (loan: number, annualRatePercent: number, years: number) => {
   const r = annualRatePercent / 100 / 12;
@@ -16,6 +18,11 @@ const monthlyPayment = (loan: number, annualRatePercent: number, years: number) 
   if (n <= 0) return 0;
   if (r === 0) return loan / n;
   return (loan * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+};
+
+const readParam = (name: string) => {
+  if (typeof window === "undefined") return null;
+  return new URLSearchParams(window.location.search).get(name);
 };
 
 interface Props {
@@ -26,9 +33,19 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
   const { currentLanguage } = useLanguage();
   const zh = currentLanguage === "zh";
 
-  const [priceText, setPriceText] = useState("1000000");
-  const [downPercent, setDownPercent] = useState(30);
-  const [years, setYears] = useState(30);
+  const [priceText, setPriceText] = useState(() => {
+    const p = Number(readParam("price"));
+    return p > 0 ? String(p) : "1000000";
+  });
+  const [downPercent, setDownPercent] = useState(() => {
+    const d = Number(readParam("down"));
+    return DOWN_OPTIONS.includes(d) ? d : 30;
+  });
+  const [years, setYears] = useState(() => {
+    const t = Number(readParam("term"));
+    return TERM_OPTIONS.includes(t) ? t : 30;
+  });
+  const [shared, setShared] = useState(false);
 
   const price = Math.max(0, Number(priceText.replace(/[^\d.]/g, "")) || 0);
   const down = price * (downPercent / 100);
@@ -44,6 +61,32 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
       minimumFractionDigits: decimals,
       maximumFractionDigits: decimals,
     });
+
+  const shareUrl = `${SHARE_BASE}?price=${Math.round(price)}&down=${downPercent}&term=${years}&lang=${
+    zh ? "zh" : "en"
+  }`;
+
+  const handleShare = async () => {
+    const title = zh ? "最新房贷利率与月供计算" : "Today's Mortgage Rates & Payment";
+    const text = zh
+      ? `房价 ${money(price)}，首付 ${downPercent}%，${years}年期，预计月供 ${money(payment)}。`
+      : `Home price ${money(price)}, ${downPercent}% down, ${years}-year term — estimated ${money(
+          payment
+        )}/month.`;
+    try {
+      if (typeof navigator !== "undefined" && navigator.share) {
+        await navigator.share({ title, text, url: shareUrl });
+        return;
+      }
+      await navigator.clipboard.writeText(`${text} ${shareUrl}`);
+      setShared(true);
+      setTimeout(() => setShared(false), 2000);
+      toast.success(zh ? "分享链接已复制" : "Share link copied");
+    } catch {
+      /* user cancelled share */
+    }
+  };
+
 
   const comparison = useMemo(
     () =>
@@ -67,7 +110,22 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
         <h3 className="text-xl lg:text-2xl font-bold text-primary">
           {zh ? "月供计算器" : "Monthly Payment Calculator"}
         </h3>
+        <Button
+          type="button"
+          size="icon"
+          onClick={handleShare}
+          title={zh ? "分享给客户" : "Share with a client"}
+          aria-label={zh ? "分享给客户" : "Share with a client"}
+          className="ml-auto h-9 w-9 rounded-full bg-accent text-accent-foreground shadow-elegant hover:bg-accent/90"
+        >
+          {shared ? (
+            <Check className="w-4 h-4" aria-hidden="true" />
+          ) : (
+            <Share2 className="w-4 h-4" aria-hidden="true" />
+          )}
+        </Button>
       </div>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Inputs */}

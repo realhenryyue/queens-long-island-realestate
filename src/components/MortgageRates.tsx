@@ -128,7 +128,8 @@ export const MortgageRates = () => {
 
   return (
     <section
-      className="py-16 bg-secondary/30"
+      id="mortgage-rates"
+      className="py-16 bg-secondary/30 scroll-mt-24"
       aria-label={zh ? "每日最新房贷利率" : "Daily Mortgage Rates"}
     >
       <div className="container mx-auto px-4">
