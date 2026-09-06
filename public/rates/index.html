@@ -63,7 +63,8 @@
     <script>
       (function () {
         var qs = window.location.search || "";
-        var target = "/" + qs + "#mortgage-rates";
+        var hash = window.location.hash || "#mortgage-rates";
+        var target = "/" + qs + hash;
         document.getElementById("go").setAttribute("href", target);
         window.location.replace(target);
       })();
