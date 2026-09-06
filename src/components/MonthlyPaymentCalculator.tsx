@@ -48,6 +48,23 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
   const [shared, setShared] = useState(false);
 
   const price = Math.max(0, Number(priceText.replace(/[^\d.]/g, "")) || 0);
+  const priceDisplay = (() => {
+    const raw = priceText.replace(/[^\d.]/g, "");
+    if (!raw) return "";
+    const [int, dec] = raw.split(".");
+    const intFmt = Number(int || "0").toLocaleString("en-US");
+    return dec !== undefined ? `${intFmt}.${dec}` : intFmt;
+  })();
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/[^\d.]/g, "");
+    // keep at most one decimal point
+    const firstDot = raw.indexOf(".");
+    const cleaned =
+      firstDot === -1
+        ? raw
+        : raw.slice(0, firstDot + 1) + raw.slice(firstDot + 1).replace(/\./g, "");
+    setPriceText(cleaned);
+  };
   const down = price * (downPercent / 100);
   const loan = price - down;
 
@@ -64,7 +81,7 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
 
   const shareUrl = `${SHARE_BASE}?price=${Math.round(price)}&down=${downPercent}&term=${years}&lang=${
     zh ? "zh" : "en"
-  }`;
+  }#monthly-payment-calculator`;
 
   const handleShare = async () => {
     const title = zh ? "最新房贷利率与月供计算" : "Today's Mortgage Rates & Payment";
@@ -104,7 +121,7 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
   );
 
   return (
-    <Card className="mt-8 p-6 lg:p-8 bg-card shadow-elegant">
+    <Card id="monthly-payment-calculator" className="mt-8 p-6 lg:p-8 bg-card shadow-elegant scroll-mt-24">
       <div className="flex items-center gap-2 mb-6">
         <Calculator className="w-5 h-5 text-accent" aria-hidden="true" />
         <h3 className="text-xl lg:text-2xl font-bold text-primary">
@@ -140,8 +157,8 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
             <Input
               id="mpc-price"
               inputMode="numeric"
-              value={priceText}
-              onChange={(e) => setPriceText(e.target.value)}
+              value={priceDisplay}
+              onChange={handlePriceChange}
               className="text-lg font-semibold tabular-nums"
             />
           </div>
@@ -195,7 +212,7 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
           <div className="text-muted-foreground font-medium mb-2">
             {zh ? "预计每月还款" : "Estimated monthly payment"}
           </div>
-          <div className="text-4xl lg:text-5xl font-bold text-primary tabular-nums mb-3">
+          <div className="text-4xl lg:text-5xl font-bold text-green-600 dark:text-green-500 tabular-nums mb-3">
             {money(payment)}
           </div>
           <div className="text-sm text-muted-foreground">
