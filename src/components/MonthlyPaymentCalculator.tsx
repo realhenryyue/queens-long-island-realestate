@@ -84,15 +84,16 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
   }#monthly-payment-calculator`;
 
   const handleShare = async () => {
-    const title = zh ? "最新房贷利率与月供计算" : "Today's Mortgage Rates & Payment";
     const text = zh
       ? `房价 ${money(price)}，首付 ${downPercent}%，${years}年期，预计月供 ${money(payment)}。`
       : `Home price ${money(price)}, ${downPercent}% down, ${years}-year term — estimated ${money(
           payment
         )}/month.`;
     try {
+      // Share the URL only: adding text makes WeChat/iOS treat it as a plain
+      // text share and preview the current page instead of the shared link.
       if (typeof navigator !== "undefined" && navigator.share) {
-        await navigator.share({ title, text, url: shareUrl });
+        await navigator.share({ url: shareUrl });
         return;
       }
       await navigator.clipboard.writeText(`${text} ${shareUrl}`);
@@ -103,6 +104,7 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
       /* user cancelled share */
     }
   };
+
 
 
   const comparison = useMemo(
