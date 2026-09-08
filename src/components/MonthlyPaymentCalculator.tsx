@@ -79,9 +79,13 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
       maximumFractionDigits: decimals,
     });
 
-  const shareUrl = `${SHARE_BASE}?price=${Math.round(price)}&down=${downPercent}&term=${years}&lang=${
-    zh ? "zh" : "en"
-  }#monthly-payment-calculator`;
+  // `v` is a fresh cache-buster on every share so WeChat and other apps treat
+  // the link as a new URL and re-fetch the preview image instead of reusing a
+  // cached thumbnail.
+  const buildShareUrl = () =>
+    `${SHARE_BASE}?price=${Math.round(price)}&down=${downPercent}&term=${years}&lang=${
+      zh ? "zh" : "en"
+    }&v=${Date.now().toString(36)}#monthly-payment-calculator`;
 
   const handleShare = async () => {
     const text = zh
