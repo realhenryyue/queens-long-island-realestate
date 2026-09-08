@@ -88,6 +88,7 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
     }&v=${Date.now().toString(36)}#monthly-payment-calculator`;
 
   const handleShare = async () => {
+    const shareUrl = buildShareUrl();
     const text = zh
       ? `房价 ${money(price)}，首付 ${downPercent}%，${years}年期，预计月供 ${money(payment)}。`
       : `Home price ${money(price)}, ${downPercent}% down, ${years}-year term — estimated ${money(
