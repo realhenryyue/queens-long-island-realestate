@@ -10,7 +10,7 @@ type RateLookup = (years: number) => { rate: number; basisEn: string; basisZh: s
 
 const DOWN_OPTIONS = [20, 30, 50, 80];
 const TERM_OPTIONS = [5, 10, 15, 30];
-const SHARE_BASE = "https://www.realhenryyue.com/rates/";
+const SHARE_BASE = "https://www.realhenryyue.com/rates-share/";
 
 const monthlyPayment = (loan: number, annualRatePercent: number, years: number) => {
   const r = annualRatePercent / 100 / 12;
@@ -79,11 +79,16 @@ export const MonthlyPaymentCalculator = ({ getRate }: Props) => {
       maximumFractionDigits: decimals,
     });
 
-  const shareUrl = `${SHARE_BASE}?price=${Math.round(price)}&down=${downPercent}&term=${years}&lang=${
-    zh ? "zh" : "en"
-  }#monthly-payment-calculator`;
+  // `v` is a fresh cache-buster on every share so WeChat and other apps treat
+  // the link as a new URL and re-fetch the preview image instead of reusing a
+  // cached thumbnail.
+  const buildShareUrl = () =>
+    `${SHARE_BASE}?price=${Math.round(price)}&down=${downPercent}&term=${years}&lang=${
+      zh ? "zh" : "en"
+    }&v=${Date.now().toString(36)}#monthly-payment-calculator`;
 
   const handleShare = async () => {
+    const shareUrl = buildShareUrl();
     const text = zh
       ? `房价 ${money(price)}，首付 ${downPercent}%，${years}年期，预计月供 ${money(payment)}。`
       : `Home price ${money(price)}, ${downPercent}% down, ${years}-year term — estimated ${money(
