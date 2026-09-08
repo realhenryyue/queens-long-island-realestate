@@ -10,7 +10,7 @@ type RateLookup = (years: number) => { rate: number; basisEn: string; basisZh: s
 
 const DOWN_OPTIONS = [20, 30, 50, 80];
 const TERM_OPTIONS = [5, 10, 15, 30];
-const SHARE_BASE = "https://www.realhenryyue.com/rates/";
+const SHARE_BASE = "https://www.realhenryyue.com/rates-share/";
 
 const monthlyPayment = (loan: number, annualRatePercent: number, years: number) => {
   const r = annualRatePercent / 100 / 12;
