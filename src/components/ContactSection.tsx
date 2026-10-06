@@ -305,5 +305,5 @@ const CSS = `
 @media(max-width:760px){.hy-card-section{padding:0;background:var(--paper)}.hy-page{border:0;box-shadow:none;max-width:540px}.hy-masthead{padding:17px 22px}
 .hy-layout{grid-template-columns:1fr}.hy-profile{padding:25px 24px 23px}.hy-identity{flex-direction:row;align-items:center;justify-content:space-between;gap:20px}.hy-identity-text{flex:1;min-width:0}
 .hy-portrait-wrap{width:126px;height:152px;flex:none;margin-right:8px}.hy-portrait{object-position:50% 35%}.hy-h1{font-size:clamp(44px,12vw,60px);letter-spacing:-1.8px}
-.hy-foot{display:none}.hy-details{padding:29px 24px 26px}.hy-colophon{padding:17px 24px}.hy-h2{font-size:29px}}
+.hy-foot{display:none}.hy-details{padding:29px 24px 26px}.hy-colophon{padding:17px 24px}.hy-legal{justify-content:flex-start;gap:8px 14px}.hy-legal a{line-height:1.6}.hy-h2{font-size:29px}}
 `;
