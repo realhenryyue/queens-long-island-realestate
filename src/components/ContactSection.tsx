@@ -149,7 +149,7 @@ export const ContactSection = () => {
   ];
 
   return (
-    <section id="contact" className="hy-card-section" aria-labelledby="hy-name">
+    <section className="hy-card-section" aria-labelledby="hy-name">
       <style>{CSS}</style>
       <div className="hy-page">
         <header className="hy-masthead">
