@@ -7,12 +7,16 @@ import { UnifiedSchema } from "@/components/UnifiedSchema";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
 import RealMediumContent from "@/components/RealMediumContent";
-import MortgageRates from "@/components/MortgageRates";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
   const location = useLocation();
+  const { currentLanguage } = useLanguage();
+  const mortgagePlannerUrl = currentLanguage === "zh"
+    ? "/Henry_Yue_Mortgage_Planner_zh.html"
+    : "/Henry_Yue_Mortgage_Planner.html";
 
   // Handle hash-based navigation for deep links
   useEffect(() => {
@@ -41,8 +45,15 @@ const Index = () => {
       
       <main role="main" id="main-content">
         <HeroSection />
-        <section id="mortgage-rates">
-          <MortgageRates />
+        <section id="mortgage-rates" className="bg-background scroll-mt-24">
+          <div id="monthly-payment-calculator" className="scroll-mt-24" />
+          <iframe
+            key={mortgagePlannerUrl}
+            src={mortgagePlannerUrl}
+            title={currentLanguage === "zh" ? "Henry Yue 房贷月供计算器" : "Henry Yue Mortgage Payment Planner"}
+            className="block h-[1800px] w-full border-0 md:h-[2400px] lg:h-[2200px]"
+            loading="eager"
+          />
         </section>
         <section id="queens-real-estate">
           <ServicesSection />
