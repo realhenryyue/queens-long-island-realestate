@@ -103,9 +103,9 @@ export const ContactSection = () => {
   };
 
   const handleShare = async () => {
-    const url = `${SITE}/#contact`;
+    const url = `${SITE}/henry-yue-card-ny-disclosure-v4.html`;
     if (navigator.share) {
-      try { await navigator.share({ title: "Hongyu (Henry) Yue", url }); return; }
+      try { await navigator.share({ title: "Hongyu (Henry) Yue | Digital Business Card", url }); return; }
       catch (e) { if ((e as Error).name === "AbortError") return; }
     }
     if (await copyText(url)) toast({ description: c.shared });
