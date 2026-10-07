@@ -291,7 +291,7 @@
   }
 
   function link() {
-    const url = new URL(location.href);
+    const url = new URL(location.pathname + location.search, 'https://www.realhenryyue.com');
     url.searchParams.set('lang', language);
     url.searchParams.set('share', '20260914-v4');
     url.pathname = url.pathname.replace(/Henry_Yue_Mortgage_Planner(?:_zh)?\.html$/, language === 'zh' ? 'Henry_Yue_Mortgage_Planner_zh.html' : 'Henry_Yue_Mortgage_Planner.html');
@@ -445,7 +445,7 @@
     if (message) headerShareTimer = setTimeout(() => { $('header-share-feedback').textContent = ''; }, 4500);
   }
   function genericPageLink() {
-    const url = new URL(location.href);
+    const url = new URL(location.pathname + location.search, 'https://www.realhenryyue.com');
     url.pathname = url.pathname.replace(/Henry_Yue_Mortgage_Planner(?:_zh)?\.html$/, language === 'zh' ? 'Henry_Yue_Mortgage_Planner_zh.html' : 'Henry_Yue_Mortgage_Planner.html');
     url.search = '';
     url.searchParams.set('lang',language);
@@ -465,6 +465,7 @@
       // A full navigation makes the scenario URL the URL that WeChat actually
       // opened. replaceState alone is not dependable for WeChat's native menu.
       url.searchParams.set('wxshare',kind);
+      if (window.top !== window.self) { window.top.location.href = url.href; return; }
       if (location.href !== url.href) { location.assign(url.href); return; }
       showWeChatMenuHint();
       return;
