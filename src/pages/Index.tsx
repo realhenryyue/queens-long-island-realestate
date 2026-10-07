@@ -7,12 +7,32 @@ import { UnifiedSchema } from "@/components/UnifiedSchema";
 import MarketAnalysisHub from "@/components/MarketAnalysisHub";
 import ROICalculator from "@/components/ROICalculator";
 import RealMediumContent from "@/components/RealMediumContent";
-import MortgageRates from "@/components/MortgageRates";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
   const location = useLocation();
+  const { currentLanguage } = useLanguage();
+  const mortgagePlannerUrl = currentLanguage === "zh"
+    ? "/Henry_Yue_Mortgage_Planner_zh.html"
+    : "/Henry_Yue_Mortgage_Planner.html";
+  const mortgageFrameRef = useRef<HTMLIFrameElement>(null);
+  const mortgageResizeObserverRef = useRef<ResizeObserver | null>(null);
+  const [mortgageFrameHeight, setMortgageFrameHeight] = useState(2400);
+
+  const resizeMortgageFrame = () => {
+    const documentElement = mortgageFrameRef.current?.contentDocument?.documentElement;
+    if (!documentElement) return;
+    setMortgageFrameHeight(documentElement.scrollHeight);
+    mortgageResizeObserverRef.current?.disconnect();
+    mortgageResizeObserverRef.current = new ResizeObserver(() => {
+      setMortgageFrameHeight(documentElement.scrollHeight);
+    });
+    mortgageResizeObserverRef.current.observe(documentElement);
+  };
+
+  useEffect(() => () => mortgageResizeObserverRef.current?.disconnect(), []);
 
   // Handle hash-based navigation for deep links
   useEffect(() => {
@@ -41,8 +61,18 @@ const Index = () => {
       
       <main role="main" id="main-content">
         <HeroSection />
-        <section id="mortgage-rates">
-          <MortgageRates />
+        <section id="mortgage-rates" className="bg-background scroll-mt-24">
+          <div id="monthly-payment-calculator" className="scroll-mt-24" />
+          <iframe
+            ref={mortgageFrameRef}
+            key={mortgagePlannerUrl}
+            src={mortgagePlannerUrl}
+            title={currentLanguage === "zh" ? "Henry Yue 房贷月供计算器" : "Henry Yue Mortgage Payment Planner"}
+            className="block w-full border-0"
+            style={{ height: `${mortgageFrameHeight}px` }}
+            onLoad={resizeMortgageFrame}
+            loading="eager"
+          />
         </section>
         <section id="queens-real-estate">
           <ServicesSection />
